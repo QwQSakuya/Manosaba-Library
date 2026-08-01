@@ -338,11 +338,8 @@ main { flex: 1; position: relative; overflow: hidden; background: var(--bg2); }
 #splash.hide { opacity: 0; visibility: hidden; pointer-events: none; }
 #splash-mark {
   width: 64px; height: 64px;
-  border: 1.5px solid var(--fg);
+  object-fit: cover;
   border-radius: 16px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 28px; font-weight: 200;
-  color: var(--fg);
   transform: scale(0.6); opacity: 0;
   animation: splashMarkIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
 }
@@ -569,7 +566,7 @@ main { flex: 1; position: relative; overflow: hidden; background: var(--bg2); }
 <body>
 
 <div id="splash">
-  <div id="splash-mark">魔</div>
+  <img id="splash-mark" src="nnk_box.webp" alt="">
   <h1 id="splash-title">魔女审判文本查询器</h1>
   <p id="splash-sub">Witch Trials · Text Finder</p>
   <div id="splash-bar"></div>
