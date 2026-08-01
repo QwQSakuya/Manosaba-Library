@@ -67,6 +67,18 @@
   --btn-active: #ccc;
   --btn-active-fg: #111;
 }
+/* 夜间模式: 手机内选项加强对比 (浅灰底配手机图不可见) */
+[data-theme="dark"] #phone-screen .choice-item {
+  background: rgba(255,255,255,0.10);
+  border-color: rgba(255,255,255,0.30);
+}
+[data-theme="dark"] #phone-screen .choice-item:hover {
+  background: rgba(255,255,255,0.18);
+  border-color: rgba(255,255,255,0.55);
+}
+[data-theme="dark"] #phone-screen .choice-badge {
+  background: rgba(255,255,255,0.18); color: #eee;
+}
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; overflow: hidden; }
 body {
@@ -318,12 +330,12 @@ main { flex: 1; position: relative; overflow: hidden; background: var(--bg2); }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
-/* ── 意见箱浮动按钮 (移至左下角, 避免与手机重叠) ── */
+/* ── 意见箱浮动按钮 (置于缩放指示器右侧, 避免重叠) ── */
 #feedback-btn {
-  position: fixed; left: 20px; bottom: 20px; z-index: 90;
-  padding: 10px 20px; border-radius: 22px;
+  position: fixed; left: 180px; bottom: 20px; z-index: 90;
+  padding: 8px 18px; border-radius: 22px;
   background: var(--btn-active); color: var(--btn-active-fg);
-  border: 1px solid var(--border); font-size: 13px; font-weight: 600;
+  border: 1px solid var(--border); font-size: 12px; font-weight: 600;
   cursor: pointer; box-shadow: 0 2px 12px rgba(0,0,0,0.18);
   transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -353,10 +365,14 @@ main { flex: 1; position: relative; overflow: hidden; background: var(--bg2); }
 }
 #phone-screen {
   position: absolute;
-  top: 10%; left: 12%; right: 7%; bottom: 15%;
+  top: 12%; left: 11%; right: 7%; bottom: 15%;
   overflow-y: auto; padding: 14px 10px;
-  font-size: 12px; line-height: 1.55;
+  font-size: 14px; line-height: 1.55;
   -webkit-overflow-scrolling: touch;
+  opacity: 0;
+  transition: opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
 }
 #phone-topbar {
   position: absolute; top: 0; left: 0; right: 0; height: 7%;
@@ -365,19 +381,57 @@ main { flex: 1; position: relative; overflow: hidden; background: var(--bg2); }
 }
 #phone-topbar:hover { background: rgba(128,128,128,0.1); }
 #phone-screen .ps-meta { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px; }
-#phone-screen .ps-meta .panel-tag { font-size:10px; padding:1px 6px; }
-#phone-screen .ps-summary { color:var(--fg2); font-size:11px; margin-bottom:8px; line-height:1.5; }
+#phone-screen .ps-meta .panel-tag { font-size:12px; padding:1px 6px; }
+#phone-screen .ps-summary {
+  padding: 6px 8px; margin-bottom:8px; line-height:1.5;
+  background: var(--bg2); border-radius: 5px;
+  border-left: 3px solid var(--border);
+}
 #phone-screen .transcript-item {
   margin-bottom: 6px; padding: 6px 8px;
   background: var(--bg2); border-radius: 5px;
   border-left: 3px solid transparent;
 }
-#phone-screen .transcript-item .ti-speaker { font-size: 11px; font-weight: 600; margin-bottom: 2px; }
-#phone-screen .transcript-item .ti-text { font-size: 12px; line-height: 1.55; white-space: pre-wrap; }
+#phone-screen .transcript-item .ti-speaker { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+#phone-screen .transcript-item .ti-text { font-size: 14px; line-height: 1.55; white-space: pre-wrap; }
 #phone-screen .panel-section { margin-top: 10px; }
-#phone-screen .panel-section-title { font-size: 11px; font-weight: 700; color: var(--fg2); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.05em; }
-#phone-screen .choice-item { padding: 7px 10px; margin-bottom: 4px; font-size: 12px; }
-#phone-screen .choice-badge { font-size: 9px; padding: 1px 5px; }
+#phone-screen .panel-section-title {
+  font-size: 13px; font-weight: 700; margin-bottom: 5px;
+  padding: 5px 8px;
+  background: var(--bg2); border-radius: 5px;
+}
+#phone-screen .choice-item { padding: 7px 10px; margin-bottom: 4px; font-size: 14px; }
+#phone-screen .choice-badge { font-size: 11px; padding: 1px 5px; }
+.phone-nav-bar {
+  display: flex; gap: 6px;
+  padding-top: 10px; margin-top: 10px;
+  border-top: 1px solid var(--border);
+}
+.phone-nav-bar.top { padding-top: 0; margin-top: 0; margin-bottom: 8px; border-top: none; }
+.phone-nav-btn {
+  display: block; flex: 1; width: 100%;
+  padding: 9px 14px;
+  border: 1px solid var(--border); border-radius: 6px;
+  background: var(--btn-bg); color: var(--fg2);
+  font-size: 14px; font-weight: 500; cursor: pointer;
+  text-align: center;
+  transition: background 0.25s cubic-bezier(0.22,1,0.36,1),
+              color 0.25s cubic-bezier(0.22,1,0.36,1),
+              border-color 0.25s cubic-bezier(0.22,1,0.36,1),
+              transform 0.25s cubic-bezier(0.22,1,0.36,1);
+}
+.phone-nav-btn:hover {
+  background: var(--btn-hover); color: var(--fg);
+  border-color: var(--accent); transform: translateY(-1px);
+}
+.phone-nav-btn:active { transform: translateY(0); }
+.phone-nav-btn.primary {
+  background: var(--btn-active); color: var(--btn-active-fg);
+  border-color: var(--btn-active); font-weight: 600;
+}
+.phone-nav-btn.primary:hover {
+  background: var(--accent); border-color: var(--accent); color: var(--btn-active-fg);
+}
 
 /* ── Responsive ── */
 @media (max-width: 640px) {
@@ -386,6 +440,7 @@ main { flex: 1; position: relative; overflow: hidden; background: var(--bg2); }
   .route-btn, .header-btn { padding: 4px 8px; font-size: 11px; }
   header .title { font-size: 14px; }
   #detail-panel { width: 100vw; max-width: 100vw; }
+  #feedback-btn { left: 160px; padding: 6px 14px; font-size: 11px; }
 }
 
 /* ── 异议链接 — 粉色可点击 ── */
@@ -1491,6 +1546,7 @@ let lastPhoneHtml = '';        // 上次显示的内容
 
 function showPhone(html, fromNode) {
   phoneScreen.innerHTML = html;
+  phoneScreen.style.opacity = '0';
   lastPhoneHtml = html;
   if (fromNode) {
     phoneContainer.classList.add('node-pop');
@@ -1505,15 +1561,59 @@ function showPhone(html, fromNode) {
       showObjectionPopup(this.dataset.choiceId, this);
     });
   });
+  // 绑定选项跳转事件
+  phoneScreen.querySelectorAll('[data-goto]').forEach(function(el) {
+    el.addEventListener('click', function() {
+      var targetId = this.dataset.goto;
+      var target = _nodeMap.get(targetId);
+      if (target) {
+        focusNode(target);
+        openPhoneWithNode(target);
+      } else if (targetId === 'continue' && focusedNodeId) {
+        var cur = _nodeMap.get(focusedNodeId);
+        if (cur && cur.nextId) {
+          var next = _nodeMap.get(cur.nextId);
+          if (next) {
+            focusNode(next);
+            openPhoneWithNode(next);
+          }
+        }
+      }
+    });
+  });
+  // 绑定导航按钮事件 (上一个/下一个/返回选择)
+  phoneScreen.querySelectorAll('[data-nav]').forEach(function(el) {
+    el.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var navId = this.dataset.nav;
+      var target = _nodeMap.get(navId);
+      if (target) {
+        focusNode(target);
+        openPhoneWithNode(target);
+      }
+    });
+  });
+  // 下一帧淡入内容
+  requestAnimationFrame(function() {
+    phoneScreen.style.opacity = '1';
+  });
 }
 
 function hidePhone() {
   clearTimeout(_phoneLeaveTimer);
+  phoneScreen.style.opacity = '0';
+  var wasShow = phoneState === 'show';
   phoneContainer.classList.remove('show', 'node-pop');
   phoneState = 'peeking';
   phonePinned = false;
   closeObjectionPopup();
   _nodeEls.forEach(el => el.classList.remove('highlighted'));
+  // 淡出动画结束后清空屏幕内容（保留 lastPhoneHtml 供悬浮恢复）
+  if (wasShow) {
+    setTimeout(function() {
+      if (phoneState === 'peeking') phoneScreen.innerHTML = '';
+    }, 350);
+  }
 }
 
 // 鼠标悬浮 — 从 peeking 弹出 (显示上次内容)
@@ -1524,11 +1624,15 @@ phoneContainer.addEventListener('mouseenter', function() {
   if (phoneState === 'peeking') {
     if (lastPhoneHtml) {
       phoneScreen.innerHTML = lastPhoneHtml;
+      phoneScreen.style.opacity = '0';
       phoneScreen.querySelectorAll('.objection-link').forEach(function(el) {
         el.addEventListener('click', function(e) {
           e.stopPropagation();
           showObjectionPopup(this.dataset.choiceId, this);
         });
+      });
+      requestAnimationFrame(function() {
+        phoneScreen.style.opacity = '1';
       });
     }
     phoneContainer.classList.add('show');
@@ -1581,6 +1685,17 @@ function openPhoneWithNode(node) {
     html += '<div class="ps-summary">' + escapeHtml(node.summary) + '</div>';
   }
 
+  // ── 导航：上一个 (非 Bad End) ──
+  var isBad = node.type === 'bd';
+  if (!isBad) {
+    var prevNode = findPrevNode(node);
+    if (prevNode) {
+      html += '<div class="phone-nav-bar top">';
+      html += '<button class="phone-nav-btn" data-nav="' + escapeHtml(prevNode.id) + '">▲ 上一个</button>';
+      html += '</div>';
+    }
+  }
+
   // 对话文本 (复用 renderDialogueText, 含粉色异议链接)
   var dlg = (node.level === 2 && node.parentId)
     ? (_nodeMap.get(node.parentId) || {}).dialogue
@@ -1597,7 +1712,7 @@ function openPhoneWithNode(node) {
     html += '</div>';
   } else if (node.text) {
     html += '<div class="panel-section"><div class="panel-section-title">文本内容</div>';
-    html += '<div style="white-space:pre-wrap;font-size:12px;line-height:1.7;padding:10px;background:var(--bg2);border-radius:5px;">' + escapeHtml(node.text).replace(/&lt;br&gt;\n?/g, '\n') + '</div>';
+    html += '<div style="white-space:pre-wrap;font-size:14px;line-height:1.7;padding:10px;background:var(--bg2);border-radius:5px;">' + escapeHtml(node.text).replace(/&lt;br&gt;\n?/g, '\n') + '</div>';
     html += '</div>';
   }
 
@@ -1622,12 +1737,30 @@ function openPhoneWithNode(node) {
       var badge = status === true ? '<span class="choice-badge" style="background:#3a8a3a;color:#fff">正确</span>' :
                   status === false ? '<span class="choice-badge" style="background:#a44;color:#fff">错误</span>' :
                   '<span class="choice-badge">待标注</span>';
-      var note = ann && ann.note ? ' <span style="font-size:10px;color:var(--fg3)">' + escapeHtml(ann.note) + '</span>' : '';
+      var note = ann && ann.note ? ' <span style="font-size:12px;color:var(--fg3)">' + escapeHtml(ann.note) + '</span>' : '';
       var typeLabel = ch.buttonType === 'Cancel' ? ' [返回]' : ch.buttonType === 'Objection' ? '' : ' [剧情]';
       html += '<div class="choice-item"><span class="choice-text">' + escapeHtml(ch.text) + typeLabel + '</span>' + badge + note + '</div>';
     });
     html += '<button class="header-btn" style="margin-top:6px;width:100%" onclick="window.open(\'' + REPO_URL + '/edit/main/data/annotations.json\',\'_blank\')">✎ 编辑标注</button>';
     html += '</div>';
+  }
+
+  // ── 导航：底部按钮 ──
+  if (isBad) {
+    // Bad End → 返回选择节点
+    var parentNode = _nodeMap.get(node.parentId);
+    if (parentNode) {
+      html += '<div class="phone-nav-bar">';
+      html += '<button class="phone-nav-btn" data-nav="' + escapeHtml(parentNode.id) + '">↩ 返回选择</button>';
+      html += '</div>';
+    }
+  } else {
+    // 正常节点 → 下一个
+    if (node.nextId) {
+      html += '<div class="phone-nav-bar">';
+      html += '<button class="phone-nav-btn" data-nav="' + escapeHtml(node.nextId) + '">▼ 下一个</button>';
+      html += '</div>';
+    }
   }
 
   // 高亮节点
@@ -1638,10 +1771,20 @@ function openPhoneWithNode(node) {
   showPhone(html, true);
 }
 
+function findPrevNode(node) {
+  // 找上一个同层节点 (谁的 nextId 指向当前节点)
+  for (var i = 0; i < NODES.length; i++) {
+    if (NODES[i].nextId === node.id && NODES[i].level === node.level) {
+      return NODES[i];
+    }
+  }
+  return null;
+}
+
 function focusNode(node) {
-  // 平滑移动摄像机到目标节点
-  const targetX = node.x;
-  const targetY = node.y;
+  // 平滑移动摄像机到目标节点 (使用布局坐标 _lx/_ly)
+  const targetX = node._lx !== undefined ? node._lx : (node.x || 0);
+  const targetY = node._ly !== undefined ? node._ly : (node.y || 0);
   const targetZoom = clamp(zoom < 1.0 ? 1.0 : zoom, ZOOM_MIN, ZOOM_MAX);
   const startX = viewX, startY = viewY, startZoom = zoom;
   const startTime = performance.now();
