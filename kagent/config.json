@@ -1,0 +1,17 @@
+{
+  "ignoreGlobs": [
+    "**/node_modules/**",
+    "**/.git/**",
+    ".git/**",
+    "**/.kagent/**",
+    ".kagent/**",
+    "**/dist/**",
+    "**/out/**"
+  ],
+  "capture": {
+    "onSave": true,
+    "onEdit": true,
+    "agentHook": true,
+    "coalesceWindowMs": 1500
+  }
+}

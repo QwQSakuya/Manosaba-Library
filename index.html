@@ -149,15 +149,14 @@ main { flex: 1; position: relative; overflow: hidden; background: var(--bg2); }
   cursor: grab; user-select: none;
   box-shadow: 0 1px 3px var(--node-shadow);
   transition: opacity 0.35s cubic-bezier(0.22,1,0.36,1),
-              transform 0.35s cubic-bezier(0.22,1,0.36,1),
               box-shadow 0.25s cubic-bezier(0.22,1,0.36,1),
               border-color 0.25s cubic-bezier(0.22,1,0.36,1),
               background 0.25s cubic-bezier(0.22,1,0.36,1),
               outline 0.15s ease;
+  will-change: transform;
   pointer-events: auto;
 }
 .node:hover {
-  transform: translateY(-3px);
   box-shadow: 0 6px 20px rgba(0,0,0,0.12);
   z-index: 10;
 }
@@ -393,7 +392,7 @@ main { flex: 1; position: relative; overflow: hidden; background: var(--bg2); }
 
 /* ── 意见箱浮动按钮 (置于缩放指示器右侧, 避免重叠) ── */
 #feedback-btn {
-  position: fixed; left: 180px; bottom: 20px; z-index: 90;
+  position: fixed; left: 200px; bottom: 20px; z-index: 90;
   padding: 8px 18px; border-radius: 22px;
   background: var(--btn-active); color: var(--btn-active-fg);
   border: 1px solid var(--border); font-size: 12px; font-weight: 600;
@@ -871,7 +870,8 @@ function updateTransform() {
     b.classList.toggle('active', Math.abs(zoom - t) < tol);
   });
 
-  // 更新所有节点的可见度
+  // 更新所有节点的可见度 (缩放变化后触发一次碰撞检测)
+  _layoutDirty = true;
   updateAllNodeVisibility();
 }
 
@@ -924,6 +924,7 @@ function updateAllNodeVisibility() {
     }
     el.style.opacity = opacity; // B4: 移除冗余 Math.max(0, ...) (smoothstep 结果已 >= 0)
     el.style.pointerEvents = opacity > 0.15 ? 'auto' : 'none';
+    el._vis = opacity > 0.01; // A2: 缓存可见标志, 避免浮动画每帧读 style
   });
 
   // 也更新连接线 (使用缓存的引用)
@@ -1420,6 +1421,9 @@ function _resolveOverlaps(dt) {
     if (moved > maxMove) maxMove = moved;
     el.dataset.ox = nx;
     el.dataset.oy = ny;
+    // A1: 基准位置直接写入 style (供连线读取), 漂浮偏移由 updateFloats 用 transform 叠加
+    el.style.left = nx + 'px';
+    el.style.top  = ny + 'px';
   });
 
   if (maxMove > 0.3) _layoutDirty = true; // 触发本帧连线更新
@@ -1433,22 +1437,28 @@ function updateFloats(now) {
   const dt = Math.min((now - _lastFloatTime) / 1000, 0.1);
   _lastFloatTime = now;
 
-  // 防重叠: AABB 检测 + 平滑 lerp 趋近无重叠位置 (修改 dataset.ox/oy)
+  // A3: 防重叠仅在交互时运行 (拖动/惯性/布局变化/缩放), 静止浏览跳过节省 CPU
+  const wasDirty = _layoutDirty;
   _layoutDirty = false;
-  _resolveOverlaps(dt);
+  const hasInteraction = !!_dragNode || _inertiaList.length > 0;
+  if (hasInteraction || wasDirty) {
+    _resolveOverlaps(dt);
+  }
 
-  // 漂浮: 纯视觉偏移, base(=dataset.ox) + sin/cos 临时幅度
-  // 跳过被拖动/惯性中的节点
+  // A1: 漂浮偏移用 transform (GPU compositing, 不触发 Layout), 基准位置在 _resolveOverlaps 中写入 left/top
+  // A2: 跳过不可见节点 (不写 DOM)
   _nodeEls.forEach(el => {
     if (el === _dragNode?.el) return;
     if (!el._float) return;
     const f = el._float;
     f.phaseX += f.speedX * dt;
     f.phaseY += f.speedY * dt;
+    if (!el._vis) return;
     const bx = parseFloat(el.dataset.ox) || 0;
     const by = parseFloat(el.dataset.oy) || 0;
-    el.style.left = (bx + Math.sin(f.phaseX) * f.amp) + 'px';
-    el.style.top  = (by + Math.cos(f.phaseY) * f.amp) + 'px';
+    el.style.left = bx + 'px';
+    el.style.top  = by + 'px';
+    el.style.transform = `translate(${Math.sin(f.phaseX) * f.amp}px, ${Math.cos(f.phaseY) * f.amp}px)`;
   });
 
   // 惯性滑行: 衰减速度, 更新位置, 速度太低时移除
@@ -1461,6 +1471,7 @@ function updateFloats(now) {
     const ny = (parseFloat(item.el.dataset.oy) || 0) + item.vy * dt;
     item.el.style.left = nx + 'px';
     item.el.style.top = ny + 'px';
+    item.el.style.transform = ''; // A1: 清除漂浮位移, 惯性期间基线+惯性移动
     item.el.dataset.ox = nx;
     item.el.dataset.oy = ny;
     if (Math.abs(item.vx) < 0.5 && Math.abs(item.vy) < 0.5) {
