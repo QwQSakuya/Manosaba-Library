@@ -1,0 +1,6 @@
+{
+  "_README": "Trial 异议选项社区标注文件。在 trialChoices 中添加条目来标记选项是否正确推进剧情。格式: \"选项ID\": { \"isCorrect\": true/false, \"note\": \"说明\", \"resultRange\": [\"起始label\", \"结束label\"] }。isCorrect: true=正确推进, false=错误死路, 不填=未知。resultRange: 该选项被选中后播放的结果文本范围(对话条目的 label), 供分支树展示; 不填则不展示结果摘要。",
+  "_README_resultRange": "resultRange 示例: 假设 Choice001 是错误选项, 选中后播放 Ema003 到 Ema006 的反驳对话, 则填 [\"0101Trial01_Ema003\", \"0101Trial01_Ema006\"]。label 可在详情面板的'全文索引'区域查看。",
+  "_README_example": "示例: \"0101Trial01_Choice001\": { \"isCorrect\": false, \"note\": \"错误：大家反驳说就是血\", \"resultRange\": [\"0101Trial01_Ema003\", \"0101Trial01_Ema006\"] }",
+  "trialChoices": {}
+}
