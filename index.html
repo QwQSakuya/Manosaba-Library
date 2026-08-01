@@ -67,17 +67,17 @@
   --btn-active: #ccc;
   --btn-active-fg: #111;
 }
-/* 夜间模式: 手机内选项加强对比 (浅灰底配手机图不可见) */
+/* 夜间模式: 手机内选项加强对比 (手机图为浅底, 需深色填充) */
 [data-theme="dark"] #phone-screen .choice-item {
-  background: rgba(255,255,255,0.10);
-  border-color: rgba(255,255,255,0.30);
+  background: #1e1e1e;
+  border-color: rgba(255,255,255,0.25);
 }
 [data-theme="dark"] #phone-screen .choice-item:hover {
-  background: rgba(255,255,255,0.18);
-  border-color: rgba(255,255,255,0.55);
+  background: #2a2a2a;
+  border-color: rgba(255,255,255,0.45);
 }
 [data-theme="dark"] #phone-screen .choice-badge {
-  background: rgba(255,255,255,0.18); color: #eee;
+  background: rgba(255,255,255,0.22); color: #eee;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; overflow: hidden; }
@@ -402,36 +402,6 @@ main { flex: 1; position: relative; overflow: hidden; background: var(--bg2); }
 }
 #phone-screen .choice-item { padding: 7px 10px; margin-bottom: 4px; font-size: 14px; }
 #phone-screen .choice-badge { font-size: 11px; padding: 1px 5px; }
-.phone-nav-bar {
-  display: flex; gap: 6px;
-  padding-top: 10px; margin-top: 10px;
-  border-top: 1px solid var(--border);
-}
-.phone-nav-bar.top { padding-top: 0; margin-top: 0; margin-bottom: 8px; border-top: none; }
-.phone-nav-btn {
-  display: block; flex: 1; width: 100%;
-  padding: 9px 14px;
-  border: 1px solid var(--border); border-radius: 6px;
-  background: var(--btn-bg); color: var(--fg2);
-  font-size: 14px; font-weight: 500; cursor: pointer;
-  text-align: center;
-  transition: background 0.25s cubic-bezier(0.22,1,0.36,1),
-              color 0.25s cubic-bezier(0.22,1,0.36,1),
-              border-color 0.25s cubic-bezier(0.22,1,0.36,1),
-              transform 0.25s cubic-bezier(0.22,1,0.36,1);
-}
-.phone-nav-btn:hover {
-  background: var(--btn-hover); color: var(--fg);
-  border-color: var(--accent); transform: translateY(-1px);
-}
-.phone-nav-btn:active { transform: translateY(0); }
-.phone-nav-btn.primary {
-  background: var(--btn-active); color: var(--btn-active-fg);
-  border-color: var(--btn-active); font-weight: 600;
-}
-.phone-nav-btn.primary:hover {
-  background: var(--accent); border-color: var(--accent); color: var(--btn-active-fg);
-}
 
 /* ── Responsive ── */
 @media (max-width: 640px) {
@@ -1690,8 +1660,8 @@ function openPhoneWithNode(node) {
   if (!isBad) {
     var prevNode = findPrevNode(node);
     if (prevNode) {
-      html += '<div class="phone-nav-bar top">';
-      html += '<button class="phone-nav-btn" data-nav="' + escapeHtml(prevNode.id) + '">▲ 上一个</button>';
+      html += '<div class="panel-section"><div class="panel-section-title">导航</div>';
+      html += '<div class="choice-item" data-nav="' + escapeHtml(prevNode.id) + '"><span class="choice-text">▲ 上一个</span></div>';
       html += '</div>';
     }
   }
@@ -1746,19 +1716,20 @@ function openPhoneWithNode(node) {
   }
 
   // ── 导航：底部按钮 ──
+  var hasChoices = node.choices && node.choices.length > 0;
   if (isBad) {
     // Bad End → 返回选择节点
     var parentNode = _nodeMap.get(node.parentId);
     if (parentNode) {
-      html += '<div class="phone-nav-bar">';
-      html += '<button class="phone-nav-btn" data-nav="' + escapeHtml(parentNode.id) + '">↩ 返回选择</button>';
+      html += '<div class="panel-section"><div class="panel-section-title">导航</div>';
+      html += '<div class="choice-item" data-nav="' + escapeHtml(parentNode.id) + '"><span class="choice-text">↩ 返回选择</span></div>';
       html += '</div>';
     }
-  } else {
-    // 正常节点 → 下一个
+  } else if (!hasChoices) {
+    // 正常节点 → 下一个 (有选项时不需要, 选项自带跳转)
     if (node.nextId) {
-      html += '<div class="phone-nav-bar">';
-      html += '<button class="phone-nav-btn" data-nav="' + escapeHtml(node.nextId) + '">▼ 下一个</button>';
+      html += '<div class="panel-section"><div class="panel-section-title">导航</div>';
+      html += '<div class="choice-item" data-nav="' + escapeHtml(node.nextId) + '"><span class="choice-text">▼ 下一个</span></div>';
       html += '</div>';
     }
   }
