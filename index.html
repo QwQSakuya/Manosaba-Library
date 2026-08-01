@@ -832,6 +832,8 @@ container.addEventListener('wheel', function(e) {
 
 // ── 拖拽：节点拖动 vs 画布平移 ──
 let isDragging = false, dragStartX, dragStartY, dragOrigViewX, dragOrigViewY;
+let _canvasPanTrack = [];    // 画布平移速度追踪 [{dx,dy,t}, ...]
+let _canvasInertia = null;  // 画布惯性 {vx, vy}
 
 function _canvasCoords(e) {
   const rect = container.getBoundingClientRect();
@@ -894,6 +896,9 @@ window.addEventListener('mousemove', function(e) {
   if (!isDragging) return;
   viewX = dragOrigViewX - (e.clientX - dragStartX) / zoom;
   viewY = dragOrigViewY - (e.clientY - dragStartY) / zoom;
+  // 记录画布平移速度 (每帧位移+时间戳, 用于释放时计算惯性)
+  _canvasPanTrack.push({ dx: e.movementX, dy: e.movementY, t: performance.now() });
+  if (_canvasPanTrack.length > 5) _canvasPanTrack.shift();
   // B5: 累计平移位移, 超过阈值则标记 (抑制后续 dblclick)
   if (Math.abs(e.clientX - dragStartX) + Math.abs(e.clientY - dragStartY) > 5) _panMoved = true;
   updateTransform();
@@ -936,6 +941,23 @@ window.addEventListener('mouseup', function(e) {
     return;
   }
   if (isDragging) {
+    // 计算画布惯性速度 (屏幕像素/秒)
+    if (_canvasPanTrack.length >= 2) {
+      let vx = 0, vy = 0, tw = 0;
+      for (let i = 1; i < _canvasPanTrack.length; i++) {
+        const dt = (_canvasPanTrack[i].t - _canvasPanTrack[i-1].t) / 1000;
+        if (dt > 0.001) {
+          const w = i;
+          vx += (_canvasPanTrack[i].dx / dt) * w;
+          vy += (_canvasPanTrack[i].dy / dt) * w;
+          tw += w;
+        }
+      }
+      if (tw > 0) { vx /= tw; vy /= tw; }
+      _canvasInertia = { vx: -vx / zoom, vy: -vy / zoom };
+      startFloatLoop();
+    }
+    _canvasPanTrack = [];
     isDragging = false;
     container.classList.remove('grabbing');
   }
@@ -944,6 +966,7 @@ window.addEventListener('mouseup', function(e) {
 // ── 触摸支持（移动端捏合 + 拖动） ──
 let touchDist0 = 0, touchZoom0 = 0, touchViewX0 = 0, touchViewY0 = 0;
 let touchMidX0 = 0, touchMidY0 = 0; // 初始双指中点
+let _lastTouchX = null, _lastTouchY = null; // 触摸速度追踪
 
 container.addEventListener('touchstart', function(e) {
   if (e.touches.length === 2) {
@@ -982,14 +1005,34 @@ container.addEventListener('touchmove', function(e) {
     }
     updateTransform();
   } else if (e.touches.length === 1 && isDragging) {
-    viewX = dragOrigViewX - (e.touches[0].clientX - dragStartX) / zoom;
-    viewY = dragOrigViewY - (e.touches[0].clientY - dragStartY) / zoom;
-    if (Math.abs(e.touches[0].clientX - dragStartX) + Math.abs(e.touches[0].clientY - dragStartY) > 5) _panMoved = true;
+    const tx = e.touches[0].clientX, ty = e.touches[0].clientY;
+    viewX = dragOrigViewX - (tx - dragStartX) / zoom;
+    viewY = dragOrigViewY - (ty - dragStartY) / zoom;
+    _canvasPanTrack.push({ dx: tx - (_lastTouchX||tx), dy: ty - (_lastTouchY||ty), t: performance.now() });
+    if (_canvasPanTrack.length > 5) _canvasPanTrack.shift();
+    _lastTouchX = tx; _lastTouchY = ty;
+    if (Math.abs(tx - dragStartX) + Math.abs(ty - dragStartY) > 5) _panMoved = true;
     updateTransform();
   }
 }, { passive: false });
 
 container.addEventListener('touchend', function() {
+  if (isDragging && _canvasPanTrack.length >= 2) {
+    let vx = 0, vy = 0, tw = 0;
+    for (let i = 1; i < _canvasPanTrack.length; i++) {
+      const dt = (_canvasPanTrack[i].t - _canvasPanTrack[i-1].t) / 1000;
+      if (dt > 0.001) {
+        const w = i;
+        vx += (_canvasPanTrack[i].dx / dt) * w;
+        vy += (_canvasPanTrack[i].dy / dt) * w;
+        tw += w;
+      }
+    }
+    if (tw > 0) { vx /= tw; vy /= tw; }
+    _canvasInertia = { vx: -vx / zoom, vy: -vy / zoom };
+    startFloatLoop();
+  }
+  _canvasPanTrack = []; _lastTouchX = null; _lastTouchY = null;
   isDragging = false; touchDist0 = 0;
   container.classList.remove('grabbing');
 });
@@ -1302,8 +1345,21 @@ function updateFloats(now) {
     }
   }
 
+  // 画布惯性滑行: 衰减速度, 更新 viewX/viewY
+  if (_canvasInertia) {
+    const decay = Math.pow(0.92, dt * 60);
+    _canvasInertia.vx *= decay;
+    _canvasInertia.vy *= decay;
+    viewX += _canvasInertia.vx * dt;
+    viewY += _canvasInertia.vy * dt;
+    updateTransform();
+    if (Math.abs(_canvasInertia.vx) < 1 && Math.abs(_canvasInertia.vy) < 1) {
+      _canvasInertia = null;
+    }
+  }
+
   // 连线更新: 惯性中 或 本帧发生布局位移 时更新 (稳定时跳过保性能)
-  if (_inertiaList.length > 0 || _layoutDirty) updateAllConnectors();
+  if (_inertiaList.length > 0 || _canvasInertia || _layoutDirty) updateAllConnectors();
 
   requestAnimationFrame(updateFloats);
 }
