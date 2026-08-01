@@ -1,0 +1,38 @@
+# 原始剧本数据 (体积大, 非查询器运行所需)
+Act01_Chapter01/
+Act01_Chapter02/
+Act01_Chapter03/
+Act01_Chapter04/
+Act01_Chapter05/
+Act02_Chapter01/
+Act02_Chapter02/
+Act02_Chapter03/
+Act02_Chapter04/
+Act02_Chapter05/
+Act02_Chapter06/
+
+# 游戏系统脚本 (非查询器所需)
+Common/
+Debug/
+System/
+
+# 已解析的全量数据 (不入库, 查询器仅使用 data/story.json)
+witches_trial_data.json
+
+# 开发工具产物
+.kagent/
+.trae/
+nanoka_output/
+
+# 旧版单文件 (已迁入 index.html)
+witches_trial_query_test.html
+witches_trial_test.html
+witches_trial_viewer.html
+
+# 参考资料网页
+*.htm
+
+# 通用
+*.log
+.DS_Store
+Thumbs.db

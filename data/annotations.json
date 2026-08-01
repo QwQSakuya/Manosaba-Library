@@ -1,0 +1,4 @@
+{
+  "_README": "Trial 异议选项社区标注文件。在 trialChoices 中添加条目来标记选项是否正确推进剧情。格式: \"选项ID\": { \"isCorrect\": true/false, \"note\": \"说明\" }。isCorrect: true=正确推进, false=错误死路, 不填=未知。",
+  "trialChoices": {}
+}
