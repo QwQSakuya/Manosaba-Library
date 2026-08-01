@@ -337,6 +337,58 @@ main { flex: 1; position: relative; overflow: hidden; background: var(--bg2); }
   header .title { font-size: 14px; }
   #detail-panel { width: 100vw; max-width: 100vw; }
 }
+
+/* ── 异议链接 — 粉色可点击 ── */
+.objection-link {
+  color: #e91e63;
+  cursor: pointer;
+  border-bottom: 1px dashed #e91e63;
+  transition: all 0.2s;
+}
+.objection-link:hover {
+  background: rgba(233, 30, 99, 0.12);
+  border-bottom-style: solid;
+}
+[data-theme="dark"] .objection-link { color: #ff6b9d; }
+
+/* ── 异议弹窗 ── */
+.objection-popup {
+  position: fixed; z-index: 250;
+  background: var(--panel-bg); border: 1px solid var(--border);
+  border-radius: 8px; padding: 12px 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+  max-width: 300px; font-size: 13px;
+  transform: scale(0.9); opacity: 0;
+  transition: all 0.2s cubic-bezier(0.22,1,0.36,1);
+  pointer-events: none;
+}
+.objection-popup.show { transform: scale(1); opacity: 1; pointer-events: auto; }
+.objection-popup .op-choice { font-weight: 600; margin-bottom: 6px; }
+
+/* ── 分支树 ── */
+.branch-tree { margin-top: 8px; }
+.branch-item {
+  padding: 8px 12px; margin-bottom: 4px; border-radius: 6px;
+  border-left: 3px solid var(--border);
+  background: var(--bg2);
+}
+.branch-item.correct { border-left-color: #3a8a3a; }
+.branch-item.wrong { border-left-color: #a44; }
+.branch-item.unknown { border-left-color: var(--fg3); }
+.branch-item .bi-title { font-size: 13px; font-weight: 600; }
+.branch-item .bi-result { font-size: 11px; color: var(--fg3); margin-top: 4px; }
+
+/* ── 全文索引 ── */
+.text-index-item {
+  padding: 6px 10px; margin-bottom: 4px;
+  background: var(--bg2); border-radius: 4px;
+  border-left: 3px solid transparent;
+  font-size: 12px; line-height: 1.6;
+}
+.text-index-item .ti-label {
+  font-size: 10px; color: var(--fg3); font-family: monospace;
+  display: block; margin-bottom: 2px;
+}
 </style>
 </head>
 <body>
@@ -379,6 +431,8 @@ main { flex: 1; position: relative; overflow: hidden; background: var(--bg2); }
   <h2>数据加载失败</h2>
   <p id="load-error-msg"></p>
 </div>
+
+<div class="objection-popup" id="objection-popup"></div>
 
 <button id="feedback-btn" onclick="window.open('https://github.com/QwQSakuya/Manosaba-textfinder/issues/new','_blank')">意见箱</button>
 
@@ -1192,12 +1246,14 @@ const detailPanel = document.getElementById('detail-panel');
 const detailOverlay = document.getElementById('detail-overlay');
 const panelTitle = document.getElementById('panel-title');
 const panelBody = document.getElementById('panel-body');
+const objectionPopup = document.getElementById('objection-popup');
 let focusedNodeId = null;
 
 function openDetail(node) {
   focusedNodeId = node.id;
   panelTitle.textContent = node.title;
   let html = '';
+  const isTrial = node.type === 'ti' || node.type === 'tr';
 
   // 元信息
   html += '<div class="panel-meta">';
@@ -1227,13 +1283,27 @@ function openDetail(node) {
       const color = `var(--char-${d.speaker}, var(--node-border))`;
       html += `<div class="transcript-item" style="border-left-color:${color}">`;
       html += `<div class="ti-speaker" style="color:${color}">${escapeHtml(d.speaker)}</div>`;
-      html += `<div class="ti-text">${escapeHtml(d.text).replace(/&lt;br&gt;\n?/g, '\n')}</div>`;
+      html += `<div class="ti-text">${renderDialogueText(d)}</div>`;
       html += `</div>`;
     });
     html += '</div>';
   } else if (node.text) {
     html += `<div class="panel-section"><div class="panel-section-title">文本内容</div>`;
     html += `<div style="white-space:pre-wrap;font-size:13px;line-height:1.8;padding:12px;background:var(--bg2);border-radius:6px;">${escapeHtml(node.text).replace(/&lt;br&gt;\n?/g, '\n')}</div>`;
+    html += '</div>';
+  }
+
+  // 全文索引 (仅 Trial 节点) — 显示每条 dialogue 的 label, 供管理员填写 resultRange
+  if (isTrial && dlg && dlg.length) {
+    html += `<div class="panel-section"><div class="panel-section-title">全文索引（供管理员填写 resultRange）</div>`;
+    dlg.forEach(d => {
+      const color = `var(--char-${d.speaker}, var(--node-border))`;
+      const preview = d.text.replace(/<[^>]*>/g, '').replace(/\n/g, ' ').slice(0, 60);
+      html += `<div class="text-index-item">`;
+      html += `<span class="ti-label">${escapeHtml(d.label || '')}</span>`;
+      html += `<span class="ti-speaker" style="color:${color}">${escapeHtml(d.speaker)}</span>: ${escapeHtml(preview)}${d.text.length > 60 ? '…' : ''}`;
+      html += `</div>`;
+    });
     html += '</div>';
   }
 
@@ -1268,6 +1338,37 @@ function openDetail(node) {
     html += '</div>';
   }
 
+  // 分支树 (仅 Trial 节点) — 显示每个 trialChoice 的结果分支
+  if (isTrial && node.trialChoices && node.trialChoices.length) {
+    const annMap = ANNOTATIONS.trialChoices || {};
+    html += `<div class="panel-section"><div class="panel-section-title">分支树</div><div class="branch-tree">`;
+    node.trialChoices.forEach(ch => {
+      // 跳过 Common_Return 等通用返回选项
+      if (ch.id && /Common_Return/i.test(ch.id)) return;
+      if (ch.buttonType === 'Cancel') return;
+      const ann = annMap[ch.id];
+      const status = ann ? ann.isCorrect : null;
+      const resultRange = (ann && ann.resultRange) || ch.resultRange;
+      let cls = 'unknown', resultText = '待标注';
+      if (status === true) {
+        cls = 'correct';
+        resultText = '→ 主线继续';
+      } else if (status === false) {
+        cls = 'wrong';
+        resultText = '结果: ' + getResultSummary(node, resultRange);
+      }
+      const shortId = ch.id.replace(/^.*?_/, '');
+      const badge = status === true ? `<span class="choice-badge" style="background:#3a8a3a;color:#fff">正确</span>` :
+                    status === false ? `<span class="choice-badge" style="background:#a44;color:#fff">错误</span>` :
+                    `<span class="choice-badge">待标注</span>`;
+      html += `<div class="branch-item ${cls}">`;
+      html += `<div class="bi-title">${escapeHtml(shortId)}「${escapeHtml(ch.text)}」 ${badge}</div>`;
+      html += `<div class="bi-result">${escapeHtml(resultText)}</div>`;
+      html += `</div>`;
+    });
+    html += '</div></div>';
+  }
+
   // 子节点列表
   const children = NODES.filter(n => n.parentId === node.id).slice(0, 10);
   if (children.length) {
@@ -1295,6 +1396,15 @@ function openDetail(node) {
     });
   });
 
+  // 绑定异议链接点击事件 — 弹出 choice 信息弹窗
+  panelBody.querySelectorAll('.objection-link').forEach(el => {
+    el.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const choiceId = this.dataset.choiceId;
+      showObjectionPopup(choiceId, this);
+    });
+  });
+
   // B6: 高亮当前节点 (class 切换, 替代内联 outline)
   _nodeEls.forEach(el => el.classList.remove('highlighted'));
   const activeEl = _nodeEls.find(el => el.dataset.id === node.id);
@@ -1308,6 +1418,7 @@ function closeDetail() {
   focusedNodeId = null;
   detailPanel.classList.remove('open');
   detailOverlay.classList.remove('open');
+  closeObjectionPopup(); // 关闭异议弹窗
   _nodeEls.forEach(el => el.classList.remove('highlighted')); // B6: class 切换清理
 }
 
@@ -1339,6 +1450,14 @@ detailOverlay.addEventListener('click', closeDetail);
 // 键盘 ESC 关闭
 window.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') closeDetail();
+});
+
+// 点击弹窗外部关闭异议弹窗
+document.addEventListener('click', function(e) {
+  if (!objectionPopup.classList.contains('show')) return;
+  if (objectionPopup.contains(e.target)) return;
+  if (e.target.closest('.objection-link')) return;
+  closeObjectionPopup();
 });
 
 // ══════════════════════════════════════════════════
@@ -1391,6 +1510,76 @@ function escapeHtml(str) {
   // B8: 补充 " 和 ' 转义
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
     .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+// ── 渲染对话文本: 替换 <link="Objection_...">text</link> 为粉色可点击 span ──
+// 注意: escapeHtml 会把 < > " 全部转义, 故正则匹配 &lt;link=&quot;...&quot;&gt;...&lt;/link&gt;
+function renderDialogueText(d) {
+  let text = escapeHtml(d.text).replace(/&lt;br&gt;\n?/g, '\n');
+  if (d.objectionLinks && d.objectionLinks.length) {
+    const linkMap = {};
+    d.objectionLinks.forEach(ol => { linkMap[ol.id] = ol.choiceId; });
+    text = text.replace(/&lt;link=&quot;(Objection_\d+_\d+_\d+_\d+)&quot;&gt;(.*?)&lt;\/link&gt;/g, (m, id, linkText) => {
+      const choiceId = linkMap[id];
+      if (!choiceId) return linkText;
+      return `<span class="objection-link" data-choice-id="${escapeHtml(choiceId)}">${linkText}</span>`;
+    });
+  }
+  return text;
+}
+
+// ── 从 resultRange 范围内的 dialogue 提取前 40 字摘要 ──
+function getResultSummary(node, range) {
+  if (!range || !range.length) return '（未指定结果范围）';
+  if (!node.dialogue || !node.dialogue.length) return '（无对话数据）';
+  const [startLabel, endLabel] = range;
+  const startIdx = node.dialogue.findIndex(d => d.label === startLabel);
+  const endIdx = node.dialogue.findIndex(d => d.label === endLabel);
+  if (startIdx === -1) return '（起始 label 未找到）';
+  const end = endIdx === -1 ? startIdx : endIdx;
+  const texts = node.dialogue.slice(startIdx, end + 1).map(d => d.text.replace(/<[^>]*>/g, '').replace(/\n/g, ' '));
+  const summary = texts.join(' ').slice(0, 40);
+  return summary + (summary.length >= 40 ? '…' : '');
+}
+
+// ── 异议弹窗: 显示 choice 信息 + 标注状态 ──
+function showObjectionPopup(choiceId, anchorEl) {
+  // 在所有 Trial 节点中查找对应 choice (choiceId 跨节点唯一)
+  let choice = null;
+  for (const n of NODES) {
+    if (n.trialChoices) {
+      const found = n.trialChoices.find(c => c.id === choiceId);
+      if (found) { choice = found; break; }
+    }
+  }
+  if (!choice) { closeObjectionPopup(); return; }
+  const ann = (ANNOTATIONS.trialChoices || {})[choiceId];
+  const status = ann ? ann.isCorrect : null;
+  const statusBadge = status === true ? '<span class="choice-badge" style="background:#3a8a3a;color:#fff">正确</span>' :
+                      status === false ? '<span class="choice-badge" style="background:#a44;color:#fff">错误</span>' :
+                      '<span class="choice-badge">待标注</span>';
+  const note = ann && ann.note ? `<div style="margin-top:6px;font-size:12px;color:var(--fg2)">备注: ${escapeHtml(ann.note)}</div>` : '';
+  const objectionText = choice.objectionText ? `<div style="margin-top:6px;font-size:12px;color:var(--fg3)">异议点: ${escapeHtml(choice.objectionText)}</div>` : '';
+  const typeLabel = choice.buttonType === 'Cancel' ? ' [返回]' : choice.buttonType === 'Objection' ? ' [异议]' : '';
+  objectionPopup.innerHTML = `<div class="op-choice">${escapeHtml(choice.text)}${typeLabel} ${statusBadge}</div>${objectionText}${note}`;
+  // 定位弹窗在点击元素附近
+  if (anchorEl) {
+    const rect = anchorEl.getBoundingClientRect();
+    let left = rect.left;
+    let top = rect.bottom + 6;
+    const popupWidth = 300;
+    if (left + popupWidth > window.innerWidth - 12) left = window.innerWidth - popupWidth - 12;
+    if (left < 12) left = 12;
+    if (top + 120 > window.innerHeight - 12) top = rect.top - 120 - 6;
+    if (top < 12) top = 12;
+    objectionPopup.style.left = left + 'px';
+    objectionPopup.style.top = top + 'px';
+  }
+  objectionPopup.classList.add('show');
+}
+
+function closeObjectionPopup() {
+  objectionPopup.classList.remove('show');
 }
 
 // ══════════════════════════════════════════════════
