@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-Hans" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>魔女审判文本查询器 · 一周目</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-act="act01">
+<div id="splash">
+<img id="splash-mark" src="nnk_box.webp" alt="">
+<h1 id="splash-title">魔女审判文本查询器</h1>
+<p id="splash-sub">Witch Trials · Act01</p>
+<div id="splash-bar"></div>
+</div>
+<header>
+<div class="header-nav">
+<a class="nav-link" href="index.html">← 首页</a>
+</div>
+<span class="title">魔女审判文本查询器 · 一周目</span>
+<div class="search-wrap"><input type="text" id="search-input" placeholder="搜索角色、关键词、剧情…"></div>
+<div class="route-filters" id="route-filters"></div>
+<div class="header-btns">
+<button class="header-btn" id="theme-toggle">◐ 主题</button>
+</div>
+</header>
+<main>
+<div id="canvas-container"><div id="canvas"></div></div>
+<div id="quick-zoom">
+<button data-zoom="0.40">概览</button>
+<button data-zoom="0.50">场景</button>
+<button data-zoom="1.55">对话</button>
+</div>
+<div id="zoom-indicator">
+<span class="zoom-label" id="zoom-pct">100%</span>
+<div class="zoom-bar"><div class="zoom-fill" id="zoom-fill"></div></div>
+<span id="zoom-tag" style="font-size:10px;color:var(--fg3)">场景</span>
+</div>
+</main>
+<div id="detail-overlay"></div>
+<div id="detail-panel">
+<div class="panel-header">
+<h3 id="panel-title">节点详情</h3>
+<button class="panel-close" id="panel-close">✕</button>
+</div>
+<div class="panel-body" id="panel-body"></div>
+</div>
+<div id="load-error"><h2>数据加载失败</h2><p id="load-error-msg"></p></div>
+<div class="objection-popup" id="objection-popup"></div>
+<div id="phone-container">
+<img id="phone-img" src="./phone.webp" alt="">
+<div id="phone-topbar" title="点击关闭"></div>
+<div id="phone-screen"></div>
+</div>
+<button id="feedback-btn" onclick="window.open('https://github.com/QwQSakuya/Manosaba-textfinder/issues/new','_blank')">意见箱</button>
+<script src="assets/app.js"></script>
+</body>
+</html>
