@@ -1,13 +1,16 @@
 // 从 localStorage 恢复主题设置，避免刷新闪白
+// (try/catch: 某些隐私/沙箱环境 localStorage 抛错, 静默降级避免整脚本中断)
 (function() {
-  var saved = localStorage.getItem('theme');
-  if (saved === 'dark' || saved === 'light') {
-    document.documentElement.setAttribute('data-theme', saved);
-  }
+  try {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || saved === 'light') {
+      document.documentElement.setAttribute('data-theme', saved);
+    }
+  } catch (e) { /* localStorage 不可用时静默 */ }
 })();
 
 // ══════════════════════════════════════════════════
-//  魔女审判文本查询器 - 核心脚本
+//  魔女审判资料馆 - 核心脚本
 //══════════════════════════════════════════════════
 
 // ── 数据 (启动时通过 fetch 从 ./data/<act>.json 加载) ──
@@ -20,7 +23,7 @@ let ANNOTATIONS = { trialChoices: {} };  // 社区标注 (从 ./data/annotations
 const REPO_URL = 'https://github.com/QwQSakuya/Manosaba-textfinder';
 
 // 路由 → 中文标签映射 (未知 route 原样显示)
-const ROUTE_LABELS = { normal: '正常路线', bad04: 'Bad04', bad05: 'Bad05' };
+const ROUTE_LABELS = { normal: '正常路线', bad04: 'Bad04', bad05: 'Bad05', 'objection-wrong': '异议错误' };
 
 // 防重叠状态
 let _layoutDirty = false;          // 本帧是否发生布局位移 (触发连线更新)
@@ -127,8 +130,10 @@ function computeLayout() {
   });
 
   // 构建反向索引 (nextId → nodeId) 供 findPrevNode O(1) 使用
+  // 优先使用真实节点 (虚拟节点的 nextId 可能与 Trial 重复, 不应覆盖)
   _prevId.clear();
-  NODES.forEach(n => { if (n.nextId) _prevId.set(n.nextId, n.id); });
+  NODES.forEach(n => { if (n.nextId && !n._isVirtual) _prevId.set(n.nextId, n.id); });
+  NODES.forEach(n => { if (n.nextId && n._isVirtual && !_prevId.has(n.nextId)) _prevId.set(n.nextId, n.id); });
 }
 
 // ══════════════════════════════════════════════════
@@ -149,9 +154,14 @@ async function initData() {
       if (annRes.ok) ANNOTATIONS = await annRes.json();
     } catch (e) { /* 静默: 无标注文件时使用空默认值 */ }
 
+    // Task 2+3: 构建虚拟异议结果节点 (在 computeLayout 之前, 使其参与布局)
+    buildVirtualObjectionNodes();
     computeLayout();
+    // Task 3: 重新定位正确选项虚拟节点 (位于 Trial 与 nextTrial 之间)
+    _repositionVirtualNodes();
     buildRouteFilters();
     buildCanvas();
+    buildChapterNav();  // 增强 2: 构建章节导航侧栏
     updateTransform();
     startFloatLoop();
     // 数据加载完成后淡出开屏动画 (最少展示 1.6s 保证动画完整)
@@ -160,6 +170,8 @@ async function initData() {
     setTimeout(function() {
       const splash = document.getElementById('splash');
       if (splash) splash.classList.add('hide');
+      handleHashDeepLink();  // BUG-1: #node-<id> 深链 → 居中并打开目标节点
+      initOnboarding();  // 增强 5: 首次访问引导提示
     }, delay);
   } catch (err) {
     const splash = document.getElementById('splash');
@@ -283,6 +295,16 @@ function updateAllNodeVisibility() {
     const nodeId = el.dataset.id;
     const node = _nodeMap.get(nodeId);
     if (!node) return;
+
+    // 虚拟节点默认隐藏, 跳过常规可见度计算
+    if (node._hidden) { el.style.display = 'none'; return; }
+    // 显示中的虚拟节点: 完全可见, 不参与 zoom 淡入 (opacity 由动画 class 控制)
+    if (node._isVirtual && !node._hidden) {
+      el.style.opacity = 1;
+      el.style.pointerEvents = 'auto';
+      el._vis = true;
+      return;
+    }
 
     // 基础可见度
     let opacity = getNodeOpacity(node);
@@ -591,12 +613,31 @@ function buildCanvas() {
     el.className = 'node lv' + node.level;
     if (node.isChoice) el.classList.add('is-choice');
     if (node.route && node.route.startsWith('bad')) el.classList.add('is-bad');
+    // Task 2+3: 虚拟异议结果节点样式
+    if (node._isVirtual) {
+      el.classList.add('is-virtual');
+      if (node._isCorrect) el.classList.add('objection-correct');
+      else el.classList.add('objection-wrong');
+      // Task 9: 子选项虚拟节点层级标识 (用于 CSS 视觉区分)
+      if (node._parentChoiceId) {
+        el.classList.add('is-subchoice');
+        // 计算子选项深度 (沿 parentChoice 链回溯层数)
+        var __d = 1, __p = _nodeMap.get('virt_' + node._parentChoiceId);
+        while (__p && __p._parentChoiceId) { __d++; __p = _nodeMap.get('virt_' + __p._parentChoiceId); }
+        el.dataset.subDepth = String(__d);
+      }
+      // Task: 证人/证物分支节点样式
+      if (node._branchKind === 'witness') el.classList.add('is-witness');
+      if (node._branchKind === 'evidence') el.classList.add('is-evidence');
+    }
     el.dataset.id = node.id;
     el.style.left = node._origX + 'px';
     el.style.top = node._origY + 'px';
     el.dataset.ox = node._origX;
     el.dataset.oy = node._origY;
     el.textContent = node.title;
+    // 虚拟节点默认隐藏 (仅通过弹窗点击触发显示)
+    if (node._hidden) { el.style.display = 'none'; el.classList.add('virt-hidden'); }
 
     // 角色气泡颜色 (Lv2): 边框 + 背景色晕染
     if (node.level === 2 && node.character) {
@@ -666,6 +707,24 @@ function buildCanvas() {
     });
   });
 
+  // Task 2+3: 虚拟异议结果节点连接线 — Trial → virtual (主选项) / parent virtual → virtual (子选项)
+  NODES.forEach(n => {
+    if (!n._isVirtual || !n.parentId) return;
+    const cls = n._isCorrect ? 'objection-correct' : 'objection-wrong';
+    // 子选项: 从父选项虚拟节点连接 (若父选项虚拟节点存在)
+    if (n._parentChoiceId) {
+      var parentVirtId = 'virt_' + n._parentChoiceId;
+      if (_nodeMap.has(parentVirtId)) {
+        // Task 9: 添加 is-subchoice-link 类以触发更细更淡的连接线样式
+        var linkCls = cls + ' is-subchoice-link' + (n._branchKind ? ' is-' + n._branchKind + '-link' : '');
+        addLine(parentVirtId, n.id, linkCls);
+        return;
+      }
+      // 父选项虚拟节点不存在: 回退到 Trial (沿用下方主选项逻辑)
+    }
+    addLine(n.parentId, n.id, cls);
+  });
+
   // 所有连接线初始定位 + 存储 DOM 引用
   _connectors.forEach(ref => {
     const fEl = nodeMap[ref.fromId];
@@ -674,6 +733,15 @@ function buildCanvas() {
     ref._fEl = fEl;
     ref._tEl = tEl;
     _updateOneConnector(ref);
+  });
+
+  // 初始隐藏端点含隐藏虚拟节点的连接线 (避免开局出现悬空线)
+  _connectors.forEach(ref => {
+    const fNode = _nodeMap.get(ref.fromId);
+    const tNode = _nodeMap.get(ref.toId);
+    if ((fNode && fNode._hidden) || (tNode && tNode._hidden)) {
+      ref.el.style.display = 'none';
+    }
   });
 
   // 缓存节点尺寸 (AABB 防重叠用, 避免每帧 offsetWidth 布局读取)
@@ -904,7 +972,122 @@ const panelBody = document.getElementById('panel-body');
 const objectionPopup = document.getElementById('objection-popup');
 let focusedNodeId = null;
 
+// ── 递归隐藏虚拟节点的所有子孙虚拟节点 (切换节点时同步隐藏子选项) ──
+// exceptIds: 不应隐藏的节点 id 集合 (可选, 用于跳过 exceptId 的子孙)
+function hideVirtualNodeDescendants(parentVirtId, exceptIds) {
+  exceptIds = exceptIds || new Set();
+  var parentChoiceId = parentVirtId.replace(/^virt_/, '');
+  NODES.forEach(function(v) {
+    if (!v._isVirtual || v._parentChoiceId !== parentChoiceId) return;
+    if (exceptIds.has(v.id)) return;  // 跳过不应隐藏的节点
+    v._hidden = true;
+    var el = document.querySelector('.node[data-id="' + v.id + '"]');
+    if (el) {
+      el.classList.add('virt-hidden');
+      (function(elRef, nodeId) {
+        setTimeout(function() {
+          var n2 = _nodeMap.get(nodeId);
+          if (n2 && n2._hidden) elRef.style.display = 'none';
+        }, 300);
+      })(el, v.id);
+    }
+    // 隐藏子虚拟节点的专属连接线
+    _connectors.forEach(function(ref) {
+      if (ref.toId === v.id || ref.fromId === v.id) ref.el.style.display = 'none';
+    });
+    // 递归隐藏更深层的子孙
+    hideVirtualNodeDescendants(v.id, exceptIds);
+  });
+}
+
+// 隐藏全部已显示的虚拟节点 (切换节点时清理), exceptId 跳过当前节点及其祖先链
+function hideAllVisibleVirtualNodes(exceptId) {
+  // 仅保留 exceptId 与其祖先链: 子孙节点在返回父节点时应一并隐藏
+  var exceptIds = new Set();
+  if (exceptId) {
+    exceptIds.add(exceptId);
+    // 向上收集祖先链 (沿 _parentChoiceId 回溯)
+    var curNode = _nodeMap.get(exceptId);
+    while (curNode && curNode._parentChoiceId) {
+      var ancestorId = 'virt_' + curNode._parentChoiceId;
+      exceptIds.add(ancestorId);
+      curNode = _nodeMap.get(ancestorId);
+    }
+  }
+
+  NODES.forEach(function(n) {
+    if (n._isVirtual && !n._hidden && !exceptIds.has(n.id)) {
+      n._hidden = true;
+      var el = document.querySelector('.node[data-id="' + n.id + '"]');
+      if (el) {
+        el.classList.add('virt-hidden');
+        // 等过渡结束后再 display:none
+        (function(elRef, nodeId) {
+          setTimeout(function() {
+            // 仅在仍然隐藏时才 display:none (避免被重新显示时误隐藏)
+            var n2 = _nodeMap.get(nodeId);
+            if (n2 && n2._hidden) elRef.style.display = 'none';
+          }, 300);
+        })(el, n.id);
+      }
+      // 同步隐藏虚拟节点的专属连接线 (objection + seq)
+      _connectors.forEach(function(ref) {
+        if (ref.toId === n.id || ref.fromId === n.id) ref.el.style.display = 'none';
+      });
+      // 同步隐藏其子孙虚拟节点 (递归, 跳过 exceptIds)
+      hideVirtualNodeDescendants(n.id, exceptIds);
+    }
+  });
+  // 统一校正各 Trial 的正确路径连续线 (转移到当前最深可见正确节点)
+  reconcileTrialContinuations();
+}
+
+// ── 正确路径连续线校正 ──
+// 每个 Trial 只显示"当前可见正确链中最深节点 → nextTrial"的连续线;
+// 没有可见正确节点时恢复 Trial → nextTrial 原始连续线
+function reconcileTrialContinuations() {
+  var trials = new Set();
+  NODES.forEach(function(n) {
+    if (n._isVirtual && n._isCorrect && n._trialNodeId) trials.add(n._trialNodeId);
+  });
+
+  function _chainDepth(n) {
+    var d = 1;
+    var p = n._parentChoiceId ? _nodeMap.get('virt_' + n._parentChoiceId) : null;
+    while (p) { d++; p = p._parentChoiceId ? _nodeMap.get('virt_' + p._parentChoiceId) : null; }
+    return d;
+  }
+
+  trials.forEach(function(trialId) {
+    var trial = _nodeMap.get(trialId);
+    if (!trial || !trial.nextId) return;
+    var visible = NODES.filter(function(n) {
+      return n._isVirtual && n._isCorrect && n._trialNodeId === trialId && !n._hidden;
+    });
+    var activeId = null;
+    if (visible.length) {
+      var best = null, bestDepth = -1;
+      visible.forEach(function(n) {
+        var d = _chainDepth(n);
+        if (d > bestDepth) { bestDepth = d; best = n; }
+      });
+      activeId = best ? best.id : null;
+    }
+    _connectors.forEach(function(ref) {
+      if (ref.toId !== trial.nextId) return;
+      var fromNode = _nodeMap.get(ref.fromId);
+      if (fromNode && fromNode._isVirtual && fromNode._isCorrect && fromNode._trialNodeId === trialId) {
+        ref.el.style.display = (activeId && ref.fromId === activeId) ? '' : 'none';
+      } else if (ref.fromId === trialId) {
+        ref.el.style.display = activeId ? 'none' : '';
+      }
+    });
+  });
+}
+
 function openDetail(node) {
+  // 切换节点时隐藏全部已显示的虚拟节点 (跳过当前要打开的节点)
+  hideAllVisibleVirtualNodes(node.id);
   focusedNodeId = node.id;
   panelTitle.textContent = node.title;
   let html = '';
@@ -926,12 +1109,14 @@ function openDetail(node) {
 
   // 完整文本 — 按角色颜色高亮每条台词
   // Lv2: 取父场景 dialogue; Lv1: 取自身 dialogue
-  const dlg = (node.level === 2 && node.parentId)
-    ? (_nodeMap.get(node.parentId) || {}).dialogue
-    : node.dialogue;
+  const dlgSource = (node.level === 2 && node.parentId)
+    ? (_nodeMap.get(node.parentId) || {})
+    : node;
+  const dlgFull = dlgSource.dialogue;  // 供全文索引使用
   const dlgTitle = (node.level === 2 && node.parentId)
-    ? (_nodeMap.get(node.parentId) || {}).title
+    ? dlgSource.title
     : node.title;
+  const dlg = filterMainlineDialogue(dlgSource);  // 自动过滤选择结果文本
   if (dlg && dlg.length) {
     html += `<div class="panel-section"><div class="panel-section-title">场景全文本 · ${escapeHtml(dlgTitle || '')}</div>`;
     dlg.forEach(d => {
@@ -949,9 +1134,10 @@ function openDetail(node) {
   }
 
   // 全文索引 (仅 Trial 节点) — 显示每条 dialogue 的 label, 供管理员填写 resultRange
-  if (isTrial && dlg && dlg.length) {
+  // Task 5: 使用未过滤的 dlgFull (管理员需看到全部 label)
+  if (isTrial && dlgFull && dlgFull.length) {
     html += `<div class="panel-section"><div class="panel-section-title">全文索引（供管理员填写 resultRange）</div>`;
-    dlg.forEach(d => {
+    dlgFull.forEach(d => {
       const color = `var(--char-${d.speaker}, var(--node-border))`;
       const preview = d.text.replace(/<[^>]*>/g, '').replace(/\n/g, ' ').slice(0, 60);
       html += `<div class="text-index-item">`;
@@ -975,32 +1161,36 @@ function openDetail(node) {
     html += '</div>';
   }
 
-  // Trial 异议选项 — 显示标注状态 (正确/错误/待标注)
-  if (node.trialChoices && node.trialChoices.length) {
-    const annMap = ANNOTATIONS.trialChoices || {};
-    html += `<div class="panel-section"><div class="panel-section-title">异议选项 (${node.trialChoices.length})</div>`;
-    node.trialChoices.forEach(ch => {
-      const ann = annMap[ch.id];
-      const status = ann ? ann.isCorrect : null;
-      const badge = status === true ? `<span class="choice-badge" style="background:#3a8a3a;color:#fff">正确</span>` :
-                    status === false ? `<span class="choice-badge" style="background:#a44;color:#fff">错误</span>` :
-                    `<span class="choice-badge">待标注</span>`;
-      const note = ann && ann.note ? ` <span style="font-size:11px;color:var(--fg3)">${escapeHtml(ann.note)}</span>` : '';
-      const typeLabel = ch.buttonType === 'Cancel' ? ' [返回]' : ch.buttonType === 'Objection' ? '' : ' [剧情]';
-      html += `<div class="choice-item"><span class="choice-text">${escapeHtml(ch.text)}${typeLabel}</span>${badge}${note}</div>`;
-    });
-    html += `<button class="header-btn" style="margin-top:8px;width:100%" onclick="window.open('${REPO_URL}/edit/main/data/annotations.' + (document.body.dataset.act || 'act01') + '.json','_blank')">✎ 编辑标注 (GitHub)</button>`;
-    html += '</div>';
-  }
-
-  // 分支树 (仅 Trial 节点) — 显示每个 trialChoice 的结果分支
+  // 分支树 (仅 Trial 节点) — 按 parentChoice 缩进树状显示每个 trialChoice 的结果分支
   if (isTrial && node.trialChoices && node.trialChoices.length) {
     const annMap = ANNOTATIONS.trialChoices || {};
-    html += `<div class="panel-section"><div class="panel-section-title">分支树</div><div class="branch-tree">`;
-    node.trialChoices.forEach(ch => {
-      // 跳过 Common_Return 等通用返回选项
-      if (ch.id && /Common_Return/i.test(ch.id)) return;
-      if (ch.buttonType === 'Cancel') return;
+    // 收集所有有效 choice（跳过 Common_Return/Cancel）
+    const allChoices = node.trialChoices.filter(ch => {
+      if (ch.id && /Common_Return/i.test(ch.id)) return false;
+      if (ch.buttonType === 'Cancel') return false;
+      return true;
+    });
+    // 构建 choiceId → choice 映射
+    const choiceById = {};
+    allChoices.forEach(ch => { if (ch.id) choiceById[ch.id] = ch; });
+    // 构建 parentChoice → children 映射
+    const childrenMap = {};
+    allChoices.forEach(ch => {
+      const ann = annMap[ch.id];
+      const parent = ann && ann.parentChoice;
+      if (parent && choiceById[parent]) {
+        if (!childrenMap[parent]) childrenMap[parent] = [];
+        childrenMap[parent].push(ch);
+      }
+    });
+    // 找出根 choice（无 parentChoice 或 parentChoice 指向不存在的 choice）
+    const roots = allChoices.filter(ch => {
+      const ann = annMap[ch.id];
+      const parent = ann && ann.parentChoice;
+      return !parent || !choiceById[parent];
+    });
+    // 递归渲染单个 choice 节点（每层缩进 +16px）
+    const renderChoice = (ch, depth) => {
       const ann = annMap[ch.id];
       const status = ann ? ann.isCorrect : null;
       const resultRange = (ann && ann.resultRange) || ch.resultRange;
@@ -1010,17 +1200,27 @@ function openDetail(node) {
         resultText = '→ 主线继续';
       } else if (status === false) {
         cls = 'wrong';
-        resultText = '结果: ' + getResultSummary(node, resultRange);
+        resultText = (ann && ann.isBadEnd)
+          ? `${escapeHtml(ann.badEndId || 'Bad End')} · 错误选项`
+          : '结果: ' + getResultSummary(node, resultRange);
       }
       const shortId = ch.id.replace(/^.*?_/, '');
       const badge = status === true ? `<span class="choice-badge" style="background:#3a8a3a;color:#fff">正确</span>` :
-                    status === false ? `<span class="choice-badge" style="background:#a44;color:#fff">错误</span>` :
+                    status === false ? (ann && ann.isBadEnd
+                      ? `<span class="choice-badge" style="background:#a44;color:#fff">${escapeHtml(ann.badEndId || 'Bad End')}</span>`
+                      : `<span class="choice-badge" style="background:#a44;color:#fff">错误</span>`) :
                     `<span class="choice-badge">待标注</span>`;
-      html += `<div class="branch-item ${cls}">`;
+      const marginLeft = depth * 16;
+      html += `<div class="branch-item ${cls}" style="margin-left:${marginLeft}px">`;
       html += `<div class="bi-title">${escapeHtml(shortId)}「${escapeHtml(ch.text)}」 ${badge}</div>`;
       html += `<div class="bi-result">${escapeHtml(resultText)}</div>`;
       html += `</div>`;
-    });
+      // 递归渲染子 choice
+      const children = childrenMap[ch.id] || [];
+      children.forEach(child => renderChoice(child, depth + 1));
+    };
+    html += `<div class="panel-section"><div class="panel-section-title">分支树</div><div class="branch-tree">`;
+    roots.forEach(ch => renderChoice(ch, 0));
     html += '</div></div>';
   }
 
@@ -1081,6 +1281,31 @@ function openDetail(node) {
 }
 
 function closeDetail() {
+  // 虚拟节点: 关闭详情面板时恢复隐藏状态
+  if (focusedNodeId) {
+    const cur = _nodeMap.get(focusedNodeId);
+    if (cur && cur._isVirtual === true) {
+      cur._hidden = true;
+      const el = document.querySelector('.node[data-id="' + focusedNodeId + '"]');
+      if (el) {
+        el.classList.add('virt-hidden');
+        var elRef = el;
+        var nodeId = focusedNodeId;
+        setTimeout(function() {
+          var n2 = _nodeMap.get(nodeId);
+          if (n2 && n2._hidden) elRef.style.display = 'none';
+        }, 300);
+      }
+      // 同步隐藏虚拟节点的专属连接线 (objection + seq)
+      _connectors.forEach(function(ref) {
+        if (ref.toId === focusedNodeId || ref.fromId === focusedNodeId) ref.el.style.display = 'none';
+      });
+      // 同步隐藏其子孙虚拟节点 (子选项/证人/证物分支)
+      hideVirtualNodeDescendants(focusedNodeId);
+      // 统一校正正确路径连续线 (恢复到 Trial → nextTrial 或转移到其他可见正确节点)
+      reconcileTrialContinuations();
+    }
+  }
   focusedNodeId = null;
   detailPanel.classList.remove('open');
   detailOverlay.classList.remove('open');
@@ -1145,6 +1370,36 @@ function showPhone(html, fromNode) {
       if (target) {
         focusNode(target);
         openPhoneWithNode(target);
+      }
+    });
+  });
+  // 绑定子选项点击事件 (虚拟节点子选项 → 打开子选项虚拟节点)
+  phoneScreen.querySelectorAll('[data-sub-choice]').forEach(function(el) {
+    el.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var subChoiceId = this.dataset.subChoice;
+      // 分支节点直接携带完整虚拟节点 id; 普通子选项传 choiceId, 需补前缀
+      var virtNodeId = subChoiceId.indexOf('virt_') === 0 ? subChoiceId : 'virt_' + subChoiceId;
+      var virtNode = _nodeMap.get(virtNodeId);
+      if (virtNode) {
+        // 显示虚拟节点
+        virtNode._hidden = false;
+        var vel = document.querySelector('.node[data-id="' + virtNodeId + '"]');
+        if (vel) {
+          vel.style.display = '';
+          requestAnimationFrame(function() { vel.classList.remove('virt-hidden'); });
+        }
+        // 显示专属连接线
+        _connectors.forEach(function(ref) {
+          if (ref.toId === virtNodeId || ref.fromId === virtNodeId) {
+            ref.el.style.display = '';
+          }
+        });
+        // 聚焦并打开手机视图
+        focusNode(virtNode);
+        openPhoneWithNode(virtNode);
+        // 校正正确路径连续线 (转移到当前最深可见正确节点)
+        reconcileTrialContinuations();
       }
     });
   });
@@ -1223,7 +1478,19 @@ phoneContainer.addEventListener('click', function(e) {
 });
 
 // 节点点击 → 手机弹出显示剧情
+function branchBadgeHtml(br) {
+  if (br.isCorrect === true) return '<span class="choice-badge" style="background:#3a8a3a;color:#fff">正确</span>';
+  if (br.isCorrect === false) {
+    return br.isSpecial
+      ? '<span class="choice-badge" style="background:#b8860b;color:#fff">特殊</span>'
+      : '<span class="choice-badge" style="background:#a44;color:#fff">错误</span>';
+  }
+  return '<span class="choice-badge">待标注</span>';
+}
+
 function openPhoneWithNode(node) {
+  // 切换节点时隐藏全部已显示的虚拟节点 (跳过当前要打开的节点)
+  hideAllVisibleVirtualNodes(node.id);
   focusedNodeId = node.id;
   let html = '';
 
@@ -1252,9 +1519,10 @@ function openPhoneWithNode(node) {
   }
 
   // 对话文本 (复用 renderDialogueText, 含粉色异议链接)
-  var dlg = (node.level === 2 && node.parentId)
-    ? (_nodeMap.get(node.parentId) || {}).dialogue
-    : node.dialogue;
+  var dlgSource = (node.level === 2 && node.parentId)
+    ? (_nodeMap.get(node.parentId) || {})
+    : node;
+  var dlg = filterMainlineDialogue(dlgSource);
   if (dlg && dlg.length) {
     html += '<div class="panel-section"><div class="panel-section-title">场景对话</div>';
     dlg.forEach(function(d) {
@@ -1282,29 +1550,79 @@ function openPhoneWithNode(node) {
     html += '</div>';
   }
 
-  // Trial 异议选项
-  if (node.trialChoices && node.trialChoices.length) {
-    var annMap = ANNOTATIONS.trialChoices || {};
-    html += '<div class="panel-section"><div class="panel-section-title">异议选项 (' + node.trialChoices.length + ')</div>';
-    node.trialChoices.forEach(function(ch) {
-      var ann = annMap[ch.id];
-      var status = ann ? ann.isCorrect : null;
-      var badge = status === true ? '<span class="choice-badge" style="background:#3a8a3a;color:#fff">正确</span>' :
-                  status === false ? '<span class="choice-badge" style="background:#a44;color:#fff">错误</span>' :
-                  '<span class="choice-badge">待标注</span>';
-      var note = ann && ann.note ? ' <span style="font-size:12px;color:var(--fg3)">' + escapeHtml(ann.note) + '</span>' : '';
-      var typeLabel = ch.buttonType === 'Cancel' ? ' [返回]' : ch.buttonType === 'Objection' ? '' : ' [剧情]';
-      html += '<div class="choice-item"><span class="choice-text">' + escapeHtml(ch.text) + typeLabel + '</span>' + badge + note + '</div>';
-    });
-    html += '<button class="header-btn" style="margin-top:6px;width:100%" onclick="window.open(\'' + REPO_URL + '/edit/main/data/annotations.\' + (document.body.dataset.act || \'act01\') + \'.json\',\'_blank\')">✎ 编辑标注</button>';
-    html += '</div>';
+  // 子选项 / 证人 / 证物 (仅非分支虚拟节点) — 分支节点只展示结果文本与导航
+  var _hasSubChoices = false;
+  if (node._isVirtual && node._choiceId && node._trialNodeId && !node._branchKind) {
+    var _annMap = ANNOTATIONS.trialChoices || {};
+    var _trialNode = _nodeMap.get(node._trialNodeId);
+    if (_trialNode && _trialNode.trialChoices) {
+      var _subChoices = [];
+      _trialNode.trialChoices.forEach(function(ch) {
+        if (ch.id && /Common_Return/i.test(ch.id)) return;
+        if (ch.buttonType === 'Cancel') return;
+        var _ann = _annMap[ch.id];
+        if (_ann && _ann.parentChoice === node._choiceId) {
+          _subChoices.push({ ch: ch, ann: _ann });
+        }
+      });
+      if (_subChoices.length) {
+        _hasSubChoices = true;
+        html += '<div class="panel-section"><div class="panel-section-title">子选项</div>';
+        _subChoices.forEach(function(item) {
+          var sc = item.ch;
+          var sAnn = item.ann;
+          var sStatus = sAnn ? sAnn.isCorrect : null;
+          var sBadge = sStatus === true ? '<span class="choice-badge" style="background:#3a8a3a;color:#fff">正确</span>' :
+            sStatus === false ? (sAnn && sAnn.isBadEnd
+              ? '<span class="choice-badge" style="background:#a44;color:#fff">' + escapeHtml(sAnn.badEndId || 'Bad End') + '</span>'
+              : '<span class="choice-badge" style="background:#a44;color:#fff">错误</span>') :
+            '<span class="choice-badge">待标注</span>';
+          html += '<div class="choice-item sub-choice-item" data-sub-choice="' + escapeHtml(sc.id) + '"><span class="choice-text">' + escapeHtml(sc.text) + '</span>' + sBadge + '</div>';
+        });
+        html += '</div>';
+      }
+    }
+    // 证人分支 (标注中的 witnessBranches)
+    var _curAnn = _annMap[node._choiceId];
+    if (_curAnn && _curAnn.witnessBranches && _curAnn.witnessBranches.length) {
+      _hasSubChoices = true;
+      html += '<div class="panel-section"><div class="panel-section-title">证人</div>';
+      _curAnn.witnessBranches.forEach(function(br, bi) {
+        var _brVirtId = 'virt_' + node._choiceId + '__wit_' + bi;
+        var _witName = br.witness || ('证人' + (bi + 1));
+        if (br.isSpecial === false && br.isCorrect === false) _witName = '非' + _witName;
+        html += '<div class="choice-item sub-choice-item" data-sub-choice="' + escapeHtml(_brVirtId) + '"><span class="choice-text">' + escapeHtml(_witName) + '</span>' + branchBadgeHtml(br) + '</div>';
+      });
+      html += '</div>';
+    }
+    // 证物分支 (标注中的 evidenceBranches)
+    if (_curAnn && _curAnn.evidenceBranches && _curAnn.evidenceBranches.length) {
+      _hasSubChoices = true;
+      html += '<div class="panel-section"><div class="panel-section-title">证物</div>';
+      _curAnn.evidenceBranches.forEach(function(br, bi) {
+        var _brVirtId = 'virt_' + node._choiceId + '__ev_' + bi;
+        var _evName = br.evidence || ('证物' + (bi + 1));
+        if (br.isSpecial === false && br.isCorrect === false) _evName = '非' + _evName;
+        html += '<div class="choice-item sub-choice-item" data-sub-choice="' + escapeHtml(_brVirtId) + '"><span class="choice-text">' + escapeHtml(_evName) + '</span>' + branchBadgeHtml(br) + '</div>';
+      });
+      html += '</div>';
+    }
   }
 
   // ── 导航：底部按钮 ──
-  var hasChoices = node.choices && node.choices.length > 0;
+  var hasChoices = (node.choices && node.choices.length > 0) || _hasSubChoices;
   if (isBad) {
-    // Bad End → 返回选择节点
-    var parentNode = _nodeMap.get(node.parentId);
+    // Bad End → 返回选择节点: 子选项优先返回其父虚拟节点, 否则返回 Trial
+    var parentNode = node._parentChoiceId ? _nodeMap.get('virt_' + node._parentChoiceId) : null;
+    if (!parentNode) parentNode = _nodeMap.get(node.parentId);
+    if (parentNode) {
+      html += '<div class="panel-section"><div class="panel-section-title">导航</div>';
+      html += '<div class="choice-item" data-nav="' + escapeHtml(parentNode.id) + '"><span class="choice-text">↩ 返回选择</span></div>';
+      html += '</div>';
+    }
+  } else if (node._isVirtual && node._parentChoiceId) {
+    // 子选项虚拟节点 → 返回父选项虚拟节点
+    var parentNode = _nodeMap.get('virt_' + node._parentChoiceId);
     if (parentNode) {
       html += '<div class="panel-section"><div class="panel-section-title">导航</div>';
       html += '<div class="choice-item" data-nav="' + escapeHtml(parentNode.id) + '"><span class="choice-text">↩ 返回选择</span></div>';
@@ -1363,6 +1681,25 @@ function focusNode(node) {
   requestAnimationFrame(animate);
 }
 
+// BUG-1: 支持 #node-<id> 深链 (来自证据页"关联审判节点"等外部链接)
+// 解析 location.hash, 平滑居中到目标节点并打开其手机弹窗 (与点击节点行为一致)
+function handleHashDeepLink() {
+  var hash = location.hash || '';
+  var m = hash.match(/^#node-(.+)$/);
+  if (!m) return;
+  var id = decodeURIComponent(m[1]);
+  var node = _nodeMap.get(id);
+  // 先清除 hash, 避免刷新时重复弹出 / 影响浏览器历史
+  try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+  if (!node) return;
+  try {
+    focusNode(node);          // 平滑居中摄像机
+    openPhoneWithNode(node);  // 打开手机弹窗 (内部会高亮该节点)
+  } catch (e) {
+    console.error('[deepLink] ' + (e && e.message ? e.message : String(e)));
+  }
+}
+
 document.getElementById('panel-close').addEventListener('click', closeDetail);
 detailOverlay.addEventListener('click', closeDetail);
 
@@ -1400,7 +1737,7 @@ document.getElementById('theme-toggle').addEventListener('click', function() {
   var current = html.getAttribute('data-theme');
   var next = current === 'dark' ? 'light' : 'dark';
   html.setAttribute('data-theme', next);
-  localStorage.setItem('theme', next);
+  try { localStorage.setItem('theme', next); } catch (e) { /* 隐私/沙箱环境静默 */ }
 });
 
 // ══════════════════════════════════════════════════
@@ -1469,8 +1806,279 @@ function getResultSummary(node, range) {
   return summary + (summary.length >= 40 ? '…' : '');
 }
 
+// ── 过滤 Trial 节点的主线 dialogue: 排除所有 resultRange 内的对话 ──
+function filterMainlineDialogue(node) {
+  if (!node.dialogue || !node.dialogue.length) return [];
+  var annMap = ANNOTATIONS.trialChoices || {};
+  // 非 Trial 节点直接返回全部
+  if (node.type !== 'ti' && node.type !== 'tr') return node.dialogue;
+  if (!node.trialChoices || !node.trialChoices.length) return node.dialogue;
+
+  // 收集所有 resultRange 内的 label (用 Set 去重)
+  var excludedLabels = {};
+  node.trialChoices.forEach(function(ch) {
+    var ann = annMap[ch.id];
+    if (!ann || !ann.resultRange || ann.resultRange.length !== 2) return;
+    var startIdx = node.dialogue.findIndex(function(d) { return d.label === ann.resultRange[0]; });
+    var endIdx = node.dialogue.findIndex(function(d) { return d.label === ann.resultRange[1]; });
+    if (startIdx === -1) return;
+    var end = endIdx === -1 ? startIdx : endIdx;
+    for (var i = startIdx; i <= end; i++) {
+      if (node.dialogue[i]) excludedLabels[node.dialogue[i].label] = true;
+    }
+    // 同时过滤 witnessBranches 的 resultRange
+    if (ann.witnessBranches && ann.witnessBranches.length) {
+      ann.witnessBranches.forEach(function(wb) {
+        if (!wb.resultRange || wb.resultRange.length !== 2) return;
+        var wbStart = node.dialogue.findIndex(function(d) { return d.label === wb.resultRange[0]; });
+        var wbEnd = node.dialogue.findIndex(function(d) { return d.label === wb.resultRange[1]; });
+        if (wbStart === -1) return;
+        var wbLast = wbEnd === -1 ? wbStart : wbEnd;
+        for (var j = wbStart; j <= wbLast; j++) {
+          if (node.dialogue[j]) excludedLabels[node.dialogue[j].label] = true;
+        }
+      });
+    }
+    // 同时过滤 evidenceBranches 的 resultRange
+    if (ann.evidenceBranches && ann.evidenceBranches.length) {
+      ann.evidenceBranches.forEach(function(eb) {
+        if (!eb.resultRange || eb.resultRange.length !== 2) return;
+        var ebStart = node.dialogue.findIndex(function(d) { return d.label === eb.resultRange[0]; });
+        var ebEnd = node.dialogue.findIndex(function(d) { return d.label === eb.resultRange[1]; });
+        if (ebStart === -1) return;
+        var ebLast = ebEnd === -1 ? ebStart : ebEnd;
+        for (var j = ebStart; j <= ebLast; j++) {
+          if (node.dialogue[j]) excludedLabels[node.dialogue[j].label] = true;
+        }
+      });
+    }
+  });
+
+  // 过滤出不在任何 resultRange 内的 dialogue
+  return node.dialogue.filter(function(d) {
+    return !excludedLabels[d.label];
+  });
+}
+
+// ── 从 resultRange 范围内的 dialogue 提取条目数组 ──
+// 供 buildVirtualObjectionNodes 共用
+function extractResultEntries(node, range) {
+  if (!range || !range.length || !node.dialogue) return [];
+  var startIdx = node.dialogue.findIndex(function(d) { return d.label === range[0]; });
+  var endIdx = node.dialogue.findIndex(function(d) { return d.label === range[1]; });
+  if (startIdx === -1) return [];
+  var end = endIdx === -1 ? startIdx : endIdx;
+  return node.dialogue.slice(startIdx, end + 1);
+}
+
+// ══════════════════════════════════════════════════
+//  Task 2+3: 虚拟异议结果节点构建
+//  扫描所有 Trial 节点的 trialChoices, 为含 resultRange 的选项
+//  生成虚拟节点 (错误→Bad End 侧分支, 正确→中间浮现)
+//══════════════════════════════════════════════════
+function buildVirtualObjectionNodes() {
+  var annMap = ANNOTATIONS.trialChoices || {};
+  var virtualNodes = [];
+
+  NODES.forEach(function(node) {
+    if (!node.trialChoices || !node.trialChoices.length) return;
+    // 仅处理 Trial 节点 (type 含 ti/tr)
+    if (node.type !== 'ti' && node.type !== 'tr') return;
+    if (!node.dialogue || !node.dialogue.length) return;
+
+    node.trialChoices.forEach(function(ch) {
+      // 跳过通用返回选项
+      if (ch.id && /Common_Return/i.test(ch.id)) return;
+      if (ch.buttonType === 'Cancel') return;
+
+      var ann = annMap[ch.id];
+      if (!ann || !ann.resultRange || ann.resultRange.length !== 2) return;
+      if (ann.isCorrect !== true && ann.isCorrect !== false) return;
+
+      var entries = extractResultEntries(node, ann.resultRange);
+      if (!entries.length) return;
+
+      var virtId = 'virt_' + ch.id;
+      // 避免重复构建
+      if (_nodeMap.has(virtId)) return;
+
+      var isCorrect = ann.isCorrect === true;
+      var isSubOption = !!ann.parentChoice;  // 子选项: annotations 中有 parentChoice 字段
+      var resultText = entries.map(function(d) {
+        return d.text.replace(/<[^>]*>/g, '').replace(/\n/g, ' ');
+      }).join(' ');
+
+      var virt = {
+        id: virtId,
+        title: ch.text.slice(0, 15) + (ch.text.length > 15 ? '…' : ''),
+        level: 1,
+        parentId: node.id,
+        // 正确选项 (含子选项) 直接连到 nextTrial, 由 reconcileTrialContinuations 决定哪条线显示
+        nextId: isCorrect ? node.nextId : null,
+        route: isCorrect ? 'normal' : 'objection-wrong',
+        type: isCorrect ? 'tr' : 'bd',
+        character: 'Objection',
+        summary: resultText.slice(0, 40) + (resultText.length > 40 ? '…' : ''),
+        text: resultText,
+        dialogue: entries,
+        isChoice: false,
+        choices: [],
+        _isVirtual: true,
+        _isCorrect: isCorrect,
+        _choiceId: ch.id,
+        _trialNodeId: node.id,
+        _hidden: true,
+        x: 0, y: 0
+      };
+
+      // 子选项: 记录父选项 choiceId (用于连接到父选项虚拟节点)
+      if (isSubOption) {
+        virt._parentChoiceId = ann.parentChoice;
+      }
+
+      // 错误选项携带 badEndId
+      if (!isCorrect && ann.isBadEnd && ann.badEndId) {
+        virt.badEndId = ann.badEndId;
+      }
+
+      virtualNodes.push(virt);
+
+      // 证人与证物分支: 为 witnessBranches / evidenceBranches 生成虚拟节点
+      var branchGroups = [
+        { key: 'witnessBranches', kind: 'witness', idPart: 'wit' },
+        { key: 'evidenceBranches', kind: 'evidence', idPart: 'ev' }
+      ];
+      branchGroups.forEach(function(bg) {
+        var branches = ann[bg.key];
+        if (!branches || !branches.length) return;
+        branches.forEach(function(br, bi) {
+          if (!br.resultRange || br.resultRange.length !== 2) return;
+          var brEntries = extractResultEntries(node, br.resultRange);
+          if (!brEntries.length) return;
+          var brId = 'virt_' + ch.id + '__' + bg.idPart + '_' + bi;
+          if (_nodeMap.has(brId)) return;
+          var brCorrect = br.isCorrect === true;
+          var brName = br[bg.kind] || '';
+          // 通用错误分支 (非特殊且非正确) 显示"非"+名称
+          if (br.isSpecial === false && brCorrect === false) brName = '非' + brName;
+          var brTitle = (bg.kind === 'witness' ? '证人·' : '证物·') + brName;
+          var brText = brEntries.map(function(d) {
+            return d.text.replace(/<[^>]*>/g, '').replace(/\n/g, ' ');
+          }).join(' ');
+          virtualNodes.push({
+            id: brId,
+            title: brTitle.slice(0, 15) + (brTitle.length > 15 ? '…' : ''),
+            level: 1,
+            parentId: node.id,
+            nextId: brCorrect ? node.nextId : null,
+            route: brCorrect ? 'normal' : 'objection-wrong',
+            type: brCorrect ? 'tr' : 'bd',
+            character: 'Objection',
+            summary: brText.slice(0, 40) + (brText.length > 40 ? '…' : ''),
+            text: brText,
+            dialogue: brEntries,
+            isChoice: false,
+            choices: [],
+            _isVirtual: true,
+            _isCorrect: brCorrect,
+            _choiceId: ch.id,
+            _trialNodeId: node.id,
+            _parentChoiceId: ch.id,
+            _branchKind: bg.kind,
+            _branchLabel: brName,
+            _isSpecial: !!br.isSpecial,
+            _hidden: true,
+            x: 0, y: 0
+          });
+        });
+      });
+    });
+  });
+
+  // 加入全局节点表 (参与 computeLayout 布局)
+  virtualNodes.forEach(function(v) {
+    NODES.push(v);
+    _nodeMap.set(v.id, v);
+  });
+}
+
+// ── Task 3: 重新定位正确选项虚拟节点 ──
+// 正确选项节点位于 Trial 与 nextTrial 之间 (线性插值 + 水平偏移)
+// 错误选项节点保持 computeLayout 的分支位置不变
+function _repositionVirtualNodes() {
+  // 第一遍: 定位主选项虚拟节点 (无 _parentChoiceId)
+  NODES.forEach(function(v) {
+    if (!v._isVirtual || v._parentChoiceId) return;  // 跳过子选项, 留待第二遍处理
+    var trial = _nodeMap.get(v._trialNodeId);
+    if (!trial || trial._lx === undefined) return;
+
+    if (v._isCorrect && trial.nextId) {
+      // 正确选项: Trial 与 nextTrial 之间 (右侧偏移减少至 120)
+      var next = _nodeMap.get(trial.nextId);
+      if (next && next._lx !== undefined) {
+        v._lx = (trial._lx + next._lx) / 2 + 120;
+        v._ly = (trial._ly + next._ly) / 2;
+      } else {
+        v._lx = trial._lx + 200;
+        v._ly = trial._ly + LAYOUT.SCENE_GAP / 2;
+      }
+    } else {
+      // 错误选项: 紧贴 Trial 右下角 (临时显示, 无需担心重叠)
+      v._lx = trial._lx + 60;
+      v._ly = trial._ly + 80;
+    }
+
+    v._origX = v._lx;
+    v._origY = v._ly;
+
+    // 设置虚拟节点的 prev 为 Trial 节点 (供 findPrevNode 使用)
+    _prevId.set(v.id, trial.id);
+  });
+
+  // 第二遍: 递归定位子选项虚拟节点 (按深度排序, 先浅后深, 保证父选项已定位)
+  var subOpts = NODES.filter(function(v) {
+    return v._isVirtual && v._parentChoiceId;
+  });
+  // 计算子选项深度 (沿 parentChoice 链回溯层数)
+  function _subDepth(v) {
+    var d = 1;
+    var p = _nodeMap.get('virt_' + v._parentChoiceId);
+    while (p && p._parentChoiceId) { d++; p = _nodeMap.get('virt_' + p._parentChoiceId); }
+    return d;
+  }
+  subOpts.sort(function(a, b) { return _subDepth(a) - _subDepth(b); });
+
+  // 按父选项 choiceId 分组记录子选项索引 (用于纵向堆叠)
+  var siblingIdx = {};
+  subOpts.forEach(function(v) {
+    var parentVirt = _nodeMap.get('virt_' + v._parentChoiceId);
+    var trial = _nodeMap.get(v._trialNodeId);
+    if (parentVirt && parentVirt._lx !== undefined) {
+      // 子选项定位在父选项附近 (水平 +80, 纵向堆叠间距 60)
+      var idx = siblingIdx[v._parentChoiceId] || 0;
+      siblingIdx[v._parentChoiceId] = idx + 1;
+      v._lx = parentVirt._lx + 80;
+      v._ly = parentVirt._ly + (idx + 1) * 60;
+      _prevId.set(v.id, parentVirt.id);
+    } else if (trial && trial._lx !== undefined) {
+      // 回退: 父选项虚拟节点不存在, 紧贴 Trial 右下角 (与错误主选项一致)
+      v._lx = trial._lx + 60;
+      v._ly = trial._ly + 80;
+      _prevId.set(v.id, trial.id);
+    } else {
+      return;
+    }
+    v._origX = v._lx;
+    v._origY = v._ly;
+  });
+}
+
 // ── 异议弹窗: 显示 choice 信息 + 标注状态 ──
+let _popupChoiceId = null;
+let _popupAnchorEl = null;
 function showObjectionPopup(choiceId, anchorEl) {
+  _popupChoiceId = choiceId;
+  _popupAnchorEl = anchorEl || null;
   // 在所有 Trial 节点中查找对应 choice (choiceId 跨节点唯一)
   let choice = null;
   for (const n of NODES) {
@@ -1483,7 +2091,9 @@ function showObjectionPopup(choiceId, anchorEl) {
   const ann = (ANNOTATIONS.trialChoices || {})[choiceId];
   const status = ann ? ann.isCorrect : null;
   const statusBadge = status === true ? '<span class="choice-badge" style="background:#3a8a3a;color:#fff">正确</span>' :
-                      status === false ? '<span class="choice-badge" style="background:#a44;color:#fff">错误</span>' :
+                      status === false ? (ann && ann.isBadEnd
+                        ? `<span class="choice-badge" style="background:#a44;color:#fff">${escapeHtml(ann.badEndId || 'Bad End')}</span>`
+                        : '<span class="choice-badge" style="background:#a44;color:#fff">错误</span>') :
                       '<span class="choice-badge">待标注</span>';
   const note = ann && ann.note ? `<div style="margin-top:6px;font-size:12px;color:var(--fg2)">备注: ${escapeHtml(ann.note)}</div>` : '';
   const objectionText = choice.objectionText ? `<div style="margin-top:6px;font-size:12px;color:var(--fg3)">异议点: ${escapeHtml(choice.objectionText)}</div>` : '';
@@ -1503,10 +2113,286 @@ function showObjectionPopup(choiceId, anchorEl) {
     objectionPopup.style.top = top + 'px';
   }
   objectionPopup.classList.add('show');
+
+  // 弹窗可点击跳转 — 仅绑定一次
+  if (!objectionPopup._jumpBound) {
+    objectionPopup._jumpBound = true;
+    objectionPopup.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const cid = _popupChoiceId;
+      if (!cid) return;
+      const virtNodeId = 'virt_' + cid;
+      const virtNode = NODES.find(n => n.id === virtNodeId);
+      if (virtNode) {
+        // 显示虚拟节点
+        virtNode._hidden = false;
+        const el = document.querySelector('.node[data-id="' + virtNodeId + '"]');
+        if (el) {
+          el.style.display = '';
+          // 下一帧移除 class, 触发 transition (scale 0.85→1 + opacity 0→1)
+          requestAnimationFrame(function() {
+            el.classList.remove('virt-hidden');
+          });
+        }
+        // 隐藏父 Trial → nextTrial 顺序连接线（正确选项虚拟节点在两者之间）
+        var trial = _nodeMap.get(virtNode._trialNodeId);
+        if (trial && trial.nextId && virtNode._isCorrect) {
+          _connectors.forEach(function(ref) {
+            if (ref.fromId === trial.id && ref.toId === trial.nextId) {
+              ref.el.style.display = 'none';
+            }
+          });
+        }
+        // 显示虚拟节点专属连接线 (objection-correct + 虚拟节点自身的 seq 线)
+        _connectors.forEach(function(ref) {
+          if (ref.toId === virtNodeId || ref.fromId === virtNodeId) {
+            ref.el.style.display = '';
+          }
+        });
+        // 聚焦摄像机
+        focusNode(virtNode);
+        // 打开详情面板 / 手机视图 (根据点击来源)
+        const usePhone = _popupAnchorEl && phoneScreen.contains(_popupAnchorEl);
+        if (usePhone) openPhoneWithNode(virtNode);
+        else openDetail(virtNode);
+        // 关闭弹窗
+        closeObjectionPopup();
+      } else {
+        // 无结果节点 — 追加提示 (不跳转, 不关闭)
+        if (!objectionPopup.querySelector('.op-no-result')) {
+          const tip = document.createElement('div');
+          tip.className = 'op-no-result';
+          tip.style.cssText = 'color:#a44;margin-top:4px;font-size:11px;';
+          tip.textContent = '无结果节点';
+          objectionPopup.appendChild(tip);
+        }
+      }
+    });
+  }
 }
 
 function closeObjectionPopup() {
   objectionPopup.classList.remove('show');
+}
+
+// ══════════════════════════════════════════════════
+//  增强 2: 章节快速导航侧栏
+//══════════════════════════════════════════════════
+var _chapterNav = document.getElementById('chapter-nav');
+var _chapterNavList = document.getElementById('chapter-nav-list');
+var _chapterNavToggle = document.getElementById('chapter-nav-toggle');
+
+function buildChapterNav() {
+  if (!_chapterNavList) return;
+  var chapters = NODES.filter(function(n) { return n.level === 0; });
+  var html = '';
+  chapters.forEach(function(ch, i) {
+    html += '<div class="cn-item" data-id="' + escapeHtml(ch.id) + '">' +
+      '<span class="cn-num">' + String(i + 1).padStart(2, '0') + '</span>' +
+      '<span class="cn-label">' + escapeHtml(ch.title) + '</span>' +
+    '</div>';
+  });
+  _chapterNavList.innerHTML = html;
+  // Bind clicks
+  _chapterNavList.querySelectorAll('.cn-item').forEach(function(item) {
+    item.addEventListener('click', function() {
+      var id = this.dataset.id;
+      var node = _nodeMap.get(id);
+      if (node) {
+        focusNode(node);
+        openPhoneWithNode(node);
+        _chapterNav.classList.remove('show');
+      }
+    });
+  });
+}
+
+function updateChapterNavActive() {
+  if (!_chapterNavList) return;
+  // Find the chapter closest to current view center
+  var centerX = viewX;
+  var bestId = null, bestDist = Infinity;
+  NODES.forEach(function(n) {
+    if (n.level !== 0 || n._lx === undefined) return;
+    var dist = Math.abs(n._lx - centerX);
+    if (dist < bestDist) { bestDist = dist; bestId = n.id; }
+  });
+  _chapterNavList.querySelectorAll('.cn-item').forEach(function(item) {
+    item.classList.toggle('active', item.dataset.id === bestId);
+  });
+}
+
+if (_chapterNavToggle) {
+  _chapterNavToggle.addEventListener('click', function() {
+    _chapterNav.classList.toggle('show');
+    if (_chapterNav.classList.contains('show')) updateChapterNavActive();
+  });
+}
+var _cnClose = _chapterNav ? _chapterNav.querySelector('.cn-close') : null;
+if (_cnClose) {
+  _cnClose.addEventListener('click', function() {
+    _chapterNav.classList.remove('show');
+  });
+}
+
+// ══════════════════════════════════════════════════
+//  增强 3: 搜索结果面板
+//══════════════════════════════════════════════════
+var _searchResults = document.getElementById('search-results');
+var _srList = document.getElementById('sr-list');
+var _srCount = document.getElementById('sr-count');
+
+function updateSearchResults() {
+  if (!_searchResults || !_srList) return;
+  var searchText = document.getElementById('search-input').value.trim().toLowerCase();
+  if (!searchText) {
+    _searchResults.classList.remove('show');
+    return;
+  }
+  var matches = [];
+  NODES.forEach(function(n) {
+    if (n._isVirtual) return;
+    var title = (n.title || '').toLowerCase();
+    var character = (n.character || '').toLowerCase();
+    var text = (n.text || '').toLowerCase();
+    var summary = (n.summary || '').toLowerCase();
+    if (title.indexOf(searchText) !== -1 || character.indexOf(searchText) !== -1 ||
+        text.indexOf(searchText) !== -1 || summary.indexOf(searchText) !== -1) {
+      matches.push(n);
+    }
+  });
+  // Sort: Lv0 first, then Lv1, then Lv2; limit to 50
+  matches.sort(function(a, b) { return (a.level || 0) - (b.level || 0); });
+  matches = matches.slice(0, 50);
+
+  _srCount.textContent = matches.length + ' 项';
+  if (!matches.length) {
+    _srList.innerHTML = '<div class="sr-empty">未找到匹配节点</div>';
+  } else {
+    var html = '';
+    matches.forEach(function(n) {
+      var color = n.character ? 'var(--char-' + n.character + ', var(--node-border))' : 'var(--node-border)';
+      var path = '';
+      if (n.level === 0) path = '章节';
+      else if (n.level === 1) {
+        var parent = n.parentId ? _nodeMap.get(n.parentId) : null;
+        path = parent ? parent.title : '场景';
+      } else {
+        var p = n.parentId ? _nodeMap.get(n.parentId) : null;
+        var pp = p && p.parentId ? _nodeMap.get(p.parentId) : null;
+        path = [pp ? pp.title : '', p ? p.title : ''].filter(Boolean).join(' › ');
+      }
+      html += '<div class="sr-item" data-id="' + escapeHtml(n.id) + '">' +
+        '<span class="sr-dot" style="background:' + color + '"></span>' +
+        '<div class="sr-info"><div class="sr-title">' + escapeHtml(n.title) + '</div>' +
+        '<div class="sr-path">' + escapeHtml(path) + '</div></div>' +
+      '</div>';
+    });
+    _srList.innerHTML = html;
+    _srList.querySelectorAll('.sr-item').forEach(function(item) {
+      item.addEventListener('click', function() {
+        var id = this.dataset.id;
+        var node = _nodeMap.get(id);
+        if (node) {
+          focusNode(node);
+          openPhoneWithNode(node);
+        }
+      });
+    });
+  }
+  _searchResults.classList.add('show');
+}
+
+// Hook into existing search handler
+var _origSearchInput = document.getElementById('search-input');
+if (_origSearchInput) {
+  _origSearchInput.addEventListener('input', function() {
+    clearTimeout(_searchTimer);
+    _searchTimer = setTimeout(function() {
+      updateAllNodeVisibility();
+      updateSearchResults();
+    }, 150);
+  });
+}
+
+// Close search results on outside click
+document.addEventListener('click', function(e) {
+  if (!_searchResults || !_searchResults.classList.contains('show')) return;
+  if (_searchResults.contains(e.target)) return;
+  if (e.target.id === 'search-input') return;
+  if (e.target.closest('.search-wrap')) return;
+  _searchResults.classList.remove('show');
+});
+
+// ══════════════════════════════════════════════════
+//  增强 5: 首次访问引导提示
+//══════════════════════════════════════════════════
+var _onboarding = document.getElementById('onboarding');
+var _onboardingOverlay = document.getElementById('onboarding-overlay');
+var _obStep = 0;
+var _obSteps = [
+  { text: '拖拽空白处可平移画布，浏览不同章节', target: '#canvas-container', arrow: 'arrow-left' },
+  { text: '滚轮缩放，或点击左下角快捷按钮切换概览/场景/对话视图', target: '#quick-zoom', arrow: 'arrow-bottom' },
+  { text: '点击任意节点查看剧情详情，包括对话、选项和异议分支', target: '#canvas-container', arrow: 'arrow-left' }
+];
+
+function showOnboardingStep() {
+  if (_obStep >= _obSteps.length) {
+    hideOnboarding();
+    try { localStorage.setItem('ob_done', '1'); } catch (e) {}
+    return;
+  }
+  var step = _obSteps[_obStep];
+  if (!_onboarding) return;
+  _onboarding.className = step.arrow || '';
+  _onboarding.innerHTML =
+    '<div class="ob-step">引导 ' + (_obStep + 1) + ' / ' + _obSteps.length + '</div>' +
+    '<div class="ob-text">' + step.text + '</div>' +
+    '<div class="ob-actions">' +
+      '<button class="ob-btn ob-skip">跳过</button>' +
+      '<button class="ob-btn primary ob-next">' + (_obStep < _obSteps.length - 1 ? '下一步' : '完成') + '</button>' +
+    '</div>';
+  // Position near target
+  var targetEl = document.querySelector(step.target);
+  if (targetEl) {
+    var rect = targetEl.getBoundingClientRect();
+    if (step.arrow === 'arrow-left') {
+      _onboarding.style.left = (rect.left + rect.width + 20) + 'px';
+      _onboarding.style.top = (rect.top + rect.height / 2 - 40) + 'px';
+      _onboarding.style.right = 'auto';
+      _onboarding.style.bottom = 'auto';
+    } else {
+      _onboarding.style.left = (rect.left + rect.width / 2 - 130) + 'px';
+      _onboarding.style.top = (rect.top - 100) + 'px';
+      _onboarding.style.right = 'auto';
+      _onboarding.style.bottom = 'auto';
+    }
+  }
+  _onboarding.classList.add('show');
+  if (_onboardingOverlay) _onboardingOverlay.classList.add('show');
+  // Bind buttons
+  _onboarding.querySelector('.ob-next').addEventListener('click', function() {
+    _obStep++;
+    showOnboardingStep();
+  });
+  _onboarding.querySelector('.ob-skip').addEventListener('click', function() {
+    _obStep = _obSteps.length;
+    showOnboardingStep();
+  });
+}
+
+function hideOnboarding() {
+  if (_onboarding) { _onboarding.classList.remove('show'); _onboarding.innerHTML = ''; }
+  if (_onboardingOverlay) _onboardingOverlay.classList.remove('show');
+}
+
+function initOnboarding() {
+  if (!_onboarding) return;
+  var done = false;
+  try { done = localStorage.getItem('ob_done') === '1'; } catch (e) {}
+  if (!done) {
+    setTimeout(showOnboardingStep, 2500);
+  }
 }
 
 // ══════════════════════════════════════════════════

@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-Hans" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>证物 — 魔女审判资料馆</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500;1,700&family=Noto+Serif+SC:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/shared.css">
+  <link rel="stylesheet" href="assets/content.css">
+  <script>
+    (function () {
+      var s = localStorage.getItem('theme');
+      if (s === 'dark' || s === 'light') document.documentElement.setAttribute('data-theme', s);
+    })();
+  </script>
+  <style>
+    /* ═══════════════════════════════════════════════════
+       证物页专属样式 — 蜡封印章 / 证物袋质感 / 抽屉内容
+       依赖: shared.css + content.css
+       ═══════════════════════════════════════════════════ */
+
+    /* ── 开屏印章动画 sealStamp (下落 + 缩放回弹 + 短暂血色辉光, 0.9s) ── */
+    #splash-mark {
+      width: 66px; height: 66px;
+      color: var(--fg);
+      transform: translateY(-26px) scale(0.7);
+      opacity: 0;
+      animation: sealStamp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.12s forwards;
+    }
+    @keyframes sealStamp {
+      0%   { transform: translateY(-26px) scale(0.7); opacity: 0;
+             filter: drop-shadow(0 0 0 transparent); }
+      55%  { transform: translateY(2px) scale(1.12); opacity: 1;
+             filter: drop-shadow(0 0 11px hsla(0, 78%, 50%, 0.85)); }
+      72%  { transform: translateY(-1px) scale(0.97); opacity: 1;
+             filter: drop-shadow(0 0 6px hsla(0, 70%, 46%, 0.5)); }
+      100% { transform: translateY(0) scale(1); opacity: 1;
+             filter: drop-shadow(0 0 0 transparent); }
+    }
+    #splash-mark svg { width: 100%; height: 100%; display: block; }
+
+    /* ── 筛选栏分组 ── */
+    .filterbar .filter-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+    .filterbar .filter-label {
+      font-family: "Noto Serif SC", serif;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      color: var(--fg3);
+      margin-right: 2px;
+      user-select: none;
+    }
+    .filterbar .filter-sep {
+      width: 1px;
+      height: 18px;
+      background: var(--border);
+      margin: 0 4px;
+      opacity: 0.7;
+    }
+    @media (max-width: 720px) {
+      .filterbar .filter-sep { display: none; }
+      .filterbar .filter-group { width: 100%; }
+    }
+
+    /* ── 证物袋卡片质感 ── */
+    .item-card.ev-card {
+      padding: 14px;
+      gap: 8px;
+    }
+    /* 袋内虚线边 (证物袋封口意象) */
+    .item-card.ev-card::before {
+      content: '';
+      position: absolute;
+      inset: 7px;
+      border: 1px dashed var(--fg3);
+      opacity: 0.3;
+      border-radius: 2px;
+      pointer-events: none;
+      transition: opacity 0.35s ease, border-color 0.35s ease;
+      z-index: 1;
+    }
+    .item-card.ev-card:hover::before {
+      opacity: 0.5;
+      border-color: var(--accent);
+    }
+    /* 右上角血色蜡封 */
+    .item-card .card-seal {
+      position: absolute;
+      top: 7px;
+      right: 7px;
+      width: 30px;
+      height: 30px;
+      opacity: 0.15;
+      pointer-events: none;
+      z-index: 2;
+      transition: opacity 0.4s ease;
+    }
+    .item-card:hover .card-seal { opacity: 0.3; }
+
+    .item-card .item-img-wrap {
+      position: relative;
+      z-index: 0;
+      background:
+        repeating-linear-gradient(45deg, var(--bg2) 0 6px, transparent 6px 12px);
+    }
+    .item-card .item-img-wrap img {
+      transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .item-card:hover .item-img-wrap img { transform: scale(1.04); }
+
+    .item-card .item-num {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .item-card .item-num .num-scene {
+      font-style: normal;
+      font-weight: 500;
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      opacity: 0.7;
+    }
+    .item-card .item-name {
+      position: relative;
+      z-index: 1;
+    }
+    .item-card .item-cat {
+      position: relative;
+      z-index: 1;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      color: var(--fg3);
+      padding: 1px 7px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      align-self: flex-start;
+      background: var(--bg2);
+    }
+
+    /* 图片加载失败占位 */
+    .img-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--fg3);
+    }
+    .img-placeholder svg { width: 46%; height: 46%; opacity: 0.35; }
+
+    /* ── 详情抽屉内容 ── */
+    .detail-drawer .drawer-body { padding: 0; }
+    .ev-drawer-hero {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(ellipse at 50% 40%, color-mix(in srgb, var(--accent) 8%, var(--bg2)) 0%, var(--bg2) 75%);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .ev-drawer-hero img {
+      max-width: 88%;
+      max-height: 88%;
+      object-fit: contain;
+      filter: drop-shadow(0 6px 24px rgba(0,0,0,0.18));
+    }
+    .ev-drawer-hero .hero-seal {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 38px;
+      height: 38px;
+      opacity: 0.12;
+      pointer-events: none;
+    }
+    .ev-drawer-hero .hero-num {
+      position: absolute;
+      top: 12px;
+      left: 16px;
+      font-family: "Cormorant Garamond", serif;
+      font-style: italic;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.08em;
+      color: var(--fg3);
+    }
+
+    .ev-drawer-content { padding: 22px 24px 32px; }
+    .ev-name-block {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      margin-bottom: 18px;
+    }
+    .ev-name-zh {
+      font-family: "Noto Serif SC", serif;
+      font-weight: 900;
+      font-size: 24px;
+      letter-spacing: 0.08em;
+      color: var(--fg);
+      line-height: 1.2;
+    }
+    .ev-name-en {
+      font-family: "Cormorant Garamond", serif;
+      font-style: italic;
+      font-weight: 500;
+      font-size: 16px;
+      letter-spacing: 0.1em;
+      color: var(--fg2);
+    }
+
+    .ev-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 22px;
+    }
+    .ev-meta .meta-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--bg2);
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      color: var(--fg2);
+    }
+    .ev-meta .meta-tag .mt-label {
+      font-family: "Cormorant Garamond", serif;
+      font-style: italic;
+      font-size: 10px;
+      color: var(--fg3);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .ev-section { margin-bottom: 22px; }
+    .ev-section-title {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-family: "Noto Serif SC", serif;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      color: var(--fg);
+      margin-bottom: 12px;
+    }
+    .ev-section-title::before {
+      content: '';
+      width: 2px;
+      height: 14px;
+      background: hsl(340, 55%, 50%);
+      border-radius: 2px;
+    }
+    [data-theme="dark"] .ev-section-title::before { background: hsl(340, 50%, 58%); }
+
+    .ev-related-nodes {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .ev-related-node {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      background: var(--bg2);
+      text-decoration: none;
+      color: var(--fg);
+      font-family: "Cormorant Garamond", serif;
+      font-style: italic;
+      font-size: 14px;
+      letter-spacing: 0.06em;
+      transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .ev-related-node::before {
+      content: '\2726';
+      font-size: 10px;
+      color: hsl(340, 50%, 50%);
+      flex-shrink: 0;
+    }
+    [data-theme="dark"] .ev-related-node::before { color: hsl(340, 45%, 60%); }
+    .ev-related-node:hover {
+      border-color: var(--accent);
+      background: var(--btn-hover);
+      transform: translateX(3px);
+    }
+    .ev-related-node .rn-arrow {
+      margin-left: auto;
+      color: var(--fg3);
+      font-size: 12px;
+      transition: transform 0.25s ease;
+    }
+    .ev-related-node:hover .rn-arrow { transform: translateX(3px); color: var(--fg); }
+
+    .ev-desc {
+      font-size: 14px;
+      line-height: 1.85;
+      color: var(--fg2);
+      letter-spacing: 0.02em;
+    }
+    .ev-desc.empty {
+      font-family: "Noto Serif SC", serif;
+      font-style: italic;
+      color: var(--fg3);
+      opacity: 0.7;
+    }
+
+    .ev-id-line {
+      margin-top: 4px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+      font-family: "Cormorant Garamond", serif;
+      font-style: italic;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--fg3);
+      word-break: break-all;
+    }
+
+    /* 网格入场 */
+    .item-card { opacity: 0; transform: translateY(14px); }
+    .item-card.entered { animation: evCardIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    @keyframes evCardIn { to { opacity: 1; transform: translateY(0); } }
+
+    @media (prefers-reduced-motion: reduce) {
+      #splash-mark { animation-duration: 0.01s !important; animation-delay: 0s !important; transform: none !important; opacity: 1 !important; filter: none !important; }
+      .item-card { opacity: 1 !important; transform: none !important; animation: none !important; }
+      .item-card .item-img-wrap img,
+      .ev-related-node, .ev-related-node .rn-arrow { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ 开屏动画 (蜡封印章) ═══ -->
+  <div id="splash">
+    <div id="splash-mark">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <radialGradient id="sealWax" cx="38%" cy="34%" r="74%">
+            <stop offset="0%" stop-color="hsl(355,72%,55%)"/>
+            <stop offset="55%" stop-color="hsl(348,64%,40%)"/>
+            <stop offset="100%" stop-color="hsl(350,58%,25%)"/>
+          </radialGradient>
+        </defs>
+        <!-- 蜡封本体: 不规则波纹边缘 -->
+        <path d="M50.0,4.0 Q58.1,9.3 67.6,7.5 Q73.1,15.5 82.5,17.5 Q84.5,26.9 92.5,32.4 Q90.7,41.9 96.0,50.0 Q90.7,58.1 92.5,67.6 Q84.5,73.1 82.5,82.5 Q73.1,84.5 67.6,92.5 Q58.1,90.7 50.0,96.0 Q41.9,90.7 32.4,92.5 Q26.9,84.5 17.5,82.5 Q15.5,73.1 7.5,67.6 Q9.3,58.1 4.0,50.0 Q9.3,41.9 7.5,32.4 Q15.5,26.9 17.5,17.5 Q26.9,15.5 32.4,7.5 Q41.9,9.3 50.0,4.0 Z"
+              fill="url(#sealWax)" stroke="hsl(350,60%,19%)" stroke-width="0.4"/>
+        <!-- 装饰内环 -->
+        <circle cx="50" cy="50" r="38" fill="none" stroke="hsla(0,0%,96%,0.22)" stroke-width="0.7"/>
+        <circle cx="50" cy="50" r="34" fill="none" stroke="hsla(0,0%,96%,0.13)" stroke-width="0.4"/>
+        <circle cx="50" cy="50" r="30" fill="none" stroke="hsla(0,0%,96%,0.32)" stroke-width="0.5" stroke-dasharray="1.4,2.4"/>
+        <!-- 中心五芒星 -->
+        <g transform="translate(50,50)" fill="none" stroke="hsla(0,0%,96%,0.6)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="0.0,-16.0 9.4,12.9 -15.2,-4.9 15.2,-4.9 -9.4,12.9"/>
+        </g>
+      </svg>
+    </div>
+    <h1 id="splash-title">证物</h1>
+    <p id="splash-sub">Evidence</p>
+    <div id="splash-bar"></div>
+  </div>
+
+  <!-- ═══ 背景装饰层 (shared.js 注入) ═══ -->
+  <div id="bg-host"></div>
+
+  <!-- ═══ 主题切换 ═══ -->
+  <button id="theme-toggle" class="theme-toggle" aria-label="切换主题">
+    <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+    <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="4"/>
+      <line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/>
+      <line x1="4.93" y1="4.93" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.07" y2="19.07"/>
+      <line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/>
+      <line x1="4.93" y1="19.07" x2="6.34" y2="17.66"/><line x1="17.66" y1="6.34" x2="19.07" y2="4.93"/>
+    </svg>
+  </button>
+
+  <!-- ═══ 头部 ═══ -->
+  <header class="c-header">
+    <a href="index.html" class="nav-link">← 返回</a>
+    <span class="c-title">证物</span>
+    <span class="c-subtitle">Evidence</span>
+    <div class="c-spacer"></div>
+    <div class="c-search"><input type="search" id="evidence-search" placeholder="搜索证物..." autocomplete="off"></div>
+  </header>
+
+  <!-- ═══ 主体 ═══ -->
+  <main class="c-main">
+    <div class="filterbar" id="evidence-filters"></div>
+    <div class="card-grid" id="evidence-grid"></div>
+  </main>
+
+  <!-- ═══ 详情抽屉 ═══ -->
+  <div class="detail-drawer-backdrop" id="drawer-backdrop"></div>
+  <div class="detail-drawer" id="evidence-drawer" role="dialog" aria-modal="true" aria-label="证物详情">
+    <div class="drawer-header">
+      <h3>证物详情</h3>
+      <button class="drawer-close" id="drawer-close" aria-label="关闭">×</button>
+    </div>
+    <div class="drawer-body" id="drawer-body"></div>
+  </div>
+
+  <script src="assets/shared.js"></script>
+  <script src="assets/evidence.js"></script>
+</body>
+</html>

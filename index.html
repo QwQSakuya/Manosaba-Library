@@ -3,15 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>魔女审判文本查询器</title>
+<title>魔女审判资料馆</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500;1,700&family=Noto+Serif+SC:wght@700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/shared.css">
 <script>
   // 主题恢复 (提前执行, 避免 FOUC 闪白)
-  // 注: 落地页不引入 app.js —— app.js 顶层即访问 canvas-container 等 DOM,
-  // 在无画布的落地页会抛 TypeError 中断; 主题逻辑按任务允许方案在此自行实现.
   (function () {
     var saved = localStorage.getItem('theme');
     if (saved === 'dark' || saved === 'light') {
@@ -22,164 +20,11 @@
 <style>
 /* ═══════════════════════════════════════════════════
    落地页专属样式 — 暗黑哥特 / 魔法审判意象
-   仅此页使用, 不外置到共享 style.css
+   变量 / reset / bg-layer / theme-toggle / splash / toast
+   已迁入 shared.css, 此处仅保留卡片与布局
    ═══════════════════════════════════════════════════ */
 
-/* ── 覆盖 style.css 的全屏工具页布局 ── */
-html, body {
-  height: auto;
-  min-height: 100vh;
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-body {
-  display: block;
-  position: relative;
-  background: var(--bg);
-  color: var(--fg);
-}
-
-/* ── 背景装饰层 (固定, 不随滚动) ── */
-.bg-layer {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  overflow: hidden;
-}
-
-/* 多层径向渐变营造审判庭氛围 */
-.bg-gradient {
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 80% 60% at 18% 22%, hsla(340, 55%, 30%, 0.12), transparent 60%),
-    radial-gradient(ellipse 70% 55% at 84% 78%, hsla(0, 60%, 28%, 0.10), transparent 60%),
-    radial-gradient(ellipse 60% 80% at 50% 112%, hsla(280, 45%, 24%, 0.08), transparent 70%);
-}
-[data-theme="dark"] .bg-gradient {
-  background:
-    radial-gradient(ellipse 80% 60% at 18% 22%, hsla(340, 65%, 22%, 0.22), transparent 60%),
-    radial-gradient(ellipse 70% 55% at 84% 78%, hsla(0, 70%, 20%, 0.20), transparent 60%),
-    radial-gradient(ellipse 60% 80% at 50% 112%, hsla(280, 50%, 16%, 0.18), transparent 70%);
-}
-
-/* 血迹溅射 (CSS radial-gradient 模拟) */
-.bg-blood {
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 12% 78%, hsla(0, 75%, 28%, 0.07) 0%, transparent 6%),
-    radial-gradient(circle at 88% 22%, hsla(340, 65%, 32%, 0.06) 0%, transparent 5%),
-    radial-gradient(circle at 65% 88%, hsla(0, 70%, 25%, 0.05) 0%, transparent 7%),
-    radial-gradient(circle at 28% 14%, hsla(340, 55%, 30%, 0.04) 0%, transparent 4%),
-    radial-gradient(circle at 92% 55%, hsla(0, 65%, 28%, 0.04) 0%, transparent 3.5%);
-}
-[data-theme="dark"] .bg-blood {
-  background:
-    radial-gradient(circle at 12% 78%, hsla(0, 80%, 22%, 0.12) 0%, transparent 6%),
-    radial-gradient(circle at 88% 22%, hsla(340, 70%, 25%, 0.10) 0%, transparent 5%),
-    radial-gradient(circle at 65% 88%, hsla(0, 75%, 20%, 0.09) 0%, transparent 7%),
-    radial-gradient(circle at 28% 14%, hsla(340, 60%, 24%, 0.07) 0%, transparent 4%),
-    radial-gradient(circle at 92% 55%, hsla(0, 70%, 22%, 0.07) 0%, transparent 3.5%);
-}
-
-/* 噪点纹理 (SVG turbulence 内联) */
-.bg-grain {
-  position: absolute;
-  inset: 0;
-  opacity: 0.028;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-}
-
-/* ── 魔法阵 (同心圆 + 放射线 + 六芒星, 低透明度旋转) ── */
-.magic-circle {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: min(920px, 125vw);
-  height: min(920px, 125vw);
-  transform: translate(-50%, -50%);
-  color: var(--fg);
-  opacity: 0.05;
-  animation: spin 180s linear infinite;
-  will-change: transform;
-}
-.magic-circle-inner {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: min(520px, 72vw);
-  height: min(520px, 72vw);
-  transform: translate(-50%, -50%);
-  color: var(--fg);
-  opacity: 0.04;
-  animation: spin-rev 130s linear infinite;
-  will-change: transform;
-}
-[data-theme="dark"] .magic-circle { opacity: 0.075; }
-[data-theme="dark"] .magic-circle-inner { opacity: 0.06; }
-@keyframes spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
-@keyframes spin-rev { to { transform: translate(-50%, -50%) rotate(-360deg); } }
-
-/* ── 蝴蝶 (死亡讯息意象, SVG path) ── */
-.butterfly {
-  position: absolute;
-  color: var(--fg);
-  opacity: 0.10;
-  will-change: transform;
-}
-[data-theme="dark"] .butterfly { opacity: 0.14; }
-.butterfly-1 { top: 11%; left: 7%; width: 58px; animation: flutter-a 9s ease-in-out infinite alternate; }
-.butterfly-2 { top: 64%; right: 9%; width: 74px; animation: flutter-b 11s ease-in-out infinite alternate; }
-.butterfly-3 { bottom: 16%; left: 14%; width: 50px; animation: flutter-c 8s ease-in-out infinite alternate; }
-.butterfly-4 { top: 28%; right: 16%; width: 42px; opacity: 0.07; animation: flutter-a 10s ease-in-out infinite alternate-reverse; }
-@keyframes flutter-a {
-  0%   { transform: translateY(0) rotate(-8deg); }
-  50%  { transform: translateY(-14px) translateX(8px) rotate(2deg); }
-  100% { transform: translateY(-26px) rotate(7deg); }
-}
-@keyframes flutter-b {
-  0%   { transform: translateY(0) rotate(5deg); }
-  100% { transform: translateY(-22px) translateX(-12px) rotate(-6deg); }
-}
-@keyframes flutter-c {
-  0%   { transform: translateY(0) rotate(-3deg); }
-  100% { transform: translateY(-18px) translateX(6px) rotate(5deg); }
-}
-
-/* ── 主题切换按钮 (右上角) ── */
-.theme-toggle {
-  position: fixed;
-  top: 22px;
-  right: 26px;
-  z-index: 50;
-  width: 42px;
-  height: 42px;
-  border: 1px solid var(--border);
-  border-radius: 50%;
-  background: var(--header-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  color: var(--fg);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-              border-color 0.3s ease, box-shadow 0.3s ease;
-}
-.theme-toggle:hover {
-  border-color: var(--accent);
-  transform: rotate(18deg);
-  box-shadow: 0 4px 18px rgba(0,0,0,0.12);
-}
-.theme-toggle svg { width: 18px; height: 18px; }
-.theme-toggle .icon-moon { display: block; }
-.theme-toggle .icon-sun  { display: none; }
-[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
-[data-theme="dark"] .theme-toggle .icon-sun  { display: block; }
+body { display: block; }
 
 /* ── 主体布局 ── */
 .landing {
@@ -246,10 +91,8 @@ body {
   animation: enter-divider 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.78s forwards;
 }
 @keyframes enter-logo    { to { opacity: 1; transform: scale(1); } }
-@keyframes enter-up      { to { opacity: 1; transform: translateY(0); } }
-@keyframes enter-divider { to { width: 260px; } }
 
-/* ── 卡片容器 ── */
+/* ── 周目卡片容器 ── */
 .cards {
   display: flex;
   gap: 34px;
@@ -487,6 +330,124 @@ body {
 }
 .card:hover .card-bg { opacity: 0.85; }
 
+/* ═══ 未来功能分隔线 ═══ */
+.future-divider {
+  width: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--fg3), transparent);
+  opacity: 0.4;
+  animation: enter-divider 0.85s cubic-bezier(0.22, 1, 0.36, 1) 1.35s forwards;
+}
+
+/* ═══ 未来功能区域 ═══ */
+.future-section {
+  width: 100%;
+  max-width: 900px;
+  opacity: 0;
+  animation: enter-up 0.85s cubic-bezier(0.22, 1, 0.36, 1) 1.4s forwards;
+}
+.future-heading {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  color: var(--fg3);
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* ── 封锁卡片网格 ── */
+.future-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+/* ── 封锁卡片 ── */
+.future-card {
+  position: relative;
+  padding: 24px 14px 18px;
+  border: 1.5px dashed var(--fg3);
+  border-radius: 3px;
+  background: var(--panel-bg);
+  cursor: pointer;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+  opacity: 0.55;
+  transition: opacity 0.4s ease,
+              transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.4s ease;
+}
+.future-card:hover, .future-card:focus-visible {
+  opacity: 0.82;
+  transform: translateY(-3px);
+  border-color: var(--accent);
+  outline: none;
+}
+.future-card .fc-lock {
+  position: absolute;
+  top: 9px; right: 9px;
+  width: 15px; height: 15px;
+  color: var(--fg3);
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+.future-card .fc-num {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 1;
+  color: var(--fg3);
+  letter-spacing: 0.02em;
+}
+.future-card .fc-title {
+  font-family: "Noto Serif SC", serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  color: var(--fg2);
+}
+.future-card .fc-sub {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--fg3);
+  text-transform: uppercase;
+}
+.future-card .fc-tag {
+  margin-top: 6px;
+  padding: 3px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--fg3);
+  background: var(--bg2);
+}
+.future-card .fc-butterfly {
+  position: absolute;
+  bottom: -10px;
+  right: -8px;
+  width: 52px;
+  color: var(--fg);
+  opacity: 0.03;
+  transform: rotate(-18deg);
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+.future-card:hover .fc-butterfly { opacity: 0.08; }
+
+@media (max-width: 720px) {
+  .future-cards { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+}
+
 /* ── 页脚 ── */
 .landing-footer {
   position: relative;
@@ -494,7 +455,7 @@ body {
   text-align: center;
   padding: 28px 24px;
   opacity: 0;
-  animation: enter-up 0.85s cubic-bezier(0.22, 1, 0.36, 1) 1.45s forwards;
+  animation: enter-up 0.85s cubic-bezier(0.22, 1, 0.36, 1) 1.55s forwards;
 }
 .landing-footer a {
   font-family: "Cormorant Garamond", serif;
@@ -517,7 +478,6 @@ body {
   .landing { padding: 70px 16px 40px; gap: 40px; }
   .cards { flex-direction: column; max-width: 380px; gap: 24px; }
   .card { max-width: none; min-height: 0; }
-  .theme-toggle { top: 14px; right: 14px; width: 38px; height: 38px; }
   .logo { width: 64px; height: 64px; }
   .card-num { font-size: 44px; }
   .card-title { font-size: 26px; }
@@ -530,15 +490,14 @@ body {
     animation-delay: 0s !important;
     transition-duration: 0.12s !important;
   }
-  .magic-circle, .magic-circle-inner, .butterfly { animation: none !important; }
-  .logo, .landing-title, .landing-subtitle, .card, .landing-footer { opacity: 1 !important; transform: none !important; }
-  .landing-divider { width: 260px !important; }
+  .logo, .landing-title, .landing-subtitle, .card, .future-section, .landing-footer { opacity: 1 !important; transform: none !important; }
+  .landing-divider, .future-divider { width: 260px !important; }
 }
 </style>
 </head>
 <body>
 
-<!-- ═══ 背景装饰层 ═══ -->
+<!-- ═══ 背景装饰层 (内联 SVG 作为 JS 不可用时的降级) ═══ -->
 <div class="bg-layer" aria-hidden="true">
   <div class="bg-gradient"></div>
   <div class="bg-blood"></div>
@@ -585,19 +544,11 @@ body {
     </g>
   </svg>
 
-  <!-- 蝴蝶 ×4 (SVG path 绘制) -->
-  <svg class="butterfly butterfly-1" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
-    <g fill="currentColor"><path d="M60,50 C42,22 12,16 6,32 C0,48 16,58 32,56 C46,54 56,52 60,50 Z"/><path d="M60,50 C78,22 108,16 114,32 C120,48 104,58 88,56 C74,54 64,52 60,50 Z"/><path d="M60,50 C50,56 32,66 28,82 C25,92 38,90 48,80 C56,72 58,60 60,50 Z"/><path d="M60,50 C70,56 88,66 92,82 C95,92 82,90 72,80 C64,72 62,60 60,50 Z"/><ellipse cx="60" cy="50" rx="1.4" ry="18"/><path d="M59,33 Q54,24 49,21" fill="none" stroke="currentColor" stroke-width="0.8"/><path d="M61,33 Q66,24 71,21" fill="none" stroke="currentColor" stroke-width="0.8"/></g>
-  </svg>
-  <svg class="butterfly butterfly-2" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
-    <g fill="currentColor"><path d="M60,50 C42,22 12,16 6,32 C0,48 16,58 32,56 C46,54 56,52 60,50 Z"/><path d="M60,50 C78,22 108,16 114,32 C120,48 104,58 88,56 C74,54 64,52 60,50 Z"/><path d="M60,50 C50,56 32,66 28,82 C25,92 38,90 48,80 C56,72 58,60 60,50 Z"/><path d="M60,50 C70,56 88,66 92,82 C95,92 82,90 72,80 C64,72 62,60 60,50 Z"/><ellipse cx="60" cy="50" rx="1.4" ry="18"/><path d="M59,33 Q54,24 49,21" fill="none" stroke="currentColor" stroke-width="0.8"/><path d="M61,33 Q66,24 71,21" fill="none" stroke="currentColor" stroke-width="0.8"/></g>
-  </svg>
-  <svg class="butterfly butterfly-3" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
-    <g fill="currentColor"><path d="M60,50 C42,22 12,16 6,32 C0,48 16,58 32,56 C46,54 56,52 60,50 Z"/><path d="M60,50 C78,22 108,16 114,32 C120,48 104,58 88,56 C74,54 64,52 60,50 Z"/><path d="M60,50 C50,56 32,66 28,82 C25,92 38,90 48,80 C56,72 58,60 60,50 Z"/><path d="M60,50 C70,56 88,66 92,82 C95,92 82,90 72,80 C64,72 62,60 60,50 Z"/><ellipse cx="60" cy="50" rx="1.4" ry="18"/><path d="M59,33 Q54,24 49,21" fill="none" stroke="currentColor" stroke-width="0.8"/><path d="M61,33 Q66,24 71,21" fill="none" stroke="currentColor" stroke-width="0.8"/></g>
-  </svg>
-  <svg class="butterfly butterfly-4" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
-    <g fill="currentColor"><path d="M60,50 C42,22 12,16 6,32 C0,48 16,58 32,56 C46,54 56,52 60,50 Z"/><path d="M60,50 C78,22 108,16 114,32 C120,48 104,58 88,56 C74,54 64,52 60,50 Z"/><path d="M60,50 C50,56 32,66 28,82 C25,92 38,90 48,80 C56,72 58,60 60,50 Z"/><path d="M60,50 C70,56 88,66 92,82 C95,92 82,90 72,80 C64,72 62,60 60,50 Z"/><ellipse cx="60" cy="50" rx="1.4" ry="18"/><path d="M59,33 Q54,24 49,21" fill="none" stroke="currentColor" stroke-width="0.8"/><path d="M61,33 Q66,24 71,21" fill="none" stroke="currentColor" stroke-width="0.8"/></g>
-  </svg>
+  <!-- 蝴蝶 ×4 -->
+  <svg class="butterfly butterfly-1" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><path d="M60,50 C42,22 12,16 6,32 C0,48 16,58 32,56 C46,54 56,52 60,50 Z"/><path d="M60,50 C78,22 108,16 114,32 C120,48 104,58 88,56 C74,54 64,52 60,50 Z"/><path d="M60,50 C50,56 32,66 28,82 C25,92 38,90 48,80 C56,72 58,60 60,50 Z"/><path d="M60,50 C70,56 88,66 92,82 C95,92 82,90 72,80 C64,72 62,60 60,50 Z"/><ellipse cx="60" cy="50" rx="1.4" ry="18"/><path d="M59,33 Q54,24 49,21" fill="none" stroke="currentColor" stroke-width="0.8"/><path d="M61,33 Q66,24 71,21" fill="none" stroke="currentColor" stroke-width="0.8"/></g></svg>
+  <svg class="butterfly butterfly-2" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><path d="M60,50 C42,22 12,16 6,32 C0,48 16,58 32,56 C46,54 56,52 60,50 Z"/><path d="M60,50 C78,22 108,16 114,32 C120,48 104,58 88,56 C74,54 64,52 60,50 Z"/><path d="M60,50 C50,56 32,66 28,82 C25,92 38,90 48,80 C56,72 58,60 60,50 Z"/><path d="M60,50 C70,56 88,66 92,82 C95,92 82,90 72,80 C64,72 62,60 60,50 Z"/><ellipse cx="60" cy="50" rx="1.4" ry="18"/><path d="M59,33 Q54,24 49,21" fill="none" stroke="currentColor" stroke-width="0.8"/><path d="M61,33 Q66,24 71,21" fill="none" stroke="currentColor" stroke-width="0.8"/></g></svg>
+  <svg class="butterfly butterfly-3" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><path d="M60,50 C42,22 12,16 6,32 C0,48 16,58 32,56 C46,54 56,52 60,50 Z"/><path d="M60,50 C78,22 108,16 114,32 C120,48 104,58 88,56 C74,54 64,52 60,50 Z"/><path d="M60,50 C50,56 32,66 28,82 C25,92 38,90 48,80 C56,72 58,60 60,50 Z"/><path d="M60,50 C70,56 88,66 92,82 C95,92 82,90 72,80 C64,72 62,60 60,50 Z"/><ellipse cx="60" cy="50" rx="1.4" ry="18"/><path d="M59,33 Q54,24 49,21" fill="none" stroke="currentColor" stroke-width="0.8"/><path d="M61,33 Q66,24 71,21" fill="none" stroke="currentColor" stroke-width="0.8"/></g></svg>
+  <svg class="butterfly butterfly-4" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><path d="M60,50 C42,22 12,16 6,32 C0,48 16,58 32,56 C46,54 56,52 60,50 Z"/><path d="M60,50 C78,22 108,16 114,32 C120,48 104,58 88,56 C74,54 64,52 60,50 Z"/><path d="M60,50 C50,56 32,66 28,82 C25,92 38,90 48,80 C56,72 58,60 60,50 Z"/><path d="M60,50 C70,56 88,66 92,82 C95,92 82,90 72,80 C64,72 62,60 60,50 Z"/><ellipse cx="60" cy="50" rx="1.4" ry="18"/><path d="M59,33 Q54,24 49,21" fill="none" stroke="currentColor" stroke-width="0.8"/><path d="M61,33 Q66,24 71,21" fill="none" stroke="currentColor" stroke-width="0.8"/></g></svg>
 </div>
 
 <!-- ═══ 主题切换 (右上角) ═══ -->
@@ -614,11 +565,11 @@ body {
   </svg>
 </button>
 
-<!-- ═══ 主体: 标题区 + 两张周目卡片 ═══ -->
+<!-- ═══ 主体: 标题区 + 周目卡片 + 未来功能封锁区 ═══ -->
 <main class="landing">
   <header class="landing-header">
     <img src="nnk_box.webp" class="logo" alt="">
-    <h1 class="landing-title">魔女审判文本查询器</h1>
+    <h1 class="landing-title">魔女审判资料馆</h1>
     <p class="landing-subtitle">Witch Trials · Text Finder</p>
     <div class="landing-divider"></div>
   </header>
@@ -662,6 +613,65 @@ body {
       </div>
     </article>
   </div>
+
+  <!-- ═══ 未来功能封锁区 ═══ -->
+  <div class="future-divider"></div>
+  <section class="future-section">
+    <h2 class="future-heading">Future Features</h2>
+    <div class="future-cards">
+      <!-- 记录·规定 -->
+      <article class="future-card" data-future="records" tabindex="0" role="button" aria-label="记录·规定（开发中）">
+        <svg class="fc-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="5" y="11" width="14" height="10" rx="2"/>
+          <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+        </svg>
+        <span class="fc-num">III</span>
+        <span class="fc-title">记录·规定</span>
+        <span class="fc-sub">Records &amp; Rules</span>
+        <span class="fc-tag">敬请期待</span>
+        <svg class="fc-butterfly" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="currentColor"><path d="M60,50 C42,22 12,16 6,32 C0,48 16,58 32,56 C46,54 56,52 60,50 Z"/><path d="M60,50 C78,22 108,16 114,32 C120,48 104,58 88,56 C74,54 64,52 60,50 Z"/><path d="M60,50 C50,56 32,66 28,82 C25,92 38,90 48,80 C56,72 58,60 60,50 Z"/><path d="M60,50 C70,56 88,66 92,82 C95,92 82,90 72,80 C64,72 62,60 60,50 Z"/><ellipse cx="60" cy="50" rx="1.4" ry="18"/></g></svg>
+      </article>
+
+      <!-- 证物 -->
+      <article class="future-card" data-future="evidence" tabindex="0" role="button" aria-label="证物（开发中）">
+        <svg class="fc-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="5" y="11" width="14" height="10" rx="2"/>
+          <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+        </svg>
+        <span class="fc-num">IV</span>
+        <span class="fc-title">证物</span>
+        <span class="fc-sub">Evidence</span>
+        <span class="fc-tag">敬请期待</span>
+        <svg class="fc-butterfly" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="currentColor"><path d="M60,50 C42,22 12,16 6,32 C0,48 16,58 32,56 C46,54 56,52 60,50 Z"/><path d="M60,50 C78,22 108,16 114,32 C120,48 104,58 88,56 C74,54 64,52 60,50 Z"/><path d="M60,50 C50,56 32,66 28,82 C25,92 38,90 48,80 C56,72 58,60 60,50 Z"/><path d="M60,50 C70,56 88,66 92,82 C95,92 82,90 72,80 C64,72 62,60 60,50 Z"/><ellipse cx="60" cy="50" rx="1.4" ry="18"/></g></svg>
+      </article>
+
+      <!-- CG画廊 -->
+      <article class="future-card" data-future="gallery" tabindex="0" role="button" aria-label="CG画廊（开发中）">
+        <svg class="fc-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="5" y="11" width="14" height="10" rx="2"/>
+          <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+        </svg>
+        <span class="fc-num">V</span>
+        <span class="fc-title">CG画廊</span>
+        <span class="fc-sub">CG Gallery</span>
+        <span class="fc-tag">敬请期待</span>
+        <svg class="fc-butterfly" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="currentColor"><path d="M60,50 C42,22 12,16 6,32 C0,48 16,58 32,56 C46,54 56,52 60,50 Z"/><path d="M60,50 C78,22 108,16 114,32 C120,48 104,58 88,56 C74,54 64,52 60,50 Z"/><path d="M60,50 C50,56 32,66 28,82 C25,92 38,90 48,80 C56,72 58,60 60,50 Z"/><path d="M60,50 C70,56 88,66 92,82 C95,92 82,90 72,80 C64,72 62,60 60,50 Z"/><ellipse cx="60" cy="50" rx="1.4" ry="18"/></g></svg>
+      </article>
+
+      <!-- 语音和音乐 -->
+      <article class="future-card" data-future="audio" tabindex="0" role="button" aria-label="语音和音乐（开发中）">
+        <svg class="fc-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="5" y="11" width="14" height="10" rx="2"/>
+          <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+        </svg>
+        <span class="fc-num">VI</span>
+        <span class="fc-title">语音和音乐</span>
+        <span class="fc-sub">Voice &amp; Music</span>
+        <span class="fc-tag">敬请期待</span>
+        <svg class="fc-butterfly" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="currentColor"><path d="M60,50 C42,22 12,16 6,32 C0,48 16,58 32,56 C46,54 56,52 60,50 Z"/><path d="M60,50 C78,22 108,16 114,32 C120,48 104,58 88,56 C74,54 64,52 60,50 Z"/><path d="M60,50 C50,56 32,66 28,82 C25,92 38,90 48,80 C56,72 58,60 60,50 Z"/><path d="M60,50 C70,56 88,66 92,82 C95,92 82,90 72,80 C64,72 62,60 60,50 Z"/><ellipse cx="60" cy="50" rx="1.4" ry="18"/></g></svg>
+      </article>
+    </div>
+  </section>
 </main>
 
 <!-- ═══ 页脚: GitHub 仓库链接 ═══ -->
@@ -669,26 +679,17 @@ body {
   <a href="https://github.com/QwQSakuya/Manosaba-textfinder" target="_blank" rel="noopener noreferrer">GitHub Repository</a>
 </footer>
 
+<script src="assets/shared.js"></script>
 <script>
 // ═══════════════════════════════════════════════════
-//  落地页专属 JS
+//  落地页专属 JS (依赖 shared.js)
 //  主题恢复 IIFE 已在 <head> 提前执行 (防闪白)
-//  此处: 主题切换绑定 + 卡片点击/键盘跳转
 // ═══════════════════════════════════════════════════
 (function () {
-  // 主题切换 (复用 app.js 的逻辑, 持久化到 localStorage)
-  var toggle = document.getElementById('theme-toggle');
-  if (toggle) {
-    toggle.addEventListener('click', function () {
-      var html = document.documentElement;
-      var current = html.getAttribute('data-theme');
-      var next = current === 'dark' ? 'light' : 'dark';
-      html.setAttribute('data-theme', next);
-      localStorage.setItem('theme', next);
-    });
-  }
+  // 主题切换
+  MS.initTheme();
 
-  // 卡片跳转: 点击任意位置 (含按钮, 事件冒泡) 或 Enter/Space 触发
+  // 周目卡片跳转: 点击或 Enter/Space
   document.querySelectorAll('[data-go]').forEach(function (el) {
     var go = function () {
       var target = el.dataset.go;
@@ -699,6 +700,20 @@ body {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         go();
+      }
+    });
+  });
+
+  // 封锁卡片: 点击/键盘 → toast, 不跳转
+  document.querySelectorAll('[data-future]').forEach(function (el) {
+    var blocked = function () {
+      MS.showToast('功能开发中，敬请期待');
+    };
+    el.addEventListener('click', blocked);
+    el.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        blocked();
       }
     });
   });

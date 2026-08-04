@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="zh-Hans" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>记录·规定 — 魔女审判资料馆</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500;1,700&family=Noto+Serif+SC:wght@700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/shared.css">
+<link rel="stylesheet" href="assets/content.css">
+<script>
+  // 主题恢复 (提前执行, 避免 FOUC 闪白)
+  (function () {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || saved === 'light') {
+      document.documentElement.setAttribute('data-theme', saved);
+    }
+  })();
+</script>
+<style>
+/* ═══════════════════════════════════════════════════
+   记录·规定 页专属样式
+   依赖: shared.css (变量/bg-layer/theme-toggle/splash)
+         content.css (c-header/c-main/tabbar/source-tag/char-dot/hex-bullet/roman-num/empty-state)
+   ═══════════════════════════════════════════════════ */
+
+/* ── 开屏: 翻书动画 (覆盖 #splash-mark 默认 splashMarkIn) ── */
+#splash-mark {
+  transform: perspective(500px) rotateY(-90deg);
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  animation: bookOpen 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.15s forwards;
+}
+@keyframes bookOpen {
+  from { transform: perspective(500px) rotateY(-90deg); opacity: 0; }
+  to   { transform: perspective(500px) rotateY(0deg);   opacity: 1; }
+}
+
+/* ── 主体布局: 左侧索引 + 右侧内容 ── */
+.records-layout {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+}
+
+/* ── 左侧索引栏 ── */
+.records-index {
+  position: sticky;
+  top: 76px;
+  width: 260px;
+  flex-shrink: 0;
+  max-height: calc(100vh - 96px);
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+/* 索引内搜索框 */
+.records-search {
+  position: relative;
+  margin-bottom: 18px;
+}
+.records-search-input {
+  width: 100%;
+  padding: 8px 12px 8px 30px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: var(--search-bg);
+  color: var(--fg);
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.records-search-input::placeholder { color: var(--fg3); }
+.records-search-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 14%, transparent);
+}
+.records-search::before {
+  content: '\2315';
+  position: absolute; left: 9px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--fg3); font-size: 14px; pointer-events: none;
+}
+
+/* 索引分组 */
+.index-group { margin-bottom: 20px; }
+.index-group-title {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg3);
+  margin-bottom: 8px;
+  padding-left: 10px;
+  border-left: 2px solid var(--border);
+}
+.index-list { list-style: none; }
+.index-item {
+  display: block;
+  width: 100%;
+  padding: 7px 10px;
+  font-family: "Noto Serif SC", serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--fg2);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  border-left: 2px solid transparent;
+  border-radius: 3px;
+  line-height: 1.45;
+  text-align: left;
+  transition: color 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+              background 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.index-item:hover {
+  color: var(--fg);
+  background: var(--bg2);
+  border-left-color: var(--fg3);
+}
+.index-item.active {
+  color: var(--fg);
+  background: var(--btn-bg);
+  border-left-color: hsl(340, 55%, 50%);
+}
+[data-theme="dark"] .index-item.active { border-left-color: hsl(340, 50%, 62%); }
+.index-item .roman-num {
+  margin-right: 6px;
+  font-size: 14px;
+}
+.index-empty {
+  padding: 28px 10px;
+  text-align: center;
+  font-family: "Noto Serif SC", serif;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--fg3);
+}
+
+/* 移动端下拉 (默认隐藏, 移动端显示) */
+.records-select {
+  display: none;
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: var(--search-bg);
+  color: var(--fg);
+  font-family: "Noto Serif SC", serif;
+  font-size: 13px;
+  outline: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path d='M2,4 L6,8 L10,4' fill='none' stroke='%23888' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+
+/* ── 右侧内容区 ── */
+.records-content {
+  flex: 1;
+  min-width: 0;
+  transition: opacity 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ── 古书页面板: panel-bg + 3px 左边框 + 极淡纸张噪点 ── */
+.entry-panel {
+  position: relative;
+  background-color: var(--panel-bg);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.02'/></svg>");
+  background-size: 200px 200px;
+  background-repeat: repeat;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--border);
+  border-radius: 3px;
+  padding: 38px 42px;
+  overflow: hidden;
+  animation: entryIn 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes entryIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* 条目头部 */
+.entry-header { margin-bottom: 28px; }
+.entry-title {
+  font-family: "Noto Serif SC", serif;
+  font-weight: 900;
+  font-size: 30px;
+  letter-spacing: 0.06em;
+  color: var(--fg);
+  line-height: 1.25;
+  margin: 0 0 14px;
+}
+.entry-aliases {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.alias-tag {
+  padding: 2px 11px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg2);
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 12px;
+  color: var(--fg3);
+  letter-spacing: 0.04em;
+}
+.entry-chars {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+}
+.char-line {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--fg2);
+  letter-spacing: 0.02em;
+}
+.char-line .char-dot { margin-right: 0; }
+
+/* 条目正文 */
+.entry-body { max-width: 680px; }
+.entry-para {
+  font-size: 15px;
+  line-height: 1.85;
+  color: var(--fg2);
+  margin: 0 0 16px;
+  text-align: justify;
+  word-break: break-word;
+}
+
+/* 相关条目 */
+.entry-related {
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  max-width: 680px;
+}
+.related-label {
+  display: block;
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fg3);
+  margin-bottom: 10px;
+}
+.related-chip {
+  display: inline-block;
+  padding: 5px 14px;
+  margin: 0 6px 6px 0;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--btn-bg);
+  color: var(--fg2);
+  font-family: "Noto Serif SC", serif;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.related-chip:hover {
+  background: var(--btn-hover);
+  color: var(--fg);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+.related-chip.disabled {
+  opacity: 0.4;
+  cursor: default;
+  pointer-events: none;
+}
+
+/* 来源标签底栏 */
+.entry-source {
+  margin-top: 28px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-width: 680px;
+}
+.entry-source .source-label {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg3);
+  margin-right: 4px;
+  align-self: center;
+}
+
+/* 规定编号行 */
+.rule-num-line { margin-bottom: 6px; }
+.rule-num-line .rule-num {
+  font-size: 22px;
+  letter-spacing: 0.1em;
+}
+
+/* 规定条目列表 */
+.rule-items {
+  list-style: none;
+  margin: 0 0 26px;
+  max-width: 680px;
+}
+.rule-items .hex-bullet {
+  display: list-item;
+  padding: 6px 0 6px 4px;
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--fg2);
+  text-align: justify;
+  word-break: break-word;
+}
+
+/* 内容区章节标题间距修正 */
+.entry-body .c-section-title { margin-bottom: 14px; font-size: 18px; }
+.entry-body .c-section-title + .rule-items { margin-top: 0; }
+
+/* ── 响应式: ≤720px 侧栏折叠为顶部下拉 ── */
+@media (max-width: 720px) {
+  .records-layout { flex-direction: column; gap: 0; }
+  .records-index {
+    position: static;
+    width: 100%;
+    max-height: none;
+    overflow: visible;
+    margin-bottom: 22px;
+    padding-right: 0;
+  }
+  .index-nav { display: none; }
+  .records-select { display: block; }
+  .entry-panel { padding: 24px 18px; }
+  .entry-title { font-size: 24px; }
+  .rule-num-line .rule-num { font-size: 19px; }
+}
+
+/* ── 减少动效 ── */
+@media (prefers-reduced-motion: reduce) {
+  #splash-mark {
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+  .entry-panel { animation: none !important; }
+  .records-content { transition: none !important; }
+  .index-item, .related-chip { transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ 开屏动画: 翻开的魔女之书 ═══ -->
+<div id="splash" aria-hidden="true">
+  <div id="splash-mark">
+    <svg viewBox="0 0 120 92" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+        <!-- 左页 -->
+        <path d="M60,18 C46,12 26,12 12,18 L12,76 C26,70 46,70 60,76 Z" fill="var(--panel-bg)" stroke-width="1.6"/>
+        <!-- 右页 -->
+        <path d="M60,18 C74,12 94,12 108,18 L108,76 C94,70 74,70 60,76 Z" fill="var(--panel-bg)" stroke-width="1.6"/>
+        <!-- 书脊 -->
+        <line x1="60" y1="18" x2="60" y2="76" stroke-width="1.1" opacity="0.5"/>
+        <!-- 上缘弧线 -->
+        <path d="M12,18 C26,12 46,12 60,18" stroke-width="0.6" opacity="0.5"/>
+        <path d="M108,18 C94,12 74,12 60,18" stroke-width="0.6" opacity="0.5"/>
+        <!-- 左页文字行 -->
+        <g stroke-width="0.5" opacity="0.45">
+          <line x1="20" y1="30" x2="50" y2="28"/>
+          <line x1="20" y1="36" x2="52" y2="34"/>
+          <line x1="20" y1="42" x2="48" y2="40"/>
+          <line x1="20" y1="48" x2="50" y2="46"/>
+          <line x1="20" y1="54" x2="46" y2="52"/>
+          <line x1="20" y1="60" x2="50" y2="58"/>
+        </g>
+        <!-- 右页文字行 -->
+        <g stroke-width="0.5" opacity="0.45">
+          <line x1="70" y1="28" x2="100" y2="30"/>
+          <line x1="68" y1="34" x2="100" y2="36"/>
+          <line x1="72" y1="40" x2="100" y2="42"/>
+          <line x1="70" y1="46" x2="100" y2="48"/>
+          <line x1="74" y1="52" x2="100" y2="54"/>
+          <line x1="70" y1="58" x2="100" y2="60"/>
+        </g>
+        <!-- 中央封印: 四芒星 + 圆环 -->
+        <g transform="translate(60,68)" opacity="0.7">
+          <circle cx="0" cy="0" r="6.5" stroke-width="0.5" opacity="0.6"/>
+          <polygon points="0,-4.5 1.4,-1.4 4.5,0 1.4,1.4 0,4.5 -1.4,1.4 -4.5,0 -1.4,-1.4" fill="currentColor" stroke="none"/>
+        </g>
+        <!-- 封面角线装饰 -->
+        <g stroke-width="0.8" opacity="0.5">
+          <path d="M14,20 L18,20 M14,20 L14,24"/>
+          <path d="M106,20 L102,20 M106,20 L106,24"/>
+          <path d="M14,74 L18,74 M14,74 L14,70"/>
+          <path d="M106,74 L102,74 M106,74 L106,70"/>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <h1 id="splash-title">记录·规定</h1>
+  <p id="splash-sub">Records &amp; Rules</p>
+  <div id="splash-bar"></div>
+</div>
+
+<!-- ═══ 背景装饰层 (由 shared.js injectBgLayer 注入) ═══ -->
+<div id="bg-host"></div>
+
+<!-- ═══ 主题切换按钮 ═══ -->
+<button id="theme-toggle" class="theme-toggle" aria-label="切换主题">
+  <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+  </svg>
+  <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="4"/>
+    <line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/>
+    <line x1="4.93" y1="4.93" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.07" y2="19.07"/>
+    <line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/>
+    <line x1="4.93" y1="19.07" x2="6.34" y2="17.66"/><line x1="17.66" y1="6.34" x2="19.07" y2="4.93"/>
+  </svg>
+</button>
+
+<!-- ═══ 页头 ═══ -->
+<header class="c-header">
+  <a href="index.html" class="nav-link">← 返回</a>
+  <span class="c-title">记录·规定</span>
+  <span class="c-subtitle">Records &amp; Rules</span>
+</header>
+
+<!-- ═══ 标签栏: 记录 / 规定 ═══ -->
+<div class="tabbar">
+  <button class="tab active" data-tab="lore" type="button">【记录】</button>
+  <button class="tab" data-tab="rules" type="button">【规定】</button>
+</div>
+
+<!-- ═══ 主体: 左索引 + 右内容 ═══ -->
+<main class="c-main records-layout">
+  <aside class="records-index">
+    <div class="records-search">
+      <input type="text" id="index-search" class="records-search-input" placeholder="搜索条目…" autocomplete="off" aria-label="搜索条目">
+    </div>
+    <nav class="index-nav" id="index-nav" aria-label="条目索引"></nav>
+    <select id="index-select" class="records-select" aria-label="选择条目"></select>
+  </aside>
+  <section class="records-content" id="records-content"></section>
+</main>
+
+<script src="assets/shared.js"></script>
+<script src="assets/records.js"></script>
+</body>
+</html>

@@ -1,0 +1,2181 @@
+{
+  "evidence": [
+    {
+      "id": "Clue_010_001",
+      "name": "Clue_010_001",
+      "nameZh": "希罗的钢笔",
+      "sprite": "Clue_010_001.webp",
+      "category": "证物",
+      "act": 0,
+      "chapter": 0,
+      "scene": 1,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [],
+      "description": "二阶堂希罗原本持有的钢笔。"
+    },
+    {
+      "id": "Clue_010_002",
+      "name": "Clue_010_002",
+      "nameZh": "未知证物",
+      "sprite": "Clue_010_002.webp",
+      "category": "证物",
+      "act": 0,
+      "chapter": 0,
+      "scene": 2,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [],
+      "description": ""
+    },
+    {
+      "id": "Clue_010_003",
+      "name": "Clue_010_003",
+      "nameZh": "未知证物",
+      "sprite": "Clue_010_003.webp",
+      "category": "证物",
+      "act": 0,
+      "chapter": 0,
+      "scene": 3,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [],
+      "description": ""
+    },
+    {
+      "id": "Clue_010_004",
+      "name": "Clue_010_004",
+      "nameZh": "未知证物",
+      "sprite": "Clue_010_004.webp",
+      "category": "证物",
+      "act": 0,
+      "chapter": 0,
+      "scene": 4,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [],
+      "description": ""
+    },
+    {
+      "id": "Clue_010_005",
+      "name": "Clue_010_005",
+      "nameZh": "未知证物",
+      "sprite": "Clue_010_005.webp",
+      "category": "证物",
+      "act": 0,
+      "chapter": 0,
+      "scene": 5,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [],
+      "description": ""
+    },
+    {
+      "id": "Clue_010_011",
+      "name": "Clue_010_011",
+      "nameZh": "未知证物",
+      "sprite": "Clue_010_011.webp",
+      "category": "证物",
+      "act": 0,
+      "chapter": 0,
+      "scene": 11,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [],
+      "description": ""
+    },
+    {
+      "id": "Clue_001_001",
+      "name": "Clue_001_001",
+      "nameZh": "被拆解的零件",
+      "sprite": "Clue_001_001.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 1,
+      "scene": 1,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C1PreTrial",
+        "A1C1Trial"
+      ],
+      "description": "装在走廊的桶里的弩枪的零件。\n被拆解得十分零碎，难以修复。\n\n艾玛和梅露露确认其昨天傍晚还装在桶里。"
+    },
+    {
+      "id": "Clue_001_002",
+      "name": "Clue_001_002",
+      "nameZh": "安安的素描本",
+      "sprite": "Clue_001_002.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 1,
+      "scene": 2,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C1PreTrial",
+        "A1C1Trial"
+      ],
+      "description": "夏目安安展示过的素描本。\n上面画有蝴蝶的绘画。\n画的作者是诺亚，而蝴蝶似乎是留给安安的某种信息。"
+    },
+    {
+      "id": "Clue_001_003",
+      "name": "Clue_001_003",
+      "nameZh": "沾血的发带",
+      "sprite": "Clue_001_003.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 1,
+      "scene": 3,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C1PreTrial",
+        "A1C1Trial"
+      ],
+      "description": "亚里沙在湖边找到的发带。\n沾有血迹和状似颜料的痕迹。"
+    },
+    {
+      "id": "Clue_001_004",
+      "name": "Clue_001_004",
+      "nameZh": "扫帚",
+      "sprite": "Clue_001_004.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 1,
+      "scene": 4,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C1PreTrial",
+        "A1C1Trial"
+      ],
+      "description": "在靠近楼梯的清扫工具柜中找到的木制扫帚。\n组成部件可以拆卸。找到的时候握柄和刷毛的部分已经被拆卸下来了。"
+    },
+    {
+      "id": "Clue_001_005",
+      "name": "Clue_001_005",
+      "nameZh": "喷漆罐",
+      "sprite": "Clue_001_005.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 1,
+      "scene": 5,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C1PreTrial",
+        "A1C1Trial"
+      ],
+      "description": "发现城崎诺亚的尸体时，掉在旁边的喷漆罐。\n内部装有散发刺鼻异臭的白色颜料，需要较长时间晾干。\n\n背面写着注意事项。\n【使用本商品时请注意：如附着于木材之上，将无法冲洗分离】"
+    },
+    {
+      "id": "Clue_001_006",
+      "name": "Clue_001_006",
+      "nameZh": "水果的照片",
+      "sprite": "Clue_001_006.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 1,
+      "scene": 6,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C1PreTrial",
+        "A1C1Trial"
+      ],
+      "description": "雪莉在试用手机的摄像功能时拍下的照片。\n照片里是摆好的水果盘。\n位于下方的苹果好像已经腐烂了。"
+    },
+    {
+      "id": "Clue_001_007",
+      "name": "Clue_001_007",
+      "nameZh": "直播回放",
+      "sprite": "Clue_001_007.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 1,
+      "scene": 7,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C1PreTrial",
+        "A1C1Trial"
+      ],
+      "description": "泽渡可可发起的直播的影片记录。\n佐伯米莉亚和莲见蕾雅有在直播中出场。"
+    },
+    {
+      "id": "Clue_001_008",
+      "name": "Clue_001_008",
+      "nameZh": "城崎诺亚的尸体照片",
+      "sprite": "Clue_001_008.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 1,
+      "scene": 8,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C1PreTrial",
+        "A1C1Trial"
+      ],
+      "description": "城崎诺亚尸体的照片。\n在自己所属的房间内以仰躺姿倒地，流血身亡。\n\n胸口有细长物体造成的贯穿伤口。\n\n房间的地板上涂满了白色颜料。"
+    },
+    {
+      "id": "Clue_001_009",
+      "name": "Clue_001_009",
+      "nameZh": "地板的划痕",
+      "sprite": "Clue_001_009.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 1,
+      "scene": 9,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C1PreTrial",
+        "A1C1Trial"
+      ],
+      "description": "在尸体近处的地板上留下的，被某物刮出的划痕。\n这道划痕令白色颜料产生脱落的情况。"
+    },
+    {
+      "id": "Clue_001_010",
+      "name": "Clue_001_010",
+      "nameZh": "弩枪的箭矢",
+      "sprite": "Clue_001_010.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 1,
+      "scene": 10,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C1PreTrial",
+        "A1C1Trial"
+      ],
+      "description": "在发现城崎诺亚尸体时，掉落在近处地板上的箭矢。\n尖头形状与尸体伤口吻合，并沾有血迹。\n箭身落地处几乎没沾到地板上的颜料。"
+    },
+    {
+      "id": "Clue_001_011",
+      "name": "Clue_001_011",
+      "nameZh": "画在地板上的蝴蝶",
+      "sprite": "Clue_001_011.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 1,
+      "scene": 11,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C1PreTrial",
+        "A1C1Trial"
+      ],
+      "description": "在发现城崎诺亚尸体时，画在地板上的状似蝴蝶的图案。\n是用大量的血液画成的。"
+    },
+    {
+      "id": "Clue_001_013",
+      "name": "Clue_001_013",
+      "nameZh": "苹果",
+      "sprite": "Clue_001_013.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 1,
+      "scene": 13,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C1PreTrial",
+        "A1C1Trial"
+      ],
+      "description": "无"
+    },
+    {
+      "id": "Clue_001_014",
+      "name": "Clue_001_014",
+      "nameZh": "苹果（沾了颜料的那一侧）",
+      "sprite": "Clue_001_014.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 1,
+      "scene": 14,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C1PreTrial",
+        "A1C1Trial"
+      ],
+      "description": "无"
+    },
+    {
+      "id": "Clue_002_001",
+      "name": "Clue_002_001",
+      "nameZh": "拷问秀的邀请文",
+      "sprite": "Clue_002_001.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 2,
+      "scene": 1,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C2Trial"
+      ],
+      "description": "一张写着【20时在惩罚室举行拷问秀】的便条纸。\n此前张贴在会客厅里。\n\n典狱长否认自己与之相关。"
+    },
+    {
+      "id": "Clue_002_002",
+      "name": "Clue_002_002",
+      "nameZh": "坏掉的门锁",
+      "sprite": "Clue_002_002.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 2,
+      "scene": 2,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C2Trial"
+      ],
+      "description": "挂在惩罚室的门上的锁。\n用于在门外上锁。\n锁身颜色是黯淡的金色。\n由于橘雪莉在进房的时候将其扯破，现已严重变形，无法分辨出原貌。"
+    },
+    {
+      "id": "Clue_002_003",
+      "name": "Clue_002_003",
+      "nameZh": "小钥匙",
+      "sprite": "Clue_002_003.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 2,
+      "scene": 3,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C2Trial"
+      ],
+      "description": "从佐伯米莉亚嘴里取出的钥匙。\n表面颜色是黯淡的金色。\n\n是监牢内某处收纳柜的钥匙，\n与惩罚室无关。"
+    },
+    {
+      "id": "Clue_002_004",
+      "name": "Clue_002_004",
+      "nameZh": "惩罚室的钥匙",
+      "sprite": "Clue_002_004.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 2,
+      "scene": 4,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C2Trial"
+      ],
+      "description": "一把钥匙。奈叶香将其作为证据提出。\n似乎是用于打开惩罚室的钥匙。\n它掉在惩罚室的地上，而奈叶香把它捡起来了。\n\n据典狱长称，这毫无疑问是惩罚室的钥匙。\n钥匙的管理由看守负责。"
+    },
+    {
+      "id": "Clue_002_005",
+      "name": "Clue_002_005",
+      "nameZh": "刀刃破损的小刀",
+      "sprite": "Clue_002_005.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 2,
+      "scene": 5,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C2Trial"
+      ],
+      "description": "一把锈迹斑斑、破旧不堪，但仍有切割力的小刀。\n刃口锋利，并沾有血迹。"
+    },
+    {
+      "id": "Clue_002_006",
+      "name": "Clue_002_006",
+      "nameZh": "汉娜的录音数据",
+      "sprite": "Clue_002_006.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 2,
+      "scene": 6,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C2Trial"
+      ],
+      "description": "录制有对话的声音。\n\n「录音机……？不对……」\n「呀啊啊啊—！！」\n「噫！？」\n「是米莉亚的声音」\n「她在惨叫!?」\n「是拷问开始了吗」\n「怎么会这样……安安，你的脸色不太好」\n「……回去吧」"
+    },
+    {
+      "id": "Clue_002_007",
+      "name": "Clue_002_007",
+      "nameZh": "樱羽艾玛的手机",
+      "sprite": "Clue_002_007.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 2,
+      "scene": 7,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C2Trial"
+      ],
+      "description": "分发给艾玛的智能手机。\n安装有以艾玛为原型设计的手机套。\n\n留有与佐伯米莉亚手机的通话记录。"
+    },
+    {
+      "id": "Clue_002_008",
+      "name": "Clue_002_008",
+      "nameZh": "佐伯米莉亚的手机",
+      "sprite": "Clue_002_008.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 2,
+      "scene": 8,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C2Trial"
+      ],
+      "description": "安安在凶杀现场找到的智能手机。\n安装有以米莉亚为原型设计的手机套。\n\n数据已被全部清除，据称清除也需要接近30分钟的时间。\n只要知道手机专属的ID(识别号码），就可以互相取得联络。"
+    },
+    {
+      "id": "Clue_002_009",
+      "name": "Clue_002_009",
+      "nameZh": "佐伯米莉亚的尸体照片",
+      "sprite": "Clue_002_009.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 2,
+      "scene": 9,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C2Trial"
+      ],
+      "description": "佐伯米莉亚尸体的照片。\n\n发现尸体时，佐伯米莉亚的尸体受到拘束，腹部遭到乱刀捅刺。\n死因为胸部的刺伤。\n\n刺伤分布于胸部和腹部。"
+    },
+    {
+      "id": "Clue_002_010",
+      "name": "Clue_002_010",
+      "nameZh": "未知证物",
+      "sprite": "Clue_002_010.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 2,
+      "scene": 10,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C2Trial"
+      ],
+      "description": ""
+    },
+    {
+      "id": "Clue_003_001",
+      "name": "Clue_003_001",
+      "nameZh": "起火物",
+      "sprite": "Clue_003_001.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 3,
+      "scene": 1,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C3Trial"
+      ],
+      "description": "存放在仓库里的能纵火的物品。\n有蜡烛、火柴、鞭炮等。"
+    },
+    {
+      "id": "Clue_003_002",
+      "name": "Clue_003_002",
+      "nameZh": "烧焦的痕迹",
+      "sprite": "Clue_003_002.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 3,
+      "scene": 2,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C3Trial"
+      ],
+      "description": "某种可燃物燃烧后的痕迹。\n是在火精之室的室外近处发现的。\n据亚里沙的现场验证，起火点就在这个位置。"
+    },
+    {
+      "id": "Clue_003_003",
+      "name": "Clue_003_003",
+      "nameZh": "监牢的设计图",
+      "sprite": "Clue_003_003.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 3,
+      "scene": 3,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C3Trial"
+      ],
+      "description": "似乎是监牢的老图纸。\n可在地图中确认其内容。"
+    },
+    {
+      "id": "Clue_003_004",
+      "name": "Clue_003_004",
+      "nameZh": "汉娜的尸体照片",
+      "sprite": "Clue_003_004.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 3,
+      "scene": 4,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C3Trial"
+      ],
+      "description": "尸体在起火的招待所中发现。\n其被悬挂于天花板的横梁上，脖子留有绳子的痕迹。\n并未发现其他外伤。"
+    },
+    {
+      "id": "Clue_003_005",
+      "name": "Clue_003_005",
+      "nameZh": "弹痕",
+      "sprite": "Clue_003_005.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 3,
+      "scene": 5,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C3Trial"
+      ],
+      "description": "位于仓库中的子弹射入痕迹。\n子弹是近期击发的，并留在了现场。\n周围没有血迹。"
+    },
+    {
+      "id": "Clue_003_006",
+      "name": "Clue_003_006",
+      "nameZh": "典狱长的雕像",
+      "sprite": "Clue_003_006.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 3,
+      "scene": 6,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C3Trial"
+      ],
+      "description": "放在招待所中的雕像。\n重心不稳定，容易倒下。\n此前笔直地放置在水精之室当中。"
+    },
+    {
+      "id": "Clue_003_007",
+      "name": "Clue_003_007",
+      "nameZh": "烧焦的人偶",
+      "sprite": "Clue_003_007.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 3,
+      "scene": 7,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C3Trial"
+      ],
+      "description": "汉娜制作的人偶。\n此前悬挂在尸体发现现场。"
+    },
+    {
+      "id": "Clue_003_008",
+      "name": "Clue_003_008",
+      "nameZh": "亚里沙的人偶",
+      "sprite": "Clue_003_008.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 3,
+      "scene": 8,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C3Trial"
+      ],
+      "description": "汉娜制作的人偶。\n此前留在地精之室当中。\n\n附着有红色颜料。\n这道颜料是昨晚玛格在做魔法实验时附上的。"
+    },
+    {
+      "id": "Clue_003_009",
+      "name": "Clue_003_009",
+      "nameZh": "招待所",
+      "sprite": "Clue_003_009.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 3,
+      "scene": 9,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C3Trial"
+      ],
+      "description": "在监牢用地中设置的招待所。按顺序排列，3栋房间分别是：\n火精之室、\n水精之室、\n地精之室。\n门上挂有描绘着各自纹章的板子，内部装修和结构均相同。"
+    },
+    {
+      "id": "Clue_003_010",
+      "name": "Clue_003_010",
+      "nameZh": "现场照片",
+      "sprite": "Clue_003_010.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 3,
+      "scene": 10,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C3Trial"
+      ],
+      "description": "发现尸体的火精之室的照片。是从入口处拍摄的。"
+    },
+    {
+      "id": "Clue_003_011",
+      "name": "Clue_003_011",
+      "nameZh": "石砖地面",
+      "sprite": "Clue_003_011.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 3,
+      "scene": 11,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C3Trial"
+      ],
+      "description": "留在招待所门前的红色颜料。\n\n玛格在昨晚的魔法实验中用红色花制作了颜料，其余的花则丢弃了。"
+    },
+    {
+      "id": "Clue_003_012",
+      "name": "Clue_003_012",
+      "nameZh": "看守摄像头",
+      "sprite": "Clue_003_012.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 3,
+      "scene": 12,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C3Trial"
+      ],
+      "description": "安装在看守眼睛里的摄像头。\n录制有时长24小时的看守视角的录像。\n\n从昨晚的录像可知，门上锁后没有开锁过的迹象。钥匙也一直在看守手中。\n\n昨晚正要给火精之室上锁的瞬间，玛格她们三人从里面出来了。\n之后，还拍到了从外面给其他门上锁的画面。"
+    },
+    {
+      "id": "Clue_003_013",
+      "name": "Clue_003_013",
+      "nameZh": "昨晚的照片",
+      "sprite": "Clue_003_013.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 3,
+      "scene": 13,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C3Trial"
+      ],
+      "description": "时间戳为21:45。\n没有拍到汉娜的尸体。\n是看守的摄像头从入口处拍到的。"
+    },
+    {
+      "id": "Clue_003_014",
+      "name": "Clue_003_014",
+      "nameZh": "绳子",
+      "sprite": "Clue_003_014.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 3,
+      "scene": 14,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C3Trial"
+      ],
+      "description": "用于悬挂汉娜尸体。\n尽管有些发黑，但没有烧焦的痕迹。"
+    },
+    {
+      "id": "Clue_004_001",
+      "name": "Clue_004_001",
+      "nameZh": "蜡烛",
+      "sprite": "Clue_004_001.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 4,
+      "scene": 1,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C4Trial"
+      ],
+      "description": "留在尸体现场近处的蜡烛。\n有使用过的迹象。"
+    },
+    {
+      "id": "Clue_004_002",
+      "name": "Clue_004_002",
+      "nameZh": "电椅",
+      "sprite": "Clue_004_002.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 4,
+      "scene": 2,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C4Trial"
+      ],
+      "description": "处刑用的器具。\n背部设有2颗按钮。\n\n按下拘束按钮后，会自动拘束坐在上面的人。\n在有人被拘束的情况下按下通电按钮后，会导通高压电流。\n但是需要密码才能启动。\n\n据典狱长称，由于存在故障，今日预定对其进行检修。"
+    },
+    {
+      "id": "Clue_004_003",
+      "name": "Clue_004_003",
+      "nameZh": "安眠药",
+      "sprite": "Clue_004_003.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 4,
+      "scene": 3,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C4Trial"
+      ],
+      "description": "和梅露露交给亚里沙的是同一种药物。\n因为是强效药，保管由梅露露负责，并且标签上写着梅露露的名字。"
+    },
+    {
+      "id": "Clue_004_004",
+      "name": "Clue_004_004",
+      "nameZh": "铝制瓶盖",
+      "sprite": "Clue_004_004.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 4,
+      "scene": 4,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C4Trial"
+      ],
+      "description": "部分融化的铝制瓶盖。\n刻有状似蝴蝶的图案。\n疑似承受过巨大外力，盖身已凹陷扭曲。"
+    },
+    {
+      "id": "Clue_004_005",
+      "name": "Clue_004_005",
+      "nameZh": "玻璃碎片",
+      "sprite": "Clue_004_005.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 4,
+      "scene": 5,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C4Trial"
+      ],
+      "description": "掉落在亚里沙尸体脚下的，破碎的玻璃碎片。\n碎片散落得相当远，连几米外的地方都有。"
+    },
+    {
+      "id": "Clue_004_006",
+      "name": "Clue_004_006",
+      "nameZh": "地下冷冻室",
+      "sprite": "Clue_004_006.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 4,
+      "scene": 6,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C4Trial"
+      ],
+      "description": "保管处刑后的尸体，以及受冻结刑的魔女化少女身体的地点。\n位于监牢的地下。"
+    },
+    {
+      "id": "Clue_004_007",
+      "name": "Clue_004_007",
+      "nameZh": "控制面板",
+      "sprite": "Clue_004_007.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 4,
+      "scene": 7,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C4Trial"
+      ],
+      "description": "位于地下的控制面板。\n可以用来操作处刑台。\n\n似乎也可以用来开关地下设施的门，但具体使用方法不明。"
+    },
+    {
+      "id": "Clue_004_008",
+      "name": "Clue_004_008",
+      "nameZh": "处刑台",
+      "sprite": "Clue_004_008.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 4,
+      "scene": 8,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C4Trial"
+      ],
+      "description": "位于审判庭中央的处刑台装置。\n目前中央设置有电椅。\n\n在替换设置在处刑台的处刑器具之时，会将周围的装置整体下降到地下冷冻室。\n\n据留存的记录可知，昨晚21时曾移动数次，今早9时也曾上升过。"
+    },
+    {
+      "id": "Clue_004_009",
+      "name": "Clue_004_009",
+      "nameZh": "亚里沙的尸体照片",
+      "sprite": "Clue_004_009.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 4,
+      "scene": 9,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C4Trial"
+      ],
+      "description": "在审判庭的处刑台上，以坐在电椅上的状态被发现。\n脸上有疑似烧伤的蝴蝶形状伤痕。\n此外，身体各处有貌似魔女化征候的变异。\n\n头发和衣服沾湿了。"
+    },
+    {
+      "id": "Clue_005_001",
+      "name": "Clue_005_001",
+      "nameZh": "仪礼剑",
+      "sprite": "Clue_005_001.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 5,
+      "scene": 1,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C5Trial"
+      ],
+      "description": "一把装饰精美的剑。\n此前放在了保险箱中。\n\n没有使用过的迹象。"
+    },
+    {
+      "id": "Clue_005_002",
+      "name": "Clue_005_002",
+      "nameZh": "奈叶香的枪",
+      "sprite": "Clue_005_002.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 5,
+      "scene": 2,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C5Trial"
+      ],
+      "description": "在冷冻室找到的，奈叶香曾持有的枪支。\n\n最大装弹量为6发，残余弹数为3发。\n\n是过去存在于监牢内的少女用魔法制成的武器。\n在日期变更之时，会自动装填1发子弹。"
+    },
+    {
+      "id": "Clue_005_003",
+      "name": "Clue_005_003",
+      "nameZh": "弹痕",
+      "sprite": "Clue_005_003.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 5,
+      "scene": 3,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C5Trial"
+      ],
+      "description": "在地下冷冻室发现的弹痕。\n子弹打进了冰块之中，周围散落有小块的冰碎片。\n\n现场留有1发子弹。"
+    },
+    {
+      "id": "Clue_005_004",
+      "name": "Clue_005_004",
+      "nameZh": "液氮",
+      "sprite": "Clue_005_004.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 5,
+      "scene": 4,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C5Trial"
+      ],
+      "description": "-196℃的液体。化学式为N2。\n\n由于会引起缺氧或冻伤，因此使用时需要注意。"
+    },
+    {
+      "id": "Clue_005_005",
+      "name": "Clue_005_005",
+      "nameZh": "透明的液体",
+      "sprite": "Clue_005_005.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 5,
+      "scene": 5,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C5Trial"
+      ],
+      "description": "放在保险箱中的不明液体。\n有使用过的痕迹。"
+    },
+    {
+      "id": "Clue_005_006",
+      "name": "Clue_005_006",
+      "nameZh": "手枪",
+      "sprite": "Clue_005_006.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 5,
+      "scene": 6,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C5Trial"
+      ],
+      "description": "放在保险箱中的手枪。\n装弹量为6发，没有使用过的迹象。"
+    },
+    {
+      "id": "Clue_005_007",
+      "name": "Clue_005_007",
+      "nameZh": "资料",
+      "sprite": "Clue_005_007.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 5,
+      "scene": 7,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C5Trial"
+      ],
+      "description": "写有岛外与宅邸的物资交易，以及在押少女们的情报的大量资料。\n上面也有艾玛她们所有人的人物资料和人脸照片。\n\n解读似乎需要耗费大量时间。"
+    },
+    {
+      "id": "Clue_005_008",
+      "name": "Clue_005_008",
+      "nameZh": "便条纸",
+      "sprite": "Clue_005_008.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 5,
+      "scene": 8,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C5Trial"
+      ],
+      "description": "奈叶香尸体的口袋中找到的便条。上面潦草写着【169231】这串数字。"
+    },
+    {
+      "id": "Clue_005_009",
+      "name": "Clue_005_009",
+      "nameZh": "处刑台通用门",
+      "sprite": "Clue_005_009.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 5,
+      "scene": 9,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C5Trial"
+      ],
+      "description": "位于地下冷冻室深处的大门。\n靠人力不可能打开。\n\n下方设有小窗，往里探看可看见处刑台。\n小窗大小有限，只够小动物通过。\n开启时会发出巨大声响，因此本次案件中没有开启过的迹象。"
+    },
+    {
+      "id": "Clue_005_010",
+      "name": "Clue_005_010",
+      "nameZh": "保险箱",
+      "sprite": "Clue_005_010.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 5,
+      "scene": 10,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C5Trial"
+      ],
+      "description": "被打开的保险箱。\n是数字密码锁，数字键盘处沾有血迹。"
+    },
+    {
+      "id": "Clue_005_011",
+      "name": "Clue_005_011",
+      "nameZh": "救急箱",
+      "sprite": "Clue_005_011.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 5,
+      "scene": 11,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C5Trial"
+      ],
+      "description": "存放消火栓和防灾用品的箱子。\n里面装着破门用的斧头，以及缝纫工具等。"
+    },
+    {
+      "id": "Clue_005_012",
+      "name": "Clue_005_012",
+      "nameZh": "通风口",
+      "sprite": "Clue_005_012.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 5,
+      "scene": 12,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C5Trial"
+      ],
+      "description": "连结操作室与冷冻室的通风口。\n大小勉强可容纳一人通过。\n\n盖子的固定装置被破坏了。\n似乎是遭枪击破坏的，并留有1发子弹。"
+    },
+    {
+      "id": "Clue_005_013",
+      "name": "Clue_005_013",
+      "nameZh": "奈叶香的尸体照片",
+      "sprite": "Clue_005_013.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 5,
+      "scene": 13,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C5Trial"
+      ],
+      "description": "在审判庭的处刑台上发现。\n\n身体表面有少许结冰。\n未观察到致命性的严重外伤。\n\n口腔上颚部分有疑似被利器割伤的痕迹，且有血液自口中渗出。\n\n此外，指尖也沾有血迹。"
+    },
+    {
+      "id": "Clue_005_014",
+      "name": "Clue_005_014",
+      "nameZh": "操作室",
+      "sprite": "Clue_005_014.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 5,
+      "scene": 14,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C5Trial"
+      ],
+      "description": "用来操作地下设施和处刑台的房间。\n设置有处刑台的操作面板。\n非常冷。"
+    },
+    {
+      "id": "Clue_005_015",
+      "name": "Clue_005_015",
+      "nameZh": "地下冷冻室",
+      "sprite": "Clue_005_015.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 5,
+      "scene": 15,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C5Trial"
+      ],
+      "description": "保管处刑后的尸体，以及受冻结刑的魔女化少女身体的地点。\n位于监牢的地下。"
+    },
+    {
+      "id": "Clue_005_016",
+      "name": "Clue_005_016",
+      "nameZh": "处刑台",
+      "sprite": "Clue_005_016.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 5,
+      "scene": 16,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C5Trial"
+      ],
+      "description": "位于审判庭中央的处刑台装置。\n目前中央设置有电椅。\n\n在替换设置在处刑台的处刑器具之时，会将周围的装置整体下降到地下冷冻室。\n\n据留存的记录可知，昨晚21时曾移动数次，今早9时也曾上升过。\n\n不可能自地下冷冻室一侧侵入。"
+    },
+    {
+      "id": "Clue_005_017",
+      "name": "Clue_005_017",
+      "nameZh": "控制面板",
+      "sprite": "Clue_005_017.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 5,
+      "scene": 17,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C5Trial"
+      ],
+      "description": "位于地下的控制面板。\n可以用来操作处刑台。\n\n似乎也可以用来开关地下设施的门，但具体使用方法不明。\n\n昨天艾玛本应把它摔坏了，但现在已得到换新。"
+    },
+    {
+      "id": "Clue_005_018",
+      "name": "Clue_005_018",
+      "nameZh": "亚里沙的尸体照片",
+      "sprite": "Clue_005_018.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 5,
+      "scene": 18,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C5Trial"
+      ],
+      "description": "在审判庭的处刑台上，以坐在电椅上的状态被发现。\n脸上有蝴蝶形状的烧伤痕，身体已呈现魔女化的征候。\n\n头发和衣服沾湿了。"
+    },
+    {
+      "id": "Clue_005_019",
+      "name": "Clue_005_019",
+      "nameZh": "亚里沙的尸体照片（眼睛特写）",
+      "sprite": "Clue_005_019.webp",
+      "category": "证物",
+      "act": 1,
+      "chapter": 5,
+      "scene": 19,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A1C5Trial"
+      ],
+      "description": "无"
+    },
+    {
+      "id": "Clue_006_001",
+      "name": "Clue_006_001",
+      "nameZh": "昏倒的希罗",
+      "sprite": "Clue_006_001.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 1,
+      "scene": 1,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C1Trial"
+      ],
+      "description": "发现尸体时，正失去意识昏倒在尸体发现现场中。\n有复数人目击到该情况。\n\n周围没有除梅露露和希罗以外的他人足迹。"
+    },
+    {
+      "id": "Clue_006_002",
+      "name": "Clue_006_002",
+      "nameZh": "仪礼剑",
+      "sprite": "Clue_006_002.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 1,
+      "scene": 2,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C1Trial"
+      ],
+      "description": "插在梅露露胸口上的剑。应该是凶器。\n详情不明。"
+    },
+    {
+      "id": "Clue_006_003",
+      "name": "Clue_006_003",
+      "nameZh": "梅露露的尸体",
+      "sprite": "Clue_006_003.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 1,
+      "scene": 3,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C1Trial"
+      ],
+      "description": "在诺亚和安安的牢房中发现的尸体。\n\n死因为心脏的刺伤。\n喉咙、心脏有多次被刺伤的痕迹。\n\n发现尸体之时，死后已过20分钟～1小时。\n眼球已变成了宝石，但与死因无关。"
+    },
+    {
+      "id": "Clue_006_004",
+      "name": "Clue_006_004",
+      "nameZh": "安眠药",
+      "sprite": "Clue_006_004.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 1,
+      "scene": 4,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C1Trial"
+      ],
+      "description": "是梅露露准备的药品。\n盖子上刻有蝴蝶图案，标签上写着梅露露的名字。\n\n现场留有瓶子破裂后的碎片。\n\n外观为蓝色，有香甜气味。\n似乎雪莉和诺亚尝过味道了。"
+    },
+    {
+      "id": "Clue_006_005",
+      "name": "Clue_006_005",
+      "nameZh": "玻璃的声音",
+      "sprite": "Clue_006_005.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 1,
+      "scene": 5,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C1Trial"
+      ],
+      "description": "在即将发现尸体的时候听见的声音。\n是短促的声音，像是玻璃破碎时发出的。\n\n听到声音的有：蕾雅、玛格、奈叶香、汉娜、可可、米莉亚。\n每个人都作证，是从诺亚和安安的牢房方向听见的。"
+    },
+    {
+      "id": "Clue_006_006",
+      "name": "Clue_006_006",
+      "nameZh": "梅露露的手机",
+      "sprite": "Clue_006_006.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 1,
+      "scene": 6,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C1Trial"
+      ],
+      "description": "放进希罗衣服里的，不属于希罗的手机。\n从保护套和D来看，应该是属于梅露露的。\n\n里面的数据已被清除。\n艾玛作证，她接到了这部手机拨出的电话。"
+    },
+    {
+      "id": "Clue_006_007",
+      "name": "Clue_006_007",
+      "nameZh": "大家的不在场证明",
+      "sprite": "Clue_006_007.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 1,
+      "scene": 7,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C1Trial"
+      ],
+      "description": "【诺亚、安安、艾玛】安安和诺亚、还有艾玛都在2楼。\n她们汇合的时间是发现尸体的30分钟前。\n没过多久，艾玛接到了电话，并与梅露露通话。\n安安和诺亚之后也一直一起待在2楼。\n艾玛在会客厅与雪莉她们汇合后，马上就去外面了。\n\n【汉娜、可可、米莉亚、蕾雅】她们四人待在米莉亚和蕾雅的牢房中。\n她们汇合的时间是发现尸体的1小时前。\n四人在收到发现尸体的报告前，没有走出过房间。\n\n【雪莉和亚里沙】两人都待在会客厅中。\n\n她们在发现尸体的1小时前汇合之后，一直都待在会客厅里。\n【奈叶香和玛格】在发现尸体的30分钟前，奈叶香从医务室来到会客厅，与他人汇合。\n在同一时刻，玛格和艾玛也汇合了。\n那之后，奈叶香和玛格与艾玛她们分开，一同回到自己的牢房中。\n那之后，她们都没走出过房间，直到发现尸体。"
+    },
+    {
+      "id": "Clue_006_008",
+      "name": "Clue_006_008",
+      "nameZh": "和梅露露的通话",
+      "sprite": "Clue_006_008.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 1,
+      "scene": 8,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C1Trial"
+      ],
+      "description": "发现尸体30分钟前，艾玛作证与梅露露曾通话。\n当时，她听到梅露露说她【在医务室被希罗袭击了】。\n\n艾玛得知情况后，出去外面找她了。"
+    },
+    {
+      "id": "Clue_006_009",
+      "name": "Clue_006_009",
+      "nameZh": "蕾雅听见的声音",
+      "sprite": "Clue_006_009.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 1,
+      "scene": 9,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C1Trial"
+      ],
+      "description": "发现尸体约40分钟前听见的声音。\n她作证，那是音量微弱的，似乎是玻璃破碎的声音。\n\n当时蕾雅正在测试能重现远处声音和距离感的空间音效编辑功能，正竖起耳朵专心聆听周围的声音。"
+    },
+    {
+      "id": "Clue_006_010",
+      "name": "Clue_006_010",
+      "nameZh": "二阶堂希罗的手机",
+      "sprite": "Clue_006_010.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 1,
+      "scene": 10,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C1Trial"
+      ],
+      "description": "无"
+    },
+    {
+      "id": "Clue_007_001",
+      "name": "Clue_007_001",
+      "nameZh": "可可的验尸结果",
+      "sprite": "Clue_007_001.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 2,
+      "scene": 1,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C2Trial"
+      ],
+      "description": "蕾雅作出的验尸结果。\n死因为额头中弹所致。\n子弹从正面射入，被害人当场死亡。\n\n推定死亡时间为发现尸体前不久。\n\n艾玛是尸体第一发现人，其主张在下雨时的中庭发现了凶器手枪以及尸体。\n周围有血蝴蝶在飞舞。"
+    },
+    {
+      "id": "Clue_007_002",
+      "name": "Clue_007_002",
+      "nameZh": "可可的手机",
+      "sprite": "Clue_007_002.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 2,
+      "scene": 2,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C2Trial"
+      ],
+      "description": "可可持有的手机。\n从手机内容看，无疑是属于可可的。\n\n留有录音记录，内容是有关她用能力看见的事情。\n另外，还留有淋浴房的照片。"
+    },
+    {
+      "id": "Clue_007_003",
+      "name": "Clue_007_003",
+      "nameZh": "直播回放",
+      "sprite": "Clue_007_003.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 2,
+      "scene": 3,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C2Trial"
+      ],
+      "description": "是可可进行到死前一刻的那场直播。\n后方拍到了诺亚的画。"
+    },
+    {
+      "id": "Clue_007_004",
+      "name": "Clue_007_004",
+      "nameZh": "淋浴房",
+      "sprite": "Clue_007_004.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 2,
+      "scene": 4,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C2Trial"
+      ],
+      "description": "用来淋浴的房间。\n在这里脱下的衣服要丢到垃圾滑槽里焚烧。\n\n隔音性能强。\n因此案件发生前，希罗喊艾玛过来这里，企图杀死她并伪装成事故。\n\n在案件发生前，诺亚曾在墙壁上涂鸦，并且和可可一起确认到这个事实。"
+    },
+    {
+      "id": "Clue_007_005",
+      "name": "Clue_007_005",
+      "nameZh": "焚烧炉室",
+      "sprite": "Clue_007_005.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 2,
+      "scene": 5,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C2Trial"
+      ],
+      "description": "备有焚烧炉的地下房间。\n15时会自动开始燃烧。\n烟雾会经过分离处理，排出室外。\n\n房内光线昏暗，墙壁是鲜艳的绿色。\n地板上有血液流淌过的痕迹。"
+    },
+    {
+      "id": "Clue_007_006",
+      "name": "Clue_007_006",
+      "nameZh": "枪声",
+      "sprite": "Clue_007_006.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 2,
+      "scene": 6,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C2Trial"
+      ],
+      "description": "艾玛在淋浴房里听见的声音。\n是在发现尸体的稍早前，希罗到场之前听见的。"
+    },
+    {
+      "id": "Clue_007_007",
+      "name": "Clue_007_007",
+      "nameZh": "垃圾滑槽的盖子",
+      "sprite": "Clue_007_007.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 2,
+      "scene": 7,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C2Trial"
+      ],
+      "description": "无"
+    },
+    {
+      "id": "Clue_007_008",
+      "name": "Clue_007_008",
+      "nameZh": "衣物",
+      "sprite": "Clue_007_008.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 2,
+      "scene": 8,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C2Trial"
+      ],
+      "description": "在焚烧炉中发现的，少女们脱下的衣服。\n其中一部分沾有血迹。"
+    },
+    {
+      "id": "Clue_007_009",
+      "name": "Clue_007_009",
+      "nameZh": "纸堆",
+      "sprite": "Clue_007_009.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 2,
+      "scene": 9,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C2Trial"
+      ],
+      "description": "在焚烧炉中发现的，大量的纸。\n其中一部分上面画着画。\n\n这些纸都是诺亚在画室里面丢弃的。"
+    },
+    {
+      "id": "Clue_007_010",
+      "name": "Clue_007_010",
+      "nameZh": "绳子",
+      "sprite": "Clue_007_010.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 2,
+      "scene": 10,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C2Trial"
+      ],
+      "description": "在焚烧炉中找到的，近10米长的绳子。"
+    },
+    {
+      "id": "Clue_007_011",
+      "name": "Clue_007_011",
+      "nameZh": "垃圾滑槽",
+      "sprite": "Clue_007_011.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 2,
+      "scene": 11,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C2Trial"
+      ],
+      "description": "设置在淋浴房内的，联通着焚烧炉的垃圾弃置处。\n今早，希罗对看不见的内侧固定装置做了手脚。\n\n正如艾玛所作证的，米莉亚发现它案发后已经损坏了。\n盖子已脱落。"
+    },
+    {
+      "id": "Clue_008_001",
+      "name": "Clue_008_001",
+      "nameZh": "安安的验尸结果",
+      "sprite": "Clue_008_001.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 3,
+      "scene": 1,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C3Trial"
+      ],
+      "description": "蕾雅在中庭发现了尸体。\n背部受铁栅栏贯穿，当场死亡。\n附近有大量的血迹。\n推定死亡时间是发现尸体30分钟前至1小时以内。"
+    },
+    {
+      "id": "Clue_008_002",
+      "name": "Clue_008_002",
+      "nameZh": "铁栅栏",
+      "sprite": "Clue_008_002.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 3,
+      "scene": 2,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C3Trial"
+      ],
+      "description": "位于中庭的铁栅栏。尖端锐利。\n似乎很久没维护过了。\n\n有几根已经折断或损坏。\n留有不自然地扭曲，且被移动过的痕迹。"
+    },
+    {
+      "id": "Clue_008_003",
+      "name": "Clue_008_003",
+      "nameZh": "中庭",
+      "sprite": "Clue_008_003.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 3,
+      "scene": 3,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C3Trial"
+      ],
+      "description": "发现尸体的现场。\n位处会客厅和淋浴房之间，入口在淋浴房门前走廊上。\n\n中央有枯竭的喷泉，周围的地面泥泞不堪。\n\n附近残留着四分五裂的吊床碎片。\n吊床是亚里沙设置的。"
+    },
+    {
+      "id": "Clue_008_004",
+      "name": "Clue_008_004",
+      "nameZh": "诺亚的画室",
+      "sprite": "Clue_008_004.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 3,
+      "scene": 4,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C3Trial"
+      ],
+      "description": "内部极为杂乱，放置着画笔和画布。\n从阳台处可俯视楼下的中庭。\n\n在安安死亡后，艾玛弄酒了红色油漆，后对其进行了清理。"
+    },
+    {
+      "id": "Clue_008_005",
+      "name": "Clue_008_005",
+      "nameZh": "安安的手机",
+      "sprite": "Clue_008_005.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 3,
+      "scene": 5,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C3Trial"
+      ],
+      "description": "属于被害人的物品。\n垫在了尸体下面。"
+    },
+    {
+      "id": "Clue_008_006",
+      "name": "Clue_008_006",
+      "nameZh": "米莉亚的照片",
+      "sprite": "Clue_008_006.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 3,
+      "scene": 6,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C3Trial"
+      ],
+      "description": "米莉亚在发现尸体约30分钟前拍下的照片。\n是从2楼往下拍的，有拍到喷泉和阳台。\n\n阳台中出现了人影，但详细情况不明。\n\n发现安安尸体的地方被遮挡住，这个角度拍不到。"
+    },
+    {
+      "id": "Clue_008_007",
+      "name": "Clue_008_007",
+      "nameZh": "衣物",
+      "sprite": "Clue_008_007.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 3,
+      "scene": 7,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C3Trial"
+      ],
+      "description": "汉娜晾在玄关前的衣物。\n因为忘记收回来，一直晾到了夜里，但目前已经晾千了。"
+    },
+    {
+      "id": "Clue_008_008",
+      "name": "Clue_008_008",
+      "nameZh": "可可的尸体照片",
+      "sprite": "Clue_008_008.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 3,
+      "scene": 8,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C3Trial"
+      ],
+      "description": "遭黑部奈叶香杀害的，泽渡可可的照片。\n\n死因为枪杀。\n额头有子弹正面击穿的痕迹，当场死亡。\n\n周围有许多血蝴蝶在飞舞。"
+    },
+    {
+      "id": "Clue_009_001",
+      "name": "Clue_009_001",
+      "nameZh": "艾玛的尸体照片",
+      "sprite": "Clue_009_001.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 4,
+      "scene": 1,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C4Trial"
+      ],
+      "description": "樱羽艾玛的尸体。推测死亡时间在一小时以内。\n在电梯内被发现。\n\n身穿礼服，身上有两处刺剑造成的刺伤。"
+    },
+    {
+      "id": "Clue_009_002",
+      "name": "Clue_009_002",
+      "nameZh": "刺剑",
+      "sprite": "Clue_009_002.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 4,
+      "scene": 2,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C4Trial"
+      ],
+      "description": "贯穿艾玛尸体的凶器。\n与蕾雅所持的剑是同一把。"
+    },
+    {
+      "id": "Clue_009_003",
+      "name": "Clue_009_003",
+      "nameZh": "礼服",
+      "sprite": "Clue_009_003.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 4,
+      "scene": 3,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C4Trial"
+      ],
+      "description": "艾玛所穿的礼服。\n\n是一件白色底配金色刺绣的连衣裙，原本是用于舞台剧演出的。\n\n平时摆设在画室中，在发现尸体的约15分钟前，亚里沙曾目击到它还在画室里面。\n腹部穿了一个洞，应该是由于刺剑穿刺造成的。"
+    },
+    {
+      "id": "Clue_009_004",
+      "name": "Clue_009_004",
+      "nameZh": "蕾雅的尸体照片",
+      "sprite": "Clue_009_004.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 4,
+      "scene": 4,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C4Trial"
+      ],
+      "description": "莲见蕾雅的尸体。推测死亡时间在一小时以内。\n后脑处有类似遭殴打的伤口。"
+    },
+    {
+      "id": "Clue_009_005",
+      "name": "Clue_009_005",
+      "nameZh": "王冠",
+      "sprite": "Clue_009_005.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 4,
+      "scene": 5,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C4Trial"
+      ],
+      "description": "蕾雅尸体佩戴着的王冠。\n\n是米莉亚制作的舞台剧小道具。\n没有受外力冲击的痕迹。"
+    },
+    {
+      "id": "Clue_009_006",
+      "name": "Clue_009_006",
+      "nameZh": "人字梯",
+      "sprite": "Clue_009_006.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 4,
+      "scene": 6,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C4Trial"
+      ],
+      "description": "倚靠在电梯近地面一层的墙壁上的人字梯。\n上面覆盖着一层布，其上附有疑似血迹的痕迹。"
+    },
+    {
+      "id": "Clue_009_007",
+      "name": "Clue_009_007",
+      "nameZh": "电梯",
+      "sprite": "Clue_009_007.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 4,
+      "scene": 7,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C4Trial"
+      ],
+      "description": "受电脑限制，只可载2人的电梯。\n案件发生前后都没有解除过限制的迹象。\n\n在调查地下后，准备回去时只能载1个人了。\n\n电梯轿厢内留有疑似擦拭过血迹的痕迹。\n顶部入口的盖子之前遭雪莉破坏后，一直处于打开着的状态。"
+    },
+    {
+      "id": "Clue_009_008",
+      "name": "Clue_009_008",
+      "nameZh": "电梯顶部的空间",
+      "sprite": "Clue_009_008.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 4,
+      "scene": 8,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C4Trial"
+      ],
+      "description": "电梯顶部上方的空间。\n是发现蕾亚尸体的地方。（编者注：此处没有打错字，游戏原文如此。2026年8月3日。）\n\n可能是因为地下冷冻仓库散热的缘故，这里热气积聚，十分闷热。"
+    },
+    {
+      "id": "Clue_009_009",
+      "name": "Clue_009_009",
+      "nameZh": "艾玛的衣服",
+      "sprite": "Clue_009_009.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 4,
+      "scene": 9,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C4Trial"
+      ],
+      "description": "艾玛平时穿的衣服。\n\n胸口穿了一个洞，应该是由于刺剑穿刺造成的。\n\n是雪莉在电梯的顶上找到的。"
+    },
+    {
+      "id": "Clue_009_010",
+      "name": "Clue_009_010",
+      "nameZh": "红色的液体",
+      "sprite": "Clue_009_010.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 4,
+      "scene": 10,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C4Trial"
+      ],
+      "description": "流淌在顶盖上方的淡红色液体。\n从周围飞舞着蝴蝶这点来看，应该是变稀薄了的血液。"
+    },
+    {
+      "id": "Clue_009_011",
+      "name": "Clue_009_011",
+      "nameZh": "艾玛的人偶",
+      "sprite": "Clue_009_011.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 4,
+      "scene": 11,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C4Trial"
+      ],
+      "description": "汉娜制作的人偶。\n由艾玛持有。"
+    },
+    {
+      "id": "Clue_009_012",
+      "name": "Clue_009_012",
+      "nameZh": "地下的大门",
+      "sprite": "Clue_009_012.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 4,
+      "scene": 12,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C4Trial"
+      ],
+      "description": "连结位于地下冷冻室的处刑台保管库的大门。\n没有短暂开启过的迹象。"
+    },
+    {
+      "id": "Clue_009_013",
+      "name": "Clue_009_013",
+      "nameZh": "完好的礼服",
+      "sprite": "Clue_009_013.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 4,
+      "scene": 13,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C4Trial"
+      ],
+      "description": "无"
+    },
+    {
+      "id": "Clue_010_007",
+      "name": "Clue_010_007",
+      "nameZh": "声音",
+      "sprite": "Clue_010_007.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 6,
+      "scene": 7,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C6Trial"
+      ],
+      "description": "我们并不期望复仇。\n我只是希望她能过得幸福。\n请你救救她吧。"
+    },
+    {
+      "id": "Clue_010_016",
+      "name": "Clue_010_016",
+      "nameZh": "冰上梅露露凶杀案",
+      "sprite": "Clue_010_016.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 6,
+      "scene": 16,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C6Trial"
+      ],
+      "description": "宝生玛格受到了冰上梅露露的温柔关爱，于是杀害了她。"
+    },
+    {
+      "id": "Clue_010_017",
+      "name": "Clue_010_017",
+      "nameZh": "泽渡可可凶杀案",
+      "sprite": "Clue_010_017.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 6,
+      "scene": 17,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C6Trial"
+      ],
+      "description": "黑部奈叶香企图保护姐姐不受泽渡可可伤害，于是将其杀害。"
+    },
+    {
+      "id": "Clue_010_018",
+      "name": "Clue_010_018",
+      "nameZh": "夏目安安凶杀案",
+      "sprite": "Clue_010_018.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 6,
+      "scene": 18,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C6Trial"
+      ],
+      "description": "城崎诺亚因为画被夏目安安看到，于是杀害了她。"
+    },
+    {
+      "id": "Clue_010_019",
+      "name": "Clue_010_019",
+      "nameZh": "莲见蕾雅凶杀案",
+      "sprite": "Clue_010_019.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 6,
+      "scene": 19,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C6Trial"
+      ],
+      "description": "远野汉娜面对莲见蕾雅感到自卑，于是将其杀害。\n远野汉娜行凶时被樱羽艾玛看到，于是将其杀害。"
+    },
+    {
+      "id": "Clue_010_020",
+      "name": "Clue_010_020",
+      "nameZh": "城崎诺亚凶杀案",
+      "sprite": "Clue_010_020.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 6,
+      "scene": 20,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C6Trial"
+      ],
+      "description": "莲见蕾雅想要比城崎诺亚更受关注，于是将其杀害。"
+    },
+    {
+      "id": "Clue_010_021",
+      "name": "Clue_010_021",
+      "nameZh": "佐伯米莉亚凶杀案",
+      "sprite": "Clue_010_021.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 6,
+      "scene": 21,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C6Trial"
+      ],
+      "description": "夏目安安为了阻止佐伯米莉亚破坏她的安稳，于是将其杀害。"
+    },
+    {
+      "id": "Clue_010_022",
+      "name": "Clue_010_022",
+      "nameZh": "远野汉娜凶杀案",
+      "sprite": "Clue_010_022.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 6,
+      "scene": 22,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C6Trial"
+      ],
+      "description": "橘雪莉为了实现远野汉娜的愿望，于是杀害了她。"
+    },
+    {
+      "id": "Clue_010_023",
+      "name": "Clue_010_023",
+      "nameZh": "紫藤亚里沙凶杀案",
+      "sprite": "Clue_010_023.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 6,
+      "scene": 23,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C6Trial"
+      ],
+      "description": "冰上梅露露盼望紫藤亚里沙得到幸福，于是杀害了她。"
+    },
+    {
+      "id": "Clue_010_024",
+      "name": "Clue_010_024",
+      "nameZh": "黑部奈叶香凶杀案",
+      "sprite": "Clue_010_024.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 6,
+      "scene": 24,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C6Trial"
+      ],
+      "description": "冰上梅露露为了阻止黑部奈叶香的复仇，于是杀害了她。"
+    },
+    {
+      "id": "Clue_010_025",
+      "name": "Clue_010_025",
+      "nameZh": "原罪：受厌恶之人",
+      "sprite": "Clue_010_025.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 6,
+      "scene": 25,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C6Trial"
+      ],
+      "description": "她是应受厌恶之人。\n而比任何人都厌恶她的，正是她本人。"
+    },
+    {
+      "id": "Clue_010_026",
+      "name": "Clue_010_026",
+      "nameZh": "原罪：正义的执行者",
+      "sprite": "Clue_010_026.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 6,
+      "scene": 26,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C6Trial"
+      ],
+      "description": "她至今走过的路，未曾有一星污点。\n在那个名为独善的理想乡中，容不得绞刑台这般异物的存在。"
+    },
+    {
+      "id": "Clue_010_027",
+      "name": "Clue_010_027",
+      "nameZh": "原罪：编织谎言的沉睡公主",
+      "sprite": "Clue_010_027.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 6,
+      "scene": 27,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C6Trial"
+      ],
+      "description": "她今天也独自沉睡着。\n因为只要不伤害任何人，那她自己也就不会受伤。"
+    },
+    {
+      "id": "Clue_010_028",
+      "name": "Clue_010_028",
+      "nameZh": "原罪：虚伪的艺术家",
+      "sprite": "Clue_010_028.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 6,
+      "scene": 28,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C6Trial"
+      ],
+      "description": "她在痛苦中不断挣扎着。\n可是她却始终没有意识到，束缚着自己的锁链正是自己的尾巴。"
+    },
+    {
+      "id": "Clue_010_029",
+      "name": "Clue_010_029",
+      "nameZh": "原罪：舞台上的偶像",
+      "sprite": "Clue_010_029.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 6,
+      "scene": 29,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C6Trial"
+      ],
+      "description": "她那用以满足他人的形象，不知何时成为了能够倚靠的支柱。\n这根早已腐朽崩塌的柱子，今天也仍旧支撑着她。"
+    },
+    {
+      "id": "Clue_010_030",
+      "name": "Clue_010_030",
+      "nameZh": "原罪：高中出道辣妹",
+      "sprite": "Clue_010_030.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 6,
+      "scene": 30,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C6Trial"
+      ],
+      "description": "她被牵扯其中，一切都被公开暴露了。\n失去了所有的她，再也无法承受任何负担了。"
+    },
+    {
+      "id": "Clue_010_031",
+      "name": "Clue_010_031",
+      "nameZh": "原罪：知晓爱之人",
+      "sprite": "Clue_010_031.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 6,
+      "scene": 31,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C6Trial"
+      ],
+      "description": "她知道一切爱的形状。\n而无法认知的事物，等同于不存在。"
+    },
+    {
+      "id": "Clue_010_032",
+      "name": "Clue_010_032",
+      "nameZh": "原罪：来自过去的狙击手",
+      "sprite": "Clue_010_032.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 6,
+      "scene": 32,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C6Trial"
+      ],
+      "description": "她的目标是对过去的复仇。\n为了向无能为力的当初的自己报一箭之仇，她再次举起了枪。"
+    },
+    {
+      "id": "Clue_010_033",
+      "name": "Clue_010_033",
+      "nameZh": "原罪：自罚上瘾",
+      "sprite": "Clue_010_033.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 6,
+      "scene": 33,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C6Trial"
+      ],
+      "description": "她还是得到了宽恕。\n为了追求甜蜜的惩罚，她将永远地向自己挥下鞭子。"
+    },
+    {
+      "id": "Clue_010_034",
+      "name": "Clue_010_034",
+      "nameZh": "原罪：毁灭侦探",
+      "sprite": "Clue_010_034.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 6,
+      "scene": 34,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C6Trial"
+      ],
+      "description": "她毁灭了一切。\n不论是案件，还是人，甚至还有自己的心。"
+    },
+    {
+      "id": "Clue_010_035",
+      "name": "Clue_010_035",
+      "nameZh": "原罪：幻想千金",
+      "sprite": "Clue_010_035.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 6,
+      "scene": 35,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C6Trial"
+      ],
+      "description": "她抛弃了现实，逃入了幻想之中。\n她再也不会将任何人抛下了。"
+    },
+    {
+      "id": "Clue_010_036",
+      "name": "Clue_010_036",
+      "nameZh": "原罪：孤独的直播主",
+      "sprite": "Clue_010_036.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 6,
+      "scene": 36,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C6Trial"
+      ],
+      "description": "她始终活在被发现的恐惧之中。\n所以，她今天仍是孤独一人发声。\n只为了不被任何人找到。"
+    },
+    {
+      "id": "Clue_010_037",
+      "name": "Clue_010_037",
+      "nameZh": "原罪：胆怯的天使",
+      "sprite": "Clue_010_037.webp",
+      "category": "证物",
+      "act": 2,
+      "chapter": 6,
+      "scene": 37,
+      "w": 512,
+      "h": 512,
+      "relatedNodes": [
+        "A2C6Trial"
+      ],
+      "description": "她所恐惧的，是被自己信仰的神明抛弃。\n明明她早就察觉到了，却只能选择视而不见。"
+    }
+  ]
+}

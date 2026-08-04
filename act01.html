@@ -3,21 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>魔女审判文本查询器 · 一周目</title>
+<title>魔女审判资料馆 · 一周目</title>
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body data-act="act01">
 <div id="splash">
 <img id="splash-mark" src="nnk_box.webp" alt="">
-<h1 id="splash-title">魔女审判文本查询器</h1>
+<h1 id="splash-title">魔女审判资料馆</h1>
 <p id="splash-sub">Witch Trials · Act01</p>
 <div id="splash-bar"></div>
 </div>
 <header>
 <div class="header-nav">
 <a class="nav-link" href="index.html">← 首页</a>
+<a class="nav-link" href="act02.html">二周目 →</a>
 </div>
-<span class="title">魔女审判文本查询器 · 一周目</span>
+<span class="title"><span class="act-badge">Ⅰ</span>魔女审判资料馆 · 一周目</span>
 <div class="search-wrap"><input type="text" id="search-input" placeholder="搜索角色、关键词、剧情…"></div>
 <div class="route-filters" id="route-filters"></div>
 <div class="header-btns">
@@ -52,7 +53,12 @@
 <div id="phone-topbar" title="点击关闭"></div>
 <div id="phone-screen"></div>
 </div>
+<button id="chapter-nav-toggle" title="章节导航">☰</button>
+<nav id="chapter-nav"><div class="cn-header"><span class="cn-title">章节导航</span><button class="cn-close">✕</button></div><div class="cn-list" id="chapter-nav-list"></div></nav>
+<div id="search-results"><div class="sr-header"><span>搜索结果</span><span class="sr-count" id="sr-count"></span></div><div class="sr-list" id="sr-list"></div></div>
+<div id="onboarding-overlay"></div>
+<div id="onboarding"></div>
 <button id="feedback-btn" onclick="window.open('https://github.com/QwQSakuya/Manosaba-textfinder/issues/new','_blank')">意见箱</button>
-<script src="assets/app.js"></script>
+<script src="assets/app.js?v=20260804b"></script>
 </body>
 </html>

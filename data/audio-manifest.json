@@ -1,0 +1,3205 @@
+{
+  "sfx": [
+    {
+      "id": "Sfx_Common_001 Notice1",
+      "file": "sfx/Common/Sfx_Common_001 Notice1.ogg",
+      "label": "Notice1",
+      "category": "Common",
+      "size": 56905
+    },
+    {
+      "id": "Sfx_Common_002 Notice2",
+      "file": "sfx/Common/Sfx_Common_002 Notice2.ogg",
+      "label": "Notice2",
+      "category": "Common",
+      "size": 29515
+    },
+    {
+      "id": "Sfx_Common_003 Decision",
+      "file": "sfx/Common/Sfx_Common_003 Decision.ogg",
+      "label": "Decision",
+      "category": "Common",
+      "size": 50556
+    },
+    {
+      "id": "Sfx_Common_004 Hit",
+      "file": "sfx/Common/Sfx_Common_004 Hit.ogg",
+      "label": "Hit",
+      "category": "Common",
+      "size": 18683
+    },
+    {
+      "id": "Sfx_Common_005 Conversion",
+      "file": "sfx/Common/Sfx_Common_005 Conversion.ogg",
+      "label": "Conversion",
+      "category": "Common",
+      "size": 65665
+    },
+    {
+      "id": "Sfx_Common_006 Be shocked",
+      "file": "sfx/Common/Sfx_Common_006 Be shocked.ogg",
+      "label": "Be shocked",
+      "category": "Common",
+      "size": 56695
+    },
+    {
+      "id": "Sfx_Common_007 Negative down",
+      "file": "sfx/Common/Sfx_Common_007 Negative down.ogg",
+      "label": "Negative down",
+      "category": "Common",
+      "size": 51509
+    },
+    {
+      "id": "Sfx_Scenario_001 Wake up",
+      "file": "sfx/Scenario/Sfx_Scenario_001 Wake up.ogg",
+      "label": "Wake up",
+      "category": "Scenario",
+      "size": 98318
+    },
+    {
+      "id": "Sfx_Scenario_003 Monitor",
+      "file": "sfx/Scenario/Sfx_Scenario_003 Monitor.ogg",
+      "label": "Monitor",
+      "category": "Scenario",
+      "size": 47561
+    },
+    {
+      "id": "Sfx_Scenario_004 Lock prison",
+      "file": "sfx/Scenario/Sfx_Scenario_004 Lock prison.ogg",
+      "label": "Lock prison",
+      "category": "Scenario",
+      "size": 91674
+    },
+    {
+      "id": "Sfx_Scenario_005 Hikizuru oto",
+      "file": "sfx/Scenario/Sfx_Scenario_005 Hikizuru oto.ogg",
+      "label": "Hikizuru oto",
+      "category": "Scenario",
+      "size": 145856
+    },
+    {
+      "id": "Sfx_Scenario_006 Fall down",
+      "file": "sfx/Scenario/Sfx_Scenario_006 Fall down.ogg",
+      "label": "Fall down",
+      "category": "Scenario",
+      "size": 85400
+    },
+    {
+      "id": "Sfx_Scenario_007 Go up the stairs(Reverb)",
+      "file": "sfx/Scenario/Sfx_Scenario_007 Go up the stairs(Reverb).ogg",
+      "label": "Go up the stairs(Reverb)",
+      "category": "Scenario",
+      "size": 204686
+    },
+    {
+      "id": "Sfx_Scenario_008 Owl flapping sound",
+      "file": "sfx/Scenario/Sfx_Scenario_008 Owl flapping sound.ogg",
+      "label": "Owl flapping sound",
+      "category": "Scenario",
+      "size": 118094
+    },
+    {
+      "id": "Sfx_Scenario_009 Swing down",
+      "file": "sfx/Scenario/Sfx_Scenario_009 Swing down.ogg",
+      "label": "Swing down",
+      "category": "Scenario",
+      "size": 22870
+    },
+    {
+      "id": "Sfx_Scenario_010 Body hit",
+      "file": "sfx/Scenario/Sfx_Scenario_010 Body hit.ogg",
+      "label": "Body hit",
+      "category": "Scenario",
+      "size": 38115
+    },
+    {
+      "id": "Sfx_Scenario_011 Body hit2_",
+      "file": "sfx/Scenario/Sfx_Scenario_011 Body hit2_.ogg",
+      "label": "Body hit2_",
+      "category": "Scenario",
+      "size": 32570
+    },
+    {
+      "id": "Sfx_Scenario_012 Meat cut",
+      "file": "sfx/Scenario/Sfx_Scenario_012 Meat cut.ogg",
+      "label": "Meat cut",
+      "category": "Scenario",
+      "size": 49459
+    },
+    {
+      "id": "Sfx_Scenario_013 Head drop",
+      "file": "sfx/Scenario/Sfx_Scenario_013 Head drop.ogg",
+      "label": "Head drop",
+      "category": "Scenario",
+      "size": 19466
+    },
+    {
+      "id": "Sfx_Scenario_014 Owl barking sound",
+      "file": "sfx/Scenario/Sfx_Scenario_014 Owl barking sound.ogg",
+      "label": "Owl barking sound",
+      "category": "Scenario",
+      "size": 82619
+    },
+    {
+      "id": "Sfx_Scenario_015 Spray",
+      "file": "sfx/Scenario/Sfx_Scenario_015 Spray.ogg",
+      "label": "Spray",
+      "category": "Scenario",
+      "size": 42857
+    },
+    {
+      "id": "Sfx_Scenario_016 Crush apple",
+      "file": "sfx/Scenario/Sfx_Scenario_016 Crush apple.ogg",
+      "label": "Crush apple",
+      "category": "Scenario",
+      "size": 64638
+    },
+    {
+      "id": "Sfx_Scenario_017 Fall to ground 01",
+      "file": "sfx/Scenario/Sfx_Scenario_017 Fall to ground 01.ogg",
+      "label": "Fall to ground 01",
+      "category": "Scenario",
+      "size": 58727
+    },
+    {
+      "id": "Sfx_Scenario_018 Reject shake hands",
+      "file": "sfx/Scenario/Sfx_Scenario_018 Reject shake hands.ogg",
+      "label": "Reject shake hands",
+      "category": "Scenario",
+      "size": 11265
+    },
+    {
+      "id": "Sfx_Scenario_019 body fall down",
+      "file": "sfx/Scenario/Sfx_Scenario_019 body fall down.ogg",
+      "label": "body fall down",
+      "category": "Scenario",
+      "size": 50617
+    },
+    {
+      "id": "Sfx_Scenario_020 Crash dish",
+      "file": "sfx/Scenario/Sfx_Scenario_020 Crash dish.ogg",
+      "label": "Crash dish",
+      "category": "Scenario",
+      "size": 74406
+    },
+    {
+      "id": "Sfx_Scenario_022 Indoor wood open",
+      "file": "sfx/Scenario/Sfx_Scenario_022 Indoor wood open.ogg",
+      "label": "Indoor wood open",
+      "category": "Scenario",
+      "size": 57159
+    },
+    {
+      "id": "Sfx_Scenario_023 Fall from a height",
+      "file": "sfx/Scenario/Sfx_Scenario_023 Fall from a height.ogg",
+      "label": "Fall from a height",
+      "category": "Scenario",
+      "size": 33125
+    },
+    {
+      "id": "Sfx_Scenario_024 Silent_waves",
+      "file": "sfx/Scenario/Sfx_Scenario_024 Silent_waves.ogg",
+      "label": "Silent_waves",
+      "category": "Scenario",
+      "size": 190367
+    },
+    {
+      "id": "Sfx_Scenario_025 Hit wall",
+      "file": "sfx/Scenario/Sfx_Scenario_025 Hit wall.ogg",
+      "label": "Hit wall",
+      "category": "Scenario",
+      "size": 126117
+    },
+    {
+      "id": "Sfx_Scenario_026 Chess on the floor",
+      "file": "sfx/Scenario/Sfx_Scenario_026 Chess on the floor.ogg",
+      "label": "Chess on the floor",
+      "category": "Scenario",
+      "size": 83678
+    },
+    {
+      "id": "Sfx_Scenario_027 Hit human",
+      "file": "sfx/Scenario/Sfx_Scenario_027 Hit human.ogg",
+      "label": "Hit human",
+      "category": "Scenario",
+      "size": 29554
+    },
+    {
+      "id": "Sfx_Scenario_028 Camera shutter",
+      "file": "sfx/Scenario/Sfx_Scenario_028 Camera shutter.ogg",
+      "label": "Camera shutter",
+      "category": "Scenario",
+      "size": 27694
+    },
+    {
+      "id": "Sfx_Scenario_029 Notification sound",
+      "file": "sfx/Scenario/Sfx_Scenario_029 Notification sound.ogg",
+      "label": "Notification sound",
+      "category": "Scenario",
+      "size": 38836
+    },
+    {
+      "id": "Sfx_Scenario_030 Fire",
+      "file": "sfx/Scenario/Sfx_Scenario_030 Fire.ogg",
+      "label": "Fire",
+      "category": "Scenario",
+      "size": 33362
+    },
+    {
+      "id": "Sfx_Scenario_031 Tea",
+      "file": "sfx/Scenario/Sfx_Scenario_031 Tea.ogg",
+      "label": "Tea",
+      "category": "Scenario",
+      "size": 88040
+    },
+    {
+      "id": "Sfx_Scenario_032 Hits wood table",
+      "file": "sfx/Scenario/Sfx_Scenario_032 Hits wood table.ogg",
+      "label": "Hits wood table",
+      "category": "Scenario",
+      "size": 27187
+    },
+    {
+      "id": "Sfx_Scenario_033 Bell sound",
+      "file": "sfx/Scenario/Sfx_Scenario_033 Bell sound.ogg",
+      "label": "Bell sound",
+      "category": "Scenario",
+      "size": 278527
+    },
+    {
+      "id": "Sfx_Scenario_034 Panpakapan",
+      "file": "sfx/Scenario/Sfx_Scenario_034 Panpakapan.ogg",
+      "label": "Panpakapan",
+      "category": "Scenario",
+      "size": 81483
+    },
+    {
+      "id": "Sfx_Scenario_035 Human heartbeat",
+      "file": "sfx/Scenario/Sfx_Scenario_035 Human heartbeat.ogg",
+      "label": "Human heartbeat",
+      "category": "Scenario",
+      "size": 199971
+    },
+    {
+      "id": "Sfx_Scenario_036 Gear(Reverb)",
+      "file": "sfx/Scenario/Sfx_Scenario_036 Gear(Reverb).ogg",
+      "label": "Gear(Reverb)",
+      "category": "Scenario",
+      "size": 202418
+    },
+    {
+      "id": "Sfx_Scenario_037 Open object",
+      "file": "sfx/Scenario/Sfx_Scenario_037 Open object.ogg",
+      "label": "Open object",
+      "category": "Scenario",
+      "size": 150727
+    },
+    {
+      "id": "Sfx_Scenario_038 Gun fire",
+      "file": "sfx/Scenario/Sfx_Scenario_038 Gun fire.ogg",
+      "label": "Gun fire",
+      "category": "Scenario",
+      "size": 125051
+    },
+    {
+      "id": "Sfx_Scenario_039 Fall bird",
+      "file": "sfx/Scenario/Sfx_Scenario_039 Fall bird.ogg",
+      "label": "Fall bird",
+      "category": "Scenario",
+      "size": 21256
+    },
+    {
+      "id": "Sfx_Scenario_040 FUMIKIRI",
+      "file": "sfx/Scenario/Sfx_Scenario_040 FUMIKIRI.ogg",
+      "label": "FUMIKIRI",
+      "category": "Scenario",
+      "size": 307025
+    },
+    {
+      "id": "Sfx_Scenario_041 Pull up the curtains",
+      "file": "sfx/Scenario/Sfx_Scenario_041 Pull up the curtains.ogg",
+      "label": "Pull up the curtains",
+      "category": "Scenario",
+      "size": 146733
+    },
+    {
+      "id": "Sfx_Scenario_042 Book on desk",
+      "file": "sfx/Scenario/Sfx_Scenario_042 Book on desk.ogg",
+      "label": "Book on desk",
+      "category": "Scenario",
+      "size": 17953
+    },
+    {
+      "id": "Sfx_Scenario_043 Turn page book",
+      "file": "sfx/Scenario/Sfx_Scenario_043 Turn page book.ogg",
+      "label": "Turn page book",
+      "category": "Scenario",
+      "size": 122604
+    },
+    {
+      "id": "Sfx_Scenario_045 Brokem cloth",
+      "file": "sfx/Scenario/Sfx_Scenario_045 Brokem cloth.ogg",
+      "label": "Brokem cloth",
+      "category": "Scenario",
+      "size": 19081
+    },
+    {
+      "id": "Sfx_Scenario_046 Fire bang",
+      "file": "sfx/Scenario/Sfx_Scenario_046 Fire bang.ogg",
+      "label": "Fire bang",
+      "category": "Scenario",
+      "size": 63521
+    },
+    {
+      "id": "Sfx_Scenario_047 Shower",
+      "file": "sfx/Scenario/Sfx_Scenario_047 Shower.ogg",
+      "label": "Shower",
+      "category": "Scenario",
+      "size": 295429
+    },
+    {
+      "id": "Sfx_Scenario_049 Two_Run underground",
+      "file": "sfx/Scenario/Sfx_Scenario_049 Two_Run underground.ogg",
+      "label": "Two_Run underground",
+      "category": "Scenario",
+      "size": 131087
+    },
+    {
+      "id": "Sfx_Scenario_050 Punch ground",
+      "file": "sfx/Scenario/Sfx_Scenario_050 Punch ground.ogg",
+      "label": "Punch ground",
+      "category": "Scenario",
+      "size": 14421
+    },
+    {
+      "id": "Sfx_Scenario_051 One_Run underground",
+      "file": "sfx/Scenario/Sfx_Scenario_051 One_Run underground.ogg",
+      "label": "One_Run underground",
+      "category": "Scenario",
+      "size": 128425
+    },
+    {
+      "id": "Sfx_Scenario_052 Broken handcuffs",
+      "file": "sfx/Scenario/Sfx_Scenario_052 Broken handcuffs.ogg",
+      "label": "Broken handcuffs",
+      "category": "Scenario",
+      "size": 47206
+    },
+    {
+      "id": "Sfx_Scenario_053 Slashing anan",
+      "file": "sfx/Scenario/Sfx_Scenario_053 Slashing anan.ogg",
+      "label": "Slashing anan",
+      "category": "Scenario",
+      "size": 318588
+    },
+    {
+      "id": "Sfx_Scenario_054 Train pass",
+      "file": "sfx/Scenario/Sfx_Scenario_054 Train pass.ogg",
+      "label": "Train pass",
+      "category": "Scenario",
+      "size": 509492
+    },
+    {
+      "id": "Sfx_Scenario_055 Bushes sound",
+      "file": "sfx/Scenario/Sfx_Scenario_055 Bushes sound.ogg",
+      "label": "Bushes sound",
+      "category": "Scenario",
+      "size": 63890
+    },
+    {
+      "id": "Sfx_Scenario_056 High speed thread",
+      "file": "sfx/Scenario/Sfx_Scenario_056 High speed thread.ogg",
+      "label": "High speed thread",
+      "category": "Scenario",
+      "size": 45214
+    },
+    {
+      "id": "Sfx_Scenario_057 School chime",
+      "file": "sfx/Scenario/Sfx_Scenario_057 School chime.ogg",
+      "label": "School chime",
+      "category": "Scenario",
+      "size": 309617
+    },
+    {
+      "id": "Sfx_Scenario_058 Run corridor",
+      "file": "sfx/Scenario/Sfx_Scenario_058 Run corridor.ogg",
+      "label": "Run corridor",
+      "category": "Scenario",
+      "size": 208168
+    },
+    {
+      "id": "Sfx_Scenario_059 Digging sound",
+      "file": "sfx/Scenario/Sfx_Scenario_059 Digging sound.ogg",
+      "label": "Digging sound",
+      "category": "Scenario",
+      "size": 229278
+    },
+    {
+      "id": "Sfx_Scenario_060 Drop smart phone",
+      "file": "sfx/Scenario/Sfx_Scenario_060 Drop smart phone.ogg",
+      "label": "Drop smart phone",
+      "category": "Scenario",
+      "size": 49883
+    },
+    {
+      "id": "Sfx_Scenario_061 Push book stand shely",
+      "file": "sfx/Scenario/Sfx_Scenario_061 Push book stand shely.ogg",
+      "label": "Push book stand shely",
+      "category": "Scenario",
+      "size": 74478
+    },
+    {
+      "id": "Sfx_Scenario_062 Open meatl door",
+      "file": "sfx/Scenario/Sfx_Scenario_062 Open meatl door.ogg",
+      "label": "Open meatl door",
+      "category": "Scenario",
+      "size": 35807
+    },
+    {
+      "id": "Sfx_Scenario_064 Move noise in the warehouse",
+      "file": "sfx/Scenario/Sfx_Scenario_064 Move noise in the warehouse.ogg",
+      "label": "Move noise in the warehouse",
+      "category": "Scenario",
+      "size": 34940
+    },
+    {
+      "id": "Sfx_Scenario_065 Hard hit punch ground",
+      "file": "sfx/Scenario/Sfx_Scenario_065 Hard hit punch ground.ogg",
+      "label": "Hard hit punch ground",
+      "category": "Scenario",
+      "size": 122367
+    },
+    {
+      "id": "Sfx_Scenario_066 Touch paper",
+      "file": "sfx/Scenario/Sfx_Scenario_066 Touch paper.ogg",
+      "label": "Touch paper",
+      "category": "Scenario",
+      "size": 20428
+    },
+    {
+      "id": "Sfx_Scenario_068 Arrival elevator",
+      "file": "sfx/Scenario/Sfx_Scenario_068 Arrival elevator.ogg",
+      "label": "Arrival elevator",
+      "category": "Scenario",
+      "size": 99861
+    },
+    {
+      "id": "Sfx_Scenario_070 Multiple_Run pathway",
+      "file": "sfx/Scenario/Sfx_Scenario_070 Multiple_Run pathway.ogg",
+      "label": "Multiple_Run pathway",
+      "category": "Scenario",
+      "size": 98596
+    },
+    {
+      "id": "Sfx_Scenario_071 Multiple_Run outdoor",
+      "file": "sfx/Scenario/Sfx_Scenario_071 Multiple_Run outdoor.ogg",
+      "label": "Multiple_Run outdoor",
+      "category": "Scenario",
+      "size": 274261
+    },
+    {
+      "id": "Sfx_Scenario_072 One_Footsteps leaving",
+      "file": "sfx/Scenario/Sfx_Scenario_072 One_Footsteps leaving.ogg",
+      "label": "One_Footsteps leaving",
+      "category": "Scenario",
+      "size": 99555
+    },
+    {
+      "id": "Sfx_Scenario_073 One_approaching footsteps_V2_",
+      "file": "sfx/Scenario/Sfx_Scenario_073 One_approaching footsteps_V2_.ogg",
+      "label": "One_approaching footsteps_V2_",
+      "category": "Scenario",
+      "size": 107475
+    },
+    {
+      "id": "Sfx_Scenario_074 Noise",
+      "file": "sfx/Scenario/Sfx_Scenario_074 Noise.ogg",
+      "label": "Noise",
+      "category": "Scenario",
+      "size": 250869
+    },
+    {
+      "id": "Sfx_Scenario_075 Hard_open door",
+      "file": "sfx/Scenario/Sfx_Scenario_075 Hard_open door.ogg",
+      "label": "Hard_open door",
+      "category": "Scenario",
+      "size": 82252
+    },
+    {
+      "id": "Sfx_Scenario_076 Pushing back",
+      "file": "sfx/Scenario/Sfx_Scenario_076 Pushing back.ogg",
+      "label": "Pushing back",
+      "category": "Scenario",
+      "size": 15313
+    },
+    {
+      "id": "Sfx_Scenario_077 Hit door",
+      "file": "sfx/Scenario/Sfx_Scenario_077 Hit door.ogg",
+      "label": "Hit door",
+      "category": "Scenario",
+      "size": 92024
+    },
+    {
+      "id": "Sfx_Scenario_078 Far foot sound",
+      "file": "sfx/Scenario/Sfx_Scenario_078 Far foot sound.ogg",
+      "label": "Far foot sound",
+      "category": "Scenario",
+      "size": 129914
+    },
+    {
+      "id": "Sfx_Scenario_079 Hit metal",
+      "file": "sfx/Scenario/Sfx_Scenario_079 Hit metal.ogg",
+      "label": "Hit metal",
+      "category": "Scenario",
+      "size": 80252
+    },
+    {
+      "id": "Sfx_Scenario_080 Hit whip",
+      "file": "sfx/Scenario/Sfx_Scenario_080 Hit whip.ogg",
+      "label": "Hit whip",
+      "category": "Scenario",
+      "size": 17235
+    },
+    {
+      "id": "Sfx_Scenario_081 Fall human",
+      "file": "sfx/Scenario/Sfx_Scenario_081 Fall human.ogg",
+      "label": "Fall human",
+      "category": "Scenario",
+      "size": 189825
+    },
+    {
+      "id": "Sfx_Scenario_082 Meet cook",
+      "file": "sfx/Scenario/Sfx_Scenario_082 Meet cook.ogg",
+      "label": "Meet cook",
+      "category": "Scenario",
+      "size": 183790
+    },
+    {
+      "id": "Sfx_Scenario_083 Cooking stew",
+      "file": "sfx/Scenario/Sfx_Scenario_083 Cooking stew.ogg",
+      "label": "Cooking stew",
+      "category": "Scenario",
+      "size": 234943
+    },
+    {
+      "id": "Sfx_Scenario_084 TONKATSU",
+      "file": "sfx/Scenario/Sfx_Scenario_084 TONKATSU.ogg",
+      "label": "TONKATSU",
+      "category": "Scenario",
+      "size": 40070
+    },
+    {
+      "id": "Sfx_Scenario_085 Hit punch human",
+      "file": "sfx/Scenario/Sfx_Scenario_085 Hit punch human.ogg",
+      "label": "Hit punch human",
+      "category": "Scenario",
+      "size": 35551
+    },
+    {
+      "id": "Sfx_Scenario_086 Push switch",
+      "file": "sfx/Scenario/Sfx_Scenario_086 Push switch.ogg",
+      "label": "Push switch",
+      "category": "Scenario",
+      "size": 20752
+    },
+    {
+      "id": "Sfx_Scenario_089 Be stuck GUSA!!",
+      "file": "sfx/Scenario/Sfx_Scenario_089 Be stuck GUSA!!.ogg",
+      "label": "Be stuck GUSA!!",
+      "category": "Scenario",
+      "size": 32043
+    },
+    {
+      "id": "Sfx_Scenario_090 Multiple_Be stuck GUSA!!",
+      "file": "sfx/Scenario/Sfx_Scenario_090 Multiple_Be stuck GUSA!!.ogg",
+      "label": "Multiple_Be stuck GUSA!!",
+      "category": "Scenario",
+      "size": 47083
+    },
+    {
+      "id": "Sfx_Scenario_092 Land mine switch",
+      "file": "sfx/Scenario/Sfx_Scenario_092 Land mine switch.ogg",
+      "label": "Land mine switch",
+      "category": "Scenario",
+      "size": 12289
+    },
+    {
+      "id": "Sfx_Scenario_093 Explosion",
+      "file": "sfx/Scenario/Sfx_Scenario_093 Explosion.ogg",
+      "label": "Explosion",
+      "category": "Scenario",
+      "size": 128913
+    },
+    {
+      "id": "Sfx_Scenario_094 HURIKO YAIBA",
+      "file": "sfx/Scenario/Sfx_Scenario_094 HURIKO YAIBA.ogg",
+      "label": "HURIKO YAIBA",
+      "category": "Scenario",
+      "size": 150597
+    },
+    {
+      "id": "Sfx_Scenario_095 Belt",
+      "file": "sfx/Scenario/Sfx_Scenario_095 Belt.ogg",
+      "label": "Belt",
+      "category": "Scenario",
+      "size": 145203
+    },
+    {
+      "id": "Sfx_Scenario_096 Smartphone hit floor",
+      "file": "sfx/Scenario/Sfx_Scenario_096 Smartphone hit floor.ogg",
+      "label": "Smartphone hit floor",
+      "category": "Scenario",
+      "size": 30881
+    },
+    {
+      "id": "Sfx_Scenario_097 Slow foot step",
+      "file": "sfx/Scenario/Sfx_Scenario_097 Slow foot step.ogg",
+      "label": "Slow foot step",
+      "category": "Scenario",
+      "size": 200828
+    },
+    {
+      "id": "Sfx_Scenario_098 Lever GACHAKON",
+      "file": "sfx/Scenario/Sfx_Scenario_098 Lever GACHAKON.ogg",
+      "label": "Lever GACHAKON",
+      "category": "Scenario",
+      "size": 37037
+    },
+    {
+      "id": "Sfx_Scenario_099 Electric",
+      "file": "sfx/Scenario/Sfx_Scenario_099 Electric.ogg",
+      "label": "Electric",
+      "category": "Scenario",
+      "size": 131381
+    },
+    {
+      "id": "Sfx_Scenario_100 Spark",
+      "file": "sfx/Scenario/Sfx_Scenario_100 Spark.ogg",
+      "label": "Spark",
+      "category": "Scenario",
+      "size": 48819
+    },
+    {
+      "id": "Sfx_Scenario_101 Pull up",
+      "file": "sfx/Scenario/Sfx_Scenario_101 Pull up.ogg",
+      "label": "Pull up",
+      "category": "Scenario",
+      "size": 26642
+    },
+    {
+      "id": "Sfx_Scenario_103 Pipopa",
+      "file": "sfx/Scenario/Sfx_Scenario_103 Pipopa.ogg",
+      "label": "Pipopa",
+      "category": "Scenario",
+      "size": 69520
+    },
+    {
+      "id": "Sfx_Scenario_104 Hang up",
+      "file": "sfx/Scenario/Sfx_Scenario_104 Hang up.ogg",
+      "label": "Hang up",
+      "category": "Scenario",
+      "size": 12098
+    },
+    {
+      "id": "Sfx_Scenario_105 Train near",
+      "file": "sfx/Scenario/Sfx_Scenario_105 Train near.ogg",
+      "label": "Train near",
+      "category": "Scenario",
+      "size": 502516
+    },
+    {
+      "id": "Sfx_Scenario_107 Open cabnet",
+      "file": "sfx/Scenario/Sfx_Scenario_107 Open cabnet.ogg",
+      "label": "Open cabnet",
+      "category": "Scenario",
+      "size": 18494
+    },
+    {
+      "id": "Sfx_Scenario_108 Neck bones",
+      "file": "sfx/Scenario/Sfx_Scenario_108 Neck bones.ogg",
+      "label": "Neck bones",
+      "category": "Scenario",
+      "size": 25650
+    },
+    {
+      "id": "Sfx_Scenario_109 Controller fall",
+      "file": "sfx/Scenario/Sfx_Scenario_109 Controller fall.ogg",
+      "label": "Controller fall",
+      "category": "Scenario",
+      "size": 83678
+    },
+    {
+      "id": "Sfx_Scenario_111 Pen write paper",
+      "file": "sfx/Scenario/Sfx_Scenario_111 Pen write paper.ogg",
+      "label": "Pen write paper",
+      "category": "Scenario",
+      "size": 203482
+    },
+    {
+      "id": "Sfx_Scenario_112 Tray put on desk",
+      "file": "sfx/Scenario/Sfx_Scenario_112 Tray put on desk.ogg",
+      "label": "Tray put on desk",
+      "category": "Scenario",
+      "size": 25732
+    },
+    {
+      "id": "Sfx_Scenario_113 Reverse spray",
+      "file": "sfx/Scenario/Sfx_Scenario_113 Reverse spray.ogg",
+      "label": "Reverse spray",
+      "category": "Scenario",
+      "size": 116470
+    },
+    {
+      "id": "Sfx_Scenario_114 MAHOU SYOUJO",
+      "file": "sfx/Scenario/Sfx_Scenario_114 MAHOU SYOUJO.ogg",
+      "label": "MAHOU SYOUJO",
+      "category": "Scenario",
+      "size": 138226
+    },
+    {
+      "id": "Sfx_Scenario_115 Take by force",
+      "file": "sfx/Scenario/Sfx_Scenario_115 Take by force.ogg",
+      "label": "Take by force",
+      "category": "Scenario",
+      "size": 23932
+    },
+    {
+      "id": "Sfx_Scenario_116 Save body",
+      "file": "sfx/Scenario/Sfx_Scenario_116 Save body.ogg",
+      "label": "Save body",
+      "category": "Scenario",
+      "size": 52428
+    },
+    {
+      "id": "Sfx_Scenario_117 Hit face",
+      "file": "sfx/Scenario/Sfx_Scenario_117 Hit face.ogg",
+      "label": "Hit face",
+      "category": "Scenario",
+      "size": 17777
+    },
+    {
+      "id": "Sfx_Scenario_118 Many books",
+      "file": "sfx/Scenario/Sfx_Scenario_118 Many books.ogg",
+      "label": "Many books",
+      "category": "Scenario",
+      "size": 53051
+    },
+    {
+      "id": "Sfx_Scenario_119 Open prison door",
+      "file": "sfx/Scenario/Sfx_Scenario_119 Open prison door.ogg",
+      "label": "Open prison door",
+      "category": "Scenario",
+      "size": 35845
+    },
+    {
+      "id": "Sfx_Scenario_120 Crash glass",
+      "file": "sfx/Scenario/Sfx_Scenario_120 Crash glass.ogg",
+      "label": "Crash glass",
+      "category": "Scenario",
+      "size": 62554
+    },
+    {
+      "id": "Sfx_Scenario_121 Water drop",
+      "file": "sfx/Scenario/Sfx_Scenario_121 Water drop.ogg",
+      "label": "Water drop",
+      "category": "Scenario",
+      "size": 23887
+    },
+    {
+      "id": "Sfx_Scenario_122 Sword whip",
+      "file": "sfx/Scenario/Sfx_Scenario_122 Sword whip.ogg",
+      "label": "Sword whip",
+      "category": "Scenario",
+      "size": 14606
+    },
+    {
+      "id": "Sfx_Scenario_123 Knife stuck in board",
+      "file": "sfx/Scenario/Sfx_Scenario_123 Knife stuck in board.ogg",
+      "label": "Knife stuck in board",
+      "category": "Scenario",
+      "size": 33853
+    },
+    {
+      "id": "Sfx_Scenario_125 One_Clap_",
+      "file": "sfx/Scenario/Sfx_Scenario_125 One_Clap_.ogg",
+      "label": "One_Clap_",
+      "category": "Scenario",
+      "size": 106550
+    },
+    {
+      "id": "Sfx_Scenario_126 One_Run room",
+      "file": "sfx/Scenario/Sfx_Scenario_126 One_Run room.ogg",
+      "label": "One_Run room",
+      "category": "Scenario",
+      "size": 68740
+    },
+    {
+      "id": "Sfx_Scenario_127 Hanging",
+      "file": "sfx/Scenario/Sfx_Scenario_127 Hanging.ogg",
+      "label": "Hanging",
+      "category": "Scenario",
+      "size": 107676
+    },
+    {
+      "id": "Sfx_Scenario_128 Loose screw",
+      "file": "sfx/Scenario/Sfx_Scenario_128 Loose screw.ogg",
+      "label": "Loose screw",
+      "category": "Scenario",
+      "size": 109896
+    },
+    {
+      "id": "Sfx_Scenario_129 Walking up the house stairs",
+      "file": "sfx/Scenario/Sfx_Scenario_129 Walking up the house stairs.ogg",
+      "label": "Walking up the house stairs",
+      "category": "Scenario",
+      "size": 69135
+    },
+    {
+      "id": "Sfx_Scenario_130 Running down the house stairs",
+      "file": "sfx/Scenario/Sfx_Scenario_130 Running down the house stairs.ogg",
+      "label": "Running down the house stairs",
+      "category": "Scenario",
+      "size": 69135
+    },
+    {
+      "id": "Sfx_Scenario_131 Thunder",
+      "file": "sfx/Scenario/Sfx_Scenario_131 Thunder.ogg",
+      "label": "Thunder",
+      "category": "Scenario",
+      "size": 287835
+    },
+    {
+      "id": "Sfx_Scenario_133 Machine gun",
+      "file": "sfx/Scenario/Sfx_Scenario_133 Machine gun.ogg",
+      "label": "Machine gun",
+      "category": "Scenario",
+      "size": 99341
+    },
+    {
+      "id": "Sfx_Scenario_134 Button key push",
+      "file": "sfx/Scenario/Sfx_Scenario_134 Button key push.ogg",
+      "label": "Button key push",
+      "category": "Scenario",
+      "size": 48300
+    },
+    {
+      "id": "Sfx_Scenario_135 Kusya kusya paper",
+      "file": "sfx/Scenario/Sfx_Scenario_135 Kusya kusya paper.ogg",
+      "label": "Kusya kusya paper",
+      "category": "Scenario",
+      "size": 86784
+    },
+    {
+      "id": "Sfx_Scenario_136 Move chair",
+      "file": "sfx/Scenario/Sfx_Scenario_136 Move chair.ogg",
+      "label": "Move chair",
+      "category": "Scenario",
+      "size": 48790
+    },
+    {
+      "id": "Sfx_Scenario_137 Hard open wood door",
+      "file": "sfx/Scenario/Sfx_Scenario_137 Hard open wood door.ogg",
+      "label": "Hard open wood door",
+      "category": "Scenario",
+      "size": 27371
+    },
+    {
+      "id": "Sfx_Scenario_140 Kick bucket&Liquid water",
+      "file": "sfx/Scenario/Sfx_Scenario_140 Kick bucket&Liquid water.ogg",
+      "label": "Kick bucket&Liquid water",
+      "category": "Scenario",
+      "size": 80893
+    },
+    {
+      "id": "Sfx_Scenario_141 Scrub the floor",
+      "file": "sfx/Scenario/Sfx_Scenario_141 Scrub the floor.ogg",
+      "label": "Scrub the floor",
+      "category": "Scenario",
+      "size": 87406
+    },
+    {
+      "id": "Sfx_Scenario_142 Bubble",
+      "file": "sfx/Scenario/Sfx_Scenario_142 Bubble.ogg",
+      "label": "Bubble",
+      "category": "Scenario",
+      "size": 232228
+    },
+    {
+      "id": "Sfx_Scenario_143 SYOUKYAKURO ASARU",
+      "file": "sfx/Scenario/Sfx_Scenario_143 SYOUKYAKURO ASARU.ogg",
+      "label": "SYOUKYAKURO ASARU",
+      "category": "Scenario",
+      "size": 130879
+    },
+    {
+      "id": "Sfx_Scenario_144 Close wood door",
+      "file": "sfx/Scenario/Sfx_Scenario_144 Close wood door.ogg",
+      "label": "Close wood door",
+      "category": "Scenario",
+      "size": 25914
+    },
+    {
+      "id": "Sfx_Scenario_145 Jumping into water",
+      "file": "sfx/Scenario/Sfx_Scenario_145 Jumping into water.ogg",
+      "label": "Jumping into water",
+      "category": "Scenario",
+      "size": 157320
+    },
+    {
+      "id": "Sfx_Scenario_146 Elevator buzzer",
+      "file": "sfx/Scenario/Sfx_Scenario_146 Elevator buzzer.ogg",
+      "label": "Elevator buzzer",
+      "category": "Scenario",
+      "size": 57544
+    },
+    {
+      "id": "Sfx_Scenario_147 Elevator move_TENBAN",
+      "file": "sfx/Scenario/Sfx_Scenario_147 Elevator move_TENBAN.ogg",
+      "label": "Elevator move_TENBAN",
+      "category": "Scenario",
+      "size": 140944
+    },
+    {
+      "id": "Sfx_Scenario_148 Break ice",
+      "file": "sfx/Scenario/Sfx_Scenario_148 Break ice.ogg",
+      "label": "Break ice",
+      "category": "Scenario",
+      "size": 59247
+    },
+    {
+      "id": "Sfx_Scenario_149 Small rock fall",
+      "file": "sfx/Scenario/Sfx_Scenario_149 Small rock fall.ogg",
+      "label": "Small rock fall",
+      "category": "Scenario",
+      "size": 179743
+    },
+    {
+      "id": "Sfx_Scenario_150 Hard falling rock",
+      "file": "sfx/Scenario/Sfx_Scenario_150 Hard falling rock.ogg",
+      "label": "Hard falling rock",
+      "category": "Scenario",
+      "size": 262846
+    },
+    {
+      "id": "Sfx_Scenario_151 Broken pen",
+      "file": "sfx/Scenario/Sfx_Scenario_151 Broken pen.ogg",
+      "label": "Broken pen",
+      "category": "Scenario",
+      "size": 57027
+    },
+    {
+      "id": "Sfx_Scenario_152 Pen fall on floor",
+      "file": "sfx/Scenario/Sfx_Scenario_152 Pen fall on floor.ogg",
+      "label": "Pen fall on floor",
+      "category": "Scenario",
+      "size": 29213
+    },
+    {
+      "id": "Sfx_Scenario_153 Strangling sounds",
+      "file": "sfx/Scenario/Sfx_Scenario_153 Strangling sounds.ogg",
+      "label": "Strangling sounds",
+      "category": "Scenario",
+      "size": 55337
+    },
+    {
+      "id": "Sfx_Scenario_154 Helicopter",
+      "file": "sfx/Scenario/Sfx_Scenario_154 Helicopter.ogg",
+      "label": "Helicopter",
+      "category": "Scenario",
+      "size": 497401
+    },
+    {
+      "id": "Sfx_Scenario_156 Drowning",
+      "file": "sfx/Scenario/Sfx_Scenario_156 Drowning.ogg",
+      "label": "Drowning",
+      "category": "Scenario",
+      "size": 95706
+    },
+    {
+      "id": "Sfx_Scenario_157 Elevator door open",
+      "file": "sfx/Scenario/Sfx_Scenario_157 Elevator door open.ogg",
+      "label": "Elevator door open",
+      "category": "Scenario",
+      "size": 124078
+    },
+    {
+      "id": "Sfx_Scenario_159 Hit metal on metal",
+      "file": "sfx/Scenario/Sfx_Scenario_159 Hit metal on metal.ogg",
+      "label": "Hit metal on metal",
+      "category": "Scenario",
+      "size": 32005
+    },
+    {
+      "id": "Sfx_Scenario_160 Guard a sword",
+      "file": "sfx/Scenario/Sfx_Scenario_160 Guard a sword.ogg",
+      "label": "Guard a sword",
+      "category": "Scenario",
+      "size": 38229
+    },
+    {
+      "id": "Sfx_Scenario_161 Lost Bullet",
+      "file": "sfx/Scenario/Sfx_Scenario_161 Lost Bullet.ogg",
+      "label": "Lost Bullet",
+      "category": "Scenario",
+      "size": 46483
+    },
+    {
+      "id": "Sfx_Scenario_162 Hard heartbeat",
+      "file": "sfx/Scenario/Sfx_Scenario_162 Hard heartbeat.ogg",
+      "label": "Hard heartbeat",
+      "category": "Scenario",
+      "size": 41225
+    },
+    {
+      "id": "Sfx_Scenario_163 coming foot out door",
+      "file": "sfx/Scenario/Sfx_Scenario_163 coming foot out door.ogg",
+      "label": "coming foot out door",
+      "category": "Scenario",
+      "size": 129065
+    },
+    {
+      "id": "Sfx_Scenario_164 Broken tree",
+      "file": "sfx/Scenario/Sfx_Scenario_164 Broken tree.ogg",
+      "label": "Broken tree",
+      "category": "Scenario",
+      "size": 42939
+    },
+    {
+      "id": "Sfx_Scenario_165 Slow open big door",
+      "file": "sfx/Scenario/Sfx_Scenario_165 Slow open big door.ogg",
+      "label": "Slow open big door",
+      "category": "Scenario",
+      "size": 269464
+    },
+    {
+      "id": "Sfx_Scenario_167 Hard hit head",
+      "file": "sfx/Scenario/Sfx_Scenario_167 Hard hit head.ogg",
+      "label": "Hard hit head",
+      "category": "Scenario",
+      "size": 40981
+    },
+    {
+      "id": "Sfx_Scenario_168 fall out deadman",
+      "file": "sfx/Scenario/Sfx_Scenario_168 fall out deadman.ogg",
+      "label": "fall out deadman",
+      "category": "Scenario",
+      "size": 95944
+    },
+    {
+      "id": "Sfx_Scenario_169 Light off",
+      "file": "sfx/Scenario/Sfx_Scenario_169 Light off.ogg",
+      "label": "Light off",
+      "category": "Scenario",
+      "size": 37580
+    },
+    {
+      "id": "Sfx_Scenario_170 Blood",
+      "file": "sfx/Scenario/Sfx_Scenario_170 Blood.ogg",
+      "label": "Blood",
+      "category": "Scenario",
+      "size": 382126
+    },
+    {
+      "id": "Sfx_Scenario_171 Blood shower",
+      "file": "sfx/Scenario/Sfx_Scenario_171 Blood shower.ogg",
+      "label": "Blood shower",
+      "category": "Scenario",
+      "size": 237009
+    },
+    {
+      "id": "Sfx_Scenario_173 One_Run outdoor",
+      "file": "sfx/Scenario/Sfx_Scenario_173 One_Run outdoor.ogg",
+      "label": "One_Run outdoor",
+      "category": "Scenario",
+      "size": 284278
+    },
+    {
+      "id": "Sfx_Scenario_175 Break ice2",
+      "file": "sfx/Scenario/Sfx_Scenario_175 Break ice2.ogg",
+      "label": "Break ice2",
+      "category": "Scenario",
+      "size": 70085
+    },
+    {
+      "id": "Sfx_Scenario_176 Break ice3",
+      "file": "sfx/Scenario/Sfx_Scenario_176 Break ice3.ogg",
+      "label": "Break ice3",
+      "category": "Scenario",
+      "size": 53071
+    },
+    {
+      "id": "Sfx_Scenario_177 abareru shely2",
+      "file": "sfx/Scenario/Sfx_Scenario_177 abareru shely2.ogg",
+      "label": "abareru shely2",
+      "category": "Scenario",
+      "size": 97376
+    },
+    {
+      "id": "Sfx_Scenario_178 Landing sound",
+      "file": "sfx/Scenario/Sfx_Scenario_178 Landing sound.ogg",
+      "label": "Landing sound",
+      "category": "Scenario",
+      "size": 23672
+    },
+    {
+      "id": "Sfx_Scenario_179 Lie down on bed",
+      "file": "sfx/Scenario/Sfx_Scenario_179 Lie down on bed.ogg",
+      "label": "Lie down on bed",
+      "category": "Scenario",
+      "size": 75669
+    },
+    {
+      "id": "Sfx_Scenario_180 Be stuck GUSA!!delay",
+      "file": "sfx/Scenario/Sfx_Scenario_180 Be stuck GUSA!!delay.ogg",
+      "label": "Be stuck GUSA!!delay",
+      "category": "Scenario",
+      "size": 135585
+    },
+    {
+      "id": "Sfx_Scenario_181 Laughing girl",
+      "file": "sfx/Scenario/Sfx_Scenario_181 Laughing girl.ogg",
+      "label": "Laughing girl",
+      "category": "Scenario",
+      "size": 281256
+    },
+    {
+      "id": "Sfx_Scenario_182 Bubble2",
+      "file": "sfx/Scenario/Sfx_Scenario_182 Bubble2.ogg",
+      "label": "Bubble2",
+      "category": "Scenario",
+      "size": 176412
+    },
+    {
+      "id": "Sfx_Scenario_183 Hit whip2",
+      "file": "sfx/Scenario/Sfx_Scenario_183 Hit whip2.ogg",
+      "label": "Hit whip2",
+      "category": "Scenario",
+      "size": 64217
+    },
+    {
+      "id": "Sfx_Scenario_184 Hit whip3",
+      "file": "sfx/Scenario/Sfx_Scenario_184 Hit whip3.ogg",
+      "label": "Hit whip3",
+      "category": "Scenario",
+      "size": 69410
+    },
+    {
+      "id": "Sfx_Scenario_185 Breaking the iron door",
+      "file": "sfx/Scenario/Sfx_Scenario_185 Breaking the iron door.ogg",
+      "label": "Breaking the iron door",
+      "category": "Scenario",
+      "size": 140085
+    },
+    {
+      "id": "Sfx_System_Alert_001",
+      "file": "sfx/System/Sfx_System_Alert_001.ogg",
+      "label": "Sfx System Alert 001",
+      "category": "System",
+      "size": 8393
+    },
+    {
+      "id": "Sfx_System_Cancel_001",
+      "file": "sfx/System/Sfx_System_Cancel_001.ogg",
+      "label": "Sfx System Cancel 001",
+      "category": "System",
+      "size": 14490
+    },
+    {
+      "id": "Sfx_System_Choice_001",
+      "file": "sfx/System/Sfx_System_Choice_001.ogg",
+      "label": "Sfx System Choice 001",
+      "category": "System",
+      "size": 110752
+    },
+    {
+      "id": "Sfx_System_Choice_002a",
+      "file": "sfx/System/Sfx_System_Choice_002a.ogg",
+      "label": "Sfx System Choice 002a",
+      "category": "System",
+      "size": 27636
+    },
+    {
+      "id": "Sfx_System_Choice_002b",
+      "file": "sfx/System/Sfx_System_Choice_002b.ogg",
+      "label": "Sfx System Choice 002b",
+      "category": "System",
+      "size": 31457
+    },
+    {
+      "id": "Sfx_System_Choice_002c",
+      "file": "sfx/System/Sfx_System_Choice_002c.ogg",
+      "label": "Sfx System Choice 002c",
+      "category": "System",
+      "size": 19309
+    },
+    {
+      "id": "Sfx_System_Choice_003b",
+      "file": "sfx/System/Sfx_System_Choice_003b.ogg",
+      "label": "Sfx System Choice 003b",
+      "category": "System",
+      "size": 17726
+    },
+    {
+      "id": "Sfx_System_Choice_003c",
+      "file": "sfx/System/Sfx_System_Choice_003c.ogg",
+      "label": "Sfx System Choice 003c",
+      "category": "System",
+      "size": 17364
+    },
+    {
+      "id": "Sfx_System_CloseBook_001",
+      "file": "sfx/System/Sfx_System_CloseBook_001.ogg",
+      "label": "Sfx System CloseBook 001",
+      "category": "System",
+      "size": 21060
+    },
+    {
+      "id": "Sfx_System_Close_001",
+      "file": "sfx/System/Sfx_System_Close_001.ogg",
+      "label": "Sfx System Close 001",
+      "category": "System",
+      "size": 8933
+    },
+    {
+      "id": "Sfx_System_ExecuteButton_001",
+      "file": "sfx/System/Sfx_System_ExecuteButton_001.ogg",
+      "label": "Sfx System ExecuteButton 001",
+      "category": "System",
+      "size": 423369
+    },
+    {
+      "id": "Sfx_System_ExecuteButton_002",
+      "file": "sfx/System/Sfx_System_ExecuteButton_002.ogg",
+      "label": "Sfx System ExecuteButton 002",
+      "category": "System",
+      "size": 81186
+    },
+    {
+      "id": "Sfx_System_LoadData_001",
+      "file": "sfx/System/Sfx_System_LoadData_001.ogg",
+      "label": "Sfx System LoadData 001",
+      "category": "System",
+      "size": 107621
+    },
+    {
+      "id": "Sfx_System_Move_001",
+      "file": "sfx/System/Sfx_System_Move_001.ogg",
+      "label": "Sfx System Move 001",
+      "category": "System",
+      "size": 11261
+    },
+    {
+      "id": "Sfx_System_ObtainItem_001a",
+      "file": "sfx/System/Sfx_System_ObtainItem_001a.ogg",
+      "label": "Sfx System ObtainItem 001a",
+      "category": "System",
+      "size": 49098
+    },
+    {
+      "id": "Sfx_System_ObtainItem_001b",
+      "file": "sfx/System/Sfx_System_ObtainItem_001b.ogg",
+      "label": "Sfx System ObtainItem 001b",
+      "category": "System",
+      "size": 48812
+    },
+    {
+      "id": "Sfx_System_OpenBook_001",
+      "file": "sfx/System/Sfx_System_OpenBook_001.ogg",
+      "label": "Sfx System OpenBook 001",
+      "category": "System",
+      "size": 34302
+    },
+    {
+      "id": "Sfx_System_Open_001",
+      "file": "sfx/System/Sfx_System_Open_001.ogg",
+      "label": "Sfx System Open 001",
+      "category": "System",
+      "size": 8101
+    },
+    {
+      "id": "Sfx_System_SaveData_001",
+      "file": "sfx/System/Sfx_System_SaveData_001.ogg",
+      "label": "Sfx System SaveData 001",
+      "category": "System",
+      "size": 109103
+    },
+    {
+      "id": "Sfx_System_SaveData_001_2x",
+      "file": "sfx/System/Sfx_System_SaveData_001_2x.ogg",
+      "label": "Sfx System SaveData 001 2x",
+      "category": "System",
+      "size": 62939
+    },
+    {
+      "id": "Sfx_System_StartGame_001",
+      "file": "sfx/System/Sfx_System_StartGame_001.ogg",
+      "label": "Sfx System StartGame 001",
+      "category": "System",
+      "size": 163058
+    },
+    {
+      "id": "Sfx_System_Submit_001",
+      "file": "sfx/System/Sfx_System_Submit_001.ogg",
+      "label": "Sfx System Submit 001",
+      "category": "System",
+      "size": 7898
+    },
+    {
+      "id": "Sfx_System_Submit_003a",
+      "file": "sfx/System/Sfx_System_Submit_003a.ogg",
+      "label": "Sfx System Submit 003a",
+      "category": "System",
+      "size": 7898
+    },
+    {
+      "id": "Sfx_System_Tab_001a",
+      "file": "sfx/System/Sfx_System_Tab_001a.ogg",
+      "label": "Sfx System Tab 001a",
+      "category": "System",
+      "size": 12140
+    },
+    {
+      "id": "Sfx_System_Tab_001b",
+      "file": "sfx/System/Sfx_System_Tab_001b.ogg",
+      "label": "Sfx System Tab 001b",
+      "category": "System",
+      "size": 12463
+    }
+  ],
+  "bgm": [
+    {
+      "id": "Ambient_001_001 Natural bird",
+      "file": "bgm/Ambient/Ambient_001_001 Natural bird.ogg",
+      "label": "Natural bird",
+      "category": "Ambient",
+      "size": 3206759
+    },
+    {
+      "id": "Ambient_002_001 Shower",
+      "file": "bgm/Ambient/Ambient_002_001 Shower.ogg",
+      "label": "Shower",
+      "category": "Ambient",
+      "size": 1194745
+    },
+    {
+      "id": "Ambient_003_001 Chakumero",
+      "file": "bgm/Ambient/Ambient_003_001 Chakumero.ogg",
+      "label": "Chakumero",
+      "category": "Ambient",
+      "size": 1035607
+    },
+    {
+      "id": "Ambient_004_001 Fire house",
+      "file": "bgm/Ambient/Ambient_004_001 Fire house.ogg",
+      "label": "Fire house",
+      "category": "Ambient",
+      "size": 5284610
+    },
+    {
+      "id": "Ambient_005_001 Operating elevator",
+      "file": "bgm/Ambient/Ambient_005_001 Operating elevator.ogg",
+      "label": "Operating elevator",
+      "category": "Ambient",
+      "size": 352871
+    },
+    {
+      "id": "Ambient_006_001 Flare up",
+      "file": "bgm/Ambient/Ambient_006_001 Flare up.ogg",
+      "label": "Flare up",
+      "category": "Ambient",
+      "size": 5673975
+    },
+    {
+      "id": "Ambient_007_001 Earthquake",
+      "file": "bgm/Ambient/Ambient_007_001 Earthquake.ogg",
+      "label": "Earthquake",
+      "category": "Ambient",
+      "size": 268639
+    },
+    {
+      "id": "Ambient_008_001 Hard rain",
+      "file": "bgm/Ambient/Ambient_008_001 Hard rain.ogg",
+      "label": "Hard rain",
+      "category": "Ambient",
+      "size": 5566184
+    },
+    {
+      "id": "Ambient_010_001 Chain fall out",
+      "file": "bgm/Ambient/Ambient_010_001 Chain fall out.ogg",
+      "label": "Chain fall out",
+      "category": "Ambient",
+      "size": 152666
+    },
+    {
+      "id": "Ambient_011_001 Laughing girls",
+      "file": "bgm/Ambient/Ambient_011_001 Laughing girls.ogg",
+      "label": "Laughing girls",
+      "category": "Ambient",
+      "size": 2908076
+    },
+    {
+      "id": "Ambient_101_001 white-noise-48000sr",
+      "file": "bgm/Ambient/Ambient_101_001 white-noise-48000sr.ogg",
+      "label": "white-noise-48000sr",
+      "category": "Ambient",
+      "size": 156237
+    },
+    {
+      "id": "Ambient_102_001 SFX_FireBig_L",
+      "file": "bgm/Ambient/Ambient_102_001 SFX_FireBig_L.ogg",
+      "label": "SFX_FireBig_L",
+      "category": "Ambient",
+      "size": 185171
+    },
+    {
+      "id": "Bgm_001_001_Loop",
+      "file": "",
+      "label": "Bgm 001 001 Loop",
+      "category": "Common",
+      "size": 9391472
+    },
+    {
+      "id": "Bgm_002_001_Intro",
+      "file": "bgm/Common/Bgm_002_001_Intro.ogg",
+      "label": "Bgm 002 001 Intro",
+      "category": "Common",
+      "size": 309742
+    },
+    {
+      "id": "Bgm_002_001_Loop",
+      "file": "",
+      "label": "Bgm 002 001 Loop",
+      "category": "Common",
+      "size": 11656288
+    },
+    {
+      "id": "Bgm_003_001_Intro",
+      "file": "bgm/Common/Bgm_003_001_Intro.ogg",
+      "label": "Bgm 003 001 Intro",
+      "category": "Common",
+      "size": 393010
+    },
+    {
+      "id": "Bgm_003_001_Loop",
+      "file": "",
+      "label": "Bgm 003 001 Loop",
+      "category": "Common",
+      "size": 18212836
+    },
+    {
+      "id": "Bgm_004_001_Loop",
+      "file": "",
+      "label": "Bgm 004 001 Loop",
+      "category": "Common",
+      "size": 11836273
+    },
+    {
+      "id": "Bgm_005_001_Loop",
+      "file": "",
+      "label": "Bgm 005 001 Loop",
+      "category": "Common",
+      "size": 15118897
+    },
+    {
+      "id": "Bgm_006_001_Loop",
+      "file": "bgm/Common/Bgm_006_001_Loop.ogg",
+      "label": "Bgm 006 001 Loop",
+      "category": "Common",
+      "size": 5738635
+    },
+    {
+      "id": "Bgm_007_001_Loop",
+      "file": "",
+      "label": "Bgm 007 001 Loop",
+      "category": "Common",
+      "size": 17182935
+    },
+    {
+      "id": "Bgm_008_001_Loop",
+      "file": "",
+      "label": "Bgm 008 001 Loop",
+      "category": "Common",
+      "size": 21698823
+    },
+    {
+      "id": "Bgm_008_002_Loop",
+      "file": "",
+      "label": "Bgm 008 002 Loop",
+      "category": "Common",
+      "size": 21798636
+    },
+    {
+      "id": "Bgm_009_001_Loop",
+      "file": "",
+      "label": "Bgm 009 001 Loop",
+      "category": "Common",
+      "size": 9171803
+    },
+    {
+      "id": "Bgm_010_001_Loop",
+      "file": "",
+      "label": "Bgm 010 001 Loop",
+      "category": "Common",
+      "size": 11800982
+    },
+    {
+      "id": "Bgm_011_001_Loop",
+      "file": "",
+      "label": "Bgm 011 001 Loop",
+      "category": "Common",
+      "size": 9434046
+    },
+    {
+      "id": "Bgm_012_001_Intro",
+      "file": "bgm/Common/Bgm_012_001_Intro.ogg",
+      "label": "Bgm 012 001 Intro",
+      "category": "Common",
+      "size": 139721
+    },
+    {
+      "id": "Song_001_001",
+      "file": "",
+      "label": "Song 001 001",
+      "category": "Songs",
+      "size": 12653442
+    },
+    {
+      "id": "Song_002_001",
+      "file": "",
+      "label": "Song 002 001",
+      "category": "Songs",
+      "size": 17014702
+    },
+    {
+      "id": "Song_003_001",
+      "file": "",
+      "label": "Song 003 001",
+      "category": "Songs",
+      "size": 12214999
+    },
+    {
+      "id": "Song_004_001",
+      "file": "",
+      "label": "Song 004 001",
+      "category": "Songs",
+      "size": 16089322
+    }
+  ],
+  "voiceBaseUrl": "https://huggingface.co/datasets/manosaba-voice/resolve/main/",
+  "voice": [
+    {
+      "id": "Act01_Chapter01_Alisa",
+      "scene": "Act01_Chapter01",
+      "character": "Alisa",
+      "characterName": "亚里沙",
+      "file": "voice/Act01_Chapter01/0101Adv04_Alisa001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 140.4
+    },
+    {
+      "id": "Act01_Chapter01_AnAn",
+      "scene": "Act01_Chapter01",
+      "character": "AnAn",
+      "characterName": "安安",
+      "file": "voice/Act01_Chapter01/0101Adv09_AnAn005.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 20.2
+    },
+    {
+      "id": "Act01_Chapter01_Coco",
+      "scene": "Act01_Chapter01",
+      "character": "Coco",
+      "characterName": "可可",
+      "file": "voice/Act01_Chapter01/0101Adv04_Coco001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 104.1
+    },
+    {
+      "id": "Act01_Chapter01_Ema",
+      "scene": "Act01_Chapter01",
+      "character": "Ema",
+      "characterName": "艾玛",
+      "file": "voice/Act01_Chapter01/0101Adv02_Ema001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 20.3
+    },
+    {
+      "id": "Act01_Chapter01_Hanna",
+      "scene": "Act01_Chapter01",
+      "character": "Hanna",
+      "characterName": "汉娜",
+      "file": "voice/Act01_Chapter01/0101Adv04_Hanna001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 130.0
+    },
+    {
+      "id": "Act01_Chapter01_Hiro",
+      "scene": "Act01_Chapter01",
+      "character": "Hiro",
+      "characterName": "希罗",
+      "file": "voice/Act01_Chapter01/0101Adv02_Hiro001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 55.8
+    },
+    {
+      "id": "Act01_Chapter01_Leia",
+      "scene": "Act01_Chapter01",
+      "character": "Leia",
+      "characterName": "蕾雅",
+      "file": "voice/Act01_Chapter01/0101Adv04_Leia001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 83.7
+    },
+    {
+      "id": "Act01_Chapter01_Margo",
+      "scene": "Act01_Chapter01",
+      "character": "Margo",
+      "characterName": "玛格",
+      "file": "voice/Act01_Chapter01/0101Adv04_Margo001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 175.5
+    },
+    {
+      "id": "Act01_Chapter01_Meruru",
+      "scene": "Act01_Chapter01",
+      "character": "Meruru",
+      "characterName": "梅露露",
+      "file": "voice/Act01_Chapter01/0101Adv04_Meruru001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 231.5
+    },
+    {
+      "id": "Act01_Chapter01_Miria",
+      "scene": "Act01_Chapter01",
+      "character": "Miria",
+      "characterName": "米莉亚",
+      "file": "voice/Act01_Chapter01/0101Adv04_Miria001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 214.1
+    },
+    {
+      "id": "Act01_Chapter01_Nanoka",
+      "scene": "Act01_Chapter01",
+      "character": "Nanoka",
+      "characterName": "奈叶香",
+      "file": "voice/Act01_Chapter01/0101Adv04_Nanoka001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 26.5
+    },
+    {
+      "id": "Act01_Chapter01_Noah",
+      "scene": "Act01_Chapter01",
+      "character": "Noah",
+      "characterName": "诺亚",
+      "file": "voice/Act01_Chapter01/0101Adv04_Noah001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 108.3
+    },
+    {
+      "id": "Act01_Chapter01_Sherry",
+      "scene": "Act01_Chapter01",
+      "character": "Sherry",
+      "characterName": "雪莉",
+      "file": "voice/Act01_Chapter01/0101Adv04_Sherry001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 220.3
+    },
+    {
+      "id": "Act01_Chapter01_Unknown",
+      "scene": "Act01_Chapter01",
+      "character": "Unknown",
+      "characterName": "Unknown",
+      "file": "voice/Act01_Chapter01/0101Adv02_Unknown001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 105.5
+    },
+    {
+      "id": "Act01_Chapter01_Warden",
+      "scene": "Act01_Chapter01",
+      "character": "Warden",
+      "characterName": "典狱长",
+      "file": "voice/Act01_Chapter01/0101Adv02_Warden001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 145.3
+    },
+    {
+      "id": "Act01_Chapter02_Alisa",
+      "scene": "Act01_Chapter02",
+      "character": "Alisa",
+      "characterName": "亚里沙",
+      "file": "voice/Act01_Chapter02/0102Adv01_Alisa001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 70.9
+    },
+    {
+      "id": "Act01_Chapter02_AnAn",
+      "scene": "Act01_Chapter02",
+      "character": "AnAn",
+      "characterName": "安安",
+      "file": "voice/Act01_Chapter02/0102Adv06_AnAn001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 13.9
+    },
+    {
+      "id": "Act01_Chapter02_Coco",
+      "scene": "Act01_Chapter02",
+      "character": "Coco",
+      "characterName": "可可",
+      "file": "voice/Act01_Chapter02/0102Adv01_Coco001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 143.9
+    },
+    {
+      "id": "Act01_Chapter02_Ema",
+      "scene": "Act01_Chapter02",
+      "character": "Ema",
+      "characterName": "艾玛",
+      "file": "voice/Act01_Chapter02/0102Adv01_Ema001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 43.9
+    },
+    {
+      "id": "Act01_Chapter02_Hanna",
+      "scene": "Act01_Chapter02",
+      "character": "Hanna",
+      "characterName": "汉娜",
+      "file": "voice/Act01_Chapter02/0102Adv01_Hanna001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 123.2
+    },
+    {
+      "id": "Act01_Chapter02_Margo",
+      "scene": "Act01_Chapter02",
+      "character": "Margo",
+      "characterName": "玛格",
+      "file": "voice/Act01_Chapter02/0102Adv01_Margo001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 202.4
+    },
+    {
+      "id": "Act01_Chapter02_Meruru",
+      "scene": "Act01_Chapter02",
+      "character": "Meruru",
+      "characterName": "梅露露",
+      "file": "voice/Act01_Chapter02/0102Adv01_Meruru001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 155.1
+    },
+    {
+      "id": "Act01_Chapter02_Miria",
+      "scene": "Act01_Chapter02",
+      "character": "Miria",
+      "characterName": "米莉亚",
+      "file": "voice/Act01_Chapter02/0102Adv01_Miria001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 19.0
+    },
+    {
+      "id": "Act01_Chapter02_Nanoka",
+      "scene": "Act01_Chapter02",
+      "character": "Nanoka",
+      "characterName": "奈叶香",
+      "file": "voice/Act01_Chapter02/0102Adv01_Nanoka001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 100.7
+    },
+    {
+      "id": "Act01_Chapter02_Sherry",
+      "scene": "Act01_Chapter02",
+      "character": "Sherry",
+      "characterName": "雪莉",
+      "file": "voice/Act01_Chapter02/0102Adv01_Sherry001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 99.0
+    },
+    {
+      "id": "Act01_Chapter02_Unknown",
+      "scene": "Act01_Chapter02",
+      "character": "Unknown",
+      "characterName": "Unknown",
+      "file": "voice/Act01_Chapter02/0102Adv27_Narrative089.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 49.7
+    },
+    {
+      "id": "Act01_Chapter02_Warden",
+      "scene": "Act01_Chapter02",
+      "character": "Warden",
+      "characterName": "典狱长",
+      "file": "voice/Act01_Chapter02/0102Adv01_Warden001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 148.7
+    },
+    {
+      "id": "Act01_Chapter03_Alisa",
+      "scene": "Act01_Chapter03",
+      "character": "Alisa",
+      "characterName": "亚里沙",
+      "file": "voice/Act01_Chapter03/0103Adv01_Alisa001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 233.0
+    },
+    {
+      "id": "Act01_Chapter03_Coco",
+      "scene": "Act01_Chapter03",
+      "character": "Coco",
+      "characterName": "可可",
+      "file": "voice/Act01_Chapter03/0103Adv01_Coco001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 187.9
+    },
+    {
+      "id": "Act01_Chapter03_Ema",
+      "scene": "Act01_Chapter03",
+      "character": "Ema",
+      "characterName": "艾玛",
+      "file": "voice/Act01_Chapter03/0103Adv01_Ema001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 101.3
+    },
+    {
+      "id": "Act01_Chapter03_Hanna",
+      "scene": "Act01_Chapter03",
+      "character": "Hanna",
+      "characterName": "汉娜",
+      "file": "voice/Act01_Chapter03/0103Adv01_Hanna001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 48.0
+    },
+    {
+      "id": "Act01_Chapter03_Margo",
+      "scene": "Act01_Chapter03",
+      "character": "Margo",
+      "characterName": "玛格",
+      "file": "voice/Act01_Chapter03/0103Adv01_Margo001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 186.2
+    },
+    {
+      "id": "Act01_Chapter03_Meruru",
+      "scene": "Act01_Chapter03",
+      "character": "Meruru",
+      "characterName": "梅露露",
+      "file": "voice/Act01_Chapter03/0103Adv01_Meruru002.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 189.5
+    },
+    {
+      "id": "Act01_Chapter03_Nanoka",
+      "scene": "Act01_Chapter03",
+      "character": "Nanoka",
+      "characterName": "奈叶香",
+      "file": "voice/Act01_Chapter03/0103Adv24_Nanoka001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 17.7
+    },
+    {
+      "id": "Act01_Chapter03_Sherry",
+      "scene": "Act01_Chapter03",
+      "character": "Sherry",
+      "characterName": "雪莉",
+      "file": "voice/Act01_Chapter03/0103Adv01_Sherry001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 99.1
+    },
+    {
+      "id": "Act01_Chapter03_Unknown",
+      "scene": "Act01_Chapter03",
+      "character": "Unknown",
+      "characterName": "Unknown",
+      "file": "voice/Act01_Chapter03/0103Adv02_Narrative006.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 104.0
+    },
+    {
+      "id": "Act01_Chapter03_Warden",
+      "scene": "Act01_Chapter03",
+      "character": "Warden",
+      "characterName": "典狱长",
+      "file": "voice/Act01_Chapter03/0103Adv18_Warden001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 240.3
+    },
+    {
+      "id": "Act01_Chapter04_Alisa",
+      "scene": "Act01_Chapter04",
+      "character": "Alisa",
+      "characterName": "亚里沙",
+      "file": "voice/Act01_Chapter04/0104Adv02_Alisa001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 66.1
+    },
+    {
+      "id": "Act01_Chapter04_Coco",
+      "scene": "Act01_Chapter04",
+      "character": "Coco",
+      "characterName": "可可",
+      "file": "voice/Act01_Chapter04/0104Adv01_Coco001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 136.9
+    },
+    {
+      "id": "Act01_Chapter04_Ema",
+      "scene": "Act01_Chapter04",
+      "character": "Ema",
+      "characterName": "艾玛",
+      "file": "voice/Act01_Chapter04/0104Adv01_Ema001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 10.1
+    },
+    {
+      "id": "Act01_Chapter04_Margo",
+      "scene": "Act01_Chapter04",
+      "character": "Margo",
+      "characterName": "玛格",
+      "file": "voice/Act01_Chapter04/0104Adv01_Margo001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 95.1
+    },
+    {
+      "id": "Act01_Chapter04_Meruru",
+      "scene": "Act01_Chapter04",
+      "character": "Meruru",
+      "characterName": "梅露露",
+      "file": "voice/Act01_Chapter04/0104Adv01_Meruru001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 59.2
+    },
+    {
+      "id": "Act01_Chapter04_Nanoka",
+      "scene": "Act01_Chapter04",
+      "character": "Nanoka",
+      "characterName": "奈叶香",
+      "file": "voice/Act01_Chapter04/0104Adv06_Nanoka001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 11.7
+    },
+    {
+      "id": "Act01_Chapter04_Sherry",
+      "scene": "Act01_Chapter04",
+      "character": "Sherry",
+      "characterName": "雪莉",
+      "file": "voice/Act01_Chapter04/0104Adv05_Sherry001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 157.5
+    },
+    {
+      "id": "Act01_Chapter04_Unknown",
+      "scene": "Act01_Chapter04",
+      "character": "Unknown",
+      "characterName": "Unknown",
+      "file": "voice/Act01_Chapter04/0104Adv13_Yuki001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 71.9
+    },
+    {
+      "id": "Act01_Chapter04_Warden",
+      "scene": "Act01_Chapter04",
+      "character": "Warden",
+      "characterName": "典狱长",
+      "file": "voice/Act01_Chapter04/0104Adv01_Warden001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 165.6
+    },
+    {
+      "id": "Act01_Chapter05_Alisa",
+      "scene": "Act01_Chapter05",
+      "character": "Alisa",
+      "characterName": "亚里沙",
+      "file": "voice/Act01_Chapter05/0105Adv10_Alisa001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 185.1
+    },
+    {
+      "id": "Act01_Chapter05_AnAn",
+      "scene": "Act01_Chapter05",
+      "character": "AnAn",
+      "characterName": "安安",
+      "file": "voice/Act01_Chapter05/0105Adv10_AnAn001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 220.2
+    },
+    {
+      "id": "Act01_Chapter05_Coco",
+      "scene": "Act01_Chapter05",
+      "character": "Coco",
+      "characterName": "可可",
+      "file": "voice/Act01_Chapter05/0105Adv01_Coco001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 149.0
+    },
+    {
+      "id": "Act01_Chapter05_Ema",
+      "scene": "Act01_Chapter05",
+      "character": "Ema",
+      "characterName": "艾玛",
+      "file": "voice/Act01_Chapter05/0105Adv01_Ema002.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 66.8
+    },
+    {
+      "id": "Act01_Chapter05_Hanna",
+      "scene": "Act01_Chapter05",
+      "character": "Hanna",
+      "characterName": "汉娜",
+      "file": "voice/Act01_Chapter05/0105Adv10_Hanna001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 203.8
+    },
+    {
+      "id": "Act01_Chapter05_Hiro",
+      "scene": "Act01_Chapter05",
+      "character": "Hiro",
+      "characterName": "希罗",
+      "file": "voice/Act01_Chapter05/0105Adv10_Hiro001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 159.4
+    },
+    {
+      "id": "Act01_Chapter05_Leia",
+      "scene": "Act01_Chapter05",
+      "character": "Leia",
+      "characterName": "蕾雅",
+      "file": "voice/Act01_Chapter05/0105Adv10_Leia001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 124.1
+    },
+    {
+      "id": "Act01_Chapter05_Margo",
+      "scene": "Act01_Chapter05",
+      "character": "Margo",
+      "characterName": "玛格",
+      "file": "voice/Act01_Chapter05/0105Adv03_Margo001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 131.4
+    },
+    {
+      "id": "Act01_Chapter05_Meruru",
+      "scene": "Act01_Chapter05",
+      "character": "Meruru",
+      "characterName": "梅露露",
+      "file": "voice/Act01_Chapter05/0105Adv03_Meruru001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 164.0
+    },
+    {
+      "id": "Act01_Chapter05_Miria",
+      "scene": "Act01_Chapter05",
+      "character": "Miria",
+      "characterName": "米莉亚",
+      "file": "voice/Act01_Chapter05/0105Adv10_Miria001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 141.0
+    },
+    {
+      "id": "Act01_Chapter05_Nanoka",
+      "scene": "Act01_Chapter05",
+      "character": "Nanoka",
+      "characterName": "奈叶香",
+      "file": "voice/Act01_Chapter05/0105Adv10_Nanoka001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 110.1
+    },
+    {
+      "id": "Act01_Chapter05_Noah",
+      "scene": "Act01_Chapter05",
+      "character": "Noah",
+      "characterName": "诺亚",
+      "file": "voice/Act01_Chapter05/0105Adv10_Noah001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 210.0
+    },
+    {
+      "id": "Act01_Chapter05_Sherry",
+      "scene": "Act01_Chapter05",
+      "character": "Sherry",
+      "characterName": "雪莉",
+      "file": "voice/Act01_Chapter05/0105Adv10_Sherry001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 68.6
+    },
+    {
+      "id": "Act01_Chapter05_Unknown",
+      "scene": "Act01_Chapter05",
+      "character": "Unknown",
+      "characterName": "Unknown",
+      "file": "voice/Act01_Chapter05/0105Adv09_Yuki001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 28.6
+    },
+    {
+      "id": "Act01_Chapter05_Warden",
+      "scene": "Act01_Chapter05",
+      "character": "Warden",
+      "characterName": "典狱长",
+      "file": "voice/Act01_Chapter05/0105Adv05_Warden001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 107.7
+    },
+    {
+      "id": "Act02_Chapter01_Alisa",
+      "scene": "Act02_Chapter01",
+      "character": "Alisa",
+      "characterName": "亚里沙",
+      "file": "voice/Act02_Chapter01/0201Adv04_Alisa001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 103.8
+    },
+    {
+      "id": "Act02_Chapter01_AnAn",
+      "scene": "Act02_Chapter01",
+      "character": "AnAn",
+      "characterName": "安安",
+      "file": "voice/Act02_Chapter01/0201Adv09_AnAn001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 45.2
+    },
+    {
+      "id": "Act02_Chapter01_Coco",
+      "scene": "Act02_Chapter01",
+      "character": "Coco",
+      "characterName": "可可",
+      "file": "voice/Act02_Chapter01/0201Adv03_Coco001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 191.3
+    },
+    {
+      "id": "Act02_Chapter01_Ema",
+      "scene": "Act02_Chapter01",
+      "character": "Ema",
+      "characterName": "艾玛",
+      "file": "voice/Act02_Chapter01/0201Adv03_Ema001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 61.7
+    },
+    {
+      "id": "Act02_Chapter01_Hanna",
+      "scene": "Act02_Chapter01",
+      "character": "Hanna",
+      "characterName": "汉娜",
+      "file": "voice/Act02_Chapter01/0201Adv04_Hanna001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 116.2
+    },
+    {
+      "id": "Act02_Chapter01_Hiro",
+      "scene": "Act02_Chapter01",
+      "character": "Hiro",
+      "characterName": "希罗",
+      "file": "voice/Act02_Chapter01/0201Adv03_Hiro001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 41.5
+    },
+    {
+      "id": "Act02_Chapter01_Leia",
+      "scene": "Act02_Chapter01",
+      "character": "Leia",
+      "characterName": "蕾雅",
+      "file": "voice/Act02_Chapter01/0201Adv04_Leia001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 124.4
+    },
+    {
+      "id": "Act02_Chapter01_Margo",
+      "scene": "Act02_Chapter01",
+      "character": "Margo",
+      "characterName": "玛格",
+      "file": "voice/Act02_Chapter01/0201Adv04_Margo001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 152.2
+    },
+    {
+      "id": "Act02_Chapter01_Meruru",
+      "scene": "Act02_Chapter01",
+      "character": "Meruru",
+      "characterName": "梅露露",
+      "file": "voice/Act02_Chapter01/0201Adv04_Meruru001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 115.7
+    },
+    {
+      "id": "Act02_Chapter01_Miria",
+      "scene": "Act02_Chapter01",
+      "character": "Miria",
+      "characterName": "米莉亚",
+      "file": "voice/Act02_Chapter01/0201Adv04_Miria001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 102.1
+    },
+    {
+      "id": "Act02_Chapter01_Nanoka",
+      "scene": "Act02_Chapter01",
+      "character": "Nanoka",
+      "characterName": "奈叶香",
+      "file": "voice/Act02_Chapter01/0201Adv04_Nanoka001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 29.0
+    },
+    {
+      "id": "Act02_Chapter01_Noah",
+      "scene": "Act02_Chapter01",
+      "character": "Noah",
+      "characterName": "诺亚",
+      "file": "voice/Act02_Chapter01/0201Adv04_Noah001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 9.1
+    },
+    {
+      "id": "Act02_Chapter01_Sherry",
+      "scene": "Act02_Chapter01",
+      "character": "Sherry",
+      "characterName": "雪莉",
+      "file": "voice/Act02_Chapter01/0201Adv04_Sherry001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 212.3
+    },
+    {
+      "id": "Act02_Chapter01_Unknown",
+      "scene": "Act02_Chapter01",
+      "character": "Unknown",
+      "characterName": "Unknown",
+      "file": "voice/Act02_Chapter01/0201Adv01_Unknown001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 51.9
+    },
+    {
+      "id": "Act02_Chapter01_Warden",
+      "scene": "Act02_Chapter01",
+      "character": "Warden",
+      "characterName": "典狱长",
+      "file": "voice/Act02_Chapter01/0201Adv03_Warden001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 167.3
+    },
+    {
+      "id": "Act02_Chapter02_Alisa",
+      "scene": "Act02_Chapter02",
+      "character": "Alisa",
+      "characterName": "亚里沙",
+      "file": "voice/Act02_Chapter02/0202Adv01_Alisa001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 42.4
+    },
+    {
+      "id": "Act02_Chapter02_AnAn",
+      "scene": "Act02_Chapter02",
+      "character": "AnAn",
+      "characterName": "安安",
+      "file": "voice/Act02_Chapter02/0202Adv01_AnAn001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 82.3
+    },
+    {
+      "id": "Act02_Chapter02_Coco",
+      "scene": "Act02_Chapter02",
+      "character": "Coco",
+      "characterName": "可可",
+      "file": "voice/Act02_Chapter02/0202Adv01_Coco001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 154.1
+    },
+    {
+      "id": "Act02_Chapter02_Ema",
+      "scene": "Act02_Chapter02",
+      "character": "Ema",
+      "characterName": "艾玛",
+      "file": "voice/Act02_Chapter02/0202Adv01_Ema001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 55.0
+    },
+    {
+      "id": "Act02_Chapter02_Hanna",
+      "scene": "Act02_Chapter02",
+      "character": "Hanna",
+      "characterName": "汉娜",
+      "file": "voice/Act02_Chapter02/0202Adv01_Hanna001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 132.5
+    },
+    {
+      "id": "Act02_Chapter02_Hiro",
+      "scene": "Act02_Chapter02",
+      "character": "Hiro",
+      "characterName": "希罗",
+      "file": "voice/Act02_Chapter02/0202Adv01_Hiro001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 117.1
+    },
+    {
+      "id": "Act02_Chapter02_Leia",
+      "scene": "Act02_Chapter02",
+      "character": "Leia",
+      "characterName": "蕾雅",
+      "file": "voice/Act02_Chapter02/0202Adv01_Leia001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 54.3
+    },
+    {
+      "id": "Act02_Chapter02_Miria",
+      "scene": "Act02_Chapter02",
+      "character": "Miria",
+      "characterName": "米莉亚",
+      "file": "voice/Act02_Chapter02/0202Adv01_Miria001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 61.3
+    },
+    {
+      "id": "Act02_Chapter02_Nanoka",
+      "scene": "Act02_Chapter02",
+      "character": "Nanoka",
+      "characterName": "奈叶香",
+      "file": "voice/Act02_Chapter02/0202Adv01_Nanoka001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 14.3
+    },
+    {
+      "id": "Act02_Chapter02_Noah",
+      "scene": "Act02_Chapter02",
+      "character": "Noah",
+      "characterName": "诺亚",
+      "file": "voice/Act02_Chapter02/0202Adv01_Noah001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 149.2
+    },
+    {
+      "id": "Act02_Chapter02_Sherry",
+      "scene": "Act02_Chapter02",
+      "character": "Sherry",
+      "characterName": "雪莉",
+      "file": "voice/Act02_Chapter02/0202Adv01_Sherry001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 106.8
+    },
+    {
+      "id": "Act02_Chapter02_Unknown",
+      "scene": "Act02_Chapter02",
+      "character": "Unknown",
+      "characterName": "Unknown",
+      "file": "voice/Act02_Chapter02/0202Bad01_Unknown001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 33.5
+    },
+    {
+      "id": "Act02_Chapter02_Warden",
+      "scene": "Act02_Chapter02",
+      "character": "Warden",
+      "characterName": "典狱长",
+      "file": "voice/Act02_Chapter02/0202Adv09_Warden001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 140.2
+    },
+    {
+      "id": "Act02_Chapter03_Alisa",
+      "scene": "Act02_Chapter03",
+      "character": "Alisa",
+      "characterName": "亚里沙",
+      "file": "voice/Act02_Chapter03/0203Adv02_Alisa001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 159.2
+    },
+    {
+      "id": "Act02_Chapter03_AnAn",
+      "scene": "Act02_Chapter03",
+      "character": "AnAn",
+      "characterName": "安安",
+      "file": "voice/Act02_Chapter03/0203Adv02_AnAn003.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 74.0
+    },
+    {
+      "id": "Act02_Chapter03_Ema",
+      "scene": "Act02_Chapter03",
+      "character": "Ema",
+      "characterName": "艾玛",
+      "file": "voice/Act02_Chapter03/0203Adv02_Ema001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 100.9
+    },
+    {
+      "id": "Act02_Chapter03_Hanna",
+      "scene": "Act02_Chapter03",
+      "character": "Hanna",
+      "characterName": "汉娜",
+      "file": "voice/Act02_Chapter03/0203Adv02_Hanna001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 108.4
+    },
+    {
+      "id": "Act02_Chapter03_Hiro",
+      "scene": "Act02_Chapter03",
+      "character": "Hiro",
+      "characterName": "希罗",
+      "file": "voice/Act02_Chapter03/0203Adv01_Hiro001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 71.6
+    },
+    {
+      "id": "Act02_Chapter03_Leia",
+      "scene": "Act02_Chapter03",
+      "character": "Leia",
+      "characterName": "蕾雅",
+      "file": "voice/Act02_Chapter03/0203Adv02_Leia001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 166.7
+    },
+    {
+      "id": "Act02_Chapter03_Meruru",
+      "scene": "Act02_Chapter03",
+      "character": "Meruru",
+      "characterName": "梅露露",
+      "file": "voice/Act02_Chapter03/0203Adv01_Meruru001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 229.7
+    },
+    {
+      "id": "Act02_Chapter03_Miria",
+      "scene": "Act02_Chapter03",
+      "character": "Miria",
+      "characterName": "米莉亚",
+      "file": "voice/Act02_Chapter03/0203Adv02_Miria001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 87.8
+    },
+    {
+      "id": "Act02_Chapter03_Nanoka",
+      "scene": "Act02_Chapter03",
+      "character": "Nanoka",
+      "characterName": "奈叶香",
+      "file": "voice/Act02_Chapter03/0203Adv01_Nanoka001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 78.4
+    },
+    {
+      "id": "Act02_Chapter03_Noah",
+      "scene": "Act02_Chapter03",
+      "character": "Noah",
+      "characterName": "诺亚",
+      "file": "voice/Act02_Chapter03/0203Adv02_Noah001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 78.6
+    },
+    {
+      "id": "Act02_Chapter03_Sherry",
+      "scene": "Act02_Chapter03",
+      "character": "Sherry",
+      "characterName": "雪莉",
+      "file": "voice/Act02_Chapter03/0203Adv02_Sherry001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 111.8
+    },
+    {
+      "id": "Act02_Chapter03_Unknown",
+      "scene": "Act02_Chapter03",
+      "character": "Unknown",
+      "characterName": "Unknown",
+      "file": "voice/Act02_Chapter03/0203Bad01_Rabbit001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 40.8
+    },
+    {
+      "id": "Act02_Chapter03_Warden",
+      "scene": "Act02_Chapter03",
+      "character": "Warden",
+      "characterName": "典狱长",
+      "file": "voice/Act02_Chapter03/0203Adv02_Warden001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 188.9
+    },
+    {
+      "id": "Act02_Chapter04_Alisa",
+      "scene": "Act02_Chapter04",
+      "character": "Alisa",
+      "characterName": "亚里沙",
+      "file": "voice/Act02_Chapter04/0204Adv01_Alisa001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 115.6
+    },
+    {
+      "id": "Act02_Chapter04_AnAn",
+      "scene": "Act02_Chapter04",
+      "character": "AnAn",
+      "characterName": "安安",
+      "file": "voice/Act02_Chapter04/0204Adv16_AnAn001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 60.2
+    },
+    {
+      "id": "Act02_Chapter04_Coco",
+      "scene": "Act02_Chapter04",
+      "character": "Coco",
+      "characterName": "可可",
+      "file": "voice/Act02_Chapter04/0204Adv16_Coco001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 138.0
+    },
+    {
+      "id": "Act02_Chapter04_Ema",
+      "scene": "Act02_Chapter04",
+      "character": "Ema",
+      "characterName": "艾玛",
+      "file": "voice/Act02_Chapter04/0204Adv01_Ema002.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 30.1
+    },
+    {
+      "id": "Act02_Chapter04_Hanna",
+      "scene": "Act02_Chapter04",
+      "character": "Hanna",
+      "characterName": "汉娜",
+      "file": "voice/Act02_Chapter04/0204Adv01_Hanna001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 159.3
+    },
+    {
+      "id": "Act02_Chapter04_Hiro",
+      "scene": "Act02_Chapter04",
+      "character": "Hiro",
+      "characterName": "希罗",
+      "file": "voice/Act02_Chapter04/0204Adv01_Hiro001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 149.9
+    },
+    {
+      "id": "Act02_Chapter04_Leia",
+      "scene": "Act02_Chapter04",
+      "character": "Leia",
+      "characterName": "蕾雅",
+      "file": "voice/Act02_Chapter04/0204Adv01_Leia001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 71.6
+    },
+    {
+      "id": "Act02_Chapter04_Margo",
+      "scene": "Act02_Chapter04",
+      "character": "Margo",
+      "characterName": "玛格",
+      "file": "voice/Act02_Chapter04/0204Adv16_Margo001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 214.1
+    },
+    {
+      "id": "Act02_Chapter04_Meruru",
+      "scene": "Act02_Chapter04",
+      "character": "Meruru",
+      "characterName": "梅露露",
+      "file": "voice/Act02_Chapter04/0204Adv16_Meruru001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 104.4
+    },
+    {
+      "id": "Act02_Chapter04_Miria",
+      "scene": "Act02_Chapter04",
+      "character": "Miria",
+      "characterName": "米莉亚",
+      "file": "voice/Act02_Chapter04/0204Adv01_Miria001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 178.0
+    },
+    {
+      "id": "Act02_Chapter04_Nanoka",
+      "scene": "Act02_Chapter04",
+      "character": "Nanoka",
+      "characterName": "奈叶香",
+      "file": "voice/Act02_Chapter04/0204Adv01_Nanoka001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 208.3
+    },
+    {
+      "id": "Act02_Chapter04_Noah",
+      "scene": "Act02_Chapter04",
+      "character": "Noah",
+      "characterName": "诺亚",
+      "file": "voice/Act02_Chapter04/0204Adv16_Noah001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 68.8
+    },
+    {
+      "id": "Act02_Chapter04_Sherry",
+      "scene": "Act02_Chapter04",
+      "character": "Sherry",
+      "characterName": "雪莉",
+      "file": "voice/Act02_Chapter04/0204Adv01_Sherry001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 82.5
+    },
+    {
+      "id": "Act02_Chapter04_Unknown",
+      "scene": "Act02_Chapter04",
+      "character": "Unknown",
+      "characterName": "Unknown",
+      "file": "voice/Act02_Chapter04/0204Adv10_Yuki001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 139.9
+    },
+    {
+      "id": "Act02_Chapter04_Warden",
+      "scene": "Act02_Chapter04",
+      "character": "Warden",
+      "characterName": "典狱长",
+      "file": "voice/Act02_Chapter04/0204Adv13_Warden001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 106.4
+    },
+    {
+      "id": "Act02_Chapter05_Alisa",
+      "scene": "Act02_Chapter05",
+      "character": "Alisa",
+      "characterName": "亚里沙",
+      "file": "voice/Act02_Chapter05/0205Adv03_Alisa001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 124.8
+    },
+    {
+      "id": "Act02_Chapter05_AnAn",
+      "scene": "Act02_Chapter05",
+      "character": "AnAn",
+      "characterName": "安安",
+      "file": "voice/Act02_Chapter05/0205Adv03_AnAn001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 79.1
+    },
+    {
+      "id": "Act02_Chapter05_Coco",
+      "scene": "Act02_Chapter05",
+      "character": "Coco",
+      "characterName": "可可",
+      "file": "voice/Act02_Chapter05/0205Adv02_Coco001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 114.2
+    },
+    {
+      "id": "Act02_Chapter05_Ema",
+      "scene": "Act02_Chapter05",
+      "character": "Ema",
+      "characterName": "艾玛",
+      "file": "voice/Act02_Chapter05/0205Adv02_Ema001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 55.7
+    },
+    {
+      "id": "Act02_Chapter05_Hanna",
+      "scene": "Act02_Chapter05",
+      "character": "Hanna",
+      "characterName": "汉娜",
+      "file": "voice/Act02_Chapter05/0205Adv03_Hanna001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 136.0
+    },
+    {
+      "id": "Act02_Chapter05_Hiro",
+      "scene": "Act02_Chapter05",
+      "character": "Hiro",
+      "characterName": "希罗",
+      "file": "voice/Act02_Chapter05/0205Adv02_Hiro001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 15.0
+    },
+    {
+      "id": "Act02_Chapter05_Leia",
+      "scene": "Act02_Chapter05",
+      "character": "Leia",
+      "characterName": "蕾雅",
+      "file": "voice/Act02_Chapter05/0205Adv03_Leia001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 143.3
+    },
+    {
+      "id": "Act02_Chapter05_Margo",
+      "scene": "Act02_Chapter05",
+      "character": "Margo",
+      "characterName": "玛格",
+      "file": "voice/Act02_Chapter05/0205Adv03_Margo001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 228.4
+    },
+    {
+      "id": "Act02_Chapter05_Meruru",
+      "scene": "Act02_Chapter05",
+      "character": "Meruru",
+      "characterName": "梅露露",
+      "file": "voice/Act02_Chapter05/0205Adv03_Meruru001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 105.3
+    },
+    {
+      "id": "Act02_Chapter05_Miria",
+      "scene": "Act02_Chapter05",
+      "character": "Miria",
+      "characterName": "米莉亚",
+      "file": "voice/Act02_Chapter05/0205Adv03_Miria001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 114.3
+    },
+    {
+      "id": "Act02_Chapter05_Nanoka",
+      "scene": "Act02_Chapter05",
+      "character": "Nanoka",
+      "characterName": "奈叶香",
+      "file": "voice/Act02_Chapter05/0205Adv03_Nanoka001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 67.7
+    },
+    {
+      "id": "Act02_Chapter05_Noah",
+      "scene": "Act02_Chapter05",
+      "character": "Noah",
+      "characterName": "诺亚",
+      "file": "voice/Act02_Chapter05/0205Adv03_Noah001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 90.8
+    },
+    {
+      "id": "Act02_Chapter05_Sherry",
+      "scene": "Act02_Chapter05",
+      "character": "Sherry",
+      "characterName": "雪莉",
+      "file": "voice/Act02_Chapter05/0205Adv03_Sherry001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 140.3
+    },
+    {
+      "id": "Act02_Chapter05_Unknown",
+      "scene": "Act02_Chapter05",
+      "character": "Unknown",
+      "characterName": "Unknown",
+      "file": "voice/Act02_Chapter05/0205Adv01_BigWitch001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 50.1
+    },
+    {
+      "id": "Act02_Chapter05_Warden",
+      "scene": "Act02_Chapter05",
+      "character": "Warden",
+      "characterName": "典狱长",
+      "file": "voice/Act02_Chapter05/0205Adv03_Warden001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 324.2
+    },
+    {
+      "id": "Act02_Chapter06_Alisa",
+      "scene": "Act02_Chapter06",
+      "character": "Alisa",
+      "characterName": "亚里沙",
+      "file": "voice/Act02_Chapter06/0206Trial00_Alisa001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 75.3
+    },
+    {
+      "id": "Act02_Chapter06_AnAn",
+      "scene": "Act02_Chapter06",
+      "character": "AnAn",
+      "characterName": "安安",
+      "file": "voice/Act02_Chapter06/0206Trial00_AnAn001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 31.8
+    },
+    {
+      "id": "Act02_Chapter06_Coco",
+      "scene": "Act02_Chapter06",
+      "character": "Coco",
+      "characterName": "可可",
+      "file": "voice/Act02_Chapter06/0206Trial00_Coco001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 101.1
+    },
+    {
+      "id": "Act02_Chapter06_Ema",
+      "scene": "Act02_Chapter06",
+      "character": "Ema",
+      "characterName": "艾玛",
+      "file": "voice/Act02_Chapter06/0206Trial00_Ema001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 19.4
+    },
+    {
+      "id": "Act02_Chapter06_Hanna",
+      "scene": "Act02_Chapter06",
+      "character": "Hanna",
+      "characterName": "汉娜",
+      "file": "voice/Act02_Chapter06/0206Trial00_Hanna001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 47.4
+    },
+    {
+      "id": "Act02_Chapter06_Hiro",
+      "scene": "Act02_Chapter06",
+      "character": "Hiro",
+      "characterName": "希罗",
+      "file": "voice/Act02_Chapter06/0206Trial00_Hiro001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 34.3
+    },
+    {
+      "id": "Act02_Chapter06_Leia",
+      "scene": "Act02_Chapter06",
+      "character": "Leia",
+      "characterName": "蕾雅",
+      "file": "voice/Act02_Chapter06/0206Trial00_Leia001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 51.8
+    },
+    {
+      "id": "Act02_Chapter06_Margo",
+      "scene": "Act02_Chapter06",
+      "character": "Margo",
+      "characterName": "玛格",
+      "file": "voice/Act02_Chapter06/0206Trial00_Margo001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 110.5
+    },
+    {
+      "id": "Act02_Chapter06_Meruru",
+      "scene": "Act02_Chapter06",
+      "character": "Meruru",
+      "characterName": "梅露露",
+      "file": "voice/Act02_Chapter06/0206Trial04_Meruru001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 95.3
+    },
+    {
+      "id": "Act02_Chapter06_Miria",
+      "scene": "Act02_Chapter06",
+      "character": "Miria",
+      "characterName": "米莉亚",
+      "file": "voice/Act02_Chapter06/0206Trial00_Miria001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 66.8
+    },
+    {
+      "id": "Act02_Chapter06_Nanoka",
+      "scene": "Act02_Chapter06",
+      "character": "Nanoka",
+      "characterName": "奈叶香",
+      "file": "voice/Act02_Chapter06/0206Trial00_Nanoka001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 39.3
+    },
+    {
+      "id": "Act02_Chapter06_Noah",
+      "scene": "Act02_Chapter06",
+      "character": "Noah",
+      "characterName": "诺亚",
+      "file": "voice/Act02_Chapter06/0206Trial00_Noah001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 115.7
+    },
+    {
+      "id": "Act02_Chapter06_Sherry",
+      "scene": "Act02_Chapter06",
+      "character": "Sherry",
+      "characterName": "雪莉",
+      "file": "voice/Act02_Chapter06/0206Trial00_Sherry001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 100.9
+    },
+    {
+      "id": "Act02_Chapter06_Unknown",
+      "scene": "Act02_Chapter06",
+      "character": "Unknown",
+      "characterName": "Unknown",
+      "file": "voice/Act02_Chapter06/0206Trial00_Yuki002.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 111.3
+    },
+    {
+      "id": "Common_Alisa",
+      "scene": "Common",
+      "character": "Alisa",
+      "characterName": "亚里沙",
+      "file": "voice/Common/CommonBad05_Alisa002.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 138.5
+    },
+    {
+      "id": "Common_AnAn",
+      "scene": "Common",
+      "character": "AnAn",
+      "characterName": "安安",
+      "file": "voice/Common/CommonTrial_AnAn00758.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 45.1
+    },
+    {
+      "id": "Common_Coco",
+      "scene": "Common",
+      "character": "Coco",
+      "characterName": "可可",
+      "file": "voice/Common/CommonBad04_Coco001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 199.2
+    },
+    {
+      "id": "Common_Ema",
+      "scene": "Common",
+      "character": "Ema",
+      "characterName": "艾玛",
+      "file": "voice/Common/CommonBad01_Ema001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 97.3
+    },
+    {
+      "id": "Common_Hanna",
+      "scene": "Common",
+      "character": "Hanna",
+      "characterName": "汉娜",
+      "file": "voice/Common/CommonBad02_Hanna002.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 101.6
+    },
+    {
+      "id": "Common_Hiro",
+      "scene": "Common",
+      "character": "Hiro",
+      "characterName": "希罗",
+      "file": "voice/Common/CommonBad07_Hiro002.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 41.6
+    },
+    {
+      "id": "Common_Leia",
+      "scene": "Common",
+      "character": "Leia",
+      "characterName": "蕾雅",
+      "file": "voice/Common/CommonTrial_Leia00425.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 19.3
+    },
+    {
+      "id": "Common_Margo",
+      "scene": "Common",
+      "character": "Margo",
+      "characterName": "玛格",
+      "file": "voice/Common/CommonBad05_Margo001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 59.7
+    },
+    {
+      "id": "Common_Meruru",
+      "scene": "Common",
+      "character": "Meruru",
+      "characterName": "梅露露",
+      "file": "voice/Common/CommonBad06_Meruru001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 98.8
+    },
+    {
+      "id": "Common_Miria",
+      "scene": "Common",
+      "character": "Miria",
+      "characterName": "米莉亚",
+      "file": "voice/Common/CommonBad08_Miria001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 104.6
+    },
+    {
+      "id": "Common_Nanoka",
+      "scene": "Common",
+      "character": "Nanoka",
+      "characterName": "奈叶香",
+      "file": "voice/Common/CommonBad03_Nanoka001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 91.7
+    },
+    {
+      "id": "Common_Noah",
+      "scene": "Common",
+      "character": "Noah",
+      "characterName": "诺亚",
+      "file": "voice/Common/CommonTrial_Noah00035.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 61.6
+    },
+    {
+      "id": "Common_Sherry",
+      "scene": "Common",
+      "character": "Sherry",
+      "characterName": "雪莉",
+      "file": "voice/Common/CommonBad05_Sherry001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 85.3
+    },
+    {
+      "id": "Common_Unknown",
+      "scene": "Common",
+      "character": "Unknown",
+      "characterName": "Unknown",
+      "file": "voice/Common/CommonBad10_Yuki001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 112.8
+    },
+    {
+      "id": "Common_Warden",
+      "scene": "Common",
+      "character": "Warden",
+      "characterName": "典狱长",
+      "file": "voice/Common/CommonBad01_Warden001.ogg",
+      "externalUrl": "",
+      "text": "",
+      "duration": 149.9
+    }
+  ],
+  "note": "SFX 全量本地; BGM 歌曲+环境音本地, Common 部分样本; 语音为精选样本, 全量外部托管.",
+  "totalSfx": 195,
+  "totalBgm": 31,
+  "totalVoice": 161
+}

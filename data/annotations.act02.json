@@ -1,3 +1,23 @@
 {
+  "_exportedAt": "2026-08-04T05:25:15.132Z",
+  "_sourceFileCount": 14,
+  "_sourceFiles": [
+    "Act02_Chapter01_Trial",
+    "Act02_Chapter02_Trial",
+    "Act02_Chapter03_Trial",
+    "Act02_Chapter04_Trial",
+    "Act02_Chapter05_Trial",
+    "Act02_Chapter06_Trial",
+    "Act02_Chapter01_Adv01",
+    "Act02_Chapter01_Adv02",
+    "Act02_Chapter01_Adv03",
+    "Act02_Chapter01_Adv04",
+    "Act02_Chapter01_Adv05",
+    "Act02_Chapter01_Adv06",
+    "Act02_Chapter01_Adv07",
+    "Act02_Chapter01_Adv08"
+  ],
+  "_conflictCount": 0,
+  "_act": "Act02_Chapter01-06",
   "trialChoices": {}
 }
