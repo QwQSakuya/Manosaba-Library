@@ -444,6 +444,27 @@ body { display: block; }
 }
 .future-card:hover .fc-butterfly { opacity: 0.08; }
 
+/* ── 解锁卡片 ── */
+.future-card.unlocked {
+  border: 1px solid var(--border);
+  opacity: 1;
+  cursor: pointer;
+}
+.future-card.unlocked .fc-num { color: var(--accent); }
+.future-card.unlocked .fc-tag { display: none; }
+.future-card.unlocked .fc-go {
+  display: inline-block;
+  color: var(--accent);
+  border-color: var(--accent);
+  letter-spacing: 0.08em;
+}
+.future-card.unlocked:hover {
+  border-color: var(--accent);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.10);
+  opacity: 1;
+}
+.future-card.unlocked:hover .fc-butterfly { opacity: 0.12; }
+
 @media (max-width: 720px) {
   .future-cards { grid-template-columns: repeat(2, 1fr); gap: 12px; }
 }
@@ -617,57 +638,41 @@ body { display: block; }
   <!-- ═══ 未来功能封锁区 ═══ -->
   <div class="future-divider"></div>
   <section class="future-section">
-    <h2 class="future-heading">Future Features</h2>
+    <h2 class="future-heading">More Archives</h2>
     <div class="future-cards">
       <!-- 记录·规定 -->
-      <article class="future-card" data-future="records" tabindex="0" role="button" aria-label="记录·规定（开发中）">
-        <svg class="fc-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <rect x="5" y="11" width="14" height="10" rx="2"/>
-          <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
-        </svg>
+      <article class="future-card unlocked" data-go="records" tabindex="0" role="button" aria-label="进入 记录·规定">
         <span class="fc-num">III</span>
         <span class="fc-title">记录·规定</span>
         <span class="fc-sub">Records &amp; Rules</span>
-        <span class="fc-tag">敬请期待</span>
+        <span class="fc-tag fc-go">进入 →</span>
         <svg class="fc-butterfly" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="currentColor"><path d="M60,50 C42,22 12,16 6,32 C0,48 16,58 32,56 C46,54 56,52 60,50 Z"/><path d="M60,50 C78,22 108,16 114,32 C120,48 104,58 88,56 C74,54 64,52 60,50 Z"/><path d="M60,50 C50,56 32,66 28,82 C25,92 38,90 48,80 C56,72 58,60 60,50 Z"/><path d="M60,50 C70,56 88,66 92,82 C95,92 82,90 72,80 C64,72 62,60 60,50 Z"/><ellipse cx="60" cy="50" rx="1.4" ry="18"/></g></svg>
       </article>
 
       <!-- 证物 -->
-      <article class="future-card" data-future="evidence" tabindex="0" role="button" aria-label="证物（开发中）">
-        <svg class="fc-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <rect x="5" y="11" width="14" height="10" rx="2"/>
-          <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
-        </svg>
+      <article class="future-card unlocked" data-go="evidence" tabindex="0" role="button" aria-label="进入 证物">
         <span class="fc-num">IV</span>
         <span class="fc-title">证物</span>
         <span class="fc-sub">Evidence</span>
-        <span class="fc-tag">敬请期待</span>
+        <span class="fc-tag fc-go">进入 →</span>
         <svg class="fc-butterfly" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="currentColor"><path d="M60,50 C42,22 12,16 6,32 C0,48 16,58 32,56 C46,54 56,52 60,50 Z"/><path d="M60,50 C78,22 108,16 114,32 C120,48 104,58 88,56 C74,54 64,52 60,50 Z"/><path d="M60,50 C50,56 32,66 28,82 C25,92 38,90 48,80 C56,72 58,60 60,50 Z"/><path d="M60,50 C70,56 88,66 92,82 C95,92 82,90 72,80 C64,72 62,60 60,50 Z"/><ellipse cx="60" cy="50" rx="1.4" ry="18"/></g></svg>
       </article>
 
       <!-- CG画廊 -->
-      <article class="future-card" data-future="gallery" tabindex="0" role="button" aria-label="CG画廊（开发中）">
-        <svg class="fc-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <rect x="5" y="11" width="14" height="10" rx="2"/>
-          <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
-        </svg>
+      <article class="future-card unlocked" data-go="gallery" tabindex="0" role="button" aria-label="进入 CG画廊">
         <span class="fc-num">V</span>
         <span class="fc-title">CG画廊</span>
         <span class="fc-sub">CG Gallery</span>
-        <span class="fc-tag">敬请期待</span>
+        <span class="fc-tag fc-go">进入 →</span>
         <svg class="fc-butterfly" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="currentColor"><path d="M60,50 C42,22 12,16 6,32 C0,48 16,58 32,56 C46,54 56,52 60,50 Z"/><path d="M60,50 C78,22 108,16 114,32 C120,48 104,58 88,56 C74,54 64,52 60,50 Z"/><path d="M60,50 C50,56 32,66 28,82 C25,92 38,90 48,80 C56,72 58,60 60,50 Z"/><path d="M60,50 C70,56 88,66 92,82 C95,92 82,90 72,80 C64,72 62,60 60,50 Z"/><ellipse cx="60" cy="50" rx="1.4" ry="18"/></g></svg>
       </article>
 
       <!-- 语音和音乐 -->
-      <article class="future-card" data-future="audio" tabindex="0" role="button" aria-label="语音和音乐（开发中）">
-        <svg class="fc-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <rect x="5" y="11" width="14" height="10" rx="2"/>
-          <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
-        </svg>
+      <article class="future-card unlocked" data-go="audio" tabindex="0" role="button" aria-label="进入 语音和音乐">
         <span class="fc-num">VI</span>
         <span class="fc-title">语音和音乐</span>
         <span class="fc-sub">Voice &amp; Music</span>
-        <span class="fc-tag">敬请期待</span>
+        <span class="fc-tag fc-go">进入 →</span>
         <svg class="fc-butterfly" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="currentColor"><path d="M60,50 C42,22 12,16 6,32 C0,48 16,58 32,56 C46,54 56,52 60,50 Z"/><path d="M60,50 C78,22 108,16 114,32 C120,48 104,58 88,56 C74,54 64,52 60,50 Z"/><path d="M60,50 C50,56 32,66 28,82 C25,92 38,90 48,80 C56,72 58,60 60,50 Z"/><path d="M60,50 C70,56 88,66 92,82 C95,92 82,90 72,80 C64,72 62,60 60,50 Z"/><ellipse cx="60" cy="50" rx="1.4" ry="18"/></g></svg>
       </article>
     </div>
@@ -703,21 +708,8 @@ body { display: block; }
       }
     });
   });
-
-  // 封锁卡片: 点击/键盘 → toast, 不跳转
-  document.querySelectorAll('[data-future]').forEach(function (el) {
-    var blocked = function () {
-      MS.showToast('功能开发中，敬请期待');
-    };
-    el.addEventListener('click', blocked);
-    el.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        blocked();
-      }
-    });
-  });
 })();
 </script>
+<script src="assets/player-launcher.js" defer></script>
 </body>
 </html>

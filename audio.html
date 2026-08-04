@@ -184,6 +184,24 @@
   color: var(--btn-active-fg);
   border-color: var(--btn-active);
 }
+/* 下载按钮: 与播放按钮成对, 复用圆形视觉 */
+.bgm-card .bgm-dl {
+  width: 32px; height: 32px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--btn-bg);
+  color: var(--fg);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.bgm-card .bgm-dl svg { width: 14px; height: 14px; }
+.bgm-card:hover .bgm-dl {
+  border-color: var(--accent);
+  background: var(--btn-hover);
+  color: var(--accent);
+}
 .bgm-card.disabled {
   opacity: 0.4;
   cursor: not-allowed;
@@ -332,6 +350,10 @@
   .voice-card .vc-duration { font-size: 13px; }
   .voice-card .vc-play { width: 30px; height: 30px; }
   .voice-card .vc-play svg { width: 12px; height: 12px; }
+  .bgm-card .bgm-play,
+  .bgm-card .bgm-dl { width: 30px; height: 30px; }
+  .bgm-card .bgm-play svg,
+  .bgm-card .bgm-dl svg { width: 12px; height: 12px; }
 }
 </style>
 </head>
@@ -446,5 +468,6 @@
 
 <script src="assets/shared.js"></script>
 <script src="assets/audio.js"></script>
+<script src="assets/player-launcher.js" defer></script>
 </body>
 </html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-Hans" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>音乐播放器 — 魔女审判资料馆</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500;1,700&family=Noto+Serif+SC:wght@700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/shared.css">
+<link rel="stylesheet" href="assets/player.css">
+<script>
+  // 主题恢复 (提前执行, 避免 FOUC)
+  (function () {
+    var s = localStorage.getItem('theme');
+    if (s === 'dark' || s === 'light') {
+      document.documentElement.setAttribute('data-theme', s);
+    }
+  })();
+</script>
+</head>
+<body class="pp-body">
+
+<!-- ═══ 极简背景层 ═══ -->
+<div class="bg-layer" aria-hidden="true">
+  <div class="bg-gradient"></div>
+</div>
+
+<!-- ═══ 播放器主体 ═══ -->
+<main class="pp-shell">
+
+  <!-- 头部：黑胶 + 标题 -->
+  <header class="pp-header">
+    <div class="pp-disc" aria-hidden="true">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" stroke-width="1"/>
+        <circle cx="12" cy="12" r="7.5" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.6"/>
+        <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="0.4" opacity="0.4"/>
+        <circle cx="12" cy="12" r="2.4" fill="currentColor"/>
+      </svg>
+    </div>
+    <div class="pp-info">
+      <div class="pp-title" id="pp-title">—</div>
+      <div class="pp-meta" id="pp-meta">—</div>
+    </div>
+  </header>
+
+  <!-- 进度条 -->
+  <div class="pp-progress" id="pp-progress" role="slider"
+       aria-label="播放进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0">
+    <div class="pp-progress-fill" id="pp-fill"></div>
+    <div class="pp-progress-thumb" id="pp-thumb"></div>
+  </div>
+
+  <!-- 时间 -->
+  <div class="pp-time">
+    <span id="pp-cur">0:00</span>
+    <span class="pp-time-sep">/</span>
+    <span id="pp-dur">0:00</span>
+  </div>
+
+  <!-- 控制按钮 -->
+  <div class="pp-controls">
+    <button class="pp-btn" id="pp-prev" type="button" aria-label="上一首">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zM9.5 12l8.5 6V6z"/></svg>
+    </button>
+    <button class="pp-btn pp-btn-main" id="pp-play" type="button" aria-label="播放">
+      <svg id="pp-play-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+      <svg id="pp-pause-icon" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+    </button>
+    <button class="pp-btn" id="pp-next" type="button" aria-label="下一首">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 6h2v12h-2zM6 18l8.5-6L6 6z"/></svg>
+    </button>
+    <button class="pp-btn pp-mode" id="pp-mode" type="button" aria-label="循环模式：顺序播放" data-mode="order">
+      <svg id="pp-mode-order" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h11M4 7l3-3M4 7l3 3"/><path d="M20 17H9M20 17l-3-3M20 17l-3 3"/></svg>
+      <svg id="pp-mode-list" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+      <svg id="pp-mode-single" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/><text x="12" y="15" font-size="8" fill="currentColor" stroke="none" text-anchor="middle" font-family="serif" font-weight="700">1</text></svg>
+    </button>
+  </div>
+
+  <!-- 音量 -->
+  <div class="pp-volume">
+    <svg class="pp-vol-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"/>
+      <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+    </svg>
+    <input class="pp-vol" id="pp-volume" type="range" min="0" max="1" step="0.01" value="1" aria-label="音量">
+  </div>
+
+  <!-- BGM 列表 -->
+  <div class="pp-list-wrap">
+    <div class="pp-list-title">音乐列表 · BGM</div>
+    <div class="pp-list" id="pp-list">
+      <div class="pp-empty">加载中…</div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ═══ 共享音频元素 ═══ -->
+<audio id="pp-audio" preload="auto"></audio>
+
+<script src="assets/shared.js"></script>
+<script src="assets/player.js"></script>
+</body>
+</html>

@@ -163,15 +163,27 @@ async function initData() {
     buildCanvas();
     buildChapterNav();  // 增强 2: 构建章节导航侧栏
     updateTransform();
+    // 强制初始连线更新: 等 2 帧 RAF 让 _resolveOverlaps 首帧运行 + 节点尺寸就绪, 再全量刷新连线
+    requestAnimationFrame(function() {
+      requestAnimationFrame(function() {
+        _layoutDirty = true;
+        updateAllConnectors();
+      });
+    });
     startFloatLoop();
-    // 数据加载完成后淡出开屏动画 (最少展示 1.6s 保证动画完整)
+    // 数据加载完成后淡出开屏动画 (最少展示 2.4s 保证动画完整 + 连线渲染稳定)
     const elapsed = performance.now() - _splashStart;
-    const delay = Math.max(0, 1600 - elapsed);
+    const delay = Math.max(0, 2400 - elapsed);
     setTimeout(function() {
-      const splash = document.getElementById('splash');
-      if (splash) splash.classList.add('hide');
-      handleHashDeepLink();  // BUG-1: #node-<id> 深链 → 居中并打开目标节点
-      initOnboarding();  // 增强 5: 首次访问引导提示
+      // 等 2 帧 RAF 让 floatLoop 布局稳定 + 连线定位完成, 再隐藏 splash
+      requestAnimationFrame(function() {
+        requestAnimationFrame(function() {
+          const splash = document.getElementById('splash');
+          if (splash) splash.classList.add('hide');
+          handleHashDeepLink();  // BUG-1: #node-<id> 深链 → 居中并打开目标节点
+          initOnboarding();  // 增强 5: 首次访问引导提示
+        });
+      });
     }, delay);
   } catch (err) {
     const splash = document.getElementById('splash');
@@ -2185,11 +2197,18 @@ var _chapterNavToggle = document.getElementById('chapter-nav-toggle');
 function buildChapterNav() {
   if (!_chapterNavList) return;
   var chapters = NODES.filter(function(n) { return n.level === 0; });
+  var romans = ['Ⅰ','Ⅱ','Ⅲ','Ⅳ','Ⅴ','Ⅵ','Ⅶ','Ⅷ','Ⅸ','Ⅹ','Ⅺ','Ⅻ'];
   var html = '';
   chapters.forEach(function(ch, i) {
-    html += '<div class="cn-item" data-id="' + escapeHtml(ch.id) + '">' +
-      '<span class="cn-num">' + String(i + 1).padStart(2, '0') + '</span>' +
-      '<span class="cn-label">' + escapeHtml(ch.title) + '</span>' +
+    var num = romans[i] || String(i + 1).padStart(2, '0');
+    var chStr = 'Chapter ' + String(i + 1).padStart(2, '0');
+    html += '<div class="cn-item" data-id="' + escapeHtml(ch.id) + '" style="animation-delay:' + (i * 0.045).toFixed(3) + 's">' +
+      '<span class="cn-num">' + num + '</span>' +
+      '<div class="cn-content">' +
+        '<span class="cn-label">' + escapeHtml(ch.title) + '</span>' +
+        '<span class="cn-meta">' + chStr + '</span>' +
+      '</div>' +
+      '<span class="cn-indicator"></span>' +
     '</div>';
   });
   _chapterNavList.innerHTML = html;
@@ -2202,6 +2221,7 @@ function buildChapterNav() {
         focusNode(node);
         openPhoneWithNode(node);
         _chapterNav.classList.remove('show');
+        if (_chapterNavToggle) _chapterNavToggle.classList.remove('active');
       }
     });
   });
@@ -2225,13 +2245,16 @@ function updateChapterNavActive() {
 if (_chapterNavToggle) {
   _chapterNavToggle.addEventListener('click', function() {
     _chapterNav.classList.toggle('show');
-    if (_chapterNav.classList.contains('show')) updateChapterNavActive();
+    var isShow = _chapterNav.classList.contains('show');
+    _chapterNavToggle.classList.toggle('active', isShow);
+    if (isShow) updateChapterNavActive();
   });
 }
 var _cnClose = _chapterNav ? _chapterNav.querySelector('.cn-close') : null;
 if (_cnClose) {
   _cnClose.addEventListener('click', function() {
     _chapterNav.classList.remove('show');
+    if (_chapterNavToggle) _chapterNavToggle.classList.remove('active');
   });
 }
 
@@ -2336,6 +2359,8 @@ var _obSteps = [
   { text: '点击任意节点查看剧情详情，包括对话、选项和异议分支', target: '#canvas-container', arrow: 'arrow-left' }
 ];
 
+var _obTransitioning = false;
+
 function showOnboardingStep() {
   if (_obStep >= _obSteps.length) {
     hideOnboarding();
@@ -2344,41 +2369,94 @@ function showOnboardingStep() {
   }
   var step = _obSteps[_obStep];
   if (!_onboarding) return;
-  _onboarding.className = step.arrow || '';
-  _onboarding.innerHTML =
-    '<div class="ob-step">引导 ' + (_obStep + 1) + ' / ' + _obSteps.length + '</div>' +
-    '<div class="ob-text">' + step.text + '</div>' +
-    '<div class="ob-actions">' +
-      '<button class="ob-btn ob-skip">跳过</button>' +
-      '<button class="ob-btn primary ob-next">' + (_obStep < _obSteps.length - 1 ? '下一步' : '完成') + '</button>' +
-    '</div>';
-  // Position near target
-  var targetEl = document.querySelector(step.target);
-  if (targetEl) {
-    var rect = targetEl.getBoundingClientRect();
-    if (step.arrow === 'arrow-left') {
-      _onboarding.style.left = (rect.left + rect.width + 20) + 'px';
-      _onboarding.style.top = (rect.top + rect.height / 2 - 40) + 'px';
-      _onboarding.style.right = 'auto';
-      _onboarding.style.bottom = 'auto';
-    } else {
-      _onboarding.style.left = (rect.left + rect.width / 2 - 130) + 'px';
-      _onboarding.style.top = (rect.top - 100) + 'px';
-      _onboarding.style.right = 'auto';
-      _onboarding.style.bottom = 'auto';
-    }
+
+  var progress = ((_obStep + 1) / _obSteps.length) * 100;
+  var inner = _onboarding.querySelector('.ob-inner');
+
+  // 渲染新内容 (提取为函数, 首次和切换共用)
+  function renderContent() {
+    _onboarding.className = step.arrow || '';
+    _onboarding.innerHTML =
+      '<div class="ob-progress"><div class="ob-progress-bar" style="width:0%"></div></div>' +
+      '<div class="ob-inner">' +
+        '<div class="ob-step">引导 ' + (_obStep + 1) + ' / ' + _obSteps.length + '</div>' +
+        '<div class="ob-text">' + step.text + '</div>' +
+        '<div class="ob-actions">' +
+          '<button class="ob-btn ob-skip">跳过</button>' +
+          '<button class="ob-btn primary ob-next">' + (_obStep < _obSteps.length - 1 ? '下一步' : '完成') + '</button>' +
+        '</div>' +
+      '</div>';
+    // Position near target
+    positionOnboarding(step);
+    _onboarding.classList.add('show');
+    if (_onboardingOverlay) _onboardingOverlay.classList.add('show');
+    // 进度条动画 (下一帧触发 transition)
+    requestAnimationFrame(function() {
+      var bar = _onboarding.querySelector('.ob-progress-bar');
+      if (bar) bar.style.width = progress + '%';
+    });
+    // Bind buttons
+    _onboarding.querySelector('.ob-next').addEventListener('click', function() {
+      if (_obTransitioning) return;
+      _obTransitioning = true;
+      var curInner = _onboarding.querySelector('.ob-inner');
+      if (curInner) curInner.classList.add('ob-leaving');
+      setTimeout(function() {
+        _obStep++;
+        showOnboardingStep();
+        _obTransitioning = false;
+      }, 280);
+    });
+    _onboarding.querySelector('.ob-skip').addEventListener('click', function() {
+      if (_obTransitioning) return;
+      _obTransitioning = true;
+      var curInner = _onboarding.querySelector('.ob-inner');
+      if (curInner) curInner.classList.add('ob-leaving');
+      setTimeout(function() {
+        _obStep = _obSteps.length;
+        showOnboardingStep();
+        _obTransitioning = false;
+      }, 280);
+    });
   }
-  _onboarding.classList.add('show');
-  if (_onboardingOverlay) _onboardingOverlay.classList.add('show');
-  // Bind buttons
-  _onboarding.querySelector('.ob-next').addEventListener('click', function() {
-    _obStep++;
-    showOnboardingStep();
-  });
-  _onboarding.querySelector('.ob-skip').addEventListener('click', function() {
-    _obStep = _obSteps.length;
-    showOnboardingStep();
-  });
+
+  // 首次显示: 直接渲染; 切换步骤: 先淡出旧内容再渲染
+  if (inner && _onboarding.classList.contains('show')) {
+    inner.classList.add('ob-leaving');
+    setTimeout(renderContent, 280);
+  } else {
+    renderContent();
+  }
+}
+
+function positionOnboarding(step) {
+  var targetEl = document.querySelector(step.target);
+  if (!targetEl) return;
+  var rect = targetEl.getBoundingClientRect();
+  var obW = 300, obH = 160;
+  if (step.arrow === 'arrow-left') {
+    var left = rect.left + rect.width + 20;
+    var top = rect.top + rect.height / 2 - 40;
+    if (left + obW > window.innerWidth - 20) {
+      left = Math.max(20, rect.right - obW - 20);
+    }
+    if (top + obH > window.innerHeight - 20) top = window.innerHeight - obH - 20;
+    if (top < 80) top = 80;
+    _onboarding.style.left = left + 'px';
+    _onboarding.style.top = top + 'px';
+    _onboarding.style.right = 'auto';
+    _onboarding.style.bottom = 'auto';
+  } else {
+    var left2 = rect.left + rect.width / 2 - 140;
+    var top2 = rect.top - 100;
+    if (left2 < 20) left2 = 20;
+    if (left2 + obW > window.innerWidth - 20) left2 = window.innerWidth - obW - 20;
+    if (top2 < 80) top2 = 80;
+    _onboarding.style.left = left2 + 'px';
+    _onboarding.style.top = top2 + 'px';
+    _onboarding.style.right = 'auto';
+    _onboarding.style.bottom = 'auto';
+  }
 }
 
 function hideOnboarding() {

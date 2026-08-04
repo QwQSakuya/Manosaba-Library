@@ -21,6 +21,7 @@
   /* ── 图标 ── */
   var ICON_PLAY  = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
   var ICON_PAUSE = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>';
+  var ICON_DOWNLOAD = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
 
   /* ── 状态 ── */
   var state = {
@@ -30,7 +31,9 @@
     currentType: null,     /* 'sfx' | 'voice' */
     currentId: null,
     playing: false,
-    currentItem: null      /* 当前播放项（用于时长回退显示） */
+    currentItem: null,     /* 当前播放项（用于时长回退显示） */
+    popupBgmId: null,      /* popup 正在播放的 BGM id */
+    popupPlaying: false    /* popup 是否在播放 */
   };
 
   /* ── 元素引用 ── */
@@ -72,6 +75,18 @@
     return '';
   }
 
+  /* ═══ Popup 播放器桥接 ═══ */
+  /* MSPlayer 由 player-launcher.js 暴露; 不存在时降级直接开窗 */
+  function MSPlayerOpen(id) {
+    if (w.MSPlayer) { w.MSPlayer.open(id); return; }
+    var url = id ? ('player.html?id=' + encodeURIComponent(id)) : 'player.html';
+    w.open(url, 'ms_player', 'width=400,height=640,resizable=yes,scrollbars=yes');
+  }
+  function MSPlayerSend(msg) {
+    if (w.MSPlayer) { w.MSPlayer.send(msg); return; }
+    if (w._ppBc) { try { w._ppBc.postMessage(msg); } catch (e) {} }
+  }
+
   /* ═══ 渲染：SFX ═══ */
   function renderSfx() {
     var sfx = (state.manifest && state.manifest.sfx) ? state.manifest.sfx : [];
@@ -107,20 +122,25 @@
         var id = esc(it.id);
         var disabled = !it.file;
         var cls = 'bgm-card' + (disabled ? ' disabled' : '');
-        var isActive = (state.currentType === 'bgm' && state.currentId === it.id);
+        var isActive = (state.popupBgmId === it.id);
+        var showPause = isActive && state.popupPlaying;
         if (isActive) cls += ' playing';
         var cat = esc(it.category || '');
         var name = esc(it.label || it.id);
         var attr = disabled
           ? ' aria-disabled="true"'
           : ' tabindex="0" role="button" aria-label="播放 ' + name + '"';
+        var dlBtn = it.file
+          ? '<a class="bgm-dl" href="assets/audio/' + it.file + '" download title="下载" aria-label="下载">' + ICON_DOWNLOAD + '</a>'
+          : '';
         html +=
           '<div class="' + cls + '" data-bgm-id="' + id + '"' + attr + '>' +
             '<span class="bgm-cat">' + cat + '</span>' +
             '<span class="bgm-name">' + name + '</span>' +
             '<button class="bgm-play" type="button" aria-label="播放"' + (disabled ? ' disabled' : '') + '>' +
-              (isActive && state.playing ? ICON_PAUSE : ICON_PLAY) +
+              (showPause ? ICON_PAUSE : ICON_PLAY) +
             '</button>' +
+            dlBtn +
           '</div>';
       }
     }
@@ -308,6 +328,7 @@
     if (p && typeof p.then === 'function') {
       p.then(function () {
         setPlaying(true);
+        notifyPopupPause();
       }).catch(function () {
         /* 自动播放被阻止或加载失败 */
         setPlaying(false);
@@ -315,7 +336,13 @@
       });
     } else {
       setPlaying(true);
+      notifyPopupPause();
     }
+  }
+
+  /* 页内 SFX/voice 开始时, 通知 popup 暂停 BGM (互相暂停) */
+  function notifyPopupPause() {
+    MSPlayerSend({ type: 'page-audio-start' });
   }
 
   function resumePlay() {
@@ -462,19 +489,19 @@
       loadAndPlay(src, item.label || item.id, '音效 · Sound Effect', item, 'sfx', id);
     });
 
-    /* BGM 卡片 */
+    /* BGM 卡片 → 发送到 popup 播放 */
     bgmList.addEventListener('click', function (e) {
+      /* 下载按钮点击不触发播放 */
+      if (e.target.closest && e.target.closest('.bgm-dl')) return;
       var card = e.target.closest ? e.target.closest('.bgm-card') : null;
       if (!card || card.classList.contains('disabled')) return;
       var id = card.getAttribute('data-bgm-id');
-      var bgm = state.manifest.bgm || [];
-      var item = null;
-      for (var i = 0; i < bgm.length; i++) {
-        if (bgm[i].id === id) { item = bgm[i]; break; }
+      /* 同曲且 popup 正在放 → 暂停; 否则发送到 popup */
+      if (state.popupBgmId === id && state.popupPlaying) {
+        MSPlayerSend({ type: 'request', action: 'pause' });
+      } else {
+        MSPlayerOpen(id);
       }
-      if (!item || !item.file) return;
-      var src = 'assets/audio/' + item.file;
-      loadAndPlay(src, item.label || item.id, '音乐 · ' + (item.category || 'BGM'), item, 'bgm', id);
     });
     bgmList.addEventListener('keydown', function (e) {
       if (e.key !== 'Enter' && e.key !== ' ') return;
@@ -541,6 +568,46 @@
       '</div>';
   }
 
+  /* ═══ Popup 通道监听: 同步 BGM 卡片态 + 互相暂停 ═══ */
+  function setupPlayerChannel() {
+    var channel = null;
+    try { channel = new BroadcastChannel('ms_player'); } catch (e) {}
+    if (!channel) {
+      /* 降级: storage 事件 */
+      w.addEventListener('storage', function (e) {
+        if (e.key === 'ms_player_state' && e.newValue) {
+          try { handle(JSON.parse(e.newValue)); } catch (err) {}
+        }
+      });
+      return;
+    }
+    w._ppBc = channel;
+    channel.onmessage = function (e) { handle(e.data); };
+    /* 启动问一次 popup 现状 */
+    channel.postMessage({ type: 'ping' });
+
+    function handle(m) {
+      if (!m) return;
+      if (m.type === 'state' || (m.type === 'pong' && m.state)) {
+        var st = m.state || m;
+        if (!st) return;
+        var prevId = state.popupBgmId;
+        var prevPlaying = state.popupPlaying;
+        state.popupBgmId = st.id || null;
+        state.popupPlaying = !!st.playing;
+        /* popup 开始播放 BGM 时, 暂停页内 SFX/voice */
+        if (state.popupPlaying && state.playing) {
+          stopCurrent();
+          setPlaying(false);
+        }
+        /* 状态变化时重绘 BGM 卡片 */
+        if (prevId !== state.popupBgmId || prevPlaying !== state.popupPlaying) {
+          renderBgm();
+        }
+      }
+    }
+  }
+
   /* ═══ 初始化 ═══ */
   function init() {
     MS.restoreTheme();
@@ -565,6 +632,7 @@
 
     setupMiniPlayer();
     bindEvents();
+    setupPlayerChannel();
 
     MS.fetchJSON('data/audio-manifest.json', 12000)
       .then(function (data) {

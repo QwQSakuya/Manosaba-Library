@@ -1453,7 +1453,7 @@
     },
     {
       "id": "Bgm_001_001_Loop",
-      "file": "",
+      "file": "bgm/Common/Bgm_001_001_Loop.ogg",
       "label": "Bgm 001 001 Loop",
       "category": "Common",
       "size": 9391472
@@ -1467,7 +1467,7 @@
     },
     {
       "id": "Bgm_002_001_Loop",
-      "file": "",
+      "file": "bgm/Common/Bgm_002_001_Loop.ogg",
       "label": "Bgm 002 001 Loop",
       "category": "Common",
       "size": 11656288
@@ -1481,21 +1481,21 @@
     },
     {
       "id": "Bgm_003_001_Loop",
-      "file": "",
+      "file": "bgm/Common/Bgm_003_001_Loop.ogg",
       "label": "Bgm 003 001 Loop",
       "category": "Common",
       "size": 18212836
     },
     {
       "id": "Bgm_004_001_Loop",
-      "file": "",
+      "file": "bgm/Common/Bgm_004_001_Loop.ogg",
       "label": "Bgm 004 001 Loop",
       "category": "Common",
       "size": 11836273
     },
     {
       "id": "Bgm_005_001_Loop",
-      "file": "",
+      "file": "bgm/Common/Bgm_005_001_Loop.ogg",
       "label": "Bgm 005 001 Loop",
       "category": "Common",
       "size": 15118897
@@ -1509,42 +1509,42 @@
     },
     {
       "id": "Bgm_007_001_Loop",
-      "file": "",
+      "file": "bgm/Common/Bgm_007_001_Loop.ogg",
       "label": "Bgm 007 001 Loop",
       "category": "Common",
       "size": 17182935
     },
     {
       "id": "Bgm_008_001_Loop",
-      "file": "",
+      "file": "bgm/Common/Bgm_008_001_Loop.ogg",
       "label": "Bgm 008 001 Loop",
       "category": "Common",
       "size": 21698823
     },
     {
       "id": "Bgm_008_002_Loop",
-      "file": "",
+      "file": "bgm/Common/Bgm_008_002_Loop.ogg",
       "label": "Bgm 008 002 Loop",
       "category": "Common",
       "size": 21798636
     },
     {
       "id": "Bgm_009_001_Loop",
-      "file": "",
+      "file": "bgm/Common/Bgm_009_001_Loop.ogg",
       "label": "Bgm 009 001 Loop",
       "category": "Common",
       "size": 9171803
     },
     {
       "id": "Bgm_010_001_Loop",
-      "file": "",
+      "file": "bgm/Common/Bgm_010_001_Loop.ogg",
       "label": "Bgm 010 001 Loop",
       "category": "Common",
       "size": 11800982
     },
     {
       "id": "Bgm_011_001_Loop",
-      "file": "",
+      "file": "bgm/Common/Bgm_011_001_Loop.ogg",
       "label": "Bgm 011 001 Loop",
       "category": "Common",
       "size": 9434046
@@ -1558,28 +1558,28 @@
     },
     {
       "id": "Song_001_001",
-      "file": "",
+      "file": "bgm/Songs/Song_001_001.ogg",
       "label": "Song 001 001",
       "category": "Songs",
       "size": 12653442
     },
     {
       "id": "Song_002_001",
-      "file": "",
+      "file": "bgm/Songs/Song_002_001.ogg",
       "label": "Song 002 001",
       "category": "Songs",
       "size": 17014702
     },
     {
       "id": "Song_003_001",
-      "file": "",
+      "file": "bgm/Songs/Song_003_001.ogg",
       "label": "Song 003 001",
       "category": "Songs",
       "size": 12214999
     },
     {
       "id": "Song_004_001",
-      "file": "",
+      "file": "bgm/Songs/Song_004_001.ogg",
       "label": "Song 004 001",
       "category": "Songs",
       "size": 16089322

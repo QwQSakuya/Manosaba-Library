@@ -1,0 +1,416 @@
+/* ═══════════════════════════════════════════════════
+   player.css — 弹出播放器 + 全站浮动按钮 + 移动端降级条
+   依赖: shared.css (CSS 变量 / .bg-layer / .bg-gradient)
+   复用哥特视觉令牌，不引入新美学
+   ═══════════════════════════════════════════════════ */
+
+/* ═══════════════════════════════════════════════════
+   一、Popup 播放器页 (.pp-*)
+   ═══════════════════════════════════════════════════ */
+.pp-body {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  overflow-x: hidden;
+}
+
+/* 极简背景：仅渐变层 + 低透明魔法阵水印 */
+.pp-body .bg-layer {
+  position: fixed; inset: 0; z-index: 0;
+  pointer-events: none;
+}
+.pp-body .bg-gradient {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 0%,
+    color-mix(in srgb, var(--accent) 8%, transparent) 0%,
+    transparent 60%);
+}
+
+.pp-shell {
+  position: relative; z-index: 1;
+  max-width: 360px;
+  margin: 0 auto;
+  padding: 28px 22px 24px;
+  display: flex; flex-direction: column;
+  gap: 18px;
+}
+
+/* ── 头部：黑胶 + 标题 ── */
+.pp-header {
+  display: flex; align-items: center; gap: 14px;
+}
+.pp-disc {
+  width: 56px; height: 56px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--btn-bg);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--fg2);
+  transition: color 0.3s ease;
+}
+.pp-disc svg { width: 30px; height: 30px; }
+.pp-body.playing .pp-disc {
+  animation: pp-spin 4s linear infinite;
+  color: var(--accent);
+}
+@keyframes pp-spin { to { transform: rotate(360deg); } }
+
+.pp-info {
+  flex: 1; min-width: 0;
+  display: flex; flex-direction: column; gap: 3px;
+}
+.pp-title {
+  font-family: "Noto Serif SC", serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--fg);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  letter-spacing: 0.02em;
+}
+.pp-meta {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 12px;
+  color: var(--fg3);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  letter-spacing: 0.06em;
+}
+
+/* ── 进度条（可拖动）── */
+.pp-progress {
+  position: relative;
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  cursor: pointer;
+  user-select: none;
+}
+.pp-progress-fill {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 0%;
+  background: var(--accent);
+  border-radius: 3px;
+  transition: width 0.15s linear;
+}
+.pp-progress-thumb {
+  position: absolute; top: 50%;
+  width: 12px; height: 12px;
+  margin-left: -6px;
+  border-radius: 50%;
+  background: var(--accent);
+  transform: translateY(-50%) scale(0);
+  transition: transform 0.2s ease;
+  pointer-events: none;
+}
+.pp-progress:hover .pp-progress-thumb,
+.pp-body.dragging .pp-progress-thumb {
+  transform: translateY(-50%) scale(1);
+}
+.pp-body.dragging .pp-progress-fill { transition: none; }
+
+.pp-time {
+  display: flex; align-items: center; gap: 6px;
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 500;
+  font-size: 12px;
+  color: var(--fg3);
+  letter-spacing: 0.04em;
+}
+.pp-time-sep { opacity: 0.5; }
+
+/* ── 控制按钮 ── */
+.pp-controls {
+  display: flex; align-items: center; justify-content: center;
+  gap: 14px;
+}
+.pp-btn {
+  width: 38px; height: 38px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--btn-bg);
+  color: var(--fg);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+}
+.pp-btn:hover {
+  background: var(--btn-hover);
+  border-color: var(--accent);
+}
+.pp-btn:active { transform: scale(0.92); }
+.pp-btn svg { width: 16px; height: 16px; }
+.pp-btn-main {
+  width: 50px; height: 50px;
+  background: var(--btn-active);
+  color: var(--btn-active-fg);
+  border-color: var(--btn-active);
+}
+.pp-btn-main:hover {
+  background: var(--btn-hover);
+  color: var(--fg);
+  border-color: var(--accent);
+}
+.pp-btn-main svg { width: 20px; height: 20px; }
+
+/* 循环模式按钮高亮（非 order 态） */
+.pp-mode.is-active {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* ── 音量 ── */
+.pp-volume {
+  display: flex; align-items: center; gap: 10px;
+  padding: 0 4px;
+}
+.pp-vol-icon {
+  width: 18px; height: 18px;
+  color: var(--fg3);
+  flex-shrink: 0;
+}
+.pp-vol {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  cursor: pointer;
+  outline: none;
+}
+.pp-vol::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+}
+.pp-vol::-moz-range-thumb {
+  width: 12px; height: 12px;
+  border: none;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+}
+
+/* ── BGM 列表 ── */
+.pp-list-wrap {
+  margin-top: 4px;
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+}
+.pp-list-title {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fg3);
+  margin-bottom: 10px;
+}
+.pp-list {
+  max-height: 260px;
+  overflow-y: auto;
+  display: flex; flex-direction: column;
+  gap: 4px;
+  padding-right: 4px;
+}
+.pp-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 12px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+.pp-item:hover {
+  background: var(--btn-hover);
+}
+.pp-item.active {
+  background: var(--btn-hover);
+  border-color: var(--accent);
+}
+.pp-item-num {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 11px;
+  color: var(--fg3);
+  min-width: 18px;
+  flex-shrink: 0;
+}
+.pp-item.active .pp-item-num { color: var(--accent); }
+.pp-item-cat {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--fg3);
+  text-transform: uppercase;
+  min-width: 60px;
+  flex-shrink: 0;
+}
+.pp-item-name {
+  flex: 1; min-width: 0;
+  font-family: "Noto Serif SC", serif;
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--fg);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.pp-item-icon {
+  width: 14px; height: 14px;
+  flex-shrink: 0;
+  color: var(--fg3);
+  display: flex; align-items: center; justify-content: center;
+}
+.pp-item.active .pp-item-icon { color: var(--accent); }
+.pp-item-icon svg { width: 100%; height: 100%; }
+
+/* ── 空状态 ── */
+.pp-empty {
+  padding: 40px 20px;
+  text-align: center;
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 13px;
+  color: var(--fg3);
+  letter-spacing: 0.1em;
+}
+
+
+/* ═══════════════════════════════════════════════════
+   二、全站浮动按钮 (.ms-fab)
+   ═══════════════════════════════════════════════════ */
+.ms-fab {
+  position: fixed;
+  right: 22px; bottom: 22px;
+  z-index: 160;
+  width: 44px; height: 44px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--header-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--fg2);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+.ms-fab:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+.ms-fab:active { transform: translateY(0) scale(0.94); }
+.ms-fab svg { width: 22px; height: 22px; }
+.ms-fab.is-playing {
+  color: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent),
+              0 2px 12px rgba(0,0,0,0.10);
+}
+.ms-fab.is-playing .ms-fab-disc { animation: pp-spin 3.5s linear infinite; }
+
+/* act 页右下拥挤 → 右上（主题切换下方）*/
+.ms-fab.on-act {
+  right: 22px; bottom: auto; top: 74px;
+}
+/* audio 页避让底部 mini-player */
+.ms-fab.on-audio { bottom: 86px; }
+
+@media (max-width: 720px) {
+  .ms-fab { width: 40px; height: 40px; }
+  .ms-fab svg { width: 20px; height: 20px; }
+  /* 移动端 act 页 header 换行，回右下 */
+  .ms-fab.on-act { top: auto; bottom: 22px; right: 22px; }
+  /* 降级条出现时隐藏 FAB */
+  .ms-fab.has-fallback { display: none; }
+}
+
+
+/* ═══════════════════════════════════════════════════
+   三、移动端降级条 (.ms-fallback-bar)
+   ═══════════════════════════════════════════════════ */
+.ms-fallback-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 160;
+  background: var(--header-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid var(--border);
+  padding: 10px 14px;
+  display: flex; align-items: center; gap: 12px;
+  transform: translateY(100%);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ms-fallback-bar.show { transform: translateY(0); }
+.ms-fallback-bar .msfb-disc {
+  width: 36px; height: 36px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--btn-bg);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--fg2);
+}
+.ms-fallback-bar .msfb-disc svg { width: 20px; height: 20px; }
+.ms-fallback-bar.playing .msfb-disc { animation: pp-spin 4s linear infinite; color: var(--accent); }
+.ms-fallback-bar .msfb-info {
+  flex: 1; min-width: 0;
+  display: flex; flex-direction: column; gap: 2px;
+}
+.ms-fallback-bar .msfb-title {
+  font-size: 12px; font-weight: 700; color: var(--fg);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.ms-fallback-bar .msfb-meta {
+  font-size: 10px; color: var(--fg3);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.ms-fallback-bar .msfb-progress {
+  flex: 0 0 90px;
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.ms-fallback-bar .msfb-progress-fill {
+  height: 100%; width: 0%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.15s linear;
+}
+.ms-fallback-bar .msfb-btn {
+  width: 32px; height: 32px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--btn-bg);
+  color: var(--fg);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+.ms-fallback-bar .msfb-btn:hover {
+  background: var(--btn-hover);
+  border-color: var(--accent);
+}
+.ms-fallback-bar .msfb-btn svg { width: 14px; height: 14px; }
+
+
+/* ═══ 减少动效 ═══ */
+@media (prefers-reduced-motion: reduce) {
+  .pp-body.playing .pp-disc,
+  .ms-fab.is-playing .ms-fab-disc,
+  .ms-fallback-bar.playing .msfb-disc { animation: none !important; }
+  .pp-progress-fill { transition: none !important; }
+}
