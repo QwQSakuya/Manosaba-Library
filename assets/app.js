@@ -728,7 +728,7 @@ function buildCanvas() {
       var parentVirtId = 'virt_' + n._parentChoiceId;
       if (_nodeMap.has(parentVirtId)) {
         // Task 9: 添加 is-subchoice-link 类以触发更细更淡的连接线样式
-        var linkCls = cls + ' is-subchoice-link' + (n._branchKind ? ' is-' + n._branchKind + '-link' : '');
+        var linkCls = cls + ' is-subchoice-link' + (n._branchKind ? ' is-' + n._branchKind + '-link' : '') + (n._isSpecial ? ' is-special-link' : '');
         addLine(parentVirtId, n.id, linkCls);
         return;
       }
@@ -1278,8 +1278,8 @@ function openDetail(node) {
   panelBody.querySelectorAll('.objection-link').forEach(el => {
     el.addEventListener('click', function(e) {
       e.stopPropagation();
-      const choiceId = this.dataset.choiceId;
-      showObjectionPopup(choiceId, this);
+      const objectionId = this.dataset.objectionId;
+      showObjectionPopup(objectionId, this);
     });
   });
 
@@ -1350,7 +1350,7 @@ function showPhone(html, fromNode) {
   phoneScreen.querySelectorAll('.objection-link').forEach(function(el) {
     el.addEventListener('click', function(e) {
       e.stopPropagation();
-      showObjectionPopup(this.dataset.choiceId, this);
+      showObjectionPopup(this.dataset.objectionId, this);
     });
   });
   // 绑定选项跳转事件
@@ -1401,9 +1401,12 @@ function showPhone(html, fromNode) {
           vel.style.display = '';
           requestAnimationFrame(function() { vel.classList.remove('virt-hidden'); });
         }
-        // 显示专属连接线
+        // 显示专属连接线 (跳过指向仍隐藏虚拟节点的连接线)
         _connectors.forEach(function(ref) {
           if (ref.toId === virtNodeId || ref.fromId === virtNodeId) {
+            var otherId = ref.toId === virtNodeId ? ref.fromId : ref.toId;
+            var other = _nodeMap.get(otherId);
+            if (other && other._isVirtual === true && other._hidden === true) return;
             ref.el.style.display = '';
           }
         });
@@ -1429,6 +1432,32 @@ function hidePhone() {
   phoneState = 'peeking';
   phonePinned = false;
   closeObjectionPopup();
+  // 虚拟节点: 关闭手机视图时恢复隐藏状态（与 closeDetail 一致）
+  if (focusedNodeId) {
+    const cur = _nodeMap.get(focusedNodeId);
+    if (cur && cur._isVirtual === true) {
+      cur._hidden = true;
+      const el = document.querySelector('.node[data-id="' + focusedNodeId + '"]');
+      if (el) {
+        el.classList.add('virt-hidden');
+        var elRef = el;
+        var nodeId = focusedNodeId;
+        setTimeout(function() {
+          var n2 = _nodeMap.get(nodeId);
+          if (n2 && n2._hidden) elRef.style.display = 'none';
+        }, 300);
+      }
+      // 同步隐藏虚拟节点的专属连接线 (objection + seq)
+      _connectors.forEach(function(ref) {
+        if (ref.toId === focusedNodeId || ref.fromId === focusedNodeId) ref.el.style.display = 'none';
+      });
+      // 同步隐藏其子孙虚拟节点 (子选项/证人/证物分支)
+      hideVirtualNodeDescendants(focusedNodeId);
+      // 统一校正正确路径连续线 (恢复到 Trial → nextTrial 或转移到其他可见正确节点)
+      reconcileTrialContinuations();
+    }
+  }
+  focusedNodeId = null;
   _nodeEls.forEach(el => el.classList.remove('highlighted'));
   // 淡出动画结束后清空屏幕内容（保留 lastPhoneHtml 供悬浮恢复）
   if (wasShow) {
@@ -1450,7 +1479,7 @@ phoneContainer.addEventListener('mouseenter', function() {
       phoneScreen.querySelectorAll('.objection-link').forEach(function(el) {
         el.addEventListener('click', function(e) {
           e.stopPropagation();
-          showObjectionPopup(this.dataset.choiceId, this);
+          showObjectionPopup(this.dataset.objectionId, this);
         });
       });
       requestAnimationFrame(function() {
@@ -1503,6 +1532,25 @@ function branchBadgeHtml(br) {
 function openPhoneWithNode(node) {
   // 切换节点时隐藏全部已显示的虚拟节点 (跳过当前要打开的节点)
   hideAllVisibleVirtualNodes(node.id);
+  // 若当前要打开的是虚拟节点，恢复其 DOM 显示与专属连接线
+  if (node._isVirtual) {
+    node._hidden = false;
+    var vel = document.querySelector('.node[data-id="' + node.id + '"]');
+    if (vel) {
+      vel.style.display = '';
+      requestAnimationFrame(function() { vel.classList.remove('virt-hidden'); });
+    }
+    _connectors.forEach(function(ref) {
+      if (ref.toId === node.id || ref.fromId === node.id) {
+        // 跳过指向已隐藏虚拟节点的连接线 (避免重新打开父选项时残留子孙虚线)
+        var otherId = ref.toId === node.id ? ref.fromId : ref.toId;
+        var other = _nodeMap.get(otherId);
+        if (other && other._isVirtual === true && other._hidden === true) return;
+        ref.el.style.display = '';
+      }
+    });
+    reconcileTrialContinuations();
+  }
   focusedNodeId = node.id;
   let html = '';
 
@@ -1632,8 +1680,20 @@ function openPhoneWithNode(node) {
       html += '<div class="choice-item" data-nav="' + escapeHtml(parentNode.id) + '"><span class="choice-text">↩ 返回选择</span></div>';
       html += '</div>';
     }
+  } else if (node._isVirtual && node._isCorrect && node.nextId) {
+    // 正确虚拟节点 (含子选项分支) → 下一个 (推进主线)
+    html += '<div class="panel-section"><div class="panel-section-title">导航</div>';
+    html += '<div class="choice-item" data-nav="' + escapeHtml(node.nextId) + '"><span class="choice-text">▼ 下一个</span></div>';
+    // 子选项分支额外提供"返回选择"按钮
+    if (node._parentChoiceId) {
+      var backParent = _nodeMap.get('virt_' + node._parentChoiceId);
+      if (backParent) {
+        html += '<div class="choice-item" data-nav="' + escapeHtml(backParent.id) + '"><span class="choice-text">↩ 返回选择</span></div>';
+      }
+    }
+    html += '</div>';
   } else if (node._isVirtual && node._parentChoiceId) {
-    // 子选项虚拟节点 → 返回父选项虚拟节点
+    // 错误子选项虚拟节点 → 返回父选项虚拟节点
     var parentNode = _nodeMap.get('virt_' + node._parentChoiceId);
     if (parentNode) {
       html += '<div class="panel-section"><div class="panel-section-title">导航</div>';
@@ -1835,12 +1895,13 @@ function renderDialogueText(d) {
 
   // ── Step 5: 遍历 objectionLinks 数组，在纯文本中查找 ol.text 子串并包裹 span ──
   // 数据层已剥离 <link=> 标签，所以文本中只有纯文字，需要通过 ol.text 子串匹配定位
+  // 使用 ol.id (Objection ID) 作为标识, 在 showObjectionPopup 中通过 annotations.optionId 查找匹配的 choice
   if (d.objectionLinks && d.objectionLinks.length) {
     // 按 ol.text 长度降序排序，避免短子串先匹配导致长子串匹配失败
     const sortedLinks = [...d.objectionLinks].sort((a, b) => b.text.length - a.text.length);
     for (const ol of sortedLinks) {
-      const choiceId = ol.choiceId;
-      if (!choiceId) continue;
+      const objectionId = ol.id;
+      if (!objectionId) continue;
       const linkTextEscaped = escapeHtml(ol.text);
       // 使用首次匹配，避免歧义；只匹配未被 span 包裹的纯文本
       // 用负向断言确保不匹配已包裹的 objection-link span 内的文字
@@ -1851,7 +1912,7 @@ function renderDialogueText(d) {
       text = text.replace(re, (m) => {
         if (replaced) return m; // 只替换第一个
         replaced = true;
-        return '<span class="objection-link" data-choice-id="' + escapeHtml(choiceId) + '">' + linkTextEscaped + '</span>';
+        return '<span class="objection-link" data-objection-id="' + escapeHtml(objectionId) + '">' + linkTextEscaped + '</span>';
       });
     }
   }
@@ -2168,8 +2229,12 @@ function jumpToVirtualNode(cid) {
       });
     }
     // 显示虚拟节点专属连接线 (objection-correct + 虚拟节点自身的 seq 线)
+    // 跳过指向仍隐藏虚拟节点的连接线 (避免未点击的子孙分支虚线残留)
     _connectors.forEach(function(ref) {
       if (ref.toId === virtNodeId || ref.fromId === virtNodeId) {
+        var otherId = ref.toId === virtNodeId ? ref.fromId : ref.toId;
+        var other = _nodeMap.get(otherId);
+        if (other && other._isVirtual === true && other._hidden === true) return;
         ref.el.style.display = '';
       }
     });
@@ -2210,39 +2275,64 @@ function _findChoiceById(choiceId) {
   return null;
 }
 
-function showObjectionPopup(choiceId, anchorEl) {
-  _popupChoiceId = choiceId;
+function showObjectionPopup(objectionId, anchorEl) {
+  _popupChoiceId = null;
   _popupAnchorEl = anchorEl || null;
-  const choice = _findChoiceById(choiceId);
-  if (!choice) { closeObjectionPopup(); return; }
   const annMap = ANNOTATIONS.trialChoices || {};
-  const ann = annMap[choiceId];
 
-  // 收集所有相关选项: 当前 choice + 兄弟选项 (通过 siblingChoiceIds)
-  const siblingIds = (ann && ann.siblingChoiceIds) || [];
-  const allChoiceIds = siblingIds.length ? [choiceId, ...siblingIds] : [choiceId];
+  // 通过 annotations.optionId 查找所有匹配的 choice (一个 Objection ID 可对应多个 Choice)
+  const matchingChoices = [];
+  for (const n of NODES) {
+    if (!n.trialChoices) continue;
+    for (const ch of n.trialChoices) {
+      const ann = annMap[ch.id];
+      if (ann && ann.optionId === objectionId) {
+        matchingChoices.push({ choice: ch, ann: ann });
+      }
+    }
+  }
 
-  const objectionText = choice.objectionText ? `<div style="margin-top:6px;font-size:12px;color:var(--fg3)">异议点: ${escapeHtml(choice.objectionText)}</div>` : '';
-  const note = ann && ann.note ? `<div style="margin-top:6px;font-size:12px;color:var(--fg2)">备注: ${escapeHtml(ann.note)}</div>` : '';
+  // 回退: 若 annotations 中无匹配, 尝试用 Objection ID 直接作为 choiceId 查找 (NN→Choice00N)
+  if (!matchingChoices.length) {
+    const parts = objectionId.split('_');
+    if (parts.length === 5) {
+      const aa = parseInt(parts[1], 10);
+      const cc = parseInt(parts[2], 10);
+      const tt = parseInt(parts[3], 10);
+      const nn = parseInt(parts[4], 10);
+      const fallbackChoiceId = String(aa).padStart(2,'0') + String(cc).padStart(2,'0') + 'Trial' + String(tt).padStart(2,'0') + '_Choice' + String(nn).padStart(3,'0');
+      const ch = _findChoiceById(fallbackChoiceId);
+      if (ch) {
+        matchingChoices.push({ choice: ch, ann: annMap[fallbackChoiceId] || null });
+      }
+    }
+  }
+
+  if (!matchingChoices.length) { closeObjectionPopup(); return; }
+
+  const firstChoice = matchingChoices[0].choice;
+  const objectionText = firstChoice.objectionText ? `<div style="margin-top:6px;font-size:12px;color:var(--fg3)">异议点: ${escapeHtml(firstChoice.objectionText)}</div>` : '';
+  const firstAnn = matchingChoices[0].ann;
+  const note = firstAnn && firstAnn.note ? `<div style="margin-top:6px;font-size:12px;color:var(--fg2)">备注: ${escapeHtml(firstAnn.note)}</div>` : '';
 
   let choicesHtml = '';
-  if (allChoiceIds.length > 1) {
-    // 多选项: 列出所有兄弟选项, 每个可单独点击跳转
+  if (matchingChoices.length > 1) {
+    // 多选项: 列出所有匹配选项, 每个可单独点击跳转
     choicesHtml = '<div style="margin-top:6px;">';
-    allChoiceIds.forEach(function(cid) {
-      const ch = _findChoiceById(cid);
-      if (!ch) return;
-      const cAnn = annMap[cid];
+    matchingChoices.forEach(function(item) {
+      const ch = item.choice;
+      const cAnn = item.ann;
       const badge = _choiceStatusBadge(cAnn);
-      choicesHtml += '<div class="op-sibling-item" data-choice-id="' + escapeHtml(cid) + '" style="padding:6px 8px;margin:3px 0;cursor:pointer;border-radius:4px;background:var(--bg2);display:flex;align-items:center;justify-content:space-between;gap:8px;">';
+      choicesHtml += '<div class="op-sibling-item" data-choice-id="' + escapeHtml(ch.id) + '" style="padding:6px 8px;margin:3px 0;cursor:pointer;border-radius:4px;background:var(--bg2);display:flex;align-items:center;justify-content:space-between;gap:8px;">';
       choicesHtml += '<span style="font-size:13px;">' + escapeHtml(ch.text) + '</span>' + badge;
       choicesHtml += '</div>';
     });
     choicesHtml += '</div>';
   } else {
     // 单选项: 保持原有展示格式
+    const choice = firstChoice;
     const typeLabel = choice.buttonType === 'Cancel' ? ' [返回]' : choice.buttonType === 'Objection' ? ' [异议]' : '';
-    choicesHtml = '<div class="op-choice" data-choice-id="' + escapeHtml(choiceId) + '">' + escapeHtml(choice.text) + typeLabel + ' ' + _choiceStatusBadge(ann) + '</div>';
+    choicesHtml = '<div class="op-choice" data-choice-id="' + escapeHtml(choice.id) + '">' + escapeHtml(choice.text) + typeLabel + ' ' + _choiceStatusBadge(firstAnn) + '</div>';
   }
 
   objectionPopup.innerHTML = choicesHtml + objectionText + note;

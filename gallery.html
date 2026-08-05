@@ -44,6 +44,22 @@
   to   { transform: rotate(70deg); }
 }
 
+/* ── 睁眼黑幕 (彩蛋跳转: 眼睑从中央向上下拉开) ── */
+.eye-lid {
+  position: fixed;
+  left: 0; right: 0;
+  z-index: 99999;
+  background: #000;
+  pointer-events: none;
+}
+.eye-lid.top    { top: 0; }
+.eye-lid.bottom { bottom: 0; }
+.eye-lid.opening { animation: lid-open 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+@keyframes lid-open {
+  0%   { height: 50vh; }
+  100% { height: 0; }
+}
+
 /* ── 缩略图网格 ── */
 .gallery-grid {
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -179,6 +195,10 @@
     animation: none !important;
     transform: rotate(70deg) !important;
   }
+  .eye-lid.opening {
+    animation: none !important;
+    height: 0 !important;
+  }
   .frame-card, .frame-matte::before, .frame-matte::after,
   .frame-matte img, .lightbox img {
     transition-duration: 0.01s !important;
@@ -251,7 +271,7 @@
 </div>
 
 <script src="assets/shared.js"></script>
-<script src="assets/gallery.js?v=20260805a"></script>
+<script src="assets/gallery.js?v=20260805d"></script>
 <script src="assets/player-launcher.js" defer></script>
 </body>
 </html>

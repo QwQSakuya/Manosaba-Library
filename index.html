@@ -525,7 +525,7 @@ body { display: block; }
   80% { transform: scale(1) rotate(1deg) translateX(1px); }
   100% { transform: scale(1) rotate(0deg) translateX(0); }
 }
-.logo.shake-1 { animation: logo-shake-1 0.4s ease-in-out; }
+.logo.shake-1 { animation: logo-shake-1 0.4s ease-in-out; opacity: 1; transform: scale(1); }
 
 /* 第2次: 摇晃加大 */
 @keyframes logo-shake-2 {
@@ -538,7 +538,7 @@ body { display: block; }
   90% { transform: scale(1.02) rotate(1deg) translateX(1px); }
   100% { transform: scale(1) rotate(0deg) translateX(0); }
 }
-.logo.shake-2 { animation: logo-shake-2 0.6s ease-in-out; }
+.logo.shake-2 { animation: logo-shake-2 0.6s ease-in-out; opacity: 1; transform: scale(1); }
 
 /* 第3次: 剧烈摇晃 + 页面震动 */
 @keyframes logo-shake-3 {
@@ -551,7 +551,7 @@ body { display: block; }
   85% { transform: scale(1.03) rotate(2deg) translateX(1px); }
   100% { transform: scale(1) rotate(0deg) translateX(0); }
 }
-.logo.shake-3 { animation: logo-shake-3 0.8s ease-in-out; }
+.logo.shake-3 { animation: logo-shake-3 0.8s ease-in-out; opacity: 1; transform: scale(1); }
 
 @keyframes page-shake-3 {
   0%, 100% { transform: translate(0, 0); }
@@ -578,7 +578,7 @@ body { display: block; }
   80% { transform: scale(1.03) rotate(2deg) translateX(2px); }
   100% { transform: scale(1) rotate(0deg) translateX(0); }
 }
-.logo.shake-4 { animation: logo-shake-4 1s ease-in-out; }
+.logo.shake-4 { animation: logo-shake-4 1s ease-in-out; opacity: 1; transform: scale(1); }
 
 @keyframes page-shake-4 {
   0%, 100% { transform: translate(0, 0); }
@@ -598,41 +598,70 @@ body { display: block; }
 }
 .landing.page-shake-4 { animation: page-shake-4 1s ease-in-out; }
 
-/* 枪声后: 整个页面向左倾倒掉落 */
+/* 枪声后: 中弹后仰 → 向左前方倾倒坠落, 加入 skew 透视与运动模糊 */
 @keyframes page-collapse {
   0% {
-    transform: rotate(0deg) translateY(0);
+    transform: rotate(0deg) translateY(0) skewX(0deg);
     opacity: 1;
+    filter: blur(0);
   }
-  15% {
-    transform: rotate(-8deg) translateY(10px);
+  6% {
+    /* 中弹后仰: 反作用力向右后方轻微一弹 */
+    transform: rotate(3deg) translateY(-3px) translateX(4px) skewX(-1.5deg);
     opacity: 1;
+    filter: blur(0);
   }
-  35% {
-    transform: rotate(-22deg) translateY(60px);
-    opacity: 0.95;
+  18% {
+    transform: rotate(-5deg) translateY(6px) skewX(2deg);
+    opacity: 1;
+    filter: blur(0.4px);
   }
-  60% {
-    transform: rotate(-38deg) translateY(180px) translateX(-40px);
-    opacity: 0.7;
+  38% {
+    transform: rotate(-19deg) translateY(55px) translateX(-28px) skewX(6deg);
+    opacity: 0.93;
+    filter: blur(1.4px);
   }
-  85% {
-    transform: rotate(-52deg) translateY(380px) translateX(-120px);
-    opacity: 0.3;
+  62% {
+    transform: rotate(-36deg) translateY(175px) translateX(-95px) skewX(11deg);
+    opacity: 0.62;
+    filter: blur(3px);
+  }
+  84% {
+    transform: rotate(-51deg) translateY(355px) translateX(-165px) skewX(15deg);
+    opacity: 0.28;
+    filter: blur(5px);
   }
   100% {
-    transform: rotate(-65deg) translateY(600px) translateX(-200px);
+    transform: rotate(-61deg) translateY(560px) translateX(-225px) skewX(18deg);
     opacity: 0;
+    filter: blur(8px);
   }
 }
 .landing.collapsing {
-  animation: page-collapse 1.8s cubic-bezier(0.4, 0, 0.7, 0.6) forwards;
+  animation: page-collapse 1.6s cubic-bezier(0.4, 0, 0.7, 0.6) forwards;
   transform-origin: bottom left;
 }
 
 /* 倾倒时背景也跟随 */
 body.collapsing {
   overflow: hidden;
+}
+
+/* ═══ 闭眼黑幕 (彩蛋: 枪击后眼睑合拢) ═══ */
+.eye-lid {
+  position: fixed;
+  left: 0; right: 0;
+  z-index: 99999;
+  background: #000;
+  pointer-events: none;
+  height: 0;
+}
+.eye-lid.top    { top: 0; }
+.eye-lid.bottom { bottom: 0; }
+.eye-lid.closing { animation: lid-close 0.45s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+@keyframes lid-close {
+  0%   { height: 0; }
+  100% { height: 50vh; }
 }
 </style>
 </head>
@@ -908,7 +937,7 @@ body.collapsing {
         triggerShake('shake-3');
         triggerPageShake('page-shake-3');
       } else if (logoClickCount === 4) {
-        // 第4次: 最剧烈震动 + 枪声
+        // 第4次: 最剧烈震动 + 枪声 → 闭眼 → 跳转画廊(睁眼)
         triggerShake('shake-4');
         triggerPageShake('page-shake-4');
         // 播放枪声
@@ -916,16 +945,23 @@ body.collapsing {
         // 重置计数, 避免重复触发
         logoClickCount = -999;
 
-        // 枪声后页面倾倒, 延迟跳转
+        // 0.45s 后: 注入闭眼黑幕 + 触发页面倾倒
+        // (倒下透过收窄的眼缝短暂可见, 然后被黑幕完全覆盖)
         setTimeout(function () {
+          var lidTop = document.createElement('div');
+          lidTop.className = 'eye-lid top closing';
+          var lidBot = document.createElement('div');
+          lidBot.className = 'eye-lid bottom closing';
+          document.body.appendChild(lidTop);
+          document.body.appendChild(lidBot);
           document.body.classList.add('collapsing');
           if (landing) landing.classList.add('collapsing');
-        }, 1000);
+        }, 450);
 
-        // 倾倒动画 1.8s, 总共等 3.2s 后跳转
+        // 1.4s 后: 黑幕已完全合拢(0.45s+0.45s=0.9s), 再留片刻纯黑, 跳转画廊
         setTimeout(function () {
-          location.href = 'gallery.html?open=Still_330_001';
-        }, 3200);
+          location.href = 'gallery.html?open=Still_330_001&wakeup=1';
+        }, 1400);
       }
     });
   }

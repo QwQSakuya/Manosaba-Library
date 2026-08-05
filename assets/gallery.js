@@ -56,6 +56,29 @@
     els.lbPrev   = MS.$('.lb-prev', els.lightbox);
     els.lbNext   = MS.$('.lb-next', els.lightbox);
 
+    // 提前解析 URL 参数: wakeup=1 时跳过光圈加载动画, 改用闭眼黑幕
+    // (在 fetchData 之前执行, 确保加载动画完全不会出现)
+    try {
+      var params = new URLSearchParams(w.location.search);
+      state._openId = params.get('open') || '';
+      state._wakeup = params.get('wakeup') === '1';
+    } catch (e) {}
+
+    if (state._wakeup) {
+      // 特殊情况: 不用加载动画。立即移除光圈开屏, 注入闭眼黑幕
+      var sp = d.getElementById('splash');
+      if (sp) sp.style.display = 'none';
+      var lidTop = d.createElement('div');
+      lidTop.className = 'eye-lid top';
+      lidTop.style.height = '50vh';
+      var lidBot = d.createElement('div');
+      lidBot.className = 'eye-lid bottom';
+      lidBot.style.height = '50vh';
+      d.body.appendChild(lidTop);
+      d.body.appendChild(lidBot);
+      state._lids = { top: lidTop, bot: lidBot };
+    }
+
     bindEvents();
     fetchData();
   }
@@ -109,13 +132,64 @@
         renderChips();
         applyFilter();
 
-        // URL 参数 ?open=ID 自动打开灯箱
-        var openId = '';
-        try {
-          var params = new URLSearchParams(w.location.search);
-          openId = params.get('open') || '';
-        } catch (e) {}
-        if (openId) {
+        // URL 参数 ?open=ID 自动打开灯箱; wakeup=1 触发睁眼过渡
+        var openId = state._openId || '';
+        var wakeup = !!state._wakeup;
+
+        // 按 ID 打开灯箱的共用逻辑
+        function openById(id) {
+          for (var i = 0; i < state.filtered.length; i++) {
+            if (state.filtered[i].id === id) {
+              openLightbox(i);
+              break;
+            }
+          }
+        }
+
+        if (wakeup && state._lids) {
+          // 彩蛋睁眼模式: 黑幕已在 init 阶段注入, 此处只负责开灯箱 + 睁眼
+          var lidTop = state._lids.top;
+          var lidBot = state._lids.bot;
+
+          // 闭眼满 ~1s 后拉开眼睑; 拉开动画 (0.85s) 结束后移除黑幕
+          function openEye() {
+            setTimeout(function () {
+              lidTop.classList.add('opening');
+              lidBot.classList.add('opening');
+            }, 1000);
+            setTimeout(function () {
+              if (lidTop.parentNode) lidTop.parentNode.removeChild(lidTop);
+              if (lidBot.parentNode) lidBot.parentNode.removeChild(lidBot);
+            }, 1950);
+          }
+
+          if (openId) {
+            // 切到全部分类确保能找到目标
+            state.activeCategory = 'all';
+            state.searchQuery = '';
+            applyFilter();
+            // 立即打开灯箱, CG 在黑幕后加载
+            setTimeout(function () { openById(openId); }, 30);
+            // 等 CG 图片加载就绪后再睁眼, 保证「刚睁开眼就是那张 CG」
+            var img = els.lbImg;
+            function onImgLoad() {
+              img.removeEventListener('load', onImgLoad);
+              openEye();
+            }
+            setTimeout(function () {
+              if (img.complete && img.naturalWidth) {
+                openEye();
+              } else {
+                img.addEventListener('load', onImgLoad);
+                // 兜底: 即便 load 事件遗漏, 2s 后也强制睁眼
+                setTimeout(openEye, 2000);
+              }
+            }, 200);
+          } else {
+            // wakeup 但无 open: 直接睁眼显示画廊
+            setTimeout(openEye, 800);
+          }
+        } else if (openId) {
           // 有 open 参数时立即隐藏 splash, 避免遮挡灯箱
           MS.hideSplash(0);
           // 切到全部分类确保能找到目标
@@ -123,14 +197,7 @@
           state.searchQuery = '';
           applyFilter();
           // 延迟一帧确保 DOM 渲染完成
-          setTimeout(function () {
-            for (var i = 0; i < state.filtered.length; i++) {
-              if (state.filtered[i].id === openId) {
-                openLightbox(i);
-                break;
-              }
-            }
-          }, 50);
+          setTimeout(function () { openById(openId); }, 50);
         } else {
           MS.hideSplash(1200);
         }

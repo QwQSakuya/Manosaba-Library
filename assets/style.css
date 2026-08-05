@@ -626,11 +626,12 @@ main { flex: 1; position: relative; overflow: hidden; background: var(--bg2); }
 /* 子选项 → 父选项虚拟节点连接线: 更细更淡, 体现从属关系 */
 .connector.objection-wrong.is-subchoice-link { opacity: 0.4; height: 1px; border-bottom: 1px dashed #a44; background: none; }
 .connector.objection-correct.is-subchoice-link { opacity: 0.4; height: 1px; border-bottom: 1px dashed #3a8a3a; background: none; }
-/* 证人/证物分支: 节点左侧竖线 + 连接线配色区分 */
+/* 证人/证物分支: 节点左侧竖线配色区分 (连接线颜色由 objection-correct/wrong 决定) */
 .node.is-virtual.is-witness { border-left: 3px solid #8a5acd; }
 .node.is-virtual.is-evidence { border-left: 3px solid #c9861a; }
-.connector.is-subchoice-link.is-witness-link { border-color: #8a5acd; }
-.connector.is-subchoice-link.is-evidence-link { border-color: #c9861a; }
+/* 特殊分支连接线: 用黄色虚线标识特殊证人/证物 (仅在特殊分支时覆盖正确/错误色) */
+.connector.is-subchoice-link.is-witness-link.is-special-link { border-color: #c9861a; }
+.connector.is-subchoice-link.is-evidence-link.is-special-link { border-color: #c9861a; }
 
 /* ── Task 9: 子选项虚拟节点视觉层级 ── */
 /* 子选项比主选项更小、更淡, 形成视觉层级; 用左侧"缩进指示线"暗示父子关系 */
