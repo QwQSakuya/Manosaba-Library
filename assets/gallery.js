@@ -108,7 +108,6 @@
 
         renderChips();
         applyFilter();
-        MS.hideSplash(1200);
 
         // URL 参数 ?open=ID 自动打开灯箱
         var openId = '';
@@ -117,16 +116,23 @@
           openId = params.get('open') || '';
         } catch (e) {}
         if (openId) {
+          // 有 open 参数时立即隐藏 splash, 避免遮挡灯箱
+          MS.hideSplash(0);
           // 切到全部分类确保能找到目标
           state.activeCategory = 'all';
           state.searchQuery = '';
           applyFilter();
-          for (var i = 0; i < state.filtered.length; i++) {
-            if (state.filtered[i].id === openId) {
-              openLightbox(i);
-              break;
+          // 延迟一帧确保 DOM 渲染完成
+          setTimeout(function () {
+            for (var i = 0; i < state.filtered.length; i++) {
+              if (state.filtered[i].id === openId) {
+                openLightbox(i);
+                break;
+              }
             }
-          }
+          }, 50);
+        } else {
+          MS.hideSplash(1200);
         }
       })
       .catch(function (err) {
