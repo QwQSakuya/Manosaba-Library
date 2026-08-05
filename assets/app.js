@@ -1788,19 +1788,74 @@ function escapeHtml(str) {
     .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
 
-// ── 渲染对话文本: 替换 <link="Objection_...">text</link> 为粉色可点击 span ──
-// 注意: escapeHtml 会把 < > " 全部转义, 故正则匹配 &lt;link=&quot;...&quot;&gt;...&lt;/link&gt;
+// ── 渲染对话文本: style 标签渲染 + objectionLinks 数组子串匹配 ──
+// 数据层已剥离 <link=> 标签（保留内部文字），style 标签（<color=>/<b>/<size=>）保留原样
+// 此函数负责:
+//   1. 在 escapeHtml 之前先处理 style 标签（避免被转义），转换为 HTML 标签
+//   2. 对剩余文本 escapeHtml
+//   3. 遍历 objectionLinks 数组，在纯文本中查找 ol.text 子串并包裹可点击 span
 function renderDialogueText(d) {
-  let text = escapeHtml(d.text).replace(/&lt;br&gt;\n?/g, '\n');
-  if (d.objectionLinks && d.objectionLinks.length) {
-    const linkMap = {};
-    d.objectionLinks.forEach(ol => { linkMap[ol.id] = ol.choiceId; });
-    text = text.replace(/&lt;link=&quot;(Objection_\d+_\d+_\d+_\d+)&quot;&gt;(.*?)&lt;\/link&gt;/g, (m, id, linkText) => {
-      const choiceId = linkMap[id];
-      if (!choiceId) return linkText;
-      return `<span class="objection-link" data-choice-id="${escapeHtml(choiceId)}">${linkText}</span>`;
-    });
+  let raw = d.text || '';
+
+  // ── Step 1: 处理 <br> 标签 ──
+  raw = raw.replace(/<br>\n?/g, '\n');
+
+  // ── Step 2: 在 escapeHtml 之前先提取 style 标签，替换为占位符 ──
+  // 占位符格式: \x00STYLE_0\x00, \x00STYLE_1\x00, ... (用 \x00 避免与正常文本冲突)
+  const stylePlaceholders = [];
+  function stashStyleTag(html) {
+    const idx = stylePlaceholders.length;
+    stylePlaceholders.push(html);
+    return '\x00STYLE_' + idx + '\x00';
   }
+
+  // <color=#HEX> → <span style="color:#HEX">
+  raw = raw.replace(/<color=(#[0-9A-Fa-f]{3,8})>/g, (m, hex) =>
+    stashStyleTag('<span style="color:' + hex + '">'));
+  // </color> → </span>
+  raw = raw.replace(/<\/color>/g, () => stashStyleTag('</span>'));
+  // <b> → <strong>
+  raw = raw.replace(/<b>/g, () => stashStyleTag('<strong>'));
+  // </b> → </strong>
+  raw = raw.replace(/<\/b>/g, () => stashStyleTag('</strong>'));
+  // <size=N> → <span style="font-size:Npx">
+  raw = raw.replace(/<size=(\d+)>/g, (m, n) =>
+    stashStyleTag('<span style="font-size:' + n + 'px">'));
+  // </size> → </span>
+  raw = raw.replace(/<\/size>/g, () => stashStyleTag('</span>'));
+  // <i> → <em>, </i> → </em>
+  raw = raw.replace(/<i>/g, () => stashStyleTag('<em>'));
+  raw = raw.replace(/<\/i>/g, () => stashStyleTag('</em>'));
+
+  // ── Step 3: 对剩余文本 escapeHtml（占位符不含 < > " ' 所以不受影响）──
+  let text = escapeHtml(raw);
+
+  // ── Step 4: 把占位符替换回 HTML 标签 ──
+  text = text.replace(/\x00STYLE_(\d+)\x00/g, (m, idx) => stylePlaceholders[parseInt(idx, 10)]);
+
+  // ── Step 5: 遍历 objectionLinks 数组，在纯文本中查找 ol.text 子串并包裹 span ──
+  // 数据层已剥离 <link=> 标签，所以文本中只有纯文字，需要通过 ol.text 子串匹配定位
+  if (d.objectionLinks && d.objectionLinks.length) {
+    // 按 ol.text 长度降序排序，避免短子串先匹配导致长子串匹配失败
+    const sortedLinks = [...d.objectionLinks].sort((a, b) => b.text.length - a.text.length);
+    for (const ol of sortedLinks) {
+      const choiceId = ol.choiceId;
+      if (!choiceId) continue;
+      const linkTextEscaped = escapeHtml(ol.text);
+      // 使用首次匹配，避免歧义；只匹配未被 span 包裹的纯文本
+      // 用负向断言确保不匹配已包裹的 objection-link span 内的文字
+      const escapedForRegex = linkTextEscaped.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const re = new RegExp(escapedForRegex, '');
+      // 找到第一个未被包裹的匹配位置
+      let replaced = false;
+      text = text.replace(re, (m) => {
+        if (replaced) return m; // 只替换第一个
+        replaced = true;
+        return '<span class="objection-link" data-choice-id="' + escapeHtml(choiceId) + '">' + linkTextEscaped + '</span>';
+      });
+    }
+  }
+
   return text;
 }
 
@@ -2088,29 +2143,110 @@ function _repositionVirtualNodes() {
 // ── 异议弹窗: 显示 choice 信息 + 标注状态 ──
 let _popupChoiceId = null;
 let _popupAnchorEl = null;
-function showObjectionPopup(choiceId, anchorEl) {
-  _popupChoiceId = choiceId;
-  _popupAnchorEl = anchorEl || null;
-  // 在所有 Trial 节点中查找对应 choice (choiceId 跨节点唯一)
-  let choice = null;
+// 跳转到虚拟节点 (从弹窗点击选项时调用)
+function jumpToVirtualNode(cid) {
+  if (!cid) return;
+  const virtNodeId = 'virt_' + cid;
+  const virtNode = NODES.find(n => n.id === virtNodeId);
+  if (virtNode) {
+    // 显示虚拟节点
+    virtNode._hidden = false;
+    const el = document.querySelector('.node[data-id="' + virtNodeId + '"]');
+    if (el) {
+      el.style.display = '';
+      requestAnimationFrame(function() {
+        el.classList.remove('virt-hidden');
+      });
+    }
+    // 隐藏父 Trial → nextTrial 顺序连接线（正确选项虚拟节点在两者之间）
+    var trial = _nodeMap.get(virtNode._trialNodeId);
+    if (trial && trial.nextId && virtNode._isCorrect) {
+      _connectors.forEach(function(ref) {
+        if (ref.fromId === trial.id && ref.toId === trial.nextId) {
+          ref.el.style.display = 'none';
+        }
+      });
+    }
+    // 显示虚拟节点专属连接线 (objection-correct + 虚拟节点自身的 seq 线)
+    _connectors.forEach(function(ref) {
+      if (ref.toId === virtNodeId || ref.fromId === virtNodeId) {
+        ref.el.style.display = '';
+      }
+    });
+    // 聚焦摄像机
+    focusNode(virtNode);
+    // 打开详情面板 / 手机视图 (根据点击来源)
+    const usePhone = _popupAnchorEl && phoneScreen.contains(_popupAnchorEl);
+    if (usePhone) openPhoneWithNode(virtNode);
+    else openDetail(virtNode);
+    // 关闭弹窗
+    closeObjectionPopup();
+    return true;
+  }
+  return false;
+}
+
+// 生成选项状态标签
+function _choiceStatusBadge(ann) {
+  if (!ann) return '<span class="choice-badge">待标注</span>';
+  const status = ann.isCorrect;
+  if (status === true) return '<span class="choice-badge" style="background:#3a8a3a;color:#fff">正确</span>';
+  if (status === false) {
+    return ann.isBadEnd
+      ? '<span class="choice-badge" style="background:#a44;color:#fff">' + escapeHtml(ann.badEndId || 'Bad End') + '</span>'
+      : '<span class="choice-badge" style="background:#a44;color:#fff">错误</span>';
+  }
+  return '<span class="choice-badge">待标注</span>';
+}
+
+// 在所有 Trial 节点中查找 choice (choiceId 跨节点唯一)
+function _findChoiceById(choiceId) {
   for (const n of NODES) {
     if (n.trialChoices) {
       const found = n.trialChoices.find(c => c.id === choiceId);
-      if (found) { choice = found; break; }
+      if (found) return found;
     }
   }
+  return null;
+}
+
+function showObjectionPopup(choiceId, anchorEl) {
+  _popupChoiceId = choiceId;
+  _popupAnchorEl = anchorEl || null;
+  const choice = _findChoiceById(choiceId);
   if (!choice) { closeObjectionPopup(); return; }
-  const ann = (ANNOTATIONS.trialChoices || {})[choiceId];
-  const status = ann ? ann.isCorrect : null;
-  const statusBadge = status === true ? '<span class="choice-badge" style="background:#3a8a3a;color:#fff">正确</span>' :
-                      status === false ? (ann && ann.isBadEnd
-                        ? `<span class="choice-badge" style="background:#a44;color:#fff">${escapeHtml(ann.badEndId || 'Bad End')}</span>`
-                        : '<span class="choice-badge" style="background:#a44;color:#fff">错误</span>') :
-                      '<span class="choice-badge">待标注</span>';
-  const note = ann && ann.note ? `<div style="margin-top:6px;font-size:12px;color:var(--fg2)">备注: ${escapeHtml(ann.note)}</div>` : '';
+  const annMap = ANNOTATIONS.trialChoices || {};
+  const ann = annMap[choiceId];
+
+  // 收集所有相关选项: 当前 choice + 兄弟选项 (通过 siblingChoiceIds)
+  const siblingIds = (ann && ann.siblingChoiceIds) || [];
+  const allChoiceIds = siblingIds.length ? [choiceId, ...siblingIds] : [choiceId];
+
   const objectionText = choice.objectionText ? `<div style="margin-top:6px;font-size:12px;color:var(--fg3)">异议点: ${escapeHtml(choice.objectionText)}</div>` : '';
-  const typeLabel = choice.buttonType === 'Cancel' ? ' [返回]' : choice.buttonType === 'Objection' ? ' [异议]' : '';
-  objectionPopup.innerHTML = `<div class="op-choice">${escapeHtml(choice.text)}${typeLabel} ${statusBadge}</div>${objectionText}${note}`;
+  const note = ann && ann.note ? `<div style="margin-top:6px;font-size:12px;color:var(--fg2)">备注: ${escapeHtml(ann.note)}</div>` : '';
+
+  let choicesHtml = '';
+  if (allChoiceIds.length > 1) {
+    // 多选项: 列出所有兄弟选项, 每个可单独点击跳转
+    choicesHtml = '<div style="margin-top:6px;">';
+    allChoiceIds.forEach(function(cid) {
+      const ch = _findChoiceById(cid);
+      if (!ch) return;
+      const cAnn = annMap[cid];
+      const badge = _choiceStatusBadge(cAnn);
+      choicesHtml += '<div class="op-sibling-item" data-choice-id="' + escapeHtml(cid) + '" style="padding:6px 8px;margin:3px 0;cursor:pointer;border-radius:4px;background:var(--bg2);display:flex;align-items:center;justify-content:space-between;gap:8px;">';
+      choicesHtml += '<span style="font-size:13px;">' + escapeHtml(ch.text) + '</span>' + badge;
+      choicesHtml += '</div>';
+    });
+    choicesHtml += '</div>';
+  } else {
+    // 单选项: 保持原有展示格式
+    const typeLabel = choice.buttonType === 'Cancel' ? ' [返回]' : choice.buttonType === 'Objection' ? ' [异议]' : '';
+    choicesHtml = '<div class="op-choice" data-choice-id="' + escapeHtml(choiceId) + '">' + escapeHtml(choice.text) + typeLabel + ' ' + _choiceStatusBadge(ann) + '</div>';
+  }
+
+  objectionPopup.innerHTML = choicesHtml + objectionText + note;
+
   // 定位弹窗在点击元素附近
   if (anchorEl) {
     const rect = anchorEl.getBoundingClientRect();
@@ -2126,50 +2262,17 @@ function showObjectionPopup(choiceId, anchorEl) {
   }
   objectionPopup.classList.add('show');
 
-  // 弹窗可点击跳转 — 仅绑定一次
+  // 绑定选项点击跳转 — 仅绑定一次
   if (!objectionPopup._jumpBound) {
     objectionPopup._jumpBound = true;
     objectionPopup.addEventListener('click', function(e) {
       e.stopPropagation();
-      const cid = _popupChoiceId;
+      // 查找最近的选项元素 (op-sibling-item 或 op-choice)
+      var item = e.target.closest('[data-choice-id]');
+      var cid = item ? item.dataset.choiceId : _popupChoiceId;
       if (!cid) return;
-      const virtNodeId = 'virt_' + cid;
-      const virtNode = NODES.find(n => n.id === virtNodeId);
-      if (virtNode) {
-        // 显示虚拟节点
-        virtNode._hidden = false;
-        const el = document.querySelector('.node[data-id="' + virtNodeId + '"]');
-        if (el) {
-          el.style.display = '';
-          // 下一帧移除 class, 触发 transition (scale 0.85→1 + opacity 0→1)
-          requestAnimationFrame(function() {
-            el.classList.remove('virt-hidden');
-          });
-        }
-        // 隐藏父 Trial → nextTrial 顺序连接线（正确选项虚拟节点在两者之间）
-        var trial = _nodeMap.get(virtNode._trialNodeId);
-        if (trial && trial.nextId && virtNode._isCorrect) {
-          _connectors.forEach(function(ref) {
-            if (ref.fromId === trial.id && ref.toId === trial.nextId) {
-              ref.el.style.display = 'none';
-            }
-          });
-        }
-        // 显示虚拟节点专属连接线 (objection-correct + 虚拟节点自身的 seq 线)
-        _connectors.forEach(function(ref) {
-          if (ref.toId === virtNodeId || ref.fromId === virtNodeId) {
-            ref.el.style.display = '';
-          }
-        });
-        // 聚焦摄像机
-        focusNode(virtNode);
-        // 打开详情面板 / 手机视图 (根据点击来源)
-        const usePhone = _popupAnchorEl && phoneScreen.contains(_popupAnchorEl);
-        if (usePhone) openPhoneWithNode(virtNode);
-        else openDetail(virtNode);
-        // 关闭弹窗
-        closeObjectionPopup();
-      } else {
+      var success = jumpToVirtualNode(cid);
+      if (!success) {
         // 无结果节点 — 追加提示 (不跳转, 不关闭)
         if (!objectionPopup.querySelector('.op-no-result')) {
           const tip = document.createElement('div');
