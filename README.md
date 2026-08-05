@@ -6,7 +6,7 @@
 
 ## 在线访问 (GitHub Pages)
 
-部署完成后访问：**<https://qwqsakuya.github.io/Manosaba-textfinder/>**
+部署完成后访问：**<https://qwqsakuya.github.io/Manosaba-Library/>**
 
 - 根 URL（`/`）→ 落地页：展示一周目 / 二周目两个入口卡片，点击进入对应周目页面
 - `/act01.html` → 一周目节点图谱（Act01_Chapter01-05，约 206 节点）
