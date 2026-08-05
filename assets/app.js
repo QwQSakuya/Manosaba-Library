@@ -20,7 +20,7 @@ let _nodeMap = new Map();          // id → node 数据，O(1) 查找
 let ANNOTATIONS = { trialChoices: {} };  // 社区标注 (从 ./data/annotations.<act>.json 加载)
 
 // GitHub 仓库地址 (编辑标注 / 意见箱 跳转用)
-const REPO_URL = 'https://github.com/QwQSakuya/Manosaba-textfinder';
+const REPO_URL = 'https://github.com/QwQSakuya/Manosaba-Library';
 
 // 路由 → 中文标签映射 (未知 route 原样显示)
 const ROUTE_LABELS = { normal: '正常路线', bad04: 'Bad04', bad05: 'Bad05', 'objection-wrong': '异议错误' };
