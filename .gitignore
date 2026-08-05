@@ -11,10 +11,10 @@ Act02_Chapter04/
 Act02_Chapter05/
 Act02_Chapter06/
 
-# 游戏系统脚本 (非查询器所需)
-Common/
-Debug/
-System/
+# 游戏系统脚本 (非查询器所需, 仅根目录)
+/Common/
+/Debug/
+/System/
 
 # 已解析的全量数据 (不入库, 查询器仅使用 data/story.json)
 witches_trial_data.json
