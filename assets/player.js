@@ -400,7 +400,7 @@
     try {
       navigator.mediaSession.metadata = new MediaMetadata({
         title: it.label || it.id,
-        artist: '魔女审判资料馆',
+        artist: '大魔女图书馆',
         album: it.category || 'BGM',
         artwork: [
           { src: 'nnk_box.webp', sizes: '256x256', type: 'image/webp' }
