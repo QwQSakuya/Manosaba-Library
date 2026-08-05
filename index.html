@@ -514,6 +514,126 @@ body { display: block; }
   .logo, .landing-title, .landing-subtitle, .card, .future-section, .landing-footer { opacity: 1 !important; transform: none !important; }
   .landing-divider, .future-divider { width: 260px !important; }
 }
+
+/* ═══ Logo 彩蛋震动动画 ═══ */
+/* 第1次: 轻微震动 */
+@keyframes logo-shake-1 {
+  0% { transform: scale(1) rotate(0deg); }
+  20% { transform: scale(1) rotate(-3deg) translateX(-2px); }
+  40% { transform: scale(1) rotate(3deg) translateX(2px); }
+  60% { transform: scale(1) rotate(-2deg) translateX(-1px); }
+  80% { transform: scale(1) rotate(1deg) translateX(1px); }
+  100% { transform: scale(1) rotate(0deg) translateX(0); }
+}
+.logo.shake-1 { animation: logo-shake-1 0.4s ease-in-out; }
+
+/* 第2次: 摇晃加大 */
+@keyframes logo-shake-2 {
+  0% { transform: scale(1) rotate(0deg); }
+  15% { transform: scale(1.05) rotate(-8deg) translateX(-5px); }
+  30% { transform: scale(1.05) rotate(7deg) translateX(5px); }
+  45% { transform: scale(1.05) rotate(-6deg) translateX(-4px); }
+  60% { transform: scale(1.05) rotate(5deg) translateX(3px); }
+  75% { transform: scale(1.05) rotate(-3deg) translateX(-2px); }
+  90% { transform: scale(1.02) rotate(1deg) translateX(1px); }
+  100% { transform: scale(1) rotate(0deg) translateX(0); }
+}
+.logo.shake-2 { animation: logo-shake-2 0.6s ease-in-out; }
+
+/* 第3次: 剧烈摇晃 + 页面震动 */
+@keyframes logo-shake-3 {
+  0% { transform: scale(1) rotate(0deg); }
+  10% { transform: scale(1.1) rotate(-14deg) translateX(-8px) translateY(-3px); }
+  25% { transform: scale(1.1) rotate(12deg) translateX(8px) translateY(2px); }
+  40% { transform: scale(1.1) rotate(-10deg) translateX(-7px) translateY(-2px); }
+  55% { transform: scale(1.1) rotate(8deg) translateX(6px) translateY(3px); }
+  70% { transform: scale(1.08) rotate(-5deg) translateX(-3px) translateY(-1px); }
+  85% { transform: scale(1.03) rotate(2deg) translateX(1px); }
+  100% { transform: scale(1) rotate(0deg) translateX(0); }
+}
+.logo.shake-3 { animation: logo-shake-3 0.8s ease-in-out; }
+
+@keyframes page-shake-3 {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-3px, 1px); }
+  20% { transform: translate(3px, -1px); }
+  30% { transform: translate(-3px, 2px); }
+  40% { transform: translate(3px, -2px); }
+  50% { transform: translate(-2px, 1px); }
+  60% { transform: translate(2px, -1px); }
+  70% { transform: translate(-1px, 1px); }
+  80% { transform: translate(1px, 0); }
+  90% { transform: translate(-1px, 0); }
+}
+.landing.page-shake-3 { animation: page-shake-3 0.8s ease-in-out; }
+
+/* 第4次: 最剧烈震动 */
+@keyframes logo-shake-4 {
+  0% { transform: scale(1) rotate(0deg); }
+  8% { transform: scale(1.15) rotate(-18deg) translateX(-12px) translateY(-5px); }
+  20% { transform: scale(1.15) rotate(16deg) translateX(12px) translateY(4px); }
+  35% { transform: scale(1.15) rotate(-14deg) translateX(-10px) translateY(-3px); }
+  50% { transform: scale(1.12) rotate(10deg) translateX(8px) translateY(5px); }
+  65% { transform: scale(1.08) rotate(-6deg) translateX(-5px); }
+  80% { transform: scale(1.03) rotate(2deg) translateX(2px); }
+  100% { transform: scale(1) rotate(0deg) translateX(0); }
+}
+.logo.shake-4 { animation: logo-shake-4 1s ease-in-out; }
+
+@keyframes page-shake-4 {
+  0%, 100% { transform: translate(0, 0); }
+  5% { transform: translate(-8px, 3px); }
+  10% { transform: translate(8px, -3px); }
+  15% { transform: translate(-7px, 5px); }
+  20% { transform: translate(7px, -4px); }
+  25% { transform: translate(-6px, 3px); }
+  30% { transform: translate(6px, -2px); }
+  35% { transform: translate(-5px, 2px); }
+  40% { transform: translate(4px, -1px); }
+  45% { transform: translate(-3px, 1px); }
+  50% { transform: translate(2px, 0); }
+  55% { transform: translate(-2px, 0); }
+  60% { transform: translate(1px, 0); }
+  65% { transform: translate(0, 0); }
+}
+.landing.page-shake-4 { animation: page-shake-4 1s ease-in-out; }
+
+/* 枪声后: 整个页面向左倾倒掉落 */
+@keyframes page-collapse {
+  0% {
+    transform: rotate(0deg) translateY(0);
+    opacity: 1;
+  }
+  15% {
+    transform: rotate(-8deg) translateY(10px);
+    opacity: 1;
+  }
+  35% {
+    transform: rotate(-22deg) translateY(60px);
+    opacity: 0.95;
+  }
+  60% {
+    transform: rotate(-38deg) translateY(180px) translateX(-40px);
+    opacity: 0.7;
+  }
+  85% {
+    transform: rotate(-52deg) translateY(380px) translateX(-120px);
+    opacity: 0.3;
+  }
+  100% {
+    transform: rotate(-65deg) translateY(600px) translateX(-200px);
+    opacity: 0;
+  }
+}
+.landing.collapsing {
+  animation: page-collapse 1.8s cubic-bezier(0.4, 0, 0.7, 0.6) forwards;
+  transform-origin: bottom left;
+}
+
+/* 倾倒时背景也跟随 */
+body.collapsing {
+  overflow: hidden;
+}
 </style>
 </head>
 <body>
@@ -709,12 +829,13 @@ body { display: block; }
     });
   });
 
-  // ═══ Logo 彩蛋: 点击播放音效, 超过 3 次后播放枪声并跳转 ═══
+  // ═══ Logo 彩蛋: 点击播放音效 + 渐进震动, 第4次枪声后页面倾倒跳转 ═══
   var logo = document.querySelector('.logo');
   if (logo) {
     var logoClickCount = 0;
     var audioCtx = null;
     var audioCache = {};
+    var landing = document.querySelector('.landing');
 
     function getAudio(name) {
       if (!audioCtx) {
@@ -754,18 +875,57 @@ body { display: block; }
       return src;
     }
 
+    // 触发 logo 震动动画 (移除再添加 class 以重启动画)
+    function triggerShake(className) {
+      logo.classList.remove('shake-1', 'shake-2', 'shake-3', 'shake-4');
+      // 强制 reflow 重置动画
+      void logo.offsetWidth;
+      logo.classList.add(className);
+    }
+
+    // 触发页面震动
+    function triggerPageShake(className) {
+      if (!landing) return;
+      landing.classList.remove('page-shake-3', 'page-shake-4');
+      void landing.offsetWidth;
+      landing.classList.add(className);
+    }
+
     logo.addEventListener('click', function () {
       logoClickCount++;
-      if (logoClickCount > 3) {
-        // 超过 3 次: 播放枪声, 然后跳转画廊并打开指定图片
+
+      if (logoClickCount === 1) {
+        // 第1次: 轻微震动
+        playSfx('sfx/Common/Sfx_Common_001 Notice1.ogg');
+        triggerShake('shake-1');
+      } else if (logoClickCount === 2) {
+        // 第2次: 摇晃加大
+        playSfx('sfx/Common/Sfx_Common_001 Notice1.ogg');
+        triggerShake('shake-2');
+      } else if (logoClickCount === 3) {
+        // 第3次: 剧烈摇晃 + 页面震动
+        playSfx('sfx/Common/Sfx_Common_001 Notice1.ogg');
+        triggerShake('shake-3');
+        triggerPageShake('page-shake-3');
+      } else if (logoClickCount === 4) {
+        // 第4次: 最剧烈震动 + 枪声
+        triggerShake('shake-4');
+        triggerPageShake('page-shake-4');
+        // 播放枪声
         playSfx('sfx/Scenario/Sfx_Scenario_038 Gun fire.ogg');
         // 重置计数, 避免重复触发
         logoClickCount = -999;
+
+        // 枪声后页面倾倒, 延迟跳转
+        setTimeout(function () {
+          document.body.classList.add('collapsing');
+          if (landing) landing.classList.add('collapsing');
+        }, 1000);
+
+        // 倾倒动画 1.8s, 总共等 3.2s 后跳转
         setTimeout(function () {
           location.href = 'gallery.html?open=Still_330_001';
-        }, 600);
-      } else {
-        playSfx('sfx/Common/Sfx_Common_001 Notice1.ogg');
+        }, 3200);
       }
     });
   }
