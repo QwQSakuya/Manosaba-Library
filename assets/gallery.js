@@ -109,6 +109,25 @@
         renderChips();
         applyFilter();
         MS.hideSplash(1200);
+
+        // URL 参数 ?open=ID 自动打开灯箱
+        var openId = '';
+        try {
+          var params = new URLSearchParams(w.location.search);
+          openId = params.get('open') || '';
+        } catch (e) {}
+        if (openId) {
+          // 切到全部分类确保能找到目标
+          state.activeCategory = 'all';
+          state.searchQuery = '';
+          applyFilter();
+          for (var i = 0; i < state.filtered.length; i++) {
+            if (state.filtered[i].id === openId) {
+              openLightbox(i);
+              break;
+            }
+          }
+        }
       })
       .catch(function (err) {
         renderError(err);

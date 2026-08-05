@@ -708,6 +708,67 @@ body { display: block; }
       }
     });
   });
+
+  // ═══ Logo 彩蛋: 点击播放音效, 超过 3 次后播放枪声并跳转 ═══
+  var logo = document.querySelector('.logo');
+  if (logo) {
+    var logoClickCount = 0;
+    var audioCtx = null;
+    var audioCache = {};
+
+    function getAudio(name) {
+      if (!audioCtx) {
+        try {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        } catch (e) { return null; }
+      }
+      return audioCtx;
+    }
+
+    function playSfx(file) {
+      var ctx = getAudio();
+      if (!ctx) return;
+      // 恢复被浏览器挂起的 AudioContext
+      if (ctx.state === 'suspended') ctx.resume();
+      // 缓存已解码的 AudioBuffer
+      if (audioCache[file]) {
+        playBuffer(ctx, audioCache[file]);
+        return;
+      }
+      var url = 'assets/audio/' + file;
+      fetch(url)
+        .then(function (r) { return r.arrayBuffer(); })
+        .then(function (buf) { return ctx.decodeAudioData(buf); })
+        .then(function (decoded) {
+          audioCache[file] = decoded;
+          playBuffer(ctx, decoded);
+        })
+        .catch(function () {});
+    }
+
+    function playBuffer(ctx, buffer) {
+      var src = ctx.createBufferSource();
+      src.buffer = buffer;
+      src.connect(ctx.destination);
+      src.start(0);
+      return src;
+    }
+
+    logo.addEventListener('click', function () {
+      logoClickCount++;
+      if (logoClickCount > 3) {
+        // 超过 3 次: 播放枪声, 然后跳转画廊并打开指定图片
+        playSfx('sfx/Scenario/Sfx_Scenario_038 Gun fire.ogg');
+        // 重置计数, 避免重复触发
+        logoClickCount = -999;
+        setTimeout(function () {
+          location.href = 'gallery.html?open=Still_330_001';
+        }, 600);
+      } else {
+        playSfx('sfx/Common/Sfx_Common_001 Notice1.ogg');
+      }
+    });
+  }
 })();
 </script>
 <script src="assets/player-launcher.js" defer></script>
