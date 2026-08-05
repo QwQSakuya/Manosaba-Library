@@ -1,6 +1,6 @@
 # 大魔女图书馆
 
-基于剧情数据的可视化文本查询器，以节点图谱展示场景流向、分支选择与对话内容。支持缩放、平移、搜索、路线过滤、详情面板、Trial 异议选项标注与意见箱反馈。
+基于剧情数据的可视化资料站，以节点图谱展示场景流向、分支选择与对话内容，并收录证物、CG 画廊、语音音乐与世界观记录。支持缩放、平移、搜索、路线过滤、详情面板、Trial 异议选项标注与意见箱反馈。
 
 > 当前包含 **第一话（一周目，Act01_Chapter01-05）** 与 **第二话（二周目，Act02_Chapter01-06）** 全章数据，按周目拆分为独立页面，避免单页加载 400+ 节点造成卡顿。
 
@@ -8,9 +8,14 @@
 
 部署完成后访问：**<https://qwqsakuya.github.io/Manosaba-Library/>**
 
-- 根 URL（`/`）→ 落地页：展示一周目 / 二周目两个入口卡片，点击进入对应周目页面
+- 根 URL（`/`）→ 落地页：展示一周目 / 二周目入口卡片 + 四个资料栏目入口
 - `/act01.html` → 一周目节点图谱（Act01_Chapter01-05，约 206 节点）
 - `/act02.html` → 二周目节点图谱（Act02_Chapter01-06，约 201 节点）
+- `/records.html` → 记录·规定（世界观术语与监牢规定词条）
+- `/evidence.html` → 证物（按章节浏览证物图鉴与描述）
+- `/gallery.html` → CG 画廊（角度像 / 证物 / 事件插画 / 场景背景等分类浏览）
+- `/audio.html` → 语音和音乐（按场景 / 角色筛选语音，试听 BGM）
+- `/player.html` → 弹窗音乐播放器（由各页面通过 `player-launcher.js` 唤起）
 
 首次部署需在仓库 **Settings → Pages** 中将 **Source** 设为 `Deploy from a branch`，分支选 `main`，目录选 `/`（root）。
 
@@ -31,31 +36,84 @@ python -m http.server 8000
 ├── index.html              # 落地页（入口选择 + 魔女审判主题视觉）
 ├── act01.html              # 一周目节点图谱页（data-act="act01"）
 ├── act02.html              # 二周目节点图谱页（data-act="act02"）
+├── records.html            # 记录·规定页
+├── evidence.html           # 证物页
+├── gallery.html            # CG 画廊页
+├── audio.html              # 语音和音乐页
+├── player.html             # 弹窗音乐播放器
 ├── assets/
-│   ├── style.css           # 公共样式（明暗主题 + 角色配色 + 视觉优化）
-│   └── app.js              # 公共脚本（数据加载 + Canvas 引擎 + 详情面板）
+│   ├── shared.css          # 公共样式（变量 / 主题 / 开屏 / 页头页脚）
+│   ├── shared.js           # 公共脚本（主题切换 / toast / 工具函数）
+│   ├── style.css           # 节点图谱页样式（Canvas / 详情面板 / 角色配色）
+│   ├── content.css         # 内容页样式（records / evidence / gallery / audio 共用）
+│   ├── player.css          # 弹窗播放器样式
+│   ├── app.js              # 节点图谱引擎（数据加载 + Canvas + 详情面板）
+│   ├── records.js          # 记录·规定页逻辑
+│   ├── evidence.js         # 证物页逻辑
+│   ├── gallery.js          # CG 画廊页逻辑
+│   ├── audio.js            # 语音和音乐页逻辑
+│   ├── player.js           # 弹窗播放器逻辑
+│   ├── player-launcher.js  # 弹窗播放器启动器（各页面通过它唤起 player.html）
+│   ├── audio/              # 音频资源（BGM / SFX / 语音，.ogg）
+│   └── cg/                 # CG 图片资源（.webp，按分类子目录）
+│       ├── angle/          # 角度像
+│       ├── character/      # 角色全身
+│       ├── cutin/          # 切入插画
+│       ├── evidence/       # 证物
+│       ├── kari/           # 事件插画
+│       ├── map/            # 楼层地图
+│       ├── misc/           # 其他（UI / 背景 / 特效纹理）
+│       └── pin/            # 角色立绘 pin
 ├── data/
-│   ├── act01.json          # 一周目剧情数据（Act01_Chapter01-05）
-│   ├── act02.json          # 二周目剧情数据（Act02_Chapter01-06）
+│   ├── act01.json              # 一周目剧情数据（Act01_Chapter01-05）
+│   ├── act02.json              # 二周目剧情数据（Act02_Chapter01-06）
 │   ├── annotations.act01.json  # 一周目 Trial 异议选项社区标注
-│   └── annotations.act02.json  # 二周目 Trial 异议选项社区标注
+│   ├── annotations.act02.json  # 二周目 Trial 异议选项社区标注
+│   ├── records.json            # 记录·规定词条数据
+│   ├── records-candidates.json # 记录候选（待整理入 records.json）
+│   ├── evidence.json           # 证物数据（id / 名称 / 图 / 描述 / 关联节点）
+│   ├── gallery-manifest.json   # CG 画廊清单（分类 + 图片列表）
+│   └── audio-manifest.json     # 音频清单（SFX / BGM / 语音 + voiceBaseUrl）
 ├── phone.png / phone.webp  # 手机弹窗皮肤资源
 ├── nnk_box.webp            # 意见箱图标
 ├── .trae/tools/
-│   └── build_story.py      # 从 .bytes 剧本生成 act01.json + act02.json 的脚本
+│   ├── build_story.py          # 从 .bytes 剧本生成 act01.json + act02.json
+│   ├── build_audio_manifest.py # 生成 audio-manifest.json
+│   ├── build_evidence.py       # 生成 evidence.json
+│   ├── build_gallery_manifest.py # 生成 gallery-manifest.json
+│   ├── extract_records.py      # 生成 records.json + records-candidates.json
+│   └── convert_tga.py          # TGA → WebP 图片转换
 ├── README.md               # 本文件
 └── .gitignore
 ```
 
-## 周目分页说明
+## 页面架构
 
-为解决单页加载 400+ 节点导致的卡顿问题，项目已拆分为三个独立页面：
+### 节点图谱页（act01 / act02）
 
-- **落地页 `index.html`**：项目入口，含两张周目卡片（一周目偏冷色调呼应艾玛篇，二周目偏暖色调呼应希罗篇），魔女审判主题视觉装饰（蝴蝶轮廓、魔法阵几何线条、血迹溅射纹理等 SVG/CSS 元素），明暗主题切换
+为解决单页加载 400+ 节点导致的卡顿问题，剧情图谱按周目拆分为两个独立页面：
+
 - **一周目页 `act01.html`**：仅加载 `data/act01.json`（约 3.8MB，206 节点），渲染 Act01_Chapter01-05 节点图谱；顶部含「← 首页」链接；Act01_Chapter05 末尾节点详情面板含「→ 进入二周目」跨周目导航链接
 - **二周目页 `act02.html`**：仅加载 `data/act02.json`（约 2.8MB，201 节点），渲染 Act02_Chapter01-06 节点图谱；顶部含「← 一周目」+「← 首页」链接
 
-三个页面共用 `assets/style.css` + `assets/app.js`，`app.js` 通过 `document.body.dataset.act` 判断当前周目并加载对应数据文件。主题切换通过 `localStorage` 在三页面间持久化共享。
+两页共用 `assets/style.css` + `assets/app.js`，`app.js` 通过 `document.body.dataset.act` 判断当前周目并加载对应数据文件。
+
+### 内容页（records / evidence / gallery / audio）
+
+四个资料栏目页面共用 `assets/content.css`，各页有独立的 JS 逻辑文件，均依赖 `assets/shared.js` 提供的公共工具（主题切换、toast、HTML 转义等）：
+
+- **记录·规定 `records.html`**：浏览世界观术语与监牢规定词条，支持分类筛选与关联词条跳转
+- **证物 `evidence.html`**：按章节浏览证物图鉴，含名称、描述与关联剧情节点
+- **CG 画廊 `gallery.html`**：按分类（角度像 / 证物 / 事件插画 / 场景背景 / 切入插画 / 角色全身 / 楼层地图等）浏览 CG，支持缩略图与原图查看
+- **语音和音乐 `audio.html`**：按场景 / 角色筛选语音条目，试听 BGM，页内迷你播放器控制
+
+### 弹窗播放器（player.html）
+
+独立的音乐播放器窗口，由各页面通过 `player-launcher.js` 唤起。支持播放 / 暂停、进度控制，与页内音频互相暂停（页内播放时弹窗 BGM 自动暂停，反之亦然）。
+
+### 主题切换
+
+明暗主题通过 `localStorage` 在所有页面间持久化共享，`shared.js` 中的 `MS.initTheme()` 负责初始化切换控件。
 
 ## Trial 异议选项标注 (社区协作)
 
@@ -72,7 +130,7 @@ Trial 审判场景中存在多个异议选项，其中部分是**错误选项**�
 
 ## 数据格式
 
-`data/act01.json` / `data/act02.json` 结构：
+### 剧情数据 (`data/act01.json` / `data/act02.json`)
 
 ```json
 {
@@ -104,7 +162,68 @@ Trial 审判场景中存在多个异议选项，其中部分是**错误选项**�
 
 路由过滤按钮会根据 `nodes` 中出现的 `route` 字段自动生成，无需修改 HTML。
 
+### 证物数据 (`data/evidence.json`)
+
+```json
+{
+  "evidence": [
+    {
+      "id": "Clue_010_001",
+      "name": "Clue_010_001",       // 原始文件名
+      "nameZh": "希罗的钢笔",        // 中文名
+      "sprite": "Clue_010_001.webp", // 图文件名 (位于 assets/cg/evidence/)
+      "category": "证物",
+      "act": 0, "chapter": 0, "scene": 1,
+      "w": 512, "h": 512,
+      "relatedNodes": [],           // 关联剧情节点 id
+      "description": "二阶堂希罗原本持有的钢笔。"
+    }
+  ]
+}
+```
+
+### 记录数据 (`data/records.json`)
+
+```json
+{
+  "lore": [
+    {
+      "id": "witchification",
+      "title": "魔女化",
+      "aliases": ["魔女変化", "Witchification"],
+      "category": "魔女化",
+      "characters": ["Ema", "Hiro", "Noah"],
+      "paragraphs": ["..."],
+      "relatedTerms": ["witch-factor"],
+      "source": ["Act01 Ch02", "Act01 Ch04"]
+    }
+  ]
+}
+```
+
+### 音频清单 (`data/audio-manifest.json`)
+
+```json
+{
+  "sfx": [{ "id": "...", "file": "sfx/Common/....ogg", "label": "...", "category": "Common", "size": 56905 }],
+  "bgm": [{ "id": "...", "file": "bgm/Songs/....ogg", "label": "...", "category": "..." }],
+  "voice": [{ "id": "...", "externalUrl": "...", "character": "Ema", "characterName": "艾玛", "scene": "...", "duration": 3.2 }],
+  "voiceBaseUrl": "https://..."
+}
+```
+
+### 画廊清单 (`data/gallery-manifest.json`)
+
+```json
+{
+  "categories": [{ "id": "angle", "label": "角度像" }, { "id": "evidence", "label": "证物" }, ...],
+  "items": [{ "id": "...", "category": "angle", "file": "angle/Ema_Angle01.webp", "label": "..." }]
+}
+```
+
 ## 交互说明
+
+### 节点图谱页
 
 - **滚轮**：缩放；**拖拽空白**：平移画布
 - **拖拽节点**：移动节点位置（松开后邻居自动避让）
@@ -114,3 +233,15 @@ Trial 审判场景中存在多个异议选项，其中部分是**错误选项**�
 - **路线按钮**：按 normal / Bad04 / Bad05 过滤显示
 - **ESC**：关闭详情面板
 - **跨周目导航**：一周目末尾节点详情面板 →「→ 进入二周目」链接 → 二周目页面
+
+### 内容页
+
+- **记录·规定**：点击分类筛选词条，点击关联词条跳转
+- **证物**：按章节筛选，点击证物查看详情与关联节点
+- **CG 画廊**：按分类筛选，点击缩略图查看原图
+- **语音和音乐**：按场景 / 角色筛选语音，点击播放；BGM 区独立试听
+
+### 弹窗播放器
+
+- 各页面右下角的播放按钮通过 `player-launcher.js` 唤起 `player.html` 弹窗
+- 弹窗播放器与页内音频互斥：一方播放时另一方自动暂停
