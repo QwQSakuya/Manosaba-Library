@@ -18,12 +18,20 @@ let NODES = [];
 let _nodeEls = [];                 // 缓存节点 DOM 元素列表，避免每帧 querySelectorAll
 let _nodeMap = new Map();          // id → node 数据，O(1) 查找
 let ANNOTATIONS = { trialChoices: {} };  // 社区标注 (从 ./data/annotations.<act>.json 加载)
+let _ctxVirtId = null;                   // 当前"讨论前进"解锁上下文 (解锁节点 id; 打开主 Trial 时重置)
+let voiceMap = null;                     // 台词 label → 语音目录 (data/voice-map.json)
+let r2Base = '';                         // R2 公网基础地址 (data/r2-config.json)
+let voiceAudio = null;                   // 语音播放器实例
+let voicePlayingLabel = '';              // 当前播放的台词 label
 
 // GitHub 仓库地址 (编辑标注 / 意见箱 跳转用)
 const REPO_URL = 'https://github.com/QwQSakuya/Manosaba-Library';
 
+// 前置 Choice(上锁)扁平图标 — 内联 SVG, currentColor 继承宿主颜色 (与项目平面风格一致)
+const _LOCK_ICON_HTML = '<svg class="lock-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>';
+
 // 路由 → 中文标签映射 (未知 route 原样显示)
-const ROUTE_LABELS = { normal: '正常路线', bad04: 'Bad04', bad05: 'Bad05', 'objection-wrong': '异议错误' };
+const ROUTE_LABELS = { normal: '正常路线', neutral: '中立', bad04: 'Bad04', bad05: 'Bad05', 'objection-wrong': '异议错误' };
 
 // 防重叠状态
 let _layoutDirty = false;          // 本帧是否发生布局位移 (触发连线更新)
@@ -139,20 +147,92 @@ function computeLayout() {
 // ══════════════════════════════════════════════════
 //  数据加载 + 初始化
 //══════════════════════════════════════════════════
+function voiceUrl(label) {
+  if (!voiceMap || !r2Base || !voiceMap[label]) return '';
+  const folder = voiceMap[label];
+  const path = 'Assets/#WitchTrials/Audio/Voice/' + folder + '/' + label + '.ogg';
+  return r2Base + '/' + path.split('/').map(encodeURIComponent).join('/');
+}
+
+function voiceBtnHtml(label) {
+  if (!voiceMap || !voiceMap[label]) return '';
+  return '<button class="ti-voice" type="button" data-voice="' + escapeHtml(label) +
+    '" aria-label="播放语音" title="播放语音">▶</button>';
+}
+
+function resetVoiceButtons() {
+  document.querySelectorAll('.ti-voice').forEach(function(btn) {
+    btn.textContent = '▶';
+  });
+}
+
+function stopVoice() {
+  if (voiceAudio) {
+    voiceAudio.pause();
+    voiceAudio.src = '';
+  }
+  voicePlayingLabel = '';
+  resetVoiceButtons();
+}
+
+function toggleVoice(label, btn) {
+  if (!voiceMap || !voiceMap[label]) return;
+  if (!voiceAudio) voiceAudio = new Audio();
+  // 点击正在播放的按钮 → 暂停
+  if (voicePlayingLabel === label && !voiceAudio.paused) {
+    voiceAudio.pause();
+    btn.textContent = '▶';
+    voicePlayingLabel = '';
+    return;
+  }
+  const url = voiceUrl(label);
+  if (!url) return;
+  resetVoiceButtons();
+  voiceAudio.src = url;
+  voicePlayingLabel = label;
+  btn.textContent = '⏸';
+  voiceAudio.play().catch(function() {
+    btn.textContent = '▶';
+    voicePlayingLabel = '';
+  });
+  voiceAudio.onended = function() {
+    btn.textContent = '▶';
+    voicePlayingLabel = '';
+  };
+  voiceAudio.onerror = function() {
+    btn.textContent = '▶';
+    voicePlayingLabel = '';
+  };
+}
+
 async function initData() {
   const actName = document.body.dataset.act || 'act01';
   try {
-    const res = await fetch('./data/' + actName + '.json');
+    const res = await fetch('./data/' + actName + '.json?t=' + Date.now());
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
     NODES = data.nodes || [];
     _nodeMap = new Map(NODES.map(n => [n.id, n]));
 
     // 加载社区标注 (annotations.<act>.json), 失败时静默降级
+    // 带时间戳强制禁用缓存, 避免浏览器使用旧标注导致"待标注/无结果节点"
     try {
-      const annRes = await fetch('./data/annotations.' + actName + '.json');
+      const annRes = await fetch('./data/annotations.' + actName + '.json?t=' + Date.now());
       if (annRes.ok) ANNOTATIONS = await annRes.json();
     } catch (e) { /* 静默: 无标注文件时使用空默认值 */ }
+
+    // 加载语音映射 + R2 地址 (失败时静默降级, 不显示播放键)
+    try {
+      const [cfgRes, vmRes] = await Promise.all([
+        fetch('./data/r2-config.json'),
+        fetch('./data/voice-map.json')
+      ]);
+      if (cfgRes.ok) {
+        const cfg = await cfgRes.json();
+        r2Base = (cfg.baseUrl || '').replace(/\/+$/, '');
+      }
+      if (vmRes.ok) voiceMap = await vmRes.json();
+    } catch (e) { /* 静默 */ }
 
     // Task 2+3: 构建虚拟异议结果节点 (在 computeLayout 之前, 使其参与布局)
     buildVirtualObjectionNodes();
@@ -625,10 +705,11 @@ function buildCanvas() {
     el.className = 'node lv' + node.level;
     if (node.isChoice) el.classList.add('is-choice');
     if (node.route && node.route.startsWith('bad')) el.classList.add('is-bad');
-    // Task 2+3: 虚拟异议结果节点样式
+    // Task 2+3: 虚拟异议结果节点样式 (中立: 灰色 / 正确: 绿 / 错误: 红)
     if (node._isVirtual) {
       el.classList.add('is-virtual');
-      if (node._isCorrect) el.classList.add('objection-correct');
+      if (node._isNeutral) el.classList.add('objection-neutral');
+      else if (node._isCorrect) el.classList.add('objection-correct');
       else el.classList.add('objection-wrong');
       // Task 9: 子选项虚拟节点层级标识 (用于 CSS 视觉区分)
       if (node._parentChoiceId) {
@@ -642,12 +723,31 @@ function buildCanvas() {
       if (node._branchKind === 'witness') el.classList.add('is-witness');
       if (node._branchKind === 'evidence') el.classList.add('is-evidence');
     }
+    // Task 9: Trial 主节点未解锁标识 (存在 requiresChoice 非空的 Choice → 显示锁图标 badge)
+    if ((node.type === 'ti' || node.type === 'tr') && node.trialChoices) {
+      var _annMap = ANNOTATIONS.trialChoices || {};
+      var _hasLocked = node.trialChoices.some(function(ch) {
+        var _ann = _annMap[ch.id];
+        return _ann && _ann.requiresChoice;
+      });
+      if (_hasLocked) {
+        el.classList.add('has-locked-choice');
+      }
+    }
     el.dataset.id = node.id;
     el.style.left = node._origX + 'px';
     el.style.top = node._origY + 'px';
     el.dataset.ox = node._origX;
     el.dataset.oy = node._origY;
     el.textContent = node.title;
+    // 扁平 SVG 锁徽标 (必须在 textContent 之后追加, 否则会被覆盖)
+    if (el.classList.contains('has-locked-choice')) {
+      var _lockBadge = document.createElement('span');
+      _lockBadge.className = 'node-lock-badge';
+      _lockBadge.innerHTML = _LOCK_ICON_HTML;
+      _lockBadge.title = '存在未解锁的 Choice 分支';
+      el.appendChild(_lockBadge);
+    }
     // 虚拟节点默认隐藏 (仅通过弹窗点击触发显示)
     if (node._hidden) { el.style.display = 'none'; el.classList.add('virt-hidden'); }
 
@@ -719,10 +819,34 @@ function buildCanvas() {
     });
   });
 
-  // Task 2+3: 虚拟异议结果节点连接线 — Trial → virtual (主选项) / parent virtual → virtual (子选项)
+  // Task 2+3: 虚拟异议结果节点连接线 — Trial → virtual (主选项) / parent virtual → virtual (子选项/requiresChoice/解锁链)
   NODES.forEach(n => {
     if (!n._isVirtual || !n.parentId) return;
-    const cls = n._isCorrect ? 'objection-correct' : 'objection-wrong';
+    const cls = n._isNeutral ? 'objection-neutral' : (n._isCorrect ? 'objection-correct' : 'objection-wrong');
+    // 解锁引用链 (被解锁的 Choice → 解锁节点): 优先, 从解锁节点连接
+    if (n._unlockRefId) {
+      if (_nodeMap.has(n._unlockRefId)) {
+        addLine(n._unlockRefId, n.id, cls + ' is-requires-link');
+        return;
+      }
+    }
+    // 解锁节点自身 (解锁节点 → 前置 Choice 虚拟节点)
+    if (n._unlockParentRef) {
+      if (_nodeMap.has(n._unlockParentRef)) {
+        addLine(n._unlockParentRef, n.id, cls + ' is-requires-link');
+        return;
+      }
+    }
+    // requiresChoice (时序前置): 从前置 Choice 虚拟节点连接 (优先, 时序链优先)
+    if (n._requiresChoiceId) {
+      var reqVirtId = 'virt_' + n._requiresChoiceId;
+      if (_nodeMap.has(reqVirtId)) {
+        var reqLinkCls = cls + ' is-requires-link' + (n._branchKind ? ' is-' + n._branchKind + '-link' : '') + (n._isSpecial ? ' is-special-link' : '');
+        addLine(reqVirtId, n.id, reqLinkCls);
+        return;
+      }
+      // 前置 Choice 虚拟节点不存在: 回退到 Trial (沿用下方主选项逻辑)
+    }
     // 子选项: 从父选项虚拟节点连接 (若父选项虚拟节点存在)
     if (n._parentChoiceId) {
       var parentVirtId = 'virt_' + n._parentChoiceId;
@@ -758,6 +882,9 @@ function buildCanvas() {
 
   // 缓存节点尺寸 (AABB 防重叠用, 避免每帧 offsetWidth 布局读取)
   _nodeEls.forEach(el => { el._w = el.offsetWidth || 80; el._h = el.offsetHeight || 30; });
+
+  // 记录虚拟节点原始进入线 (供上下文锚定重连/还原使用)
+  recordOrigEntryLinks();
 }
 
 // ── 更新单条连接线 ──
@@ -984,13 +1111,18 @@ const panelBody = document.getElementById('panel-body');
 const objectionPopup = document.getElementById('objection-popup');
 let focusedNodeId = null;
 
-// ── 递归隐藏虚拟节点的所有子孙虚拟节点 (切换节点时同步隐藏子选项) ──
+// ── 递归隐藏虚拟节点的所有子孙虚拟节点 (切换节点时同步隐藏子选项/requiresChoice 后代) ──
 // exceptIds: 不应隐藏的节点 id 集合 (可选, 用于跳过 exceptId 的子孙)
+// 兼容 parentChoice 与 requiresChoice 两种祖先链 (递归处理两者)
 function hideVirtualNodeDescendants(parentVirtId, exceptIds) {
   exceptIds = exceptIds || new Set();
   var parentChoiceId = parentVirtId.replace(/^virt_/, '');
   NODES.forEach(function(v) {
-    if (!v._isVirtual || v._parentChoiceId !== parentChoiceId) return;
+    if (!v._isVirtual) return;
+    // 匹配 parentChoice 子选项 / requiresChoice 后代 / 解锁节点(前置 Choice 的子树) / 上下文锚定结果
+    var isChild = v._parentChoiceId === parentChoiceId || v._requiresChoiceId === parentChoiceId
+      || v._unlockParentRef === parentVirtId || v._ctxAnchorId === parentVirtId;
+    if (!isChild) return;
     if (exceptIds.has(v.id)) return;  // 跳过不应隐藏的节点
     v._hidden = true;
     var el = document.querySelector('.node[data-id="' + v.id + '"]');
@@ -1012,18 +1144,72 @@ function hideVirtualNodeDescendants(parentVirtId, exceptIds) {
   });
 }
 
+// ── 递归显示虚拟节点的所有 requiresChoice 后代虚拟节点 (前置 Choice 显示时同步解锁) ──
+// 与 parentChoice 子选项 (手动点击展开) 不同, requiresChoice 后代在前置 Choice 显示时自动同步显示
+function showVirtualNodeDescendants(parentVirtId) {
+  var parentChoiceId = parentVirtId.replace(/^virt_/, '');
+  NODES.forEach(function(v) {
+    if (!v._isVirtual || v._requiresChoiceId !== parentChoiceId) return;
+    v._hidden = false;
+    var el = document.querySelector('.node[data-id="' + v.id + '"]');
+    if (el) {
+      el.style.display = '';
+      requestAnimationFrame(function() { el.classList.remove('virt-hidden'); });
+    }
+    // 显示专属连接线 (跳过指向仍隐藏虚拟节点的连接线)
+    _connectors.forEach(function(ref) {
+      if (ref.toId === v.id || ref.fromId === v.id) {
+        var otherId = ref.toId === v.id ? ref.fromId : ref.toId;
+        var other = _nodeMap.get(otherId);
+        if (other && other._isVirtual === true && other._hidden === true) return;
+        ref.el.style.display = '';
+      }
+    });
+    // 递归显示更深层的 requiresChoice 后代
+    showVirtualNodeDescendants(v.id);
+  });
+}
+
 // 隐藏全部已显示的虚拟节点 (切换节点时清理), exceptId 跳过当前节点及其祖先链
 function hideAllVisibleVirtualNodes(exceptId) {
   // 仅保留 exceptId 与其祖先链: 子孙节点在返回父节点时应一并隐藏
   var exceptIds = new Set();
   if (exceptId) {
     exceptIds.add(exceptId);
-    // 向上收集祖先链 (沿 _parentChoiceId 回溯)
-    var curNode = _nodeMap.get(exceptId);
-    while (curNode && curNode._parentChoiceId) {
-      var ancestorId = 'virt_' + curNode._parentChoiceId;
-      exceptIds.add(ancestorId);
-      curNode = _nodeMap.get(ancestorId);
+    // 向上收集祖先链 (沿 _parentChoiceId 和 _requiresChoiceId 回溯, 两种祖先链都递归处理)
+    var visited = new Set();
+    var stack = [exceptId];
+    while (stack.length) {
+      var curId = stack.pop();
+      if (visited.has(curId)) continue;
+      visited.add(curId);
+      var curNode = _nodeMap.get(curId);
+      if (!curNode) continue;
+      if (curNode._parentChoiceId) {
+        var parAncestorId = 'virt_' + curNode._parentChoiceId;
+        exceptIds.add(parAncestorId);
+        stack.push(parAncestorId);
+      }
+      if (curNode._requiresChoiceId) {
+        var reqAncestorId = 'virt_' + curNode._requiresChoiceId;
+        exceptIds.add(reqAncestorId);
+        stack.push(reqAncestorId);
+      }
+      // 解锁链祖先: 解锁节点 → 前置 Choice 虚拟节点 (讨论前进流程)
+      if (curNode._unlockParentRef) {
+        exceptIds.add(curNode._unlockParentRef);
+        stack.push(curNode._unlockParentRef);
+      }
+      // 解锁链子节点: 被解锁的 Choice 虚拟节点 → 解锁节点
+      if (curNode._unlockRefId) {
+        exceptIds.add(curNode._unlockRefId);
+        stack.push(curNode._unlockRefId);
+      }
+      // 上下文锚定链: 从解锁节点打开的结果节点 → 解锁节点
+      if (curNode._ctxAnchorId) {
+        exceptIds.add(curNode._ctxAnchorId);
+        stack.push(curNode._ctxAnchorId);
+      }
     }
   }
 
@@ -1065,8 +1251,20 @@ function reconcileTrialContinuations() {
 
   function _chainDepth(n) {
     var d = 1;
-    var p = n._parentChoiceId ? _nodeMap.get('virt_' + n._parentChoiceId) : null;
-    while (p) { d++; p = p._parentChoiceId ? _nodeMap.get('virt_' + p._parentChoiceId) : null; }
+    var cur = n;
+    var visited = new Set();
+    while (cur) {
+      if (visited.has(cur.id)) break;
+      visited.add(cur.id);
+      var next = null;
+      if (cur._unlockRefId) next = _nodeMap.get(cur._unlockRefId);
+      else if (cur._unlockParentRef) next = _nodeMap.get(cur._unlockParentRef);
+      else if (cur._parentChoiceId) next = _nodeMap.get('virt_' + cur._parentChoiceId);
+      else if (cur._requiresChoiceId) next = _nodeMap.get('virt_' + cur._requiresChoiceId);
+      if (!next) break;
+      d++;
+      cur = next;
+    }
     return d;
   }
 
@@ -1134,7 +1332,7 @@ function openDetail(node) {
     dlg.forEach(d => {
       const color = `var(--char-${d.speaker}, var(--node-border))`;
       html += `<div class="transcript-item" style="border-left-color:${color}">`;
-      html += `<div class="ti-speaker" style="color:${color}">${escapeHtml(d.speaker)}</div>`;
+      html += `<div class="ti-speaker" style="color:${color}">${escapeHtml(d.speaker)}${voiceBtnHtml(d.label)}</div>`;
       html += `<div class="ti-text">${renderDialogueText(d)}</div>`;
       html += `</div>`;
     });
@@ -1203,6 +1401,8 @@ function openDetail(node) {
     });
     // 递归渲染单个 choice 节点（每层缩进 +16px）
     const renderChoice = (ch, depth) => {
+      // 锁定 Choice (requiresChoice 未解锁): 整行及其子树不渲染, 避免结果文本泄漏
+      if (isChoiceLocked(ch.id)) return;
       const ann = annMap[ch.id];
       const status = ann ? ann.isCorrect : null;
       const resultRange = (ann && ann.resultRange) || ch.resultRange;
@@ -1210,6 +1410,9 @@ function openDetail(node) {
       if (status === true) {
         cls = 'correct';
         resultText = '→ 主线继续';
+      } else if (status === 'neutral') {
+        cls = 'neutral';
+        resultText = '中立 · 结果: ' + getResultSummary(node, resultRange);
       } else if (status === false) {
         cls = 'wrong';
         resultText = (ann && ann.isBadEnd)
@@ -1218,6 +1421,7 @@ function openDetail(node) {
       }
       const shortId = ch.id.replace(/^.*?_/, '');
       const badge = status === true ? `<span class="choice-badge" style="background:#3a8a3a;color:#fff">正确</span>` :
+                    status === 'neutral' ? `<span class="choice-badge" style="background:#8a8a8a;color:#fff">中立</span>` :
                     status === false ? (ann && ann.isBadEnd
                       ? `<span class="choice-badge" style="background:#a44;color:#fff">${escapeHtml(ann.badEndId || 'Bad End')}</span>`
                       : `<span class="choice-badge" style="background:#a44;color:#fff">错误</span>`) :
@@ -1283,6 +1487,14 @@ function openDetail(node) {
     });
   });
 
+  // 绑定语音播放按钮
+  panelBody.querySelectorAll('.ti-voice').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      toggleVoice(this.dataset.voice, this);
+    });
+  });
+
   // B6: 高亮当前节点 (class 切换, 替代内联 outline)
   _nodeEls.forEach(el => el.classList.remove('highlighted'));
   const activeEl = _nodeEls.find(el => el.dataset.id === node.id);
@@ -1293,6 +1505,7 @@ function openDetail(node) {
 }
 
 function closeDetail() {
+  stopVoice();
   // 虚拟节点: 关闭详情面板时恢复隐藏状态
   if (focusedNodeId) {
     const cur = _nodeMap.get(focusedNodeId);
@@ -1353,6 +1566,13 @@ function showPhone(html, fromNode) {
       showObjectionPopup(this.dataset.objectionId, this);
     });
   });
+  // 绑定语音播放按钮
+  phoneScreen.querySelectorAll('.ti-voice').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      toggleVoice(this.dataset.voice, this);
+    });
+  });
   // 绑定选项跳转事件
   phoneScreen.querySelectorAll('[data-goto]').forEach(function(el) {
     el.addEventListener('click', function() {
@@ -1385,6 +1605,69 @@ function showPhone(html, fromNode) {
       }
     });
   });
+  // 绑定"讨论前进"按钮 (前置 Choice 结果以 Toast_002 收尾 → 打开解锁辩论节点)
+  phoneScreen.querySelectorAll('[data-unlock]').forEach(function(el) {
+    el.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var unlockId = this.dataset.unlock;
+      var unlockNode = _nodeMap.get(unlockId);
+      if (!unlockNode) return;
+      // 解锁上下文: 后续从解锁节点打开的选项结果均锚定到解锁节点
+      _ctxVirtId = unlockId;
+      // 显示解锁节点
+      unlockNode._hidden = false;
+      var uel = document.querySelector('.node[data-id="' + unlockId + '"]');
+      if (uel) {
+        uel.style.display = '';
+        requestAnimationFrame(function() { uel.classList.remove('virt-hidden'); });
+      }
+      // 显示专属连接线 (跳过指向仍隐藏虚拟节点的连接线)
+      _connectors.forEach(function(ref) {
+        if (ref.toId === unlockId || ref.fromId === unlockId) {
+          var otherId = ref.toId === unlockId ? ref.fromId : ref.toId;
+          var other = _nodeMap.get(otherId);
+          if (other && other._isVirtual === true && other._hidden === true) return;
+          ref.el.style.display = '';
+        }
+      });
+      // 聚焦并打开手机视图
+      focusNode(unlockNode);
+      openPhoneWithNode(unlockNode);
+      reconcileTrialContinuations();
+    });
+  });
+  // 绑定解锁辩论选项 (data-unlock-choice → 显示对应 Choice 虚拟节点并打开手机视图)
+  // 注意: 不走 jumpToVirtualNode (其 usePhone 判定依赖异议弹窗锚点, 手机视图重建后锚点失效会误开详情面板)
+  phoneScreen.querySelectorAll('[data-unlock-choice]').forEach(function(el) {
+    el.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var cid = this.dataset.unlockChoice;
+      if (!cid) return;
+      var virtNodeId = 'virt_' + cid;
+      var virtNode = _nodeMap.get(virtNodeId);
+      if (!virtNode) { showLockHint('该选项暂无可显示的结果节点'); return; }
+      // 显示虚拟节点
+      virtNode._hidden = false;
+      var vel = document.querySelector('.node[data-id="' + virtNodeId + '"]');
+      if (vel) {
+        vel.style.display = '';
+        requestAnimationFrame(function() { vel.classList.remove('virt-hidden'); });
+      }
+      // 显示专属连接线 (跳过指向仍隐藏虚拟节点的连接线)
+      _connectors.forEach(function(ref) {
+        if (ref.toId === virtNodeId || ref.fromId === virtNodeId) {
+          var otherId = ref.toId === virtNodeId ? ref.fromId : ref.toId;
+          var other = _nodeMap.get(otherId);
+          if (other && other._isVirtual === true && other._hidden === true) return;
+          ref.el.style.display = '';
+        }
+      });
+      // 聚焦并打开手机视图
+      focusNode(virtNode);
+      openPhoneWithNode(virtNode);
+      reconcileTrialContinuations();
+    });
+  });
   // 绑定子选项点击事件 (虚拟节点子选项 → 打开子选项虚拟节点)
   phoneScreen.querySelectorAll('[data-sub-choice]').forEach(function(el) {
     el.addEventListener('click', function(e) {
@@ -1392,6 +1675,12 @@ function showPhone(html, fromNode) {
       var subChoiceId = this.dataset.subChoice;
       // 分支节点直接携带完整虚拟节点 id; 普通子选项传 choiceId, 需补前缀
       var virtNodeId = subChoiceId.indexOf('virt_') === 0 ? subChoiceId : 'virt_' + subChoiceId;
+      // 上锁防御: 前置 Choice 未触发时禁止直接打开 (覆盖 parentChoice 与 requiresChoice 共存情况)
+      var checkId = subChoiceId.indexOf('virt_') === 0 ? subChoiceId.slice(5) : subChoiceId;
+      if (isChoiceLocked(checkId)) {
+        showLockHint('已锁定：需先显示前置 Choice' + _shortChoiceId((ANNOTATIONS.trialChoices || {})[checkId].requiresChoice));
+        return;
+      }
       var virtNode = _nodeMap.get(virtNodeId);
       if (virtNode) {
         // 显示虚拟节点
@@ -1425,6 +1714,7 @@ function showPhone(html, fromNode) {
 }
 
 function hidePhone() {
+  stopVoice();
   clearTimeout(_phoneLeaveTimer);
   phoneScreen.style.opacity = '0';
   var wasShow = phoneState === 'show';
@@ -1482,6 +1772,12 @@ phoneContainer.addEventListener('mouseenter', function() {
           showObjectionPopup(this.dataset.objectionId, this);
         });
       });
+      phoneScreen.querySelectorAll('.ti-voice').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          toggleVoice(this.dataset.voice, this);
+        });
+      });
       requestAnimationFrame(function() {
         phoneScreen.style.opacity = '1';
       });
@@ -1530,6 +1826,8 @@ function branchBadgeHtml(br) {
 }
 
 function openPhoneWithNode(node) {
+  // 打开主节点 (非虚拟) 时重置解锁上下文: 返回 Trial 后锁定状态恢复
+  if (!node._isVirtual) _ctxVirtId = null;
   // 切换节点时隐藏全部已显示的虚拟节点 (跳过当前要打开的节点)
   hideAllVisibleVirtualNodes(node.id);
   // 若当前要打开的是虚拟节点，恢复其 DOM 显示与专属连接线
@@ -1549,6 +1847,8 @@ function openPhoneWithNode(node) {
         ref.el.style.display = '';
       }
     });
+    // requiresChoice 后代同步显示 (前置 Choice 显示时自动解锁其 requiresChoice 后代)
+    showVirtualNodeDescendants(node.id);
     reconcileTrialContinuations();
   }
   focusedNodeId = node.id;
@@ -1586,9 +1886,16 @@ function openPhoneWithNode(node) {
   if (dlg && dlg.length) {
     html += '<div class="panel-section"><div class="panel-section-title">场景对话</div>';
     dlg.forEach(function(d) {
+      // 讨论前进按钮: Toast_002 收尾且当前节点带解锁节点 (前置 Choice 虚拟节点)
+      if (d.label && /^Toast_002$/.test(d.label) && node._unlockNodeId) {
+        html += '<div class="toast-advance-wrap">';
+        html += '<button class="toast-advance-btn" data-unlock="' + escapeHtml(node._unlockNodeId) + '">' + escapeHtml(d.text) + '</button>';
+        html += '</div>';
+        return;
+      }
       var color = 'var(--char-' + d.speaker + ', var(--node-border))';
       html += '<div class="transcript-item" style="border-left-color:' + color + '">';
-      html += '<div class="ti-speaker" style="color:' + color + '">' + escapeHtml(d.speaker) + '</div>';
+      html += '<div class="ti-speaker" style="color:' + color + '">' + escapeHtml(d.speaker) + voiceBtnHtml(d.label) + '</div>';
       html += '<div class="ti-text">' + renderDialogueText(d) + '</div>';
       html += '</div>';
     });
@@ -1598,6 +1905,9 @@ function openPhoneWithNode(node) {
     html += '<div style="white-space:pre-wrap;font-size:14px;line-height:1.7;padding:10px;background:var(--bg2);border-radius:5px;">' + escapeHtml(node.text).replace(/&lt;br&gt;\n?/g, '\n') + '</div>';
     html += '</div>';
   }
+
+  // 解锁辩论节点: 对话区段已含全部 option 链接 (AnAn001-AnAn006), 无需额外"选择"区块;
+  // 选项通过对话中的粉色 option 链接 + 弹窗选择 (bug 修复)
 
   // 选项
   if (node.choices && node.choices.length) {
@@ -1620,6 +1930,8 @@ function openPhoneWithNode(node) {
       _trialNode.trialChoices.forEach(function(ch) {
         if (ch.id && /Common_Return/i.test(ch.id)) return;
         if (ch.buttonType === 'Cancel') return;
+        // 锁定 Choice 不显示 (requiresChoice 未解锁)
+        if (isChoiceLocked(ch.id)) return;
         var _ann = _annMap[ch.id];
         if (_ann && _ann.parentChoice === node._choiceId) {
           _subChoices.push({ ch: ch, ann: _ann });
@@ -1633,6 +1945,7 @@ function openPhoneWithNode(node) {
           var sAnn = item.ann;
           var sStatus = sAnn ? sAnn.isCorrect : null;
           var sBadge = sStatus === true ? '<span class="choice-badge" style="background:#3a8a3a;color:#fff">正确</span>' :
+            sStatus === 'neutral' ? '<span class="choice-badge" style="background:#8a8a8a;color:#fff">中立</span>' :
             sStatus === false ? (sAnn && sAnn.isBadEnd
               ? '<span class="choice-badge" style="background:#a44;color:#fff">' + escapeHtml(sAnn.badEndId || 'Bad End') + '</span>'
               : '<span class="choice-badge" style="background:#a44;color:#fff">错误</span>') :
@@ -1672,29 +1985,35 @@ function openPhoneWithNode(node) {
   // ── 导航：底部按钮 ──
   var hasChoices = (node.choices && node.choices.length > 0) || _hasSubChoices;
   if (isBad) {
-    // Bad End → 返回选择节点: 子选项优先返回其父虚拟节点, 否则返回 Trial
-    var parentNode = node._parentChoiceId ? _nodeMap.get('virt_' + node._parentChoiceId) : null;
-    if (!parentNode) parentNode = _nodeMap.get(node.parentId);
+    // Bad End → 返回选择节点: 上下文锚点/解锁引用/子选项父级 > Trial
+    var parentNode = resolveBackTarget(node);
     if (parentNode) {
       html += '<div class="panel-section"><div class="panel-section-title">导航</div>';
       html += '<div class="choice-item" data-nav="' + escapeHtml(parentNode.id) + '"><span class="choice-text">↩ 返回选择</span></div>';
       html += '</div>';
     }
   } else if (node._isVirtual && node._isCorrect && node.nextId) {
-    // 正确虚拟节点 (含子选项分支) → 下一个 (推进主线)
+    // 正确虚拟节点 → 下一个 (推进主线); 仅子选项显示"返回选择" (解锁的正确选项无需返回)
     html += '<div class="panel-section"><div class="panel-section-title">导航</div>';
     html += '<div class="choice-item" data-nav="' + escapeHtml(node.nextId) + '"><span class="choice-text">▼ 下一个</span></div>';
-    // 子选项分支额外提供"返回选择"按钮
     if (node._parentChoiceId) {
       var backParent = _nodeMap.get('virt_' + node._parentChoiceId);
-      if (backParent) {
+      if (backParent && !backParent._hidden) {
         html += '<div class="choice-item" data-nav="' + escapeHtml(backParent.id) + '"><span class="choice-text">↩ 返回选择</span></div>';
       }
     }
     html += '</div>';
-  } else if (node._isVirtual && node._parentChoiceId) {
-    // 错误子选项虚拟节点 → 返回父选项虚拟节点
-    var parentNode = _nodeMap.get('virt_' + node._parentChoiceId);
+  } else if (node._isVirtual && node._isNeutral) {
+    // 中立虚拟节点 → 返回上一个选项 (与错误节点一致, 不推进主线)
+    var neutralBack = resolveBackTarget(node);
+    if (neutralBack) {
+      html += '<div class="panel-section"><div class="panel-section-title">导航</div>';
+      html += '<div class="choice-item" data-nav="' + escapeHtml(neutralBack.id) + '"><span class="choice-text">↩ 返回选择</span></div>';
+      html += '</div>';
+    }
+  } else if (node._isVirtual && (node._parentChoiceId || node._unlockRefId)) {
+    // 错误子选项/解锁引用虚拟节点 → 返回对应父节点
+    var parentNode = resolveBackTarget(node);
     if (parentNode) {
       html += '<div class="panel-section"><div class="panel-section-title">导航</div>';
       html += '<div class="choice-item" data-nav="' + escapeHtml(parentNode.id) + '"><span class="choice-text">↩ 返回选择</span></div>';
@@ -2007,6 +2326,8 @@ function extractResultEntries(node, range) {
 function buildVirtualObjectionNodes() {
   var annMap = ANNOTATIONS.trialChoices || {};
   var virtualNodes = [];
+  // 本轮构建的虚拟节点局部索引 (循环内 _nodeMap 尚未注册, 需本地维护以解析引用)
+  var builtVirt = {};
 
   NODES.forEach(function(node) {
     if (!node.trialChoices || !node.trialChoices.length) return;
@@ -2021,16 +2342,18 @@ function buildVirtualObjectionNodes() {
 
       var ann = annMap[ch.id];
       if (!ann || !ann.resultRange || ann.resultRange.length !== 2) return;
-      if (ann.isCorrect !== true && ann.isCorrect !== false) return;
+      // 允许中立 (isCorrect === 'neutral'): 灰色节点, 不推进主线, 返回上一个选项
+      if (ann.isCorrect !== true && ann.isCorrect !== false && ann.isCorrect !== 'neutral') return;
 
       var entries = extractResultEntries(node, ann.resultRange);
       if (!entries.length) return;
 
       var virtId = 'virt_' + ch.id;
       // 避免重复构建
-      if (_nodeMap.has(virtId)) return;
+      if (builtVirt[virtId] || _nodeMap.has(virtId)) return;
 
       var isCorrect = ann.isCorrect === true;
+      var isNeutral = ann.isCorrect === 'neutral';
       var isSubOption = !!ann.parentChoice;  // 子选项: annotations 中有 parentChoice 字段
       var resultText = entries.map(function(d) {
         return d.text.replace(/<[^>]*>/g, '').replace(/\n/g, ' ');
@@ -2041,10 +2364,10 @@ function buildVirtualObjectionNodes() {
         title: ch.text.slice(0, 15) + (ch.text.length > 15 ? '…' : ''),
         level: 1,
         parentId: node.id,
-        // 正确选项 (含子选项) 直接连到 nextTrial, 由 reconcileTrialContinuations 决定哪条线显示
+        // 正确选项 (含子选项) 直接连到 nextTrial, 由 reconcileTrialContinuations 决定哪条线显示; 中立与错误不推进主线
         nextId: isCorrect ? node.nextId : null,
-        route: isCorrect ? 'normal' : 'objection-wrong',
-        type: isCorrect ? 'tr' : 'bd',
+        route: isNeutral ? 'neutral' : (isCorrect ? 'normal' : 'objection-wrong'),
+        type: isNeutral ? 'tr' : (isCorrect ? 'tr' : 'bd'),
         character: 'Objection',
         summary: resultText.slice(0, 40) + (resultText.length > 40 ? '…' : ''),
         text: resultText,
@@ -2053,6 +2376,7 @@ function buildVirtualObjectionNodes() {
         choices: [],
         _isVirtual: true,
         _isCorrect: isCorrect,
+        _isNeutral: isNeutral,
         _choiceId: ch.id,
         _trialNodeId: node.id,
         _hidden: true,
@@ -2064,12 +2388,19 @@ function buildVirtualObjectionNodes() {
         virt._parentChoiceId = ann.parentChoice;
       }
 
+      // requiresChoice (时序前置): 记录前置 Choice 的 choiceId (用于连接到前置 Choice 虚拟节点)
+      // 与 _parentChoiceId 并存 (一个虚拟节点可同时携带两者), 布局优先按 _requiresChoiceId 定位
+      if (ann.requiresChoice) {
+        virt._requiresChoiceId = ann.requiresChoice;
+      }
+
       // 错误选项携带 badEndId
       if (!isCorrect && ann.isBadEnd && ann.badEndId) {
         virt.badEndId = ann.badEndId;
       }
 
       virtualNodes.push(virt);
+      builtVirt[virtId] = virt;
 
       // 证人与证物分支: 为 witnessBranches / evidenceBranches 生成虚拟节点
       var branchGroups = [
@@ -2121,6 +2452,75 @@ function buildVirtualObjectionNodes() {
         });
       });
     });
+
+    // ── 解锁节点构建: 存在 requiresChoice 指向的 Choice, 且前置 Choice 结果以 Toast(讨论前进) 收尾 ──
+    // 生成"解锁的 Trial"虚拟节点 (如 [trial16] → [幻视] → [解锁辩论]); 被解锁的 Choice 改为从解锁节点手动打开
+    var reqMap = {};
+    node.trialChoices.forEach(function(ch) {
+      if (ch.id && /Common_Return/i.test(ch.id)) return;
+      if (ch.buttonType === 'Cancel') return;
+      var a = annMap[ch.id];
+      if (a && a.requiresChoice) {
+        (reqMap[a.requiresChoice] = reqMap[a.requiresChoice] || []).push(ch);
+      }
+    });
+    Object.keys(reqMap).forEach(function(X) {
+      var virtX = builtVirt['virt_' + X];
+      var annX = annMap[X];
+      if (!virtX || !annX || !annX.resultRange || annX.resultRange.length !== 2) return;
+      // 前置 Choice 的结果需以 Toast(讨论前进) 收尾, 才产生"讨论前进 → 解锁辩论"交互
+      if (!/Toast/i.test(annX.resultRange[1])) return;
+      var unlockId = 'virt_' + X + '__unlocked';
+      if (builtVirt[unlockId] || _nodeMap.has(unlockId)) return;
+      // 解锁区段: AnAn001 → Hiro003 (第二轮证言 + 希罗独白); 找不到则回退前置结果最后一条
+      var unlockEntries = [];
+      var sI = node.dialogue.findIndex(function(d) { return /_AnAn001$/.test(d.label || ''); });
+      var eI = node.dialogue.findIndex(function(d) { return /_Hiro003$/.test(d.label || ''); });
+      if (sI !== -1 && eI !== -1 && sI <= eI) {
+        unlockEntries = node.dialogue.slice(sI, eI + 1);
+      } else {
+        unlockEntries = extractResultEntries(node, annX.resultRange).slice(-1);
+      }
+      var uText = unlockEntries.map(function(d) {
+        return d.text.replace(/<[^>]*>/g, '').replace(/\n/g, ' ');
+      }).join(' ');
+      var unlockNode = {
+        id: unlockId,
+        title: '讨论前进 · 解锁辩论',
+        level: 1,
+        parentId: node.id,
+        nextId: node.nextId,
+        route: 'normal',
+        type: 'tr',
+        character: 'Objection',
+        summary: uText.slice(0, 40) + (uText.length > 40 ? '…' : ''),
+        text: uText,
+        dialogue: unlockEntries,
+        isChoice: false,
+        choices: [],
+        _isVirtual: true,
+        _isCorrect: true,
+        _isUnlockNode: true,
+        _unlockChoiceId: X,
+        _unlockParentRef: virtX.id,
+        _trialNodeId: node.id,
+        _hidden: true,
+        x: 0, y: 0
+      };
+      virtualNodes.push(unlockNode);
+      builtVirt[unlockId] = unlockNode;
+      // 前置 Choice 虚拟节点记录解锁节点 id (Toast 按钮 / 解锁判定用)
+      virtX._unlockNodeId = unlockId;
+      // 被解锁的 Choice 虚拟节点: 从"自动显示链"(_requiresChoiceId)改为"手动解锁链"(_unlockRefId)
+      // 修复: 前置 Choice 显示时不再自动弹出, 需在解锁辩论中点击选项才显示
+      reqMap[X].forEach(function(reqCh) {
+        var v = builtVirt['virt_' + reqCh.id];
+        if (v) {
+          delete v._requiresChoiceId;
+          v._unlockRefId = unlockId;
+        }
+      });
+    });
   });
 
   // 加入全局节点表 (参与 computeLayout 布局)
@@ -2134,9 +2534,9 @@ function buildVirtualObjectionNodes() {
 // 正确选项节点位于 Trial 与 nextTrial 之间 (线性插值 + 水平偏移)
 // 错误选项节点保持 computeLayout 的分支位置不变
 function _repositionVirtualNodes() {
-  // 第一遍: 定位主选项虚拟节点 (无 _parentChoiceId)
+  // 第一遍: 定位主选项虚拟节点 (无 _parentChoiceId 且无 _requiresChoiceId)
   NODES.forEach(function(v) {
-    if (!v._isVirtual || v._parentChoiceId) return;  // 跳过子选项, 留待第二遍处理
+    if (!v._isVirtual || v._parentChoiceId || v._requiresChoiceId) return;  // 跳过子选项/requiresChoice, 留待第二遍处理
     var trial = _nodeMap.get(v._trialNodeId);
     if (!trial || trial._lx === undefined) return;
 
@@ -2163,33 +2563,60 @@ function _repositionVirtualNodes() {
     _prevId.set(v.id, trial.id);
   });
 
-  // 第二遍: 递归定位子选项虚拟节点 (按深度排序, 先浅后深, 保证父选项已定位)
+  // 第二遍: 递归定位子选项 / requiresChoice / 解锁链虚拟节点 (按深度排序, 先浅后深, 保证锚点已定位)
+  // 锚点优先级: _unlockRefId(解锁节点) > _unlockParentRef(前置 Choice) > _requiresChoiceId > _parentChoiceId
   var subOpts = NODES.filter(function(v) {
-    return v._isVirtual && v._parentChoiceId;
+    return v._isVirtual && (v._parentChoiceId || v._requiresChoiceId || v._unlockRefId || v._unlockParentRef);
   });
-  // 计算子选项深度 (沿 parentChoice 链回溯层数)
+  // 计算深度 (沿解锁链 / requiresChoice / parentChoice 链回溯)
   function _subDepth(v) {
     var d = 1;
-    var p = _nodeMap.get('virt_' + v._parentChoiceId);
-    while (p && p._parentChoiceId) { d++; p = _nodeMap.get('virt_' + p._parentChoiceId); }
+    var cur = v;
+    var visited = new Set();
+    while (cur) {
+      if (visited.has(cur.id)) break;
+      visited.add(cur.id);
+      var next = null;
+      if (cur._unlockRefId) next = _nodeMap.get(cur._unlockRefId);
+      else if (cur._unlockParentRef) next = _nodeMap.get(cur._unlockParentRef);
+      else if (cur._requiresChoiceId) next = _nodeMap.get('virt_' + cur._requiresChoiceId);
+      else if (cur._parentChoiceId) next = _nodeMap.get('virt_' + cur._parentChoiceId);
+      if (!next) break;
+      d++;
+      cur = next;
+    }
     return d;
   }
   subOpts.sort(function(a, b) { return _subDepth(a) - _subDepth(b); });
 
-  // 按父选项 choiceId 分组记录子选项索引 (用于纵向堆叠)
+  // 按锚点虚拟节点 id 分组记录索引 (用于纵向堆叠)
   var siblingIdx = {};
   subOpts.forEach(function(v) {
-    var parentVirt = _nodeMap.get('virt_' + v._parentChoiceId);
+    // 解析锚点虚拟节点 (解锁链/时序链优先)
+    var anchorVirt = null;
+    if (v._unlockRefId) anchorVirt = _nodeMap.get(v._unlockRefId);
+    else if (v._unlockParentRef) anchorVirt = _nodeMap.get(v._unlockParentRef);
+    else if (v._requiresChoiceId) anchorVirt = _nodeMap.get('virt_' + v._requiresChoiceId);
+    else if (v._parentChoiceId) anchorVirt = _nodeMap.get('virt_' + v._parentChoiceId);
+    var anchorKey = anchorVirt ? anchorVirt.id : (v._unlockRefId || v._unlockParentRef || 'virt_' + (v._requiresChoiceId || v._parentChoiceId));
     var trial = _nodeMap.get(v._trialNodeId);
-    if (parentVirt && parentVirt._lx !== undefined) {
-      // 子选项定位在父选项附近 (水平 +80, 纵向堆叠间距 60)
-      var idx = siblingIdx[v._parentChoiceId] || 0;
-      siblingIdx[v._parentChoiceId] = idx + 1;
-      v._lx = parentVirt._lx + 80;
-      v._ly = parentVirt._ly + (idx + 1) * 60;
-      _prevId.set(v.id, parentVirt.id);
+    if (anchorVirt && anchorVirt._lx !== undefined) {
+      var idx = siblingIdx[anchorKey] || 0;
+      siblingIdx[anchorKey] = idx + 1;
+      if (v._unlockParentRef) {
+        // 解锁节点: 位于前置 Choice 虚拟节点正下方 (纵向延申, x 对齐形成树状链)
+        v._lx = anchorVirt._lx;
+        v._ly = anchorVirt._ly + 140;
+      } else {
+        // 被解锁的 Choice / 子选项: 从锚点扇开发散 (类似普通 Trial 分支)
+        var _fanX = v._isCorrect ? 96 : 68;
+        var _fanY = 76;
+        v._lx = anchorVirt._lx + _fanX + (idx % 2) * 10;
+        v._ly = anchorVirt._ly + (idx + 1) * _fanY;
+      }
+      _prevId.set(v.id, anchorVirt.id);
     } else if (trial && trial._lx !== undefined) {
-      // 回退: 父选项虚拟节点不存在, 紧贴 Trial 右下角 (与错误主选项一致)
+      // 回退: 锚点虚拟节点不存在 (前置 Choice 无 resultRange/isCorrect), 紧贴 Trial 右下角 (与错误主选项一致)
       v._lx = trial._lx + 60;
       v._ly = trial._ly + 80;
       _prevId.set(v.id, trial.id);
@@ -2198,18 +2625,162 @@ function _repositionVirtualNodes() {
     }
     v._origX = v._lx;
     v._origY = v._ly;
+    // 静态布局坐标 (供上下文锚定重置时还原)
+    v._staticX = v._lx;
+    v._staticY = v._ly;
   });
+}
+
+// ── 上下文锚定: 从解锁辩论节点打开的选项结果, 链接/定位到解锁节点 ──
+// 记录虚拟节点的原始进入线 (构建完成后调用)
+function recordOrigEntryLinks() {
+  _connectors.forEach(function(ref) {
+    if (/seq/.test(ref.el.className)) return;
+    var toNode = _nodeMap.get(ref.toId);
+    if (toNode && toNode._isVirtual && !toNode._origFromId) {
+      toNode._origFromId = ref.fromId;
+    }
+  });
+}
+
+// 将虚拟节点重连到指定锚点 (fromId) 并重新定位在其附近 (扇开)
+function anchorVirtTo(virtNode, anchorNode) {
+  if (!virtNode || !anchorNode) return;
+  virtNode._ctxAnchorId = anchorNode.id;
+  // 重连进入线
+  _connectors.forEach(function(ref) {
+    if (ref.toId === virtNode.id && !/seq/.test(ref.el.className) && ref.fromId !== anchorNode.id) {
+      var fEl = document.querySelector('.node[data-id="' + anchorNode.id + '"]');
+      if (!fEl) return;
+      ref.fromId = anchorNode.id;
+      ref._fEl = fEl;
+      _updateOneConnector(ref);
+      ref.el.style.display = anchorNode._hidden ? 'none' : '';
+    }
+  });
+  // 动态定位到锚点附近 (正确前移, 错误侧向错开)
+  var fanX = virtNode._isCorrect ? 96 : 68;
+  virtNode._lx = anchorNode._lx + fanX;
+  virtNode._ly = anchorNode._ly + 76;
+  virtNode._origX = virtNode._lx;
+  virtNode._origY = virtNode._ly;
+  var el = document.querySelector('.node[data-id="' + virtNode.id + '"]');
+  if (el) {
+    el.style.left = virtNode._lx + 'px';
+    el.style.top = virtNode._ly + 'px';
+    el.dataset.ox = virtNode._lx;
+    el.dataset.oy = virtNode._ly;
+  }
+  _prevId.set(virtNode.id, anchorNode.id);
+}
+
+// 还原虚拟节点的静态布局与原始进入线 (离开解锁上下文时)
+function resetVirtAnchor(virtNode) {
+  if (!virtNode) return;
+  delete virtNode._ctxAnchorId;
+  if (virtNode._origFromId) {
+    _connectors.forEach(function(ref) {
+      if (ref.toId === virtNode.id && !/seq/.test(ref.el.className) && ref.fromId !== virtNode._origFromId) {
+        var fEl = document.querySelector('.node[data-id="' + virtNode._origFromId + '"]');
+        if (!fEl) return;
+        ref.fromId = virtNode._origFromId;
+        ref._fEl = fEl;
+        _updateOneConnector(ref);
+      }
+    });
+  }
+  if (virtNode._staticX !== undefined) {
+    virtNode._lx = virtNode._staticX;
+    virtNode._ly = virtNode._staticY;
+    virtNode._origX = virtNode._staticX;
+    virtNode._origY = virtNode._staticY;
+    var el = document.querySelector('.node[data-id="' + virtNode.id + '"]');
+    if (el) {
+      el.style.left = virtNode._staticX + 'px';
+      el.style.top = virtNode._staticY + 'px';
+      el.dataset.ox = virtNode._staticX;
+      el.dataset.oy = virtNode._staticY;
+    }
+  }
+}
+
+// 返回选择目标解析: 上下文锚点 > 解锁引用 > 子选项父级 > Trial (逐级检查可见性)
+function resolveBackTarget(node) {
+  var cands = [];
+  if (node._ctxAnchorId) cands.push(_nodeMap.get(node._ctxAnchorId));
+  if (node._unlockRefId) cands.push(_nodeMap.get(node._unlockRefId));
+  if (node._parentChoiceId) cands.push(_nodeMap.get('virt_' + node._parentChoiceId));
+  cands.push(_nodeMap.get(node.parentId));
+  for (var i = 0; i < cands.length; i++) {
+    var c = cands[i];
+    if (c && (!c._isVirtual || !c._hidden)) return c;
+  }
+  return null;
 }
 
 // ── 异议弹窗: 显示 choice 信息 + 标注状态 ──
 let _popupChoiceId = null;
 let _popupAnchorEl = null;
+
+// 简化 Choice ID: 0205Trial16_Choice006 → Choice006
+function _shortChoiceId(id) { return id ? id.replace(/^.*?_/, '') : id; }
+
+// 解锁判定: 前置 Choice 已触发视为解锁。
+// 前置 Choice 有解锁节点(讨论前进流程)时, 以"解锁辩论"节点可见为准; 否则以前置 Choice 虚拟节点可见为准。
+// 与显示机制共用 _hidden 事实来源: 返回主 Trial 后解锁节点被隐藏, 锁定状态随之恢复
+function isChoiceLocked(choiceId) {
+  if (!choiceId) return false;
+  var ann = (ANNOTATIONS.trialChoices || {})[choiceId];
+  if (!ann || !ann.requiresChoice) return false;
+  var prereq = _nodeMap.get('virt_' + ann.requiresChoice);
+  if (!prereq) return true;
+  // 前置 Choice 有解锁节点 (讨论前进 → 解锁辩论)
+  if (prereq._unlockNodeId) {
+    var unlock = _nodeMap.get(prereq._unlockNodeId);
+    return !(unlock && unlock._hidden === false);
+  }
+  return !(prereq._hidden === false);
+}
+
+// 锁定提示 toast (act01/act02 未引入 shared.js, 用本地兜底)
+function showLockHint(msg) {
+  if (typeof MS !== 'undefined' && MS.showToast) { MS.showToast(msg); return; }
+  var host = document.getElementById('lock-toast-host');
+  if (!host) {
+    host = document.createElement('div');
+    host.id = 'lock-toast-host';
+    host.style.cssText = 'position:fixed;left:50%;bottom:28px;transform:translateX(-50%);z-index:9999;background:var(--panel-bg);border:1px solid var(--border);color:var(--fg);font-size:12px;padding:8px 14px;border-radius:6px;box-shadow:0 4px 20px rgba(0,0,0,0.2);pointer-events:none;opacity:0;transition:opacity .2s';
+    document.body.appendChild(host);
+  }
+  host.textContent = msg;
+  host.style.opacity = '1';
+  clearTimeout(host._t);
+  host._t = setTimeout(function() { host.style.opacity = '0'; }, 2200);
+}
+
 // 跳转到虚拟节点 (从弹窗点击选项时调用)
 function jumpToVirtualNode(cid) {
   if (!cid) return;
+  // 上锁拦截: 前置 Choice 未触发时禁止直接跳转
+  if (isChoiceLocked(cid)) {
+    var _reqId = (ANNOTATIONS.trialChoices || {})[cid] && (ANNOTATIONS.trialChoices || {})[cid].requiresChoice;
+    showLockHint('已锁定：需先显示前置 Choice' + _shortChoiceId(_reqId));
+    return false;
+  }
   const virtNodeId = 'virt_' + cid;
   const virtNode = NODES.find(n => n.id === virtNodeId);
   if (virtNode) {
+    // 上下文锚定: 处于解锁辩论上下文时, 结果节点链接/定位到解锁节点;
+    // 否则还原静态布局与原始进入线 (如 Choice001-003 在主线场景仍链接 Trial16)
+    var _ctxNode = _ctxVirtId ? _nodeMap.get(_ctxVirtId) : null;
+    // 点击解锁前置 Choice(如解锁页点【幻视】) → 离开解锁上下文, 还原其 Trial16 链接 (不重新锚定)
+    var _isUnlockParent = _ctxNode && _ctxNode._isUnlockNode && _ctxNode._unlockChoiceId === cid;
+    if (_ctxNode && _ctxNode._isUnlockNode && !_isUnlockParent && !_ctxNode._hidden && virtNode.id !== _ctxVirtId) {
+      anchorVirtTo(virtNode, _ctxNode);
+    } else {
+      resetVirtAnchor(virtNode);
+    }
+    if (_isUnlockParent) _ctxVirtId = null;
     // 显示虚拟节点
     virtNode._hidden = false;
     const el = document.querySelector('.node[data-id="' + virtNodeId + '"]');
@@ -2243,7 +2814,12 @@ function jumpToVirtualNode(cid) {
     // 打开详情面板 / 手机视图 (根据点击来源)
     const usePhone = _popupAnchorEl && phoneScreen.contains(_popupAnchorEl);
     if (usePhone) openPhoneWithNode(virtNode);
-    else openDetail(virtNode);
+    else {
+      openDetail(virtNode);
+      // openDetail 路径未调用 openPhoneWithNode, 需手动同步显示 requiresChoice 后代
+      showVirtualNodeDescendants(virtNode.id);
+      reconcileTrialContinuations();
+    }
     // 关闭弹窗
     closeObjectionPopup();
     return true;
@@ -2256,6 +2832,7 @@ function _choiceStatusBadge(ann) {
   if (!ann) return '<span class="choice-badge">待标注</span>';
   const status = ann.isCorrect;
   if (status === true) return '<span class="choice-badge" style="background:#3a8a3a;color:#fff">正确</span>';
+  if (status === 'neutral') return '<span class="choice-badge" style="background:#8a8a8a;color:#fff">中立</span>';
   if (status === false) {
     return ann.isBadEnd
       ? '<span class="choice-badge" style="background:#a44;color:#fff">' + escapeHtml(ann.badEndId || 'Bad End') + '</span>'
@@ -2315,11 +2892,19 @@ function showObjectionPopup(objectionId, anchorEl) {
   const firstAnn = matchingChoices[0].ann;
   const note = firstAnn && firstAnn.note ? `<div style="margin-top:6px;font-size:12px;color:var(--fg2)">备注: ${escapeHtml(firstAnn.note)}</div>` : '';
 
+  // 过滤锁定项 (requiresChoice 未解锁的 Choice 初始不显示, 符合"不显示锁起来的节点")
+  const unlockedMatches = matchingChoices.filter(function(item) {
+    return !isChoiceLocked(item.choice.id);
+  });
+
   let choicesHtml = '';
-  if (matchingChoices.length > 1) {
-    // 多选项: 列出所有匹配选项, 每个可单独点击跳转
+  if (!unlockedMatches.length) {
+    // 全部锁定 → 提示尚未解锁 (不显示选项, 不跳转)
+    choicesHtml = '<div class="op-locked-hint">' + _LOCK_ICON_HTML + '<span>该异议点尚未解锁</span></div>';
+  } else if (unlockedMatches.length > 1) {
+    // 多选项: 列出所有未锁定选项, 每个可单独点击跳转
     choicesHtml = '<div style="margin-top:6px;">';
-    matchingChoices.forEach(function(item) {
+    unlockedMatches.forEach(function(item) {
       const ch = item.choice;
       const cAnn = item.ann;
       const badge = _choiceStatusBadge(cAnn);
@@ -2330,9 +2915,10 @@ function showObjectionPopup(objectionId, anchorEl) {
     choicesHtml += '</div>';
   } else {
     // 单选项: 保持原有展示格式
-    const choice = firstChoice;
+    const sole = unlockedMatches[0];
+    const choice = sole.choice;
     const typeLabel = choice.buttonType === 'Cancel' ? ' [返回]' : choice.buttonType === 'Objection' ? ' [异议]' : '';
-    choicesHtml = '<div class="op-choice" data-choice-id="' + escapeHtml(choice.id) + '">' + escapeHtml(choice.text) + typeLabel + ' ' + _choiceStatusBadge(firstAnn) + '</div>';
+    choicesHtml = '<div class="op-choice" data-choice-id="' + escapeHtml(choice.id) + '">' + escapeHtml(choice.text) + typeLabel + ' ' + _choiceStatusBadge(sole.ann) + '</div>';
   }
 
   objectionPopup.innerHTML = choicesHtml + objectionText + note;
@@ -2361,6 +2947,17 @@ function showObjectionPopup(objectionId, anchorEl) {
       var item = e.target.closest('[data-choice-id]');
       var cid = item ? item.dataset.choiceId : _popupChoiceId;
       if (!cid) return;
+      // 上锁防御: 锁定项点击不跳转、不关闭弹窗 (正常情况下锁定项已被过滤)
+      if (isChoiceLocked(cid)) {
+        if (!objectionPopup.querySelector('.op-lock-tip-msg')) {
+          const tip = document.createElement('div');
+          tip.className = 'op-lock-tip-msg';
+          tip.style.cssText = 'color:#f59e0b;margin-top:4px;font-size:11px;';
+          tip.textContent = '已锁定：需先显示前置 Choice' + _shortChoiceId((ANNOTATIONS.trialChoices || {})[cid].requiresChoice);
+          objectionPopup.appendChild(tip);
+        }
+        return;
+      }
       var success = jumpToVirtualNode(cid);
       if (!success) {
         // 无结果节点 — 追加提示 (不跳转, 不关闭)

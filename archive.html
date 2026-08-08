@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-Hans" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>全素材库 — 大魔女图书馆</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500;1,700&family=Noto+Serif+SC:wght@700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/shared.css">
+<link rel="stylesheet" href="assets/content.css">
+<script>
+  (function () {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || saved === 'light') {
+      document.documentElement.setAttribute('data-theme', saved);
+    }
+  })();
+</script>
+<style>
+/* ── 全素材库专属样式 ── */
+.archive-meta {
+  margin: 0 0 18px;
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  color: var(--fg3);
+}
+.archive-bar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.archive-search {
+  flex: 1 1 220px;
+  padding: 9px 14px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--panel-bg);
+  color: var(--fg);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  outline: none;
+}
+.archive-search:focus {
+  border-color: var(--accent);
+}
+.archive-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.archive-table th,
+.archive-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: middle;
+}
+.archive-table th {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--fg3);
+  font-size: 12px;
+}
+.archive-table td.arc-path {
+  word-break: break-all;
+  color: var(--fg2);
+  font-size: 12px;
+}
+.archive-table td.arc-size {
+  white-space: nowrap;
+  color: var(--fg3);
+}
+.arc-type {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--fg2);
+  border: 1px solid var(--border);
+  white-space: nowrap;
+}
+.arc-dl {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--fg);
+  text-decoration: none;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  transition: border-color 0.25s ease, color 0.25s ease, background 0.25s ease;
+  white-space: nowrap;
+}
+.arc-dl:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--panel-bg);
+}
+.arc-dl svg {
+  width: 13px;
+  height: 13px;
+}
+.arc-pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 18px;
+}
+.arc-pager button {
+  padding: 7px 18px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--panel-bg);
+  color: var(--fg);
+  cursor: pointer;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  transition: border-color 0.25s ease, color 0.25s ease;
+}
+.arc-pager button:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.arc-pager button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.arc-page-info {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--fg3);
+  letter-spacing: 0.1em;
+}
+.arc-note {
+  text-align: center;
+  color: var(--fg3);
+  font-size: 13px;
+  padding: 30px 10px;
+}
+@media (max-width: 720px) {
+  .archive-table th:nth-child(2),
+  .archive-table td:nth-child(2) { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div id="splash">
+  <div id="splash-mark">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle class="aperture-ring" cx="50" cy="50" r="46"/>
+      <circle class="aperture-hub" cx="50" cy="50" r="6"/>
+      <path class="aperture-blade" style="transform-origin:50px 10px" d="M50,10 C42,22 42,38 50,50 C58,38 58,22 50,10 Z"/>
+    </svg>
+  </div>
+  <h1 id="splash-title">全素材库</h1>
+  <p id="splash-sub">Full Archive</p>
+  <div id="splash-bar"></div>
+</div>
+
+<div id="bg-host"></div>
+
+<button id="theme-toggle" class="theme-toggle" aria-label="切换主题">
+  <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="6.34" y2="17.66"/><line x1="17.66" y1="6.34" x2="19.07" y2="4.93"/></svg>
+</button>
+
+<header class="c-header">
+  <a href="index.html" class="nav-link">← 返回</a>
+  <span class="c-title">全素材库</span>
+  <span class="c-subtitle">Full Archive</span>
+  <div class="c-spacer"></div>
+  <div class="c-search"><input type="search" id="archive-search" placeholder="搜索文件名..."></div>
+</header>
+
+<main class="c-main">
+  <div class="archive-meta" id="archive-meta">加载中...</div>
+  <div class="filterbar" id="archive-filters"></div>
+  <div class="archive-bar">
+    <input type="search" id="archive-search-inline" class="archive-search" placeholder="搜索文件名（如 Still_330、0101Adv02、Bgm_008）">
+    <span class="archive-page-info" id="archive-count"></span>
+  </div>
+  <div id="archive-table-wrap">
+    <table class="archive-table">
+      <thead>
+        <tr>
+          <th>文件</th>
+          <th>分类</th>
+          <th>大小</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody id="archive-body"></tbody>
+    </table>
+  </div>
+  <div class="arc-pager" id="archive-pager">
+    <button type="button" id="arc-prev">‹ 上一页</button>
+    <span class="arc-page-info" id="arc-page-info"></span>
+    <button type="button" id="arc-next">下一页 ›</button>
+  </div>
+</main>
+
+<script src="assets/shared.js"></script>
+<script src="assets/archive.js?v=20260809a"></script>
+</body>
+</html>

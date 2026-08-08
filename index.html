@@ -360,7 +360,7 @@ body { display: block; }
 /* ── 封锁卡片网格 ── */
 .future-cards {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 14px;
 }
 
@@ -821,6 +821,15 @@ body.collapsing {
         <span class="fc-num">VI</span>
         <span class="fc-title">语音和音乐</span>
         <span class="fc-sub">Voice &amp; Music</span>
+        <span class="fc-tag fc-go">进入 →</span>
+        <svg class="fc-butterfly" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="currentColor"><path d="M60,50 C42,22 12,16 6,32 C0,48 16,58 32,56 C46,54 56,52 60,50 Z"/><path d="M60,50 C78,22 108,16 114,32 C120,48 104,58 88,56 C74,54 64,52 60,50 Z"/><path d="M60,50 C50,56 32,66 28,82 C25,92 38,90 48,80 C56,72 58,60 60,50 Z"/><path d="M60,50 C70,56 88,66 92,82 C95,92 82,90 72,80 C64,72 62,60 60,50 Z"/><ellipse cx="60" cy="50" rx="1.4" ry="18"/></g></svg>
+      </article>
+
+      <!-- 全素材库 -->
+      <article class="future-card unlocked" data-go="archive" tabindex="0" role="button" aria-label="进入 全素材库">
+        <span class="fc-num">VII</span>
+        <span class="fc-title">全素材库</span>
+        <span class="fc-sub">Full Archive</span>
         <span class="fc-tag fc-go">进入 →</span>
         <svg class="fc-butterfly" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="currentColor"><path d="M60,50 C42,22 12,16 6,32 C0,48 16,58 32,56 C46,54 56,52 60,50 Z"/><path d="M60,50 C78,22 108,16 114,32 C120,48 104,58 88,56 C74,54 64,52 60,50 Z"/><path d="M60,50 C50,56 32,66 28,82 C25,92 38,90 48,80 C56,72 58,60 60,50 Z"/><path d="M60,50 C70,56 88,66 92,82 C95,92 82,90 72,80 C64,72 62,60 60,50 Z"/><ellipse cx="60" cy="50" rx="1.4" ry="18"/></g></svg>
       </article>

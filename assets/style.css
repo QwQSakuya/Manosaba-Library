@@ -89,6 +89,7 @@ main { flex: 1; position: relative; overflow: hidden; background: var(--bg2); }
   box-shadow: 0 1px 3px var(--node-shadow),
               0 4px 12px var(--node-shadow),
               inset 0 1px 0 rgba(255,255,255,0.08);
+  z-index: 2;  /* 高于连接线, 连线位于节点下方 */
   transition: opacity 0.35s cubic-bezier(0.22,1,0.36,1),
               box-shadow 0.2s cubic-bezier(0.22,1,0.36,1),
               border-color 0.2s cubic-bezier(0.22,1,0.36,1),
@@ -171,12 +172,13 @@ main { flex: 1; position: relative; overflow: hidden; background: var(--bg2); }
               inset 0 1px 0 rgba(255,255,255,0.08);
 }
 
-/* connector lines */
+/* connector lines (z-index 低于节点, 避免连线盖在节点上) */
 .connector {
   position: absolute; pointer-events: none;
   height: 1.5px; background: var(--border);
   transform-origin: left center;
   transition: opacity 0.35s cubic-bezier(0.22,1,0.36,1);
+  z-index: 1;
 }
 .connector.to-bad { background: var(--bad-border); opacity: 0.5; }
 .connector.seq { background: var(--border); opacity: 0.6; height: 1px; }
@@ -309,7 +311,28 @@ main { flex: 1; position: relative; overflow: hidden; background: var(--bg2); }
   transition: background 0.2s cubic-bezier(0.22,1,0.36,1);
 }
 .transcript-item:hover { background: var(--node-bg); }
-.transcript-item .ti-speaker { font-weight: 600; font-size: 12px; color: var(--fg); margin-bottom: 4px; }
+.transcript-item .ti-speaker { font-weight: 600; font-size: 12px; color: var(--fg); margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+.transcript-item .ti-voice {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--panel-bg);
+  color: var(--fg2);
+  cursor: pointer;
+  font-size: 10px;
+  line-height: 1;
+  padding: 0;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+.transcript-item .ti-voice:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--node-bg);
+}
 .transcript-item .ti-text { white-space: pre-wrap; font-size: 13px; line-height: 1.7; color: var(--fg2); }
 
 /* ── Load Error ── */
@@ -604,11 +627,21 @@ main { flex: 1; position: relative; overflow: hidden; background: var(--bg2); }
   border-color: #3a8a3a;
   background: color-mix(in srgb, #3a8a3a 10%, var(--node-bg));
 }
+/* 中立节点: 灰色, 与错误节点同语义 (返回选择, 不推进主线) */
+.node.is-virtual.objection-neutral {
+  border-color: #8a8a8a;
+  border-style: dashed;
+  background: color-mix(in srgb, #8a8a8a 12%, var(--node-bg));
+}
 [data-theme="dark"] .node.is-virtual.objection-wrong {
   background: color-mix(in srgb, #a44 22%, var(--node-bg));
 }
 [data-theme="dark"] .node.is-virtual.objection-correct {
   background: color-mix(in srgb, #3a8a3a 22%, var(--node-bg));
+}
+[data-theme="dark"] .node.is-virtual.objection-neutral {
+  border-color: #9a9a9a;
+  background: color-mix(in srgb, #9a9a9a 22%, var(--node-bg));
 }
 /* 虚拟节点进入/退出动画 */
 .node.is-virtual {
@@ -623,6 +656,7 @@ main { flex: 1; position: relative; overflow: hidden; background: var(--bg2); }
 /* 虚拟节点连接线 */
 .connector.objection-wrong { background: #a44; opacity: 0.5; height: 1.5px; }
 .connector.objection-correct { background: #3a8a3a; opacity: 0.5; height: 1.5px; }
+.connector.objection-neutral { background: #8a8a8a; opacity: 0.5; height: 1.5px; }
 /* 子选项 → 父选项虚拟节点连接线: 更细更淡, 体现从属关系 */
 .connector.objection-wrong.is-subchoice-link { opacity: 0.4; height: 1px; border-bottom: 1px dashed #a44; background: none; }
 .connector.objection-correct.is-subchoice-link { opacity: 0.4; height: 1px; border-bottom: 1px dashed #3a8a3a; background: none; }
@@ -706,6 +740,60 @@ main { flex: 1; position: relative; overflow: hidden; background: var(--bg2); }
 [data-theme="dark"] .node.is-virtual.is-subchoice[data-sub-depth="3"].objection-wrong {
   background: color-mix(in srgb, #a44 14%, var(--node-bg));
 }
+
+/* ── Task 7: requiresChoice 虚拟节点连接线 (前置 Choice → 解锁 Choice) ── */
+/* 与普通 Trial 分支一致 (实线、正常透明度、绿/红), 仅保留 2px 高度差异 */
+.connector.objection-wrong.is-requires-link { opacity: 1; height: 2px; }
+.connector.objection-correct.is-requires-link { opacity: 1; height: 2px; }
+
+/* ── Task 9: Trial 主节点未解锁标识 (锁图标 badge) ── */
+/* Trial 存在 requiresChoice 非空的 Choice 时, 右上角显示扁平 SVG 锁徽标 */
+.node.has-locked-choice .node-lock-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: var(--btn-bg);
+  border: 1px solid var(--border);
+  color: #f59e0b;
+  box-shadow: 0 1px 3px var(--node-shadow);
+  pointer-events: none;
+  z-index: 5;
+}
+.node.has-locked-choice .node-lock-badge svg { width: 11px; height: 11px; }
+[data-theme="dark"] .node.has-locked-choice .node-lock-badge { color: #fbbf24; }
+
+/* ── 异议弹窗"尚未解锁"提示 ── */
+.objection-popup .lock-ico { width: 11px; height: 11px; vertical-align: -1px; margin-right: 3px; color: #f59e0b; }
+.objection-popup .op-locked-hint { color: #f59e0b; font-size: 12px; padding: 4px 2px; display: flex; align-items: center; }
+
+/* ── "讨论前进"解锁按钮 (前置 Choice 结果以 Toast_002 收尾时显示) ── */
+.toast-advance-wrap { margin: 10px 0 2px; }
+.toast-advance-btn {
+  display: block; width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--accent) 12%, var(--panel-bg));
+  color: var(--accent);
+  font-size: 13px; font-weight: 600; letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+  text-align: center;
+}
+.toast-advance-btn:hover {
+  background: color-mix(in srgb, var(--accent) 22%, var(--panel-bg));
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px var(--node-shadow);
+}
+#phone-screen .toast-advance-btn { background: color-mix(in srgb, var(--accent) 14%, var(--bg2)); color: var(--accent); }
+#phone-screen .toast-advance-btn:hover { background: color-mix(in srgb, var(--accent) 24%, var(--bg2)); }
+
 
 /* ── Task 1: 异议结果展开块 (手机视图) ── */
 .objection-result-block {

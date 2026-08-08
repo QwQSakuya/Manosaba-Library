@@ -1,236 +1,35 @@
 {
-  "_exportedAt": "2026-08-05T08:42:23.659Z",
-  "_sourceFileCount": 18,
+  "_exportedAt": "2026-08-08T07:49:07.282Z",
+  "_sourceFileCount": 24,
   "_sourceFiles": [
-    "Act01_Chapter02_Trial12",
     "Act01_Chapter02_Trial11",
+    "Act01_Chapter02_Trial12",
     "Act01_Chapter02_Trial08",
-    "Act01_Chapter02_Trial06",
-    "Act01_Chapter02_Trial01",
-    "Act01_Chapter02_Trial13",
-    "Act01_Chapter02_Trial09",
-    "Act01_Chapter02_Trial03",
-    "Act01_Chapter02_Trial15",
-    "Act01_Chapter02_Trial00",
-    "Act01_Chapter02_Trial05",
-    "Act01_Chapter02_Trial10",
-    "Act01_Chapter02_Adv01",
-    "Act01_Chapter02_Trial02",
-    "Act01_Chapter02_Trial14",
-    "Act01_Chapter02_Adv02",
     "Act01_Chapter02_Trial04",
-    "Act01_Chapter02_Trial07"
+    "Act01_Chapter02_Trial10",
+    "Act01_Chapter03_Trial02",
+    "Act01_Chapter02_Trial06",
+    "Act01_Chapter02_Trial13",
+    "Act01_Chapter02_Trial07",
+    "Act01_Chapter02_Trial15",
+    "Act01_Chapter03_Trial03",
+    "Act01_Chapter02_Trial00",
+    "Act01_Chapter02_Adv01",
+    "Act01_Chapter02_Trial03",
+    "Act01_Chapter02_Trial01",
+    "Act02_Chapter05_Trial13",
+    "Act01_Chapter02_Trial05",
+    "Act02_Chapter05_Trial16",
+    "Act02_Chapter01_Trial05",
+    "Act02_Chapter06_Trial00",
+    "Act01_Chapter02_Trial02",
+    "Act01_Chapter02_Adv02",
+    "Act01_Chapter02_Trial14",
+    "Act01_Chapter02_Trial09"
   ],
   "_conflictCount": 0,
   "_act": "Act01_Chapter01-05",
   "trialChoices": {
-    "0102Trial12_Choice001": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial12_Ema005",
-        "0102Trial12_Ema008"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_12_01",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial12_Choice002": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial12_Ema009",
-        "0102Trial12_Ema013"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_12_02",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial12_Choice003": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial12_Ema014",
-        "0102Trial12_Ema015"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_12_03",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [
-        {
-          "evidence": "无",
-          "isCorrect": false,
-          "isSpecial": false,
-          "resultRange": [
-            "0102Trial12_Nanoka003",
-            "0102Trial12_Ema017"
-          ]
-        }
-      ],
-      "siblingChoiceIds": []
-    },
-    "0102Trial12_Choice004": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial12_Ema018",
-        "0102Trial12_Ema018"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_12_04",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [
-        {
-          "evidence": "无",
-          "isCorrect": false,
-          "isSpecial": false,
-          "resultRange": [
-            "0102Trial12_Hanna002",
-            "0102Trial12_Ema021"
-          ]
-        }
-      ],
-      "siblingChoiceIds": []
-    },
-    "0102Trial12_Choice005": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial12_Ema022",
-        "0102Trial12_Ema022"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_12_05",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [
-        {
-          "evidence": "无",
-          "isCorrect": false,
-          "isSpecial": false,
-          "resultRange": [
-            "0102Trial12_Alisa001",
-            "0102Trial12_Ema025"
-          ]
-        }
-      ],
-      "siblingChoiceIds": [
-        "0102Trial12_Choice006",
-        "0102Trial12_Choice007"
-      ]
-    },
-    "0102Trial12_Choice006": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial12_Ema026",
-        "0102Trial12_Ema027"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_12_05",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [
-        {
-          "witness": "无",
-          "isCorrect": false,
-          "isSpecial": false,
-          "resultRange": [
-            "0102Trial12_AnAn020",
-            "0102Trial12_Ema029"
-          ]
-        }
-      ],
-      "evidenceBranches": [],
-      "siblingChoiceIds": [
-        "0102Trial12_Choice005",
-        "0102Trial12_Choice007"
-      ]
-    },
-    "0102Trial12_Choice007": {
-      "isCorrect": true,
-      "resultRange": [
-        "0102Trial12_Ema030",
-        "0102Trial12_Ema032"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_12_05",
-      "parentChoice": null,
-      "witness": "典狱长",
-      "witnessBranches": [
-        {
-          "witness": "看守",
-          "isCorrect": false,
-          "isSpecial": true,
-          "resultRange": [
-            "0102Trial12_Ema033",
-            "0102Trial12_Meruru004"
-          ]
-        },
-        {
-          "witness": "汉娜",
-          "isCorrect": false,
-          "isSpecial": true,
-          "resultRange": [
-            "0102Trial12_Ema034",
-            "0102Trial12_Ema037"
-          ]
-        },
-        {
-          "witness": "米莉亚",
-          "isCorrect": false,
-          "isSpecial": true,
-          "resultRange": [
-            "0102Trial12_Ema038",
-            "0102Trial12_Ema042"
-          ]
-        },
-        {
-          "witness": "典狱长",
-          "isCorrect": false,
-          "isSpecial": false,
-          "resultRange": [
-            "0102Trial12_Hanna006",
-            "0102Trial12_Ema044"
-          ]
-        },
-        {
-          "witness": "典狱长",
-          "isCorrect": true,
-          "isSpecial": false,
-          "resultRange": [
-            "0102Trial12_Warden001",
-            "0102Trial12_Warden006"
-          ]
-        }
-      ],
-      "evidenceBranches": [],
-      "siblingChoiceIds": [
-        "0102Trial12_Choice005",
-        "0102Trial12_Choice006"
-      ]
-    },
     "0102Trial11_Choice001": {
       "isCorrect": false,
       "resultRange": [
@@ -242,6 +41,7 @@
       "badEndId": null,
       "optionId": "Objection_01_02_11_01",
       "parentChoice": null,
+      "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
       "evidenceBranches": [],
@@ -258,6 +58,7 @@
       "badEndId": null,
       "optionId": "Objection_01_02_11_02",
       "parentChoice": null,
+      "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
       "evidenceBranches": [],
@@ -274,6 +75,7 @@
       "badEndId": null,
       "optionId": "Objection_01_02_11_03",
       "parentChoice": null,
+      "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
       "evidenceBranches": [],
@@ -290,6 +92,7 @@
       "badEndId": null,
       "optionId": null,
       "parentChoice": "0102Trial11_Choice003",
+      "requiresChoice": null,
       "witness": "安安",
       "witnessBranches": [
         {
@@ -361,6 +164,7 @@
       "badEndId": null,
       "optionId": null,
       "parentChoice": "0102Trial11_Choice003",
+      "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
       "evidenceBranches": [],
@@ -377,10 +181,225 @@
       "badEndId": null,
       "optionId": null,
       "parentChoice": "0102Trial11_Choice003",
+      "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
       "evidenceBranches": [],
       "siblingChoiceIds": []
+    },
+    "0102Trial12_Choice001": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial12_Ema005",
+        "0102Trial12_Ema008"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_12_01",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial12_Choice002": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial12_Ema009",
+        "0102Trial12_Ema013"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_12_02",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial12_Choice003": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial12_Ema014",
+        "0102Trial12_Ema015"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_12_03",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [
+        {
+          "evidence": "无",
+          "isCorrect": false,
+          "isSpecial": false,
+          "resultRange": [
+            "0102Trial12_Nanoka003",
+            "0102Trial12_Ema017"
+          ]
+        }
+      ],
+      "siblingChoiceIds": []
+    },
+    "0102Trial12_Choice004": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial12_Ema018",
+        "0102Trial12_Ema018"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_12_04",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [
+        {
+          "evidence": "无",
+          "isCorrect": false,
+          "isSpecial": false,
+          "resultRange": [
+            "0102Trial12_Hanna002",
+            "0102Trial12_Ema021"
+          ]
+        }
+      ],
+      "siblingChoiceIds": []
+    },
+    "0102Trial12_Choice005": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial12_Ema022",
+        "0102Trial12_Ema022"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_12_05",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [
+        {
+          "evidence": "无",
+          "isCorrect": false,
+          "isSpecial": false,
+          "resultRange": [
+            "0102Trial12_Alisa001",
+            "0102Trial12_Ema025"
+          ]
+        }
+      ],
+      "siblingChoiceIds": [
+        "0102Trial12_Choice006",
+        "0102Trial12_Choice007"
+      ]
+    },
+    "0102Trial12_Choice006": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial12_Ema026",
+        "0102Trial12_Ema027"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_12_05",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [
+        {
+          "witness": "无",
+          "isCorrect": false,
+          "isSpecial": false,
+          "resultRange": [
+            "0102Trial12_AnAn020",
+            "0102Trial12_Ema029"
+          ]
+        }
+      ],
+      "evidenceBranches": [],
+      "siblingChoiceIds": [
+        "0102Trial12_Choice005",
+        "0102Trial12_Choice007"
+      ]
+    },
+    "0102Trial12_Choice007": {
+      "isCorrect": true,
+      "resultRange": [
+        "0102Trial12_Ema030",
+        "0102Trial12_Ema032"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_12_05",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "典狱长",
+      "witnessBranches": [
+        {
+          "witness": "看守",
+          "isCorrect": false,
+          "isSpecial": true,
+          "resultRange": [
+            "0102Trial12_Ema033",
+            "0102Trial12_Meruru004"
+          ]
+        },
+        {
+          "witness": "汉娜",
+          "isCorrect": false,
+          "isSpecial": true,
+          "resultRange": [
+            "0102Trial12_Ema034",
+            "0102Trial12_Ema037"
+          ]
+        },
+        {
+          "witness": "米莉亚",
+          "isCorrect": false,
+          "isSpecial": true,
+          "resultRange": [
+            "0102Trial12_Ema038",
+            "0102Trial12_Ema042"
+          ]
+        },
+        {
+          "witness": "典狱长",
+          "isCorrect": false,
+          "isSpecial": false,
+          "resultRange": [
+            "0102Trial12_Hanna006",
+            "0102Trial12_Ema044"
+          ]
+        },
+        {
+          "witness": "典狱长",
+          "isCorrect": true,
+          "isSpecial": false,
+          "resultRange": [
+            "0102Trial12_Warden001",
+            "0102Trial12_Warden006"
+          ]
+        }
+      ],
+      "evidenceBranches": [],
+      "siblingChoiceIds": [
+        "0102Trial12_Choice005",
+        "0102Trial12_Choice006"
+      ]
     },
     "0102Trial08_Choice001": {
       "isCorrect": false,
@@ -393,6 +412,7 @@
       "badEndId": null,
       "optionId": "Objection_01_02_08_01",
       "parentChoice": null,
+      "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
       "evidenceBranches": [],
@@ -409,6 +429,7 @@
       "badEndId": null,
       "optionId": "Objection_01_02_08_02",
       "parentChoice": null,
+      "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
       "evidenceBranches": [],
@@ -425,6 +446,7 @@
       "badEndId": null,
       "optionId": "Objection_01_02_08_03",
       "parentChoice": null,
+      "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
       "evidenceBranches": [],
@@ -441,6 +463,7 @@
       "badEndId": null,
       "optionId": "Objection_01_02_08_04",
       "parentChoice": null,
+      "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
       "evidenceBranches": [],
@@ -457,6 +480,7 @@
       "badEndId": null,
       "optionId": "Objection_01_02_08_05",
       "parentChoice": null,
+      "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
       "evidenceBranches": [],
@@ -473,6 +497,7 @@
       "badEndId": null,
       "optionId": "Objection_01_02_08_06",
       "parentChoice": null,
+      "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
       "evidenceBranches": [],
@@ -489,6 +514,7 @@
       "badEndId": null,
       "optionId": "Objection_01_02_08_07",
       "parentChoice": null,
+      "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
       "evidenceBranches": [
@@ -515,6 +541,7 @@
       "badEndId": null,
       "optionId": "Objection_01_02_08_08",
       "parentChoice": null,
+      "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
       "evidenceBranches": [
@@ -541,6 +568,7 @@
       "badEndId": null,
       "optionId": null,
       "parentChoice": "0102Trial08_Choice006",
+      "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
       "evidenceBranches": [],
@@ -557,6 +585,7 @@
       "badEndId": null,
       "optionId": null,
       "parentChoice": "0102Trial08_Choice006",
+      "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
       "evidenceBranches": [],
@@ -573,778 +602,90 @@
       "badEndId": null,
       "optionId": null,
       "parentChoice": "0102Trial08_Choice006",
+      "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
       "evidenceBranches": [],
       "siblingChoiceIds": []
     },
-    "0102Trial06_Choice001": {
+    "0102Trial04_Choice001": {
       "isCorrect": false,
       "resultRange": [
-        "0102Trial06_Ema005",
-        "0102Trial06_Ema010"
+        "0102Trial04_Ema003",
+        "0102Trial04_Ema008"
       ],
       "note": "",
       "isBadEnd": false,
       "badEndId": null,
-      "optionId": "Objection_01_02_06_01",
+      "optionId": "Objection_01_02_04_01",
       "parentChoice": null,
+      "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
       "evidenceBranches": [],
-      "siblingChoiceIds": [
-        "0102Trial06_Choice002"
-      ]
+      "siblingChoiceIds": []
     },
-    "0102Trial06_Choice002": {
-      "isCorrect": true,
+    "0102Trial04_Choice002": {
+      "isCorrect": false,
       "resultRange": [
-        "0102Trial06_Ema030",
-        "0102Trial06_Ema035"
+        "0102Trial04_Ema009",
+        "0102Trial04_Ema013"
       ],
       "note": "",
       "isBadEnd": false,
       "badEndId": null,
-      "optionId": "Objection_01_02_06_01",
+      "optionId": "Objection_01_02_04_02",
       "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial04_Choice003": {
+      "isCorrect": true,
+      "resultRange": [
+        "0102Trial04_Ema014",
+        "0102Trial04_Ema015"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_04_03",
+      "parentChoice": null,
+      "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
       "evidenceBranches": [
         {
           "evidence": "汉娜的录音数据",
-          "isCorrect": true,
+          "isCorrect": false,
           "isSpecial": false,
           "resultRange": [
-            "0102Trial06_Sherry017",
-            "0102Trial06_Sherry029"
+            "0102Trial04_Alisa004",
+            "0102Trial04_Ema019"
           ]
         },
         {
           "evidence": "汉娜的录音数据",
-          "isCorrect": false,
+          "isCorrect": true,
           "isSpecial": false,
           "resultRange": [
-            "0102Trial06_Sherry015",
-            "0102Trial06_Ema038"
+            "0102Trial04_Ema023",
+            "0102Trial04_Meruru012"
+          ]
+        },
+        {
+          "evidence": "拷问秀的邀请文",
+          "isCorrect": false,
+          "isSpecial": true,
+          "resultRange": [
+            "0102Trial04_Hanna004",
+            "0102Trial04_Ema022"
           ]
         }
       ],
-      "siblingChoiceIds": [
-        "0102Trial06_Choice001"
-      ]
-    },
-    "0102Trial06_Choice003": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial06_Ema011",
-        "0102Trial06_Ema015"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_06_02",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
       "siblingChoiceIds": []
-    },
-    "0102Trial06_Choice004": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial06_Ema016",
-        "0102Trial06_Ema020"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_06_03",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial06_Choice005": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial06_Ema021",
-        "0102Trial06_Ema024"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_06_04",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial06_Choice006": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial06_Ema025",
-        "0102Trial06_Ema029"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_06_05",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial01_Choice001": {
-      "isCorrect": true,
-      "resultRange": [
-        "0102Trial01_Ema031",
-        "0102Trial01_Sherry016"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": null,
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial01_Choice002": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial01_Ema003",
-        "0102Trial01_Ema008"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": null,
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial01_Choice003": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial01_Ema009",
-        "0102Trial01_Ema014"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": null,
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial01_Choice004": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial01_Ema015",
-        "0102Trial01_Ema020"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": null,
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial01_Choice005": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial01_Ema021",
-        "0102Trial01_Ema025"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": null,
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial01_Choice006": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial01_Ema026",
-        "0102Trial01_Ema030"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": null,
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial13_Choice001": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial13_Ema003",
-        "0102Trial13_Ema009"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_13_01",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial13_Choice002": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial13_Ema010",
-        "0102Trial13_Ema016"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_13_02",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": [
-        "0102Trial13_Choice003"
-      ]
-    },
-    "0102Trial13_Choice003": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial13_Ema017",
-        "0102Trial13_Ema020"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_13_02",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": [
-        "0102Trial13_Choice002"
-      ]
-    },
-    "0102Trial13_Choice004": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial13_Ema021",
-        "0102Trial13_Ema025"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_13_04",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial13_Choice005": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial13_Ema026",
-        "0102Trial13_Ema029"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_13_03",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": [
-        "0102Trial13_Choice006"
-      ]
-    },
-    "0102Trial13_Choice006": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial13_Ema030",
-        "0102Trial13_Ema036"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_13_03",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": [
-        "0102Trial13_Choice005"
-      ]
-    },
-    "0102Trial13_Choice007": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial13_Ema037",
-        "0102Trial13_Ema042"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_13_05",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial13_Choice008": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial13_Ema043",
-        "0102Trial13_Ema048"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_13_06",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial13_Choice009": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial13_Ema049",
-        "0102Trial13_Ema055"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_13_07",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial13_Choice010": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial13_Ema056",
-        "0102Trial13_Ema062"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_13_08",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial13_Choice011": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial13_Ema063",
-        "0102Trial13_Ema066"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_13_09",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": [
-        "0102Trial13_Choice012"
-      ]
-    },
-    "0102Trial13_Choice012": {
-      "isCorrect": true,
-      "resultRange": [
-        "0102Trial13_Ema067",
-        "0102Trial13_Ema080"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_13_09",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": [
-        "0102Trial13_Choice011"
-      ]
-    },
-    "0102Trial09_Choice001": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial09_Ema003",
-        "0102Trial09_Ema006"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_09_01",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial09_Choice002": {
-      "isCorrect": true,
-      "resultRange": [
-        "0102Trial09_Ema023",
-        "0102Trial09_AnAn039"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_09_02",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial09_Choice003": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial09_Ema007",
-        "0102Trial09_Ema010"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_09_03",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial09_Choice004": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial09_Ema011",
-        "0102Trial09_Ema015"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_09_04",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial09_Choice005": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial09_Ema016",
-        "0102Trial09_Ema018"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_09_05",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial09_Choice006": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial09_Ema019",
-        "0102Trial09_Ema022"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_09_06",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial09_Choice007": {
-      "isCorrect": true,
-      "resultRange": [
-        "0102Trial09_Meruru004",
-        "0102Trial09_AnAn039"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": null,
-      "parentChoice": "0102Trial09_Choice002",
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial09_Choice008": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial09_Ema027",
-        "0102Trial09_Ema029"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": null,
-      "parentChoice": "0102Trial09_Choice002",
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial09_Choice009": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial09_Margo002",
-        "0102Trial09_Ema033"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": null,
-      "parentChoice": "0102Trial09_Choice002",
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial03_Choice001": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial03_Ema003",
-        "0102Trial03_Ema008"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_03_01",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial03_Choice002": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial03_Ema009",
-        "0102Trial03_Ema012"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_03_02",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial03_Choice003": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial03_Ema013",
-        "0102Trial03_Ema017"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_03_03",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial03_Choice004": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial03_Ema018",
-        "0102Trial03_Ema023"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_03_04",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": [
-        "0102Trial03_Choice005",
-        "0102Trial03_Choice006"
-      ]
-    },
-    "0102Trial03_Choice005": {
-      "isCorrect": true,
-      "resultRange": [
-        "0102Trial03_Ema032",
-        "0102Trial03_Nanoka032"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_03_04",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": [
-        "0102Trial03_Choice004",
-        "0102Trial03_Choice006"
-      ]
-    },
-    "0102Trial03_Choice006": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial03_Ema024",
-        "0102Trial03_Ema031"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_03_04",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": [
-        "0102Trial03_Choice004",
-        "0102Trial03_Choice005"
-      ]
-    },
-    "0102Trial05_Choice001": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial05_Ema003",
-        "0102Trial05_Ema007"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_05_01",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial05_Choice002": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial05_Ema008",
-        "0102Trial05_Ema012"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_05_02",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial05_Choice003": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial05_Ema013",
-        "0102Trial05_Ema017"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_05_03",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial05_Choice004": {
-      "isCorrect": true,
-      "resultRange": [
-        "0102Trial05_Ema026",
-        "0102Trial05_Sherry011"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_05_04",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial05_Choice005": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial05_Ema018",
-        "0102Trial05_Ema022"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_05_05",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": [
-        "0102Trial05_Choice006"
-      ]
-    },
-    "0102Trial05_Choice006": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial05_Ema023",
-        "0102Trial05_Ema025"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_05_05",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": [
-        "0102Trial05_Choice005"
-      ]
     },
     "0102Trial10_Choice001": {
       "isCorrect": true,
@@ -1357,6 +698,7 @@
       "badEndId": null,
       "optionId": "Objection_01_02_10_01",
       "parentChoice": null,
+      "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
       "evidenceBranches": [],
@@ -1373,6 +715,7 @@
       "badEndId": null,
       "optionId": "Objection_01_02_10_02",
       "parentChoice": null,
+      "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
       "evidenceBranches": [],
@@ -1389,6 +732,7 @@
       "badEndId": null,
       "optionId": "Objection_01_02_10_03",
       "parentChoice": null,
+      "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
       "evidenceBranches": [],
@@ -1405,6 +749,7 @@
       "badEndId": null,
       "optionId": null,
       "parentChoice": "0102Trial10_Choice001",
+      "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
       "evidenceBranches": [],
@@ -1421,6 +766,7 @@
       "badEndId": null,
       "optionId": null,
       "parentChoice": "0102Trial10_Choice001",
+      "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
       "evidenceBranches": [],
@@ -1437,6 +783,7 @@
       "badEndId": null,
       "optionId": null,
       "parentChoice": "0102Trial10_Choice001",
+      "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
       "evidenceBranches": [],
@@ -1453,6 +800,7 @@
       "badEndId": null,
       "optionId": null,
       "parentChoice": "0102Trial10_Choice006",
+      "requiresChoice": null,
       "witness": "看守",
       "witnessBranches": [
         {
@@ -1515,376 +863,495 @@
       "badEndId": null,
       "optionId": null,
       "parentChoice": "0102Trial10_Choice006",
+      "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
       "evidenceBranches": [],
       "siblingChoiceIds": []
     },
-    "0102Trial02_Choice001": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial02_Ema004",
-        "0102Trial02_Ema009"
-      ],
+    "0103Trial02_Choice001": {
+      "isCorrect": null,
+      "resultRange": null,
       "note": "",
       "isBadEnd": false,
       "badEndId": null,
-      "optionId": "Objection_01_02_02_01",
+      "optionId": "Objection_01_03_02_01",
       "parentChoice": null,
+      "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
       "evidenceBranches": [],
       "siblingChoiceIds": []
     },
-    "0102Trial02_Choice002": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial02_Ema010",
-        "0102Trial02_Ema015"
-      ],
+    "0103Trial02_Choice002": {
+      "isCorrect": null,
+      "resultRange": null,
       "note": "",
       "isBadEnd": false,
       "badEndId": null,
-      "optionId": "Objection_01_02_02_02",
+      "optionId": "Objection_01_03_02_02",
       "parentChoice": null,
+      "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
       "evidenceBranches": [],
       "siblingChoiceIds": []
     },
-    "0102Trial02_Choice003": {
+    "0103Trial02_Choice003": {
+      "isCorrect": null,
+      "resultRange": null,
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_03_02_03",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0103Trial02_Choice004": {
+      "isCorrect": null,
+      "resultRange": null,
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_03_02_04",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0103Trial02_Choice005": {
       "isCorrect": true,
       "resultRange": [
-        "0102Trial02_Ema029",
-        "0102Trial02_Nanoka020"
+        "0103Trial02_Ema022",
+        "0103Trial02_Ema023"
       ],
       "note": "",
       "isBadEnd": false,
       "badEndId": null,
-      "optionId": "Objection_01_02_02_03",
+      "optionId": "Objection_01_03_02_05",
       "parentChoice": null,
+      "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
       "evidenceBranches": [],
       "siblingChoiceIds": []
     },
-    "0102Trial02_Choice004": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial02_Ema016",
-        "0102Trial02_Ema019"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_02_04",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial02_Choice005": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial02_Ema020",
-        "0102Trial02_Ema023"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_02_05",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": [
-        "0102Trial02_Choice006"
-      ]
-    },
-    "0102Trial02_Choice006": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial02_Ema024",
-        "0102Trial02_Ema028"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_02_05",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": [
-        "0102Trial02_Choice005"
-      ]
-    },
-    "0102Trial14_Choice001": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial14_Ema010",
-        "0102Trial14_Ema014"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_14_01",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial14_Choice002": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial14_Ema015",
-        "0102Trial14_Ema018"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_14_02",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial14_Choice003": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial14_Ema019",
-        "0102Trial14_Ema022"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_14_03",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial14_Choice004": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial14_Ema023",
-        "0102Trial14_Ema027"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_14_04",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial14_Choice005": {
+    "0103Trial02_Choice006": {
       "isCorrect": true,
       "resultRange": [
-        "0102Trial14_Ema032",
-        "0102Trial14_Ema035"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_14_05",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial14_Choice006": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial14_Ema028",
-        "0102Trial14_Ema031"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_02_14_06",
-      "parentChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial14_Choice007": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial14_Ema036",
-        "0102Trial14_Ema038"
+        "0103Trial02_Ema034",
+        "0103Trial02_Ema038"
       ],
       "note": "",
       "isBadEnd": false,
       "badEndId": null,
       "optionId": null,
-      "parentChoice": "0102Trial14_Choice005",
+      "parentChoice": "0103Trial02_Choice005",
+      "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial14_Choice008": {
-      "isCorrect": false,
-      "resultRange": [
-        "0102Trial14_Ema039",
-        "0102Trial14_Ema042"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": null,
-      "parentChoice": "0102Trial14_Choice005",
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0102Trial14_Choice009": {
-      "isCorrect": true,
-      "resultRange": [
-        "0102Trial14_Ema043",
-        "0102Trial14_Ema043"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": null,
-      "parentChoice": "0102Trial14_Choice005",
-      "witness": "米莉亚",
-      "witnessBranches": [
+      "evidenceBranches": [
         {
-          "witness": "安安",
-          "isCorrect": false,
-          "isSpecial": true,
-          "resultRange": [
-            "0102Trial14_Ema044",
-            "0102Trial14_Ema046"
-          ]
-        },
-        {
-          "witness": "艾玛",
-          "isCorrect": false,
-          "isSpecial": true,
-          "resultRange": [
-            "0102Trial14_Ema047",
-            "0102Trial14_Ema049"
-          ]
-        },
-        {
-          "witness": "奈叶香",
-          "isCorrect": false,
-          "isSpecial": true,
-          "resultRange": [
-            "0102Trial14_Ema050",
-            "0102Trial14_Ema052"
-          ]
-        },
-        {
-          "witness": "米莉亚",
+          "evidence": "烧焦的痕迹",
           "isCorrect": false,
           "isSpecial": false,
           "resultRange": [
-            "0102Trial14_Nanoka013",
-            "0102Trial14_Ema054"
+            "0103Trial02_Sherry005",
+            "0103Trial02_Ema045"
           ]
         },
         {
-          "witness": "米莉亚",
+          "evidence": "烧焦的痕迹",
           "isCorrect": true,
           "isSpecial": false,
           "resultRange": [
-            "0102Trial14_Miria001",
-            "0102Trial14_AnAn041"
+            "0103Trial02_Margo023",
+            "0103Trial02_Coco005"
           ]
         }
       ],
-      "evidenceBranches": [],
       "siblingChoiceIds": []
     },
-    "0102Trial04_Choice001": {
+    "0103Trial02_Choice007": {
       "isCorrect": false,
       "resultRange": [
-        "0102Trial04_Ema003",
-        "0102Trial04_Ema008"
+        "0103Trial02_Ema024",
+        "0103Trial02_Ema028"
       ],
       "note": "",
       "isBadEnd": false,
       "badEndId": null,
-      "optionId": "Objection_01_02_04_01",
-      "parentChoice": null,
+      "optionId": null,
+      "parentChoice": "0103Trial02_Choice005",
+      "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
       "evidenceBranches": [],
       "siblingChoiceIds": []
     },
-    "0102Trial04_Choice002": {
+    "0103Trial02_Choice008": {
       "isCorrect": false,
       "resultRange": [
-        "0102Trial04_Ema009",
-        "0102Trial04_Ema013"
+        "0103Trial02_Ema029",
+        "0103Trial02_Ema033"
       ],
       "note": "",
       "isBadEnd": false,
       "badEndId": null,
-      "optionId": "Objection_01_02_04_02",
-      "parentChoice": null,
+      "optionId": null,
+      "parentChoice": "0103Trial02_Choice005",
+      "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
       "evidenceBranches": [],
       "siblingChoiceIds": []
     },
-    "0102Trial04_Choice003": {
+    "0102Trial06_Choice001": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial06_Ema005",
+        "0102Trial06_Ema010"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_06_01",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": [
+        "0102Trial06_Choice002"
+      ]
+    },
+    "0102Trial06_Choice002": {
       "isCorrect": true,
       "resultRange": [
-        "0102Trial04_Ema014",
-        "0102Trial04_Ema015"
+        "0102Trial06_Ema030",
+        "0102Trial06_Ema035"
       ],
       "note": "",
       "isBadEnd": false,
       "badEndId": null,
-      "optionId": "Objection_01_02_04_03",
+      "optionId": "Objection_01_02_06_01",
       "parentChoice": null,
+      "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
       "evidenceBranches": [
         {
           "evidence": "汉娜的录音数据",
-          "isCorrect": false,
+          "isCorrect": true,
           "isSpecial": false,
           "resultRange": [
-            "0102Trial04_Alisa004",
-            "0102Trial04_Ema019"
+            "0102Trial06_Sherry017",
+            "0102Trial06_Sherry029"
           ]
         },
         {
           "evidence": "汉娜的录音数据",
-          "isCorrect": true,
+          "isCorrect": false,
           "isSpecial": false,
           "resultRange": [
-            "0102Trial04_Ema023",
-            "0102Trial04_Meruru012"
-          ]
-        },
-        {
-          "evidence": "拷问秀的邀请文",
-          "isCorrect": false,
-          "isSpecial": true,
-          "resultRange": [
-            "0102Trial04_Hanna004",
-            "0102Trial04_Ema022"
+            "0102Trial06_Sherry015",
+            "0102Trial06_Ema038"
           ]
         }
       ],
+      "siblingChoiceIds": [
+        "0102Trial06_Choice001"
+      ]
+    },
+    "0102Trial06_Choice003": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial06_Ema011",
+        "0102Trial06_Ema015"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_06_02",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
       "siblingChoiceIds": []
+    },
+    "0102Trial06_Choice004": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial06_Ema016",
+        "0102Trial06_Ema020"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_06_03",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial06_Choice005": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial06_Ema021",
+        "0102Trial06_Ema024"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_06_04",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial06_Choice006": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial06_Ema025",
+        "0102Trial06_Ema029"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_06_05",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial13_Choice001": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial13_Ema003",
+        "0102Trial13_Ema009"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_13_01",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial13_Choice002": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial13_Ema010",
+        "0102Trial13_Ema016"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_13_02",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": [
+        "0102Trial13_Choice003"
+      ]
+    },
+    "0102Trial13_Choice003": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial13_Ema017",
+        "0102Trial13_Ema020"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_13_02",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": [
+        "0102Trial13_Choice002"
+      ]
+    },
+    "0102Trial13_Choice004": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial13_Ema021",
+        "0102Trial13_Ema025"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_13_04",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial13_Choice005": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial13_Ema026",
+        "0102Trial13_Ema029"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_13_03",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": [
+        "0102Trial13_Choice006"
+      ]
+    },
+    "0102Trial13_Choice006": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial13_Ema030",
+        "0102Trial13_Ema036"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_13_03",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": [
+        "0102Trial13_Choice005"
+      ]
+    },
+    "0102Trial13_Choice007": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial13_Ema037",
+        "0102Trial13_Ema042"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_13_05",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial13_Choice008": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial13_Ema043",
+        "0102Trial13_Ema048"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_13_06",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial13_Choice009": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial13_Ema049",
+        "0102Trial13_Ema055"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_13_07",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial13_Choice010": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial13_Ema056",
+        "0102Trial13_Ema062"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_13_08",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial13_Choice011": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial13_Ema063",
+        "0102Trial13_Ema066"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_13_09",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": [
+        "0102Trial13_Choice012"
+      ]
+    },
+    "0102Trial13_Choice012": {
+      "isCorrect": true,
+      "resultRange": [
+        "0102Trial13_Ema067",
+        "0102Trial13_Ema080"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_13_09",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": [
+        "0102Trial13_Choice011"
+      ]
     },
     "0102Trial07_Choice001": {
       "isCorrect": false,
@@ -1897,6 +1364,7 @@
       "badEndId": null,
       "optionId": "Objection_01_02_07_01",
       "parentChoice": null,
+      "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
       "evidenceBranches": [],
@@ -1913,6 +1381,7 @@
       "badEndId": null,
       "optionId": "Objection_01_02_07_02",
       "parentChoice": null,
+      "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
       "evidenceBranches": [],
@@ -1929,6 +1398,7 @@
       "badEndId": null,
       "optionId": "Objection_01_02_07_03",
       "parentChoice": null,
+      "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
       "evidenceBranches": [],
@@ -1945,6 +1415,7 @@
       "badEndId": null,
       "optionId": "Objection_01_02_07_04",
       "parentChoice": null,
+      "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
       "evidenceBranches": [],
@@ -1961,6 +1432,7 @@
       "badEndId": null,
       "optionId": "Objection_01_02_07_05",
       "parentChoice": null,
+      "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
       "evidenceBranches": [],
@@ -1977,6 +1449,7 @@
       "badEndId": null,
       "optionId": null,
       "parentChoice": "0102Trial07_Choice004",
+      "requiresChoice": null,
       "witness": "夏目安安",
       "witnessBranches": [
         {
@@ -2030,6 +1503,864 @@
       "badEndId": null,
       "optionId": null,
       "parentChoice": "0102Trial07_Choice004",
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0103Trial03_Choice001": {
+      "isCorrect": true,
+      "resultRange": [
+        "0103Trial03_Ema028",
+        "0103Trial03_Nanoka011"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_03_03_01",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0103Trial03_Choice002": {
+      "isCorrect": null,
+      "resultRange": null,
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_03_03_02",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0103Trial03_Choice003": {
+      "isCorrect": null,
+      "resultRange": null,
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_03_03_03",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": [
+        "0103Trial03_Choice004"
+      ]
+    },
+    "0103Trial03_Choice004": {
+      "isCorrect": null,
+      "resultRange": null,
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_03_03_03",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": [
+        "0103Trial03_Choice003"
+      ]
+    },
+    "0103Trial03_Choice005": {
+      "isCorrect": false,
+      "resultRange": [
+        "0103Trial03_Ema021",
+        "0103Trial03_Ema027"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_03_03_04",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial03_Choice001": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial03_Ema003",
+        "0102Trial03_Ema008"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_03_01",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial03_Choice002": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial03_Ema009",
+        "0102Trial03_Ema012"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_03_02",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial03_Choice003": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial03_Ema013",
+        "0102Trial03_Ema017"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_03_03",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial03_Choice004": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial03_Ema018",
+        "0102Trial03_Ema023"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_03_04",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": [
+        "0102Trial03_Choice005",
+        "0102Trial03_Choice006"
+      ]
+    },
+    "0102Trial03_Choice005": {
+      "isCorrect": true,
+      "resultRange": [
+        "0102Trial03_Ema032",
+        "0102Trial03_Nanoka032"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_03_04",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": [
+        "0102Trial03_Choice004",
+        "0102Trial03_Choice006"
+      ]
+    },
+    "0102Trial03_Choice006": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial03_Ema024",
+        "0102Trial03_Ema031"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_03_04",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": [
+        "0102Trial03_Choice004",
+        "0102Trial03_Choice005"
+      ]
+    },
+    "0102Trial01_Choice001": {
+      "isCorrect": true,
+      "resultRange": [
+        "0102Trial01_Ema031",
+        "0102Trial01_Sherry016"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_01_01",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial01_Choice002": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial01_Ema003",
+        "0102Trial01_Ema008"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_01_02",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial01_Choice003": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial01_Ema009",
+        "0102Trial01_Ema014"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_01_03",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial01_Choice004": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial01_Ema015",
+        "0102Trial01_Ema020"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_01_04",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial01_Choice005": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial01_Ema021",
+        "0102Trial01_Ema025"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_01_05",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial01_Choice006": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial01_Ema026",
+        "0102Trial01_Ema030"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_01_06",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial05_Choice001": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial05_Ema003",
+        "0102Trial05_Ema007"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_05_01",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial05_Choice002": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial05_Ema008",
+        "0102Trial05_Ema012"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_05_02",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial05_Choice003": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial05_Ema013",
+        "0102Trial05_Ema017"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_05_03",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial05_Choice004": {
+      "isCorrect": true,
+      "resultRange": [
+        "0102Trial05_Ema026",
+        "0102Trial05_Sherry011"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_05_04",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial05_Choice005": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial05_Ema018",
+        "0102Trial05_Ema022"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_05_05",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": [
+        "0102Trial05_Choice006"
+      ]
+    },
+    "0102Trial05_Choice006": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial05_Ema023",
+        "0102Trial05_Ema025"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_05_05",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": [
+        "0102Trial05_Choice005"
+      ]
+    },
+    "0102Trial02_Choice001": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial02_Ema004",
+        "0102Trial02_Ema009"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_02_01",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial02_Choice002": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial02_Ema010",
+        "0102Trial02_Ema015"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_02_02",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial02_Choice003": {
+      "isCorrect": true,
+      "resultRange": [
+        "0102Trial02_Ema029",
+        "0102Trial02_Nanoka020"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_02_03",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial02_Choice004": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial02_Ema016",
+        "0102Trial02_Ema019"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_02_04",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial02_Choice005": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial02_Ema020",
+        "0102Trial02_Ema023"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_02_05",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": [
+        "0102Trial02_Choice006"
+      ]
+    },
+    "0102Trial02_Choice006": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial02_Ema024",
+        "0102Trial02_Ema028"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_02_05",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": [
+        "0102Trial02_Choice005"
+      ]
+    },
+    "0102Trial14_Choice001": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial14_Ema010",
+        "0102Trial14_Ema014"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_14_01",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial14_Choice002": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial14_Ema015",
+        "0102Trial14_Ema018"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_14_02",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial14_Choice003": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial14_Ema019",
+        "0102Trial14_Ema022"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_14_03",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial14_Choice004": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial14_Ema023",
+        "0102Trial14_Ema027"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_14_04",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial14_Choice005": {
+      "isCorrect": true,
+      "resultRange": [
+        "0102Trial14_Ema032",
+        "0102Trial14_Ema035"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_14_05",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial14_Choice006": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial14_Ema028",
+        "0102Trial14_Ema031"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_14_06",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial14_Choice007": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial14_Ema036",
+        "0102Trial14_Ema038"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": null,
+      "parentChoice": "0102Trial14_Choice005",
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial14_Choice008": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial14_Ema039",
+        "0102Trial14_Ema042"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": null,
+      "parentChoice": "0102Trial14_Choice005",
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial14_Choice009": {
+      "isCorrect": true,
+      "resultRange": [
+        "0102Trial14_Ema043",
+        "0102Trial14_Ema043"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": null,
+      "parentChoice": "0102Trial14_Choice005",
+      "requiresChoice": null,
+      "witness": "米莉亚",
+      "witnessBranches": [
+        {
+          "witness": "安安",
+          "isCorrect": false,
+          "isSpecial": true,
+          "resultRange": [
+            "0102Trial14_Ema044",
+            "0102Trial14_Ema046"
+          ]
+        },
+        {
+          "witness": "艾玛",
+          "isCorrect": false,
+          "isSpecial": true,
+          "resultRange": [
+            "0102Trial14_Ema047",
+            "0102Trial14_Ema049"
+          ]
+        },
+        {
+          "witness": "奈叶香",
+          "isCorrect": false,
+          "isSpecial": true,
+          "resultRange": [
+            "0102Trial14_Ema050",
+            "0102Trial14_Ema052"
+          ]
+        },
+        {
+          "witness": "米莉亚",
+          "isCorrect": false,
+          "isSpecial": false,
+          "resultRange": [
+            "0102Trial14_Nanoka013",
+            "0102Trial14_Ema054"
+          ]
+        },
+        {
+          "witness": "米莉亚",
+          "isCorrect": true,
+          "isSpecial": false,
+          "resultRange": [
+            "0102Trial14_Miria001",
+            "0102Trial14_AnAn041"
+          ]
+        }
+      ],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial09_Choice001": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial09_Ema003",
+        "0102Trial09_Ema006"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_09_01",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial09_Choice002": {
+      "isCorrect": true,
+      "resultRange": [
+        "0102Trial09_Ema023",
+        "0102Trial09_AnAn039"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_09_02",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial09_Choice003": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial09_Ema007",
+        "0102Trial09_Ema010"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_09_03",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial09_Choice004": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial09_Ema011",
+        "0102Trial09_Ema015"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_09_04",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial09_Choice005": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial09_Ema016",
+        "0102Trial09_Ema018"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_09_05",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial09_Choice006": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial09_Ema019",
+        "0102Trial09_Ema022"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_02_09_06",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial09_Choice007": {
+      "isCorrect": true,
+      "resultRange": [
+        "0102Trial09_Meruru004",
+        "0102Trial09_AnAn039"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": null,
+      "parentChoice": "0102Trial09_Choice002",
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial09_Choice008": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial09_Ema027",
+        "0102Trial09_Ema029"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": null,
+      "parentChoice": "0102Trial09_Choice002",
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0102Trial09_Choice009": {
+      "isCorrect": false,
+      "resultRange": [
+        "0102Trial09_Margo002",
+        "0102Trial09_Ema033"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": null,
+      "parentChoice": "0102Trial09_Choice002",
+      "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
       "evidenceBranches": [],

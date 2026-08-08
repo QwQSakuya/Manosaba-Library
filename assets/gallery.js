@@ -33,7 +33,8 @@
     filtered: [],        // 当前可见条目
     activeCategory: 'all',
     searchQuery: '',
-    lightboxIndex: -1
+    lightboxIndex: -1,
+    r2Base: ''           // R2 原图基础地址 (data/r2-config.json)
   };
 
   /* ── DOM 缓存 ── */
@@ -55,6 +56,7 @@
     els.lbClose  = MS.$('.lb-close', els.lightbox);
     els.lbPrev   = MS.$('.lb-prev', els.lightbox);
     els.lbNext   = MS.$('.lb-next', els.lightbox);
+    els.lbDownload = d.getElementById('lb-download');
 
     // 提前解析 URL 参数: wakeup=1 时跳过光圈加载动画, 改用闭眼黑幕
     // (在 fetchData 之前执行, 确保加载动画完全不会出现)
@@ -115,7 +117,11 @@
 
   /* ── 拉取数据 ── */
   function fetchData() {
-    MS.fetchJSON('data/gallery-manifest.json', 15000)
+    MS.fetchJSON('data/r2-config.json', 8000)
+      .then(function (cfg) {
+        state.r2Base = ((cfg && cfg.baseUrl) || '').replace(/\/+$/, '');
+        return MS.fetchJSON('data/gallery-manifest.json', 15000);
+      })
       .then(function (data) {
         state.categories = (data.categories || []).slice();
         state.items = data.items || [];
@@ -338,6 +344,19 @@
     els.lbCaption.textContent = title;
     els.lbCounter.textContent = (idx + 1) + ' / ' + list.length;
 
+    // 原图下载按钮 (R2 已配置且该条目有原图时显示)
+    var dl = els.lbDownload;
+    if (dl) {
+      if (state.r2Base && it.original) {
+        var rel = it.original.split('/').map(encodeURIComponent).join('/');
+        dl.href = state.r2Base + '/' + rel;
+        dl.style.display = '';
+      } else {
+        dl.href = '#';
+        dl.style.display = 'none';
+      }
+    }
+
     // 预加载相邻图片
     preload(idx - 1);
     preload(idx + 1);
@@ -367,6 +386,10 @@
     els.lbImg.alt = '';
     els.lbCaption.textContent = '';
     els.lbCounter.textContent = '';
+    if (els.lbDownload) {
+      els.lbDownload.href = '#';
+      els.lbDownload.style.display = 'none';
+    }
   }
 
   /* ── 错误状态 ── */

@@ -178,6 +178,27 @@
   color: rgba(255,255,255,0.5);
   pointer-events: none;
 }
+.lightbox .lb-download {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 18px;
+  border: 1px solid rgba(255,255,255,0.35);
+  border-radius: 999px;
+  color: rgba(255,255,255,0.85);
+  background: rgba(0,0,0,0.35);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  backdrop-filter: blur(4px);
+  z-index: 3;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+.lightbox .lb-download:hover {
+  background: rgba(255,255,255,0.9);
+  color: #15121e;
+}
 /* 灯箱图片淡入 (叠加在 content.css 的 scale 过渡上) */
 .lightbox img {
   transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
@@ -268,6 +289,7 @@
   <button class="lb-nav lb-next" aria-label="下一张">›</button>
   <div class="lb-counter" id="lb-counter"></div>
   <div class="lb-caption" id="lb-caption"></div>
+  <a id="lb-download" class="lb-download" href="#" download target="_blank" rel="noopener" style="display:none">下载原图</a>
 </div>
 
 <script src="assets/shared.js"></script>
