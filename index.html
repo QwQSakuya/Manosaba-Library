@@ -1176,6 +1176,35 @@ body.collapsing {
       else eggBouncer.style.display = 'block';
     });
   }
+
+  // ═══ 键盘彩蛋: 按 ← → ← → ← → 跳转 Bilibili (仅主页, 刷新即重置) ═══
+  (function () {
+    var SEQ = ['ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight'];
+    var pos = 0;
+    var EGG_URL = 'https://www.bilibili.com/video/BV1rP3164Emu/';
+    var lastKeyTime = 0;
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') {
+        pos = 0;                 // 按了其他键则中断序列
+        return;
+      }
+      var now = Date.now();
+      // 键间隔超过 2s 视为重新开始
+      if (now - lastKeyTime > 2000) pos = 0;
+      lastKeyTime = now;
+
+      if (e.key === SEQ[pos]) {
+        pos++;
+        if (pos >= SEQ.length) {
+          pos = 0;               // 重置, 避免连续触发
+          location.href = EGG_URL;
+        }
+      } else {
+        pos = e.key === SEQ[0] ? 1 : 0;
+      }
+    });
+  })();
 })();
 </script>
 <script src="assets/player-launcher.js" defer></script>
