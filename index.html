@@ -666,6 +666,52 @@ body.collapsing {
   0%   { height: 0; }
   100% { height: 50vh; }
 }
+
+/* ═══ 蝴蝶彩蛋: 左上角可交互蝴蝶 ═══ */
+.egg-fly {
+  position: fixed;
+  top: 11%;
+  left: 7%;
+  width: 58px;
+  color: var(--fg);
+  opacity: 0.10;
+  z-index: 40;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: opacity 0.35s ease, filter 0.35s ease;
+  animation: flutter-a 9s ease-in-out infinite alternate;
+  will-change: transform;
+}
+[data-theme="dark"] .egg-fly { opacity: 0.14; }
+.egg-fly:hover {
+  opacity: 0.55;
+  filter: brightness(1.8) drop-shadow(0 0 8px hsla(340, 70%, 60%, 0.65));
+}
+.egg-fly.egg-lit {
+  opacity: 0.8;
+  filter: brightness(2.1) drop-shadow(0 0 12px hsla(340, 85%, 65%, 0.9));
+}
+@media (prefers-reduced-motion: reduce) {
+  .egg-fly { animation: none !important; }
+}
+
+/* ═══ 蝴蝶彩蛋: 屏保弹跳图片 (正常图片, 无特效, 碰边界反弹) ═══ */
+.egg-bounce {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 80px;
+  height: auto;
+  z-index: 100000;
+  border-radius: 12px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-drag: none;
+  will-change: transform;
+}
+@media (max-width: 720px) {
+  .egg-bounce { width: 100px; }
+}
 </style>
 </head>
 <body>
@@ -717,12 +763,14 @@ body.collapsing {
     </g>
   </svg>
 
-  <!-- 蝴蝶 ×4 -->
-  <svg class="butterfly butterfly-1" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><path d="M60,50 C42,22 12,16 6,32 C0,48 16,58 32,56 C46,54 56,52 60,50 Z"/><path d="M60,50 C78,22 108,16 114,32 C120,48 104,58 88,56 C74,54 64,52 60,50 Z"/><path d="M60,50 C50,56 32,66 28,82 C25,92 38,90 48,80 C56,72 58,60 60,50 Z"/><path d="M60,50 C70,56 88,66 92,82 C95,92 82,90 72,80 C64,72 62,60 60,50 Z"/><ellipse cx="60" cy="50" rx="1.4" ry="18"/><path d="M59,33 Q54,24 49,21" fill="none" stroke="currentColor" stroke-width="0.8"/><path d="M61,33 Q66,24 71,21" fill="none" stroke="currentColor" stroke-width="0.8"/></g></svg>
+  <!-- 蝴蝶 ×3 (左上角 butterfly-1 已移出本层用于彩蛋交互) -->
   <svg class="butterfly butterfly-2" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><path d="M60,50 C42,22 12,16 6,32 C0,48 16,58 32,56 C46,54 56,52 60,50 Z"/><path d="M60,50 C78,22 108,16 114,32 C120,48 104,58 88,56 C74,54 64,52 60,50 Z"/><path d="M60,50 C50,56 32,66 28,82 C25,92 38,90 48,80 C56,72 58,60 60,50 Z"/><path d="M60,50 C70,56 88,66 92,82 C95,92 82,90 72,80 C64,72 62,60 60,50 Z"/><ellipse cx="60" cy="50" rx="1.4" ry="18"/><path d="M59,33 Q54,24 49,21" fill="none" stroke="currentColor" stroke-width="0.8"/><path d="M61,33 Q66,24 71,21" fill="none" stroke="currentColor" stroke-width="0.8"/></g></svg>
   <svg class="butterfly butterfly-3" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><path d="M60,50 C42,22 12,16 6,32 C0,48 16,58 32,56 C46,54 56,52 60,50 Z"/><path d="M60,50 C78,22 108,16 114,32 C120,48 104,58 88,56 C74,54 64,52 60,50 Z"/><path d="M60,50 C50,56 32,66 28,82 C25,92 38,90 48,80 C56,72 58,60 60,50 Z"/><path d="M60,50 C70,56 88,66 92,82 C95,92 82,90 72,80 C64,72 62,60 60,50 Z"/><ellipse cx="60" cy="50" rx="1.4" ry="18"/><path d="M59,33 Q54,24 49,21" fill="none" stroke="currentColor" stroke-width="0.8"/><path d="M61,33 Q66,24 71,21" fill="none" stroke="currentColor" stroke-width="0.8"/></g></svg>
   <svg class="butterfly butterfly-4" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><path d="M60,50 C42,22 12,16 6,32 C0,48 16,58 32,56 C46,54 56,52 60,50 Z"/><path d="M60,50 C78,22 108,16 114,32 C120,48 104,58 88,56 C74,54 64,52 60,50 Z"/><path d="M60,50 C50,56 32,66 28,82 C25,92 38,90 48,80 C56,72 58,60 60,50 Z"/><path d="M60,50 C70,56 88,66 92,82 C95,92 82,90 72,80 C64,72 62,60 60,50 Z"/><ellipse cx="60" cy="50" rx="1.4" ry="18"/><path d="M59,33 Q54,24 49,21" fill="none" stroke="currentColor" stroke-width="0.8"/><path d="M61,33 Q66,24 71,21" fill="none" stroke="currentColor" stroke-width="0.8"/></g></svg>
 </div>
+
+<!-- ═══ 蝴蝶彩蛋: 左上角交互蝴蝶 (独立于 bg-layer, 提升层级可点击) ═══ -->
+<svg class="butterfly egg-fly" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="currentColor"><path d="M60,50 C42,22 12,16 6,32 C0,48 16,58 32,56 C46,54 56,52 60,50 Z"/><path d="M60,50 C78,22 108,16 114,32 C120,48 104,58 88,56 C74,54 64,52 60,50 Z"/><path d="M60,50 C50,56 32,66 28,82 C25,92 38,90 48,80 C56,72 58,60 60,50 Z"/><path d="M60,50 C70,56 88,66 92,82 C95,92 82,90 72,80 C64,72 62,60 60,50 Z"/><ellipse cx="60" cy="50" rx="1.4" ry="18"/><path d="M59,33 Q54,24 49,21" fill="none" stroke="currentColor" stroke-width="0.8"/><path d="M61,33 Q66,24 71,21" fill="none" stroke="currentColor" stroke-width="0.8"/></g></svg>
 
 <!-- ═══ 主题切换 (右上角) ═══ -->
 <button id="theme-toggle" class="theme-toggle" aria-label="切换主题">
@@ -984,6 +1032,101 @@ body.collapsing {
           location.href = 'gallery.html?open=Still_330_001&wakeup=1';
         }, 1400);
       }
+    });
+  }
+
+  // ═══ 蝴蝶彩蛋: 点击变亮 + 播放语音 + 屏保弹跳图片 (仅本次会话, 刷新即重置) ═══
+  var eggFly = document.querySelector('.egg-fly');
+  if (eggFly) {
+    var EGG_VOICE_URL = 'https://pub-a8b6ccbb754d403c8383b8ea0caf6c6e.r2.dev/Assets/%23WitchTrials/Audio/Voice/Act02_Chapter01/Act02_Chapter01_Trial08/0201Trial08_Ema022.ogg';
+    var eggCtx = null;
+    var eggCache = null;
+    var eggBouncer = null;
+
+    function playEggVoice() {
+      try {
+        if (!eggCtx) eggCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (eggCtx.state === 'suspended') eggCtx.resume();
+        var src = eggCtx.createBufferSource();
+        src.connect(eggCtx.destination);
+        if (eggCache) {
+          src.buffer = eggCache;
+          src.start(0);
+          return;
+        }
+        fetch(EGG_VOICE_URL)
+          .then(function (r) { return r.arrayBuffer(); })
+          .then(function (buf) { return eggCtx.decodeAudioData(buf); })
+          .then(function (dec) {
+            eggCache = dec;
+            src.buffer = dec;
+            src.start(0);
+          })
+          .catch(function () {});
+      } catch (e) {}
+    }
+
+    // 屏保弹跳: 正常图片在屏幕中移动, 碰到浏览器边界镜面反弹 (入射角 = 出射角)
+    function buildBouncer() {
+      var img = document.createElement('img');
+      img.className = 'egg-bounce';
+      img.src = 'assets/egg-fubuki.jpg';
+      img.alt = '';
+      img.draggable = false;
+      document.body.appendChild(img);
+
+      var W = window.innerWidth;
+      var H = window.innerHeight;
+      var iw = img.offsetWidth;
+      var ih = img.offsetHeight;
+      var x = Math.max(0, (W - iw) / 2);
+      var y = Math.max(0, (H - ih) / 2);
+
+      // 随机斜向速度 (避免过于水平/垂直, 保证视觉上明显斜线移动)
+      var speed = 2.6;                       // px / 帧 (约 60fps)
+      var angle = (Math.random() * 90 - 45) * Math.PI / 180;
+      if (Math.random() < 0.5) angle += Math.PI / 2;
+      var vx = Math.cos(angle) * speed;
+      var vy = Math.sin(angle) * speed;
+      if (Math.abs(vx) < speed * 0.3) vx = vx < 0 ? -speed * 0.3 : speed * 0.3;
+      if (Math.abs(vy) < speed * 0.3) vy = vy < 0 ? -speed * 0.3 : speed * 0.3;
+
+      function tick() {
+        x += vx;
+        y += vy;
+        // 碰边界反弹: 速度分量取反 → 镜面反射 (入射角 = 出射角)
+        if (x <= 0) { x = 0; vx = Math.abs(vx); }
+        else if (x + iw >= W) { x = W - iw; vx = -Math.abs(vx); }
+        if (y <= 0) { y = 0; vy = Math.abs(vy); }
+        else if (y + ih >= H) { y = H - ih; vy = -Math.abs(vy); }
+        img.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+        requestAnimationFrame(tick);
+      }
+
+      // 窗口尺寸变化时更新边界
+      window.addEventListener('resize', function () {
+        W = window.innerWidth;
+        H = window.innerHeight;
+        if (x + iw > W) x = W - iw;
+        if (y + ih > H) y = H - ih;
+        if (x < 0) x = 0;
+        if (y < 0) y = 0;
+      });
+
+      // 点击图片 → 再次发声
+      img.addEventListener('click', function () {
+        playEggVoice();
+      });
+
+      requestAnimationFrame(tick);
+      return img;
+    }
+
+    eggFly.addEventListener('click', function () {
+      eggFly.classList.add('egg-lit');          // 维持变亮
+      playEggVoice();                            // 播放 0201Trial08_Ema022
+      if (!eggBouncer) eggBouncer = buildBouncer();
+      else eggBouncer.style.display = 'block';
     });
   }
 })();
