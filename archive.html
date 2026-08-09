@@ -153,6 +153,24 @@
   .archive-table th:nth-child(2),
   .archive-table td:nth-child(2) { display: none; }
 }
+
+/* ── 开屏: 哥特档案柜图标动画 ── */
+#splash-mark {
+  transform: perspective(400px) rotateX(12deg) scale(0.82);
+  opacity: 0;
+  animation: cabinetReveal 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.15s forwards;
+}
+@keyframes cabinetReveal {
+  from { transform: perspective(400px) rotateX(12deg) scale(0.82); opacity: 0; }
+  to   { transform: perspective(400px) rotateX(0deg) scale(1);    opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #splash-mark {
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
 </style>
 </head>
 <body>
@@ -160,9 +178,28 @@
 <div id="splash">
   <div id="splash-mark">
     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <circle class="aperture-ring" cx="50" cy="50" r="46"/>
-      <circle class="aperture-hub" cx="50" cy="50" r="6"/>
-      <path class="aperture-blade" style="transform-origin:50px 10px" d="M50,10 C42,22 42,38 50,50 C58,38 58,22 50,10 Z"/>
+      <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+        <!-- 柜体外框: 哥特尖拱顶 + 矩形主体 -->
+        <path d="M22,86 L22,34 Q22,14 50,10 Q78,14 78,34 L78,86 Z" fill="var(--panel-bg)" stroke-width="1.4"/>
+        <!-- 拱顶内装饰线 -->
+        <path d="M27,34 Q27,19 50,15 Q73,19 73,34" stroke-width="0.5" opacity="0.4"/>
+        <!-- 拱顶中心装饰点 -->
+        <circle cx="50" cy="22" r="1.2" fill="currentColor" stroke="none" opacity="0.5"/>
+        <!-- 抽屉分隔线 -->
+        <line x1="22" y1="48" x2="78" y2="48" stroke-width="0.7" opacity="0.45"/>
+        <line x1="22" y1="64" x2="78" y2="64" stroke-width="0.7" opacity="0.45"/>
+        <!-- 抽屉拉手 (小弧形) -->
+        <path d="M46,41 Q50,38 54,41" stroke-width="0.9" opacity="0.65"/>
+        <path d="M46,56 Q50,53 54,56" stroke-width="0.9" opacity="0.65"/>
+        <!-- 底层抽屉钥匙孔 -->
+        <circle cx="50" cy="72" r="1.5" stroke-width="0.7" opacity="0.55"/>
+        <path d="M48.7,73.5 L47,78 L53,78 L51.3,73.5" stroke-width="0.7" opacity="0.55"/>
+        <!-- 四角装饰线 -->
+        <g stroke-width="0.6" opacity="0.4">
+          <path d="M26,83 L26,80 M26,83 L29,83"/>
+          <path d="M74,83 L74,80 M74,83 L71,83"/>
+        </g>
+      </g>
     </svg>
   </div>
   <h1 id="splash-title">全素材库</h1>
