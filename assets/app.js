@@ -157,12 +157,22 @@ function voiceUrl(label) {
 function voiceBtnHtml(label) {
   if (!voiceMap || !voiceMap[label]) return '';
   return '<button class="ti-voice" type="button" data-voice="' + escapeHtml(label) +
-    '" aria-label="播放语音" title="播放语音">▶</button>';
+    '" aria-label="播放语音" title="播放语音">' +
+    '<svg class="vi-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>' +
+    '<svg class="vi-pause" viewBox="0 0 24 24" aria-hidden="true" style="display:none"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>' +
+    '</button>';
+}
+
+function setVoiceIcon(btn, playing) {
+  var play = btn.querySelector('.vi-play');
+  var pause = btn.querySelector('.vi-pause');
+  if (play) play.style.display = playing ? 'none' : '';
+  if (pause) pause.style.display = playing ? '' : 'none';
 }
 
 function resetVoiceButtons() {
   document.querySelectorAll('.ti-voice').forEach(function(btn) {
-    btn.textContent = '▶';
+    setVoiceIcon(btn, false);
   });
 }
 
@@ -181,7 +191,7 @@ function toggleVoice(label, btn) {
   // 点击正在播放的按钮 → 暂停
   if (voicePlayingLabel === label && !voiceAudio.paused) {
     voiceAudio.pause();
-    btn.textContent = '▶';
+    setVoiceIcon(btn, false);
     voicePlayingLabel = '';
     return;
   }
@@ -190,17 +200,17 @@ function toggleVoice(label, btn) {
   resetVoiceButtons();
   voiceAudio.src = url;
   voicePlayingLabel = label;
-  btn.textContent = '⏸';
+  setVoiceIcon(btn, true);
   voiceAudio.play().catch(function() {
-    btn.textContent = '▶';
+    setVoiceIcon(btn, false);
     voicePlayingLabel = '';
   });
   voiceAudio.onended = function() {
-    btn.textContent = '▶';
+    setVoiceIcon(btn, false);
     voicePlayingLabel = '';
   };
   voiceAudio.onerror = function() {
-    btn.textContent = '▶';
+    setVoiceIcon(btn, false);
     voicePlayingLabel = '';
   };
 }
