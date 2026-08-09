@@ -712,6 +712,36 @@ body.collapsing {
 @media (max-width: 720px) {
   .egg-bounce { width: 100px; }
 }
+/* 右下角彩蛋消息 */
+.egg-toast {
+  position: fixed;
+  right: 22px;
+  bottom: 28px;
+  z-index: 100001;
+  padding: 10px 22px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--panel-bg);
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.18);
+  font-family: "Noto Serif SC", serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.22em;
+  color: var(--accent);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(14px);
+  transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.35s;
+  pointer-events: none;
+}
+.egg-toast.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+@media (max-width: 720px) {
+  .egg-toast { right: 14px; bottom: 76px; font-size: 12px; padding: 8px 16px; }
+}
 </style>
 </head>
 <body>
@@ -1122,9 +1152,26 @@ body.collapsing {
       return img;
     }
 
+    // 右下角弹出 "kiang" 消息 (自动消失)
+    function showEggToast() {
+      var t = document.querySelector('.egg-toast');
+      if (!t) {
+        t = document.createElement('div');
+        t.className = 'egg-toast';
+        t.textContent = 'kiang';
+        document.body.appendChild(t);
+      }
+      t.classList.add('show');
+      clearTimeout(showEggToast._timer);
+      showEggToast._timer = setTimeout(function () {
+        t.classList.remove('show');
+      }, 2400);
+    }
+
     eggFly.addEventListener('click', function () {
       eggFly.classList.add('egg-lit');          // 维持变亮
       playEggVoice();                            // 播放 0201Trial08_Ema022
+      showEggToast();                            // 右下角弹出 kiang
       if (!eggBouncer) eggBouncer = buildBouncer();
       else eggBouncer.style.display = 'block';
     });
