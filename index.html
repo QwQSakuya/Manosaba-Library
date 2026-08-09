@@ -359,14 +359,16 @@ body { display: block; }
 
 /* ── 封锁卡片网格 ── */
 .future-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 14px;
 }
 
 /* ── 封锁卡片 ── */
 .future-card {
   position: relative;
+  width: 160px;
   padding: 24px 14px 18px;
   border: 1.5px dashed var(--fg3);
   border-radius: 3px;
@@ -466,7 +468,8 @@ body { display: block; }
 .future-card.unlocked:hover .fc-butterfly { opacity: 0.12; }
 
 @media (max-width: 720px) {
-  .future-cards { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .future-cards { gap: 12px; }
+  .future-card { width: calc(50% - 6px); }
 }
 
 /* ── 页脚 ── */
