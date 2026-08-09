@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-Hans" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>制作名单 — 大魔女图书馆</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500;1,700&family=Noto+Serif+SC:wght@700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/shared.css">
+<link rel="stylesheet" href="assets/content.css">
+<script>
+  (function () {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || saved === 'light') {
+      document.documentElement.setAttribute('data-theme', saved);
+    }
+  })();
+</script>
+<style>
+/* ═══════════════════════════════════════════════════
+   制作名单 页专属样式
+   ═══════════════════════════════════════════════════ */
+#splash-mark {
+  transform: perspective(500px) rotateY(-90deg);
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  animation: bookOpen 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.15s forwards;
+}
+@keyframes bookOpen {
+  from { transform: perspective(500px) rotateY(-90deg); opacity: 0; }
+  to   { transform: perspective(500px) rotateY(0deg);   opacity: 1; }
+}
+
+.credits-wrap {
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 34px;
+}
+.credits-intro {
+  font-family: "Noto Serif SC", serif;
+  font-size: 14px;
+  line-height: 2;
+  color: var(--fg2);
+  padding: 20px 24px;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 3px;
+  background: var(--panel-bg);
+}
+.credits-section {}
+.credits-section-title {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 14px;
+  font-family: "Noto Serif SC", serif;
+  font-weight: 900;
+  font-size: 17px;
+  letter-spacing: 0.1em;
+  color: var(--fg);
+}
+.credits-section-title .cs-num {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--accent);
+  letter-spacing: 0.06em;
+}
+.credits-section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--border), transparent);
+}
+.credits-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.credits-list li {
+  display: flex;
+  gap: 14px;
+  align-items: baseline;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--fg2);
+}
+.credits-list li .cl-role {
+  flex-shrink: 0;
+  min-width: 108px;
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  color: var(--fg3);
+}
+.credits-list li .cl-name {
+  color: var(--fg);
+  font-weight: 600;
+}
+.credits-list li .cl-note {
+  color: var(--fg3);
+  font-size: 12px;
+}
+.accomplice {
+  display: inline-block;
+  padding: 2px 10px;
+  margin-right: 6px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+}
+.credits-note {
+  font-size: 12px;
+  line-height: 1.9;
+  color: var(--fg3);
+  padding: 14px 18px;
+  border: 1px dashed var(--border);
+  border-radius: 3px;
+  background: var(--panel-bg);
+}
+.credits-note strong {
+  color: var(--fg2);
+}
+.credits-thanks {
+  text-align: center;
+  padding: 28px 20px 30px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: var(--panel-bg);
+}
+.thanks-title {
+  font-family: "Noto Serif SC", serif;
+  font-weight: 900;
+  font-size: 22px;
+  letter-spacing: 0.24em;
+  color: var(--fg);
+}
+.thanks-badge {
+  margin-top: 14px;
+  font-size: 14px;
+  padding: 4px 18px;
+}
+.thanks-list {
+  margin-top: 20px;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+.thanks-list li {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 12px;
+  align-items: baseline;
+  font-size: 15px;
+  line-height: 1.8;
+}
+.thanks-name {
+  font-family: "Noto Serif SC", serif;
+  font-weight: 900;
+  font-size: 17px;
+  letter-spacing: 0.14em;
+  color: var(--fg);
+}
+.thanks-work {
+  color: var(--fg2);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+}
+.ak-stage {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+}
+.ak-page {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.85s ease;
+}
+.ak-page.ak-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.ak-inner {
+  width: 100%;
+  max-width: 760px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.ak-line {
+  font-family: "Noto Serif SC", serif;
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: 0.14em;
+  line-height: 2.1;
+  text-align: center;
+  color: var(--fg);
+  padding: 0 24px;
+}
+.ak-line-final {
+  font-size: 34px;
+  font-weight: 900;
+  letter-spacing: 0.24em;
+  color: var(--accent);
+}
+.ak-pager {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  z-index: 90;
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  color: var(--fg3);
+  background: var(--header-bg);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 5px 16px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+</style>
+</head>
+<body>
+
+<div id="splash">
+  <div id="splash-mark">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle class="aperture-ring" cx="50" cy="50" r="46"/>
+      <circle class="aperture-hub" cx="50" cy="50" r="6"/>
+      <path class="aperture-blade" style="transform-origin:50px 10px" d="M50,10 C42,22 42,38 50,50 C58,38 58,22 50,10 Z"/>
+    </svg>
+  </div>
+  <h1 id="splash-title">制作名单</h1>
+  <p id="splash-sub">Credits</p>
+  <div id="splash-bar"></div>
+</div>
+
+<div id="bg-host"></div>
+
+<button id="theme-toggle" class="theme-toggle" aria-label="切换主题">
+  <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="6.34" y2="17.66"/><line x1="17.66" y1="6.34" x2="19.07" y2="4.93"/></svg>
+</button>
+
+<header class="c-header">
+  <a href="index.html" class="nav-link">← 返回</a>
+  <span class="c-title">制作名单</span>
+  <span class="c-subtitle">Credits</span>
+  <div class="c-spacer"></div>
+</header>
+
+<div class="ak-stage" id="ak-stage">
+  <section class="ak-page ak-active">
+    <div class="ak-inner">
+      <p class="credits-intro">
+        这是玩家自发建立的非官方资料站，基于解包文件整理。单纯为爱发电。
+      </p>
+      <h2 class="credits-section-title"><span class="cs-num">I</span>原作与版权</h2>
+      <ul class="credits-list">
+        <li><span class="cl-role">作品</span><span class="cl-name">魔法少女的魔女审判</span><span class="cl-note">魔法少女ノ魔女裁判 / Magical Girl Witch Trials</span></li>
+        <li><span class="cl-role">开发</span><span class="cl-name">Acacia / Re,AER LLC</span></li>
+        <li><span class="cl-role">中文版发行</span><span class="cl-name">CIRCLE LINE GAMES</span></li>
+        <li><span class="cl-role">企划</span><span class="cl-name">Acacia</span></li>
+        <li><span class="cl-role">导演 · 剧本</span><span class="cl-name">喜多南、泷口流</span></li>
+        <li><span class="cl-role">角色设计</span><span class="cl-name">梅まろ</span></li>
+        <li><span class="cl-role">插图</span><span class="cl-name">おむ、ナナホシコウ</span></li>
+        <li><span class="cl-role">背景插图</span><span class="cl-name">ふきた、Taurus Global Studio</span></li>
+        <li><span class="cl-role">BGM</span><span class="cl-name">近藤佑辅</span></li>
+        <li><span class="cl-role">主题曲</span><span class="cl-name">SLAVE.V-V-R</span><span class="cl-note">片尾曲：daiki</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="ak-page">
+    <div class="ak-inner">
+      <div class="credits-thanks">
+        <p class="thanks-title">感谢以下</p>
+        <p class="accomplice thanks-badge">共犯者</p>
+        <ul class="thanks-list">
+          <li><span class="thanks-name">影月</span><span class="thanks-work">—— 资料整理 · 解包与转换 · 站点开发</span></li>
+          <li><span class="thanks-name">〇〇</span><span class="thanks-work">—— 测试</span></li>
+          <li><span class="thanks-name">〇〇</span><span class="thanks-work">—— 测试</span></li>
+          <li><span class="thanks-name">〇〇</span><span class="thanks-work">—— 编辑</span></li>
+          <li><span class="thanks-name">〇〇</span><span class="thanks-work">—— 校对</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="ak-page">
+    <p class="ak-line">感谢游玩这款游戏的</p>
+  </section>
+
+  <section class="ak-page">
+    <p class="ak-line">对游戏怀有热爱、为本站驻足与付出的</p>
+  </section>
+
+  <section class="ak-page">
+    <p class="ak-line ak-line-final">“你”</p>
+  </section>
+
+  <section class="ak-page">
+    <p class="ak-line ak-line-final">“你”</p>
+  </section>
+
+  <section class="ak-page">
+    <p class="ak-line ak-line-final">“你”</p>
+  </section>
+
+  <section class="ak-page">
+    <div class="ak-inner">
+      <p class="credits-note">
+        <strong>免责声明：</strong>本站为非官方、非营利性质的粉丝资料站，
+        与《魔法少女的魔女审判》及其制作方无隶属关系。
+        站内全部素材版权归原作版权方所有，仅供学习、研究与同好交流使用，
+        请勿用于商业用途。若版权方要求移除相关内容，本站将立即配合。
+      </p>
+    </div>
+  </section>
+</div>
+
+<div class="ak-pager" id="ak-pager">01 / 08</div>
+
+<script src="assets/shared.js"></script>
+<script>
+  MS.restoreTheme();
+  MS.injectBgLayer('bg-host');
+  MS.initTheme();
+  MS.hideSplash(900);
+
+  (function () {
+    var stage = document.getElementById('ak-stage');
+    var pager = document.getElementById('ak-pager');
+    if (!stage || !pager) return;
+    var pages = Array.prototype.slice.call(stage.querySelectorAll('.ak-page'));
+    var idx = 0;
+    var lock = 0;
+    var pending = 0;
+    var touchY = null;
+    var splashDone = false;
+
+    window.setTimeout(function () { splashDone = true; }, 1100);
+
+    function refreshPager() {
+      pager.textContent = String(idx + 1).padStart(2, '0') + ' / ' + String(pages.length).padStart(2, '0');
+    }
+
+    function show(i) {
+      idx = i;
+      for (var j = 0; j < pages.length; j++) {
+        pages[j].classList.toggle('ak-active', j === i);
+      }
+      refreshPager();
+    }
+
+    function step(dir) {
+      var next = idx + dir;
+      if (next < 0 || next >= pages.length) return;
+      var now = Date.now();
+      if (now < lock) return;
+      show(next);
+      lock = now + 700;
+    }
+
+    window.addEventListener('wheel', function (e) {
+      if (!splashDone) return;
+      e.preventDefault();
+      pending += e.deltaY;
+      if (Math.abs(pending) < 30) return;
+      var dir = pending > 0 ? 1 : -1;
+      pending = 0;
+      step(dir);
+    }, { passive: false });
+
+    window.addEventListener('keydown', function (e) {
+      if (!splashDone) return;
+      if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
+        e.preventDefault();
+        step(1);
+      } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+        e.preventDefault();
+        step(-1);
+      }
+    });
+
+    window.addEventListener('touchstart', function (e) {
+      if (e.touches && e.touches[0]) {
+        touchY = e.touches[0].clientY;
+      }
+    }, { passive: true });
+
+    window.addEventListener('touchmove', function (e) {
+      if (!splashDone || touchY === null || !e.touches || !e.touches[0]) return;
+      var dy = touchY - e.touches[0].clientY;
+      if (Math.abs(dy) < 36) return;
+      touchY = e.touches[0].clientY;
+      e.preventDefault();
+      step(dy > 0 ? 1 : -1);
+    }, { passive: false });
+
+    refreshPager();
+  })();
+</script>
+</body>
+</html>
