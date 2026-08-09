@@ -1069,30 +1069,18 @@ body.collapsing {
   var eggFly = document.querySelector('.egg-fly');
   if (eggFly) {
     var EGG_VOICE_URL = 'https://pub-a8b6ccbb754d403c8383b8ea0caf6c6e.r2.dev/Assets/%23WitchTrials/Audio/Voice/Act02_Chapter01/Act02_Chapter01_Trial08/0201Trial08_Ema022.ogg';
-    var eggCtx = null;
-    var eggCache = null;
+    var eggAudio = null;
     var eggBouncer = null;
 
     function playEggVoice() {
       try {
-        if (!eggCtx) eggCtx = new (window.AudioContext || window.webkitAudioContext)();
-        if (eggCtx.state === 'suspended') eggCtx.resume();
-        var src = eggCtx.createBufferSource();
-        src.connect(eggCtx.destination);
-        if (eggCache) {
-          src.buffer = eggCache;
-          src.start(0);
-          return;
+        if (!eggAudio) {
+          eggAudio = new Audio(EGG_VOICE_URL);
+          eggAudio.preload = 'auto';
         }
-        fetch(EGG_VOICE_URL)
-          .then(function (r) { return r.arrayBuffer(); })
-          .then(function (buf) { return eggCtx.decodeAudioData(buf); })
-          .then(function (dec) {
-            eggCache = dec;
-            src.buffer = dec;
-            src.start(0);
-          })
-          .catch(function () {});
+        eggAudio.currentTime = 0;
+        var p = eggAudio.play();
+        if (p && p.catch) p.catch(function () {});
       } catch (e) {}
     }
 
