@@ -2641,11 +2641,11 @@ function _repositionVirtualNodes() {
       if (v._unlockParentRef) {
         // 解锁节点: 位于前置 Choice 虚拟节点正下方 (纵向延申, x 对齐形成树状链)
         v._lx = anchorVirt._lx;
-        v._ly = anchorVirt._ly + 140;
+        v._ly = anchorVirt._ly + 100;
       } else {
         // 被解锁的 Choice / 子选项: 从锚点扇开发散 (类似普通 Trial 分支)
-        var _fanX = v._isCorrect ? 96 : 68;
-        var _fanY = 76;
+        var _fanX = v._isCorrect ? 80 : 56;
+        var _fanY = 48;
         v._lx = anchorVirt._lx + _fanX + (idx % 2) * 10;
         v._ly = anchorVirt._ly + (idx + 1) * _fanY;
       }
@@ -2694,9 +2694,9 @@ function anchorVirtTo(virtNode, anchorNode) {
     }
   });
   // 动态定位到锚点附近 (正确前移, 错误侧向错开)
-  var fanX = virtNode._isCorrect ? 96 : 68;
+  var fanX = virtNode._isCorrect ? 80 : 56;
   virtNode._lx = anchorNode._lx + fanX;
-  virtNode._ly = anchorNode._ly + 76;
+  virtNode._ly = anchorNode._ly + 48;
   virtNode._origX = virtNode._lx;
   virtNode._origY = virtNode._ly;
   var el = document.querySelector('.node[data-id="' + virtNode.id + '"]');
