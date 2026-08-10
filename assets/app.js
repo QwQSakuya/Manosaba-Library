@@ -1932,9 +1932,11 @@ function openPhoneWithNode(node) {
 
   // 子选项 / 证人 / 证物 (仅非分支虚拟节点) — 分支节点只展示结果文本与导航
   var _hasSubChoices = false;
-  if (node._isVirtual && node._choiceId && node._trialNodeId && !node._branchKind) {
+  if (node._isVirtual && node._choiceId && node._trialNodeId) {
     var _annMap = ANNOTATIONS.trialChoices || {};
     var _trialNode = _nodeMap.get(node._trialNodeId);
+    // 分支节点: 子选项挂在分支下 (parentChoice = 分支引用); 主选项: 子选项挂在选项下
+    var _subParentId = node._branchKind ? node._branchRefId : node._choiceId;
     if (_trialNode && _trialNode.trialChoices) {
       var _subChoices = [];
       _trialNode.trialChoices.forEach(function(ch) {
@@ -1943,7 +1945,7 @@ function openPhoneWithNode(node) {
         // 锁定 Choice 不显示 (requiresChoice 未解锁)
         if (isChoiceLocked(ch.id)) return;
         var _ann = _annMap[ch.id];
-        if (_ann && _ann.parentChoice === node._choiceId) {
+        if (_ann && _ann.parentChoice === _subParentId) {
           _subChoices.push({ ch: ch, ann: _ann });
         }
       });
@@ -1965,28 +1967,45 @@ function openPhoneWithNode(node) {
         html += '</div>';
       }
     }
-    // 证人分支 (标注中的 witnessBranches)
-    var _curAnn = _annMap[node._choiceId];
-    if (_curAnn && _curAnn.witnessBranches && _curAnn.witnessBranches.length) {
-      _hasSubChoices = true;
-      html += '<div class="panel-section"><div class="panel-section-title">证人</div>';
-      _curAnn.witnessBranches.forEach(function(br, bi) {
-        var _brVirtId = 'virt_' + node._choiceId + '__wit_' + bi;
-        var _witName = br.witness || ('证人' + (bi + 1));
-        if (br.isSpecial === false && br.isCorrect === false) _witName = '非' + _witName;
-        html += '<div class="choice-item sub-choice-item" data-sub-choice="' + escapeHtml(_brVirtId) + '"><span class="choice-text">' + escapeHtml(_witName) + '</span>' + branchBadgeHtml(br) + '</div>';
-      });
-      html += '</div>';
+    // 证人/证物分支列表: 仅主选项展示 (分支节点只展示自己的子选项)
+    if (!node._branchKind) {
+      // 证人分支 (标注中的 witnessBranches)
+      var _curAnn = _annMap[node._choiceId];
+      if (_curAnn && _curAnn.witnessBranches && _curAnn.witnessBranches.length) {
+        _hasSubChoices = true;
+        html += '<div class="panel-section"><div class="panel-section-title">证人</div>';
+        _curAnn.witnessBranches.forEach(function(br, bi) {
+          var _brVirtId = 'virt_' + node._choiceId + '__wit_' + bi;
+          var _witName = br.witness || ('证人' + (bi + 1));
+          if (br.isSpecial === false && br.isCorrect === false) _witName = '非' + _witName;
+          html += '<div class="choice-item sub-choice-item" data-sub-choice="' + escapeHtml(_brVirtId) + '"><span class="choice-text">' + escapeHtml(_witName) + '</span>' + branchBadgeHtml(br) + '</div>';
+        });
+        html += '</div>';
+      }
+      // 证物分支 (标注中的 evidenceBranches)
+      if (_curAnn && _curAnn.evidenceBranches && _curAnn.evidenceBranches.length) {
+        _hasSubChoices = true;
+        html += '<div class="panel-section"><div class="panel-section-title">证物</div>';
+        _curAnn.evidenceBranches.forEach(function(br, bi) {
+          var _brVirtId = 'virt_' + node._choiceId + '__ev_' + bi;
+          var _evName = br.evidence || ('证物' + (bi + 1));
+          if (br.isSpecial === false && br.isCorrect === false) _evName = '非' + _evName;
+          html += '<div class="choice-item sub-choice-item" data-sub-choice="' + escapeHtml(_brVirtId) + '"><span class="choice-text">' + escapeHtml(_evName) + '</span>' + branchBadgeHtml(br) + '</div>';
+        });
+        html += '</div>';
+      }
     }
-    // 证物分支 (标注中的 evidenceBranches)
-    if (_curAnn && _curAnn.evidenceBranches && _curAnn.evidenceBranches.length) {
+    // 分支节点: 显示挂在分支下的子分支 (如 证人正确后再弹出证物选择)
+    else if (node._branchData && node._branchData.childBranches && node._branchData.childBranches.length) {
       _hasSubChoices = true;
-      html += '<div class="panel-section"><div class="panel-section-title">证物</div>';
-      _curAnn.evidenceBranches.forEach(function(br, bi) {
-        var _brVirtId = 'virt_' + node._choiceId + '__ev_' + bi;
-        var _evName = br.evidence || ('证物' + (bi + 1));
-        if (br.isSpecial === false && br.isCorrect === false) _evName = '非' + _evName;
-        html += '<div class="choice-item sub-choice-item" data-sub-choice="' + escapeHtml(_brVirtId) + '"><span class="choice-text">' + escapeHtml(_evName) + '</span>' + branchBadgeHtml(br) + '</div>';
+      html += '<div class="panel-section"><div class="panel-section-title">子分支</div>';
+      node._branchData.childBranches.forEach(function(cb2, ci) {
+        var subKind = (cb2.kind === 'witness' || cb2.kind === 'wit') ? 'wit' : 'ev';
+        var subVirtId = 'virt_' + node._branchRefId + '__' + subKind + '_' + ci;
+        var nameKey = (cb2.kind === 'witness' || cb2.kind === 'wit') ? 'witness' : 'evidence';
+        var subName = cb2[nameKey] || ('分支' + (ci + 1));
+        if (cb2.isSpecial === false && cb2.isCorrect === false) subName = '非' + subName;
+        html += '<div class="choice-item sub-choice-item" data-sub-choice="' + escapeHtml(subVirtId) + '"><span class="choice-text">' + escapeHtml(subName) + '</span>' + branchBadgeHtml(cb2) + '</div>';
       });
       html += '</div>';
     }
@@ -2283,32 +2302,24 @@ function filterMainlineDialogue(node) {
     for (var i = startIdx; i <= end; i++) {
       if (node.dialogue[i]) excludedLabels[node.dialogue[i].label] = true;
     }
-    // 同时过滤 witnessBranches 的 resultRange
-    if (ann.witnessBranches && ann.witnessBranches.length) {
-      ann.witnessBranches.forEach(function(wb) {
-        if (!wb.resultRange || wb.resultRange.length !== 2) return;
-        var wbStart = node.dialogue.findIndex(function(d) { return d.label === wb.resultRange[0]; });
-        var wbEnd = node.dialogue.findIndex(function(d) { return d.label === wb.resultRange[1]; });
-        if (wbStart === -1) return;
-        var wbLast = wbEnd === -1 ? wbStart : wbEnd;
-        for (var j = wbStart; j <= wbLast; j++) {
+    // 同时过滤 witnessBranches / evidenceBranches 的 resultRange (含嵌套子分支)
+    function collectBranchExclusions(branches) {
+      branches.forEach(function(br) {
+        if (!br.resultRange || br.resultRange.length !== 2) return;
+        var bStart = node.dialogue.findIndex(function(d) { return d.label === br.resultRange[0]; });
+        var bEnd = node.dialogue.findIndex(function(d) { return d.label === br.resultRange[1]; });
+        if (bStart === -1) return;
+        var bLast = bEnd === -1 ? bStart : bEnd;
+        for (var j = bStart; j <= bLast; j++) {
           if (node.dialogue[j]) excludedLabels[node.dialogue[j].label] = true;
+        }
+        if (br.childBranches && br.childBranches.length) {
+          collectBranchExclusions(br.childBranches);
         }
       });
     }
-    // 同时过滤 evidenceBranches 的 resultRange
-    if (ann.evidenceBranches && ann.evidenceBranches.length) {
-      ann.evidenceBranches.forEach(function(eb) {
-        if (!eb.resultRange || eb.resultRange.length !== 2) return;
-        var ebStart = node.dialogue.findIndex(function(d) { return d.label === eb.resultRange[0]; });
-        var ebEnd = node.dialogue.findIndex(function(d) { return d.label === eb.resultRange[1]; });
-        if (ebStart === -1) return;
-        var ebLast = ebEnd === -1 ? ebStart : ebEnd;
-        for (var j = ebStart; j <= ebLast; j++) {
-          if (node.dialogue[j]) excludedLabels[node.dialogue[j].label] = true;
-        }
-      });
-    }
+    if (ann.witnessBranches && ann.witnessBranches.length) collectBranchExclusions(ann.witnessBranches);
+    if (ann.evidenceBranches && ann.evidenceBranches.length) collectBranchExclusions(ann.evidenceBranches);
   });
 
   // 过滤出不在任何 resultRange 内的 dialogue
@@ -2412,53 +2423,67 @@ function buildVirtualObjectionNodes() {
       virtualNodes.push(virt);
       builtVirt[virtId] = virt;
 
-      // 证人与证物分支: 为 witnessBranches / evidenceBranches 生成虚拟节点
+      // 证人与证物分支: 为 witnessBranches / evidenceBranches 生成虚拟节点 (支持嵌套子分支)
       var branchGroups = [
         { key: 'witnessBranches', kind: 'witness', idPart: 'wit' },
         { key: 'evidenceBranches', kind: 'evidence', idPart: 'ev' }
       ];
+      function emitBranch(br, ref, kind, parentRef) {
+        var brId = 'virt_' + ref;
+        if (_nodeMap.has(brId) || builtVirt[brId]) return;
+        var brEntries = extractResultEntries(node, br.resultRange);
+        var brCorrect = br.isCorrect === true;
+        var nameKey = kind === 'witness' ? 'witness' : 'evidence';
+        var brName = br[nameKey] || '';
+        if (br.isSpecial === false && brCorrect === false) brName = '非' + brName;
+        var brTitle = (kind === 'witness' ? '证人·' : '证物·') + brName;
+        var brText = brEntries.map(function(d) {
+          return d.text.replace(/<[^>]*>/g, '').replace(/\n/g, ' ');
+        }).join(' ');
+        virtualNodes.push({
+          id: brId,
+          title: brTitle.slice(0, 15) + (brTitle.length > 15 ? '…' : ''),
+          level: 1,
+          parentId: node.id,
+          nextId: brCorrect ? node.nextId : null,
+          route: brCorrect ? 'normal' : 'objection-wrong',
+          type: brCorrect ? 'tr' : 'bd',
+          character: 'Objection',
+          summary: brText.slice(0, 40) + (brText.length > 40 ? '…' : ''),
+          text: brText,
+          dialogue: brEntries,
+          isChoice: false,
+          choices: [],
+          _isVirtual: true,
+          _isCorrect: brCorrect,
+          _choiceId: ch.id,
+          _branchRefId: ref,
+          _branchData: br,
+          _trialNodeId: node.id,
+          _parentChoiceId: parentRef || ch.id,
+          _branchKind: kind,
+          _branchLabel: brName,
+          _isSpecial: !!br.isSpecial,
+          _hidden: true,
+          x: 0, y: 0
+        });
+        builtVirt[brId] = true;
+        // 递归生成子分支 (如 证人正确后再弹出证物选择)
+        if (br.childBranches && br.childBranches.length) {
+          br.childBranches.forEach(function(cb2, ci) {
+            var subKind = (cb2.kind === 'witness' || cb2.kind === 'wit') ? 'witness' : 'evidence';
+            var subIdPart = subKind === 'witness' ? 'wit' : 'ev';
+            emitBranch(cb2, ref + '__' + subIdPart + '_' + ci, subKind, ref);
+          });
+        }
+      }
       branchGroups.forEach(function(bg) {
         var branches = ann[bg.key];
         if (!branches || !branches.length) return;
         branches.forEach(function(br, bi) {
           if (!br.resultRange || br.resultRange.length !== 2) return;
-          var brEntries = extractResultEntries(node, br.resultRange);
-          if (!brEntries.length) return;
-          var brId = 'virt_' + ch.id + '__' + bg.idPart + '_' + bi;
-          if (_nodeMap.has(brId)) return;
-          var brCorrect = br.isCorrect === true;
-          var brName = br[bg.kind] || '';
-          // 通用错误分支 (非特殊且非正确) 显示"非"+名称
-          if (br.isSpecial === false && brCorrect === false) brName = '非' + brName;
-          var brTitle = (bg.kind === 'witness' ? '证人·' : '证物·') + brName;
-          var brText = brEntries.map(function(d) {
-            return d.text.replace(/<[^>]*>/g, '').replace(/\n/g, ' ');
-          }).join(' ');
-          virtualNodes.push({
-            id: brId,
-            title: brTitle.slice(0, 15) + (brTitle.length > 15 ? '…' : ''),
-            level: 1,
-            parentId: node.id,
-            nextId: brCorrect ? node.nextId : null,
-            route: brCorrect ? 'normal' : 'objection-wrong',
-            type: brCorrect ? 'tr' : 'bd',
-            character: 'Objection',
-            summary: brText.slice(0, 40) + (brText.length > 40 ? '…' : ''),
-            text: brText,
-            dialogue: brEntries,
-            isChoice: false,
-            choices: [],
-            _isVirtual: true,
-            _isCorrect: brCorrect,
-            _choiceId: ch.id,
-            _trialNodeId: node.id,
-            _parentChoiceId: ch.id,
-            _branchKind: bg.kind,
-            _branchLabel: brName,
-            _isSpecial: !!br.isSpecial,
-            _hidden: true,
-            x: 0, y: 0
-          });
+          var brRef = ch.id + '__' + bg.idPart + '_' + bi;
+          emitBranch(br, brRef, bg.kind, null);
         });
       });
     });
