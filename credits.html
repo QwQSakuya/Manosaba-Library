@@ -140,6 +140,38 @@
   text-align: center;
   font-size: 14px;
 }
+.credits-contribute-desc {
+  font-family: "Noto Serif SC", serif;
+  font-size: 13px;
+  line-height: 2;
+  color: var(--fg2);
+  text-align: center;
+  margin: 4px 0 2px;
+}
+.credits-contribute-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+.credits-contribute-links a {
+  display: inline-block;
+  padding: 6px 16px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--btn-bg);
+  color: var(--accent);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  transition: border-color 0.25s ease, background 0.25s ease, color 0.25s ease;
+}
+.credits-contribute-links a:hover {
+  border-color: var(--accent);
+  background: var(--node-bg);
+  color: var(--fg);
+}
 .credits-thanks {
   text-align: center;
   padding: 28px 20px 30px;
@@ -367,6 +399,27 @@ html, body {
 
   <section class="ak-page">
     <div class="ak-inner">
+      <div class="credits-thanks">
+        <p class="thanks-title">想收录你的魔审 MOD 故事吗？</p>
+        <p class="accomplice thanks-badge">共犯者</p>
+        <p class="credits-contribute-desc">
+          本站的剧情资料，来自共犯者们用 Manosaba Trial Tagger 逐段标注。<br>
+          若你用魔审 MOD 创作了新的故事，也能自行标注并收录：<br><br>
+          ① 打开标注工具，加载你的 MOD 脚本<br>
+          ② 标注选项正确性、证物与证人分支、结果范围<br>
+          ③ 导出标注 JSON，提交到 GitHub 仓库<br><br>
+          让更多故事，在这座图书馆里留下痕迹。
+        </p>
+        <div class="credits-contribute-links">
+          <a href="https://github.com/QwQSakuya/Manosaba-trial-tagger" target="_blank" rel="noopener">标注工具 GitHub →</a>
+          <a href="https://github.com/QwQSakuya/Manosaba-Library" target="_blank" rel="noopener">图书馆仓库 →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ak-page">
+    <div class="ak-inner">
       <p class="credits-note">
         <strong>免责声明：</strong>本站为非官方、非营利性质的粉丝资料站，
         与《魔法少女的魔女审判》及其制作方无隶属关系。
@@ -377,7 +430,7 @@ html, body {
   </section>
 </div>
 
-<div class="ak-pager" id="ak-pager">01 / 08</div>
+<div class="ak-pager" id="ak-pager">01 / 09</div>
 
 <script src="assets/shared.js"></script>
 <script>
