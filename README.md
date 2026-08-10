@@ -124,6 +124,20 @@ Trial 审判场景中存在多个异议选项，其中部分是**错误选项**�
 - 标注格式：`"选项ID": { "isCorrect": true/false, "note": "说明" }`。`true`=正确推进，`false`=错误死路，不填=未知。
 - 标注按周目分文件：choiceId 以 `0101`-`0105` 开头的归 `annotations.act01.json`，以 `0201`-`0206` 开头的归 `annotations.act02.json`，键名结构与原合并版 `annotations.json` 完全一致，向后兼容。
 
+## 用魔审 MOD 创作你的故事页面
+
+本仓库的页面、数据格式与构建脚本都是开放的。如果你用魔女审判 MOD 创作了自己的故事，可以 **fork 本仓库**，用 [Manosaba Trial Tagger](https://github.com/QwQSakuya/Manosaba-Trial-Tagger) 标注故事，搭建一个属于你自己的资料页面：
+
+1. **写出故事脚本**：在魔审 MOD 中编写你的剧本（`.bytes` 或 `.txt`）。
+2. **逐段标注**：用 Manosaba Trial Tagger 加载脚本，标注选项正确性、结果范围、证物 / 证人分支与嵌套子分支，并分配 Objection ID。
+3. **导出标注**：在标注器中「导出 textfinder-merged」，得到 `annotations.actXX.json`。
+4. **转换剧情数据**：参照本仓库 `.trae/tools/build_story.py`，把你的故事脚本转换为 `data/actXX.json`（节点 / 分支 / 对话格式与官方章节一致）。
+5. **放入数据**：把转换后的剧情 JSON 与标注 JSON 放进 `data/` 目录。
+6. **新增页面**：参照 `act01.html` 复制一个故事页（`document.body.dataset.act` 指向你的数据文件），并在 `index.html` 的入口区加入你自己的卡片。
+7. **部署分享**：开启你 fork 仓库的 GitHub Pages，把属于你的故事分享给其他共犯者。
+
+> 提示：官方章节的解包素材（CG、音频、原始脚本）版权归原作方所有，请勿在自建页面中直接复用；你自己的 MOD 故事内容与标注由你自行负责。
+
 ## 意见箱反馈
 
 页面右下角有「意见箱」浮动按钮，点击会跳转到 GitHub Issues 提交页面，便于收集使用者反馈。
