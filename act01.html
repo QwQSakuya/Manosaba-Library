@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="一周目剧情节点图谱：艾玛篇全 5 章，支持缩放、平移、搜索、路线过滤与 Trial 标注。">
+<link rel="icon" type="image/x-icon" href="assets/favicon.ico">
 <title>大魔女图书馆 · 一周目</title>
 <link rel="stylesheet" href="assets/style.css?v=20260805c">
 </head>
@@ -12,6 +14,7 @@
 <h1 id="splash-title">大魔女图书馆</h1>
 <p id="splash-sub">Manosaba Library · Act01</p>
 <div id="splash-bar"></div>
+<p id="splash-loading">正在加载剧情数据…</p>
 </div>
 <header>
 <div class="header-nav">
@@ -58,8 +61,12 @@
 <div id="search-results"><div class="sr-header"><span>搜索结果</span><span class="sr-count" id="sr-count"></span></div><div class="sr-list" id="sr-list"></div></div>
 <div id="onboarding-overlay"></div>
 <div id="onboarding"></div>
-<button id="feedback-btn" onclick="window.open('https://github.com/QwQSakuya/Manosaba-Library/issues/new','_blank')">意见箱</button>
-<script src="assets/app.js?v=20260805e"></script>
+<div id="perf-tip" class="perf-tip" role="status">
+  <span>本页数据较大，首次加载可能需要数秒；若卡顿建议使用桌面浏览器。</span>
+  <button type="button" class="perf-tip-close">知道了</button>
+</div>
+<button id="feedback-btn" onclick="window.open('https://github.com/QwQSakuya/Manosaba-Library/issues/new','_blank','noopener,noreferrer')">意见箱</button>
+<script src="assets/app.js?v=20260811a"></script>
 <script src="assets/player-launcher.js" defer></script>
 </body>
 </html>

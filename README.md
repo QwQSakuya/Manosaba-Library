@@ -6,18 +6,21 @@
 
 ## 在线访问 (GitHub Pages)
 
-部署完成后访问：**<https://qwqsakuya.github.io/Manosaba-Library/>**
+在线访问：**<https://qwqsakuya.github.io/Manosaba-Library/>**（已上线，可直接访问）
 
-- 根 URL（`/`）→ 落地页：展示一周目 / 二周目入口卡片 + 四个资料栏目入口
-- `/act01.html` → 一周目节点图谱（Act01_Chapter01-05，约 206 节点）
-- `/act02.html` → 二周目节点图谱（Act02_Chapter01-06，约 201 节点）
+- 根 URL（`/`）→ 落地页：展示一周目 / 二周目入口卡片 + 资料栏目入口
+- `/act01.html` → 一周目节点图谱（Act01_Chapter01-05，205 节点）
+- `/act02.html` → 二周目节点图谱（Act02_Chapter01-06，201 节点）
 - `/records.html` → 记录·规定（世界观术语与监牢规定词条）
 - `/evidence.html` → 证物（按章节浏览证物图鉴与描述）
 - `/gallery.html` → CG 画廊（角度像 / 证物 / 事件插画 / 场景背景等分类浏览）
 - `/audio.html` → 语音和音乐（按场景 / 角色筛选语音，试听 BGM）
 - `/player.html` → 弹窗音乐播放器（由各页面通过 `player-launcher.js` 唤起）
+- `/archive.html` → 全素材库索引（仅供学习交流，请勿批量下载或用于商业传播）
+- `/credits.html` → 制作名单与免责声明
+- `/404.html` → 自定义 404 页
 
-首次部署需在仓库 **Settings → Pages** 中将 **Source** 设为 `Deploy from a branch`，分支选 `main`，目录选 `/`（root）。
+仓库已启用 GitHub Pages（分支 `main`、目录 `/`）。如需自定义域名，可在 **Settings → Pages** 中配置。
 
 ## 本地预览
 
@@ -41,6 +44,11 @@ python -m http.server 8000
 ├── gallery.html            # CG 画廊页
 ├── audio.html              # 语音和音乐页
 ├── player.html             # 弹窗音乐播放器
+├── archive.html            # 全素材库索引页
+├── credits.html            # 制作名单与免责声明
+├── 404.html                # 自定义 404 页
+├── robots.txt              # 搜索引擎抓取规则
+├── LICENSE                 # CC BY-NC-SA 4.0（游戏素材除外）
 ├── assets/
 │   ├── shared.css          # 公共样式（变量 / 主题 / 开屏 / 页头页脚）
 │   ├── shared.js           # 公共脚本（主题切换 / toast / 工具函数）
@@ -54,6 +62,8 @@ python -m http.server 8000
 │   ├── audio.js            # 语音和音乐页逻辑
 │   ├── player.js           # 弹窗播放器逻辑
 │   ├── player-launcher.js  # 弹窗播放器启动器（各页面通过它唤起 player.html）
+│   ├── favicon.ico         # 网站图标（由主页小盒子图生成）
+│   ├── og-card.png         # 社交分享卡片（1200×630）
 │   ├── audio/              # 音频资源（BGM / SFX / 语音，.ogg）
 │   └── cg/                 # CG 图片资源（.webp，按分类子目录）
 │       ├── angle/          # 角度像
@@ -65,18 +75,28 @@ python -m http.server 8000
 │       ├── misc/           # 其他（UI / 背景 / 特效纹理）
 │       └── pin/            # 角色立绘 pin
 ├── data/
-│   ├── act01.json              # 一周目剧情数据（Act01_Chapter01-05）
-│   ├── act02.json              # 二周目剧情数据（Act02_Chapter01-06）
+│   ├── act01.json              # 一周目剧情数据（Act01_Chapter01-05，发布版已压缩）
+│   ├── act02.json              # 二周目剧情数据（Act02_Chapter01-06，发布版已压缩）
+│   ├── raw-index.json          # 全素材库原始文件索引
 │   ├── annotations.act01.json  # 一周目 Trial 异议选项社区标注
 │   ├── annotations.act02.json  # 二周目 Trial 异议选项社区标注
 │   ├── records.json            # 记录·规定词条数据
 │   ├── records-candidates.json # 记录候选（待整理入 records.json）
 │   ├── evidence.json           # 证物数据（id / 名称 / 图 / 描述 / 关联节点）
 │   ├── gallery-manifest.json   # CG 画廊清单（分类 + 图片列表）
-│   └── audio-manifest.json     # 音频清单（SFX / BGM / 语音 + voiceBaseUrl）
+│   ├── audio-manifest.json     # 音频清单（SFX / BGM / 语音 + voiceBaseUrl）
+│   ├── voice-map.json          # 台词 label → 语音目录全量映射
+│   ├── voice-map.act01.json    # 一周目语音映射（页面优先加载）
+│   ├── voice-map.act02.json    # 二周目语音映射（页面优先加载）
+│   └── r2-config.json          # R2 素材桶公网地址
+├── tools/
+│   └── minify-data.mjs         # 发布前压缩剧情数据 + 拆分语音映射
+├── .github/
+│   ├── workflows/validate.yml  # 数据校验 CI（push / PR 自动运行）
+│   └── scripts/validate-data.mjs
 ├── phone.png / phone.webp  # 手机弹窗皮肤资源
 ├── nnk_box.webp            # 意见箱图标
-├── .trae/tools/
+├── .trae/tools/            # 本地构建脚本（未入库）
 │   ├── build_story.py          # 从 .bytes 剧本生成 act01.json + act02.json
 │   ├── build_audio_manifest.py # 生成 audio-manifest.json
 │   ├── build_evidence.py       # 生成 evidence.json
@@ -93,8 +113,10 @@ python -m http.server 8000
 
 为解决单页加载 400+ 节点导致的卡顿问题，剧情图谱按周目拆分为两个独立页面：
 
-- **一周目页 `act01.html`**：仅加载 `data/act01.json`（约 3.8MB，206 节点），渲染 Act01_Chapter01-05 节点图谱；顶部含「← 首页」链接；Act01_Chapter05 末尾节点详情面板含「→ 进入二周目」跨周目导航链接
-- **二周目页 `act02.html`**：仅加载 `data/act02.json`（约 2.8MB，201 节点），渲染 Act02_Chapter01-06 节点图谱；顶部含「← 一周目」+「← 首页」链接
+- **一周目页 `act01.html`**：仅加载 `data/act01.json`（发布版约 3.6MB，205 节点），渲染 Act01_Chapter01-05 节点图谱；顶部含「← 首页」链接；Act01_Chapter05 末尾节点详情面板含「→ 进入二周目」跨周目导航链接
+- **二周目页 `act02.html`**：仅加载 `data/act02.json`（发布版约 3.7MB，201 节点），渲染 Act02_Chapter01-06 节点图谱；顶部含「← 一周目」+「← 首页」链接
+
+> 数据说明：两个图谱页的原始数据约 5MB，发布前经 `tools/minify-data.mjs` 压缩；页面请求使用增量校验（数据未变化时服务器返回 304，不重复下载）。首次加载仍需数秒，页面会给出提示。
 
 两页共用 `assets/style.css` + `assets/app.js`，`app.js` 通过 `document.body.dataset.act` 判断当前周目并加载对应数据文件。
 
@@ -123,20 +145,31 @@ Trial 审判场景中存在多个异议选项，其中部分是**错误选项**�
 - 点击面板内的「✎ 编辑标注 (GitHub)」按钮，跳转到 GitHub 在线编辑对应周目的 annotations 文件。
 - 标注格式：`"选项ID": { "isCorrect": true/false, "note": "说明" }`。`true`=正确推进，`false`=错误死路，不填=未知。
 - 标注按周目分文件：choiceId 以 `0101`-`0105` 开头的归 `annotations.act01.json`，以 `0201`-`0206` 开头的归 `annotations.act02.json`，键名结构与原合并版 `annotations.json` 完全一致，向后兼容。
+- 标注文件的提交会经过仓库 CI 自动校验（JSON 格式、节点 id 唯一、语音映射键一致性），格式错误无法合入。
 
-## 用魔审 MOD 创作你的故事页面
+## 用本仓库制作你自己的故事节点页
 
-本仓库的页面、数据格式与构建脚本都是开放的。如果你用魔女审判 MOD 创作了自己的故事，可以 **fork 本仓库**，用 [Manosaba Trial Tagger](https://github.com/QwQSakuya/Manosaba-Trial-Tagger) 标注故事，搭建一个属于你自己的资料页面：
+这个仓库不只是官方章节的资料站，也**面向想自己制作剧情节点 / 故事页的用户**开放：fork 之后你得到一整套可直接运行、可部署的节点图谱模板与工具链。
 
-1. **写出故事脚本**：在魔审 MOD 中编写你的剧本（`.bytes` 或 `.txt`）。
-2. **逐段标注**：用 Manosaba Trial Tagger 加载脚本，标注选项正确性、结果范围、证物 / 证人分支与嵌套子分支，并分配 Objection ID。
+1. **fork 本仓库**。
+2. **用 [Manosaba Trial Tagger](https://github.com/QwQSakuya/Manosaba-Trial-Tagger) 标注审判节点**：标注选项正确性（正确 / 错误 / 中立）、结果范围、证物 / 证人分支与嵌套子分支，并分配 Objection ID。
 3. **导出标注**：在标注器中「导出 textfinder-merged」，得到 `annotations.actXX.json`。
-4. **转换剧情数据**：参照本仓库 `.trae/tools/build_story.py`，把你的故事脚本转换为 `data/actXX.json`（节点 / 分支 / 对话格式与官方章节一致）。
-5. **放入数据**：把转换后的剧情 JSON 与标注 JSON 放进 `data/` 目录。
-6. **新增页面**：参照 `act01.html` 复制一个故事页（`document.body.dataset.act` 指向你的数据文件），并在 `index.html` 的入口区加入你自己的卡片。
-7. **部署分享**：开启你 fork 仓库的 GitHub Pages，把属于你的故事分享给其他共犯者。
+4. **转换剧情数据**：参照 `.trae/tools/build_story.py`，把你的故事脚本转换为 `data/actXX.json`，然后运行 `node tools/minify-data.mjs` 压缩发布数据。
+5. **放入数据与页面**：把剧情 JSON 与标注 JSON 放进 `data/`，参照 `act01.html` 复制一个故事页（`document.body.dataset.act` 指向你的数据文件），并在 `index.html` 加入你的入口卡片。
+6. **部署分享**：开启你 fork 仓库的 GitHub Pages，把属于你的故事分享给其他共犯者。
+
+### 规划中的工具
+
+- **日常剧情（日常 act）节点自动化制作工具**：规划中，后续制作。
+- **Bad End 分支自动化制作工具**：规划中，后续制作。
+- 目前已经开放的是 **Trial 审判节点标注工具**（见上方 Manosaba Trial Tagger）。
 
 > 提示：官方章节的解包素材（CG、音频、原始脚本）版权归原作方所有，请勿在自建页面中直接复用；你自己的 MOD 故事内容与标注由你自行负责。
+
+## 许可与版权
+
+- 本仓库**自研的页面代码、脚本与社区标注**采用 [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)（署名—非商业性使用—相同方式共享）许可。
+- 《魔法少女的魔女审判》相关的**剧情数据、CG、音频等素材版权归 Acacia / Re,AER 及中文发行方所有，不在上述许可范围内**。本站为粉丝整理的非官方资料站，完整免责声明见 [credits.html](credits.html)。
 
 ## 意见箱反馈
 

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-Hans" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="页面不存在：大魔女图书馆 404 页面。">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+<title>404 — 大魔女图书馆</title>
+<link rel="stylesheet" href="assets/shared.css">
+<script>
+  (function () {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || saved === 'light') {
+      document.documentElement.setAttribute('data-theme', saved);
+    }
+  })();
+</script>
+<style>
+  .nf-wrap {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    padding: 48px 24px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+  .nf-logo {
+    width: 84px;
+    height: 84px;
+    border-radius: 18px;
+    border: 1px solid var(--border);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  }
+  .nf-code {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: clamp(64px, 14vw, 120px);
+    line-height: 1;
+    color: var(--fg);
+    margin: 10px 0 0;
+    letter-spacing: 0.06em;
+  }
+  .nf-sub {
+    font-size: 15px;
+    letter-spacing: 0.2em;
+    color: var(--fg2);
+    margin: 0;
+  }
+  .nf-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .nf-btn {
+    padding: 10px 22px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--btn-bg);
+    color: var(--fg);
+    text-decoration: none;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: border-color 0.25s ease, color 0.25s ease, background 0.25s ease;
+  }
+  .nf-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--panel-bg);
+  }
+</style>
+</head>
+<body>
+<div id="bg-host"></div>
+<main class="nf-wrap">
+  <img class="nf-logo" src="nnk_box.webp" alt="大魔女图书馆">
+  <h1 class="nf-code">404</h1>
+  <p class="nf-sub">这一页不在这座图书馆里</p>
+  <div class="nf-actions">
+    <a class="nf-btn" href="index.html">← 返回首页</a>
+    <button class="nf-btn" type="button" onclick="window.open('https://github.com/QwQSakuya/Manosaba-Library/issues/new','_blank','noopener,noreferrer')">意见箱</button>
+  </div>
+</main>
+<script src="assets/shared.js"></script>
+<script>
+  MS.restoreTheme();
+  MS.injectBgLayer('bg-host');
+  MS.initTheme();
+  MS.hideSplash(0);
+</script>
+</body>
+</html>

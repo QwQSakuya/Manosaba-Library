@@ -217,26 +217,31 @@ function toggleVoice(label, btn) {
 
 async function initData() {
   const actName = document.body.dataset.act || 'act01';
+  const loadingEl = document.getElementById('splash-loading');
+  if (loadingEl) loadingEl.textContent = '正在加载剧情数据…';
   try {
-    const res = await fetch('./data/' + actName + '.json?t=' + Date.now());
+    // cache:'no-cache'：每次向服务器重新校验，未变更时返回 304（几乎零流量），
+    // 变更时才会重新下载；既解决 Firefox 刷新后仍用旧数据的问题，
+    // 也不会像 ?t=时间戳 那样让每个访客每次刷新都重下全部数据。
+    const res = await fetch('./data/' + actName + '.json', { cache: 'no-cache' });
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
     NODES = data.nodes || [];
     _nodeMap = new Map(NODES.map(n => [n.id, n]));
 
     // 加载社区标注 (annotations.<act>.json), 失败时静默降级
-    // 带时间戳强制禁用缓存, 避免浏览器使用旧标注导致"待标注/无结果节点"
+    // cache:'no-cache' 同上：保证标注更新后能被拉到，同时不重复下载
     try {
-      const annRes = await fetch('./data/annotations.' + actName + '.json?t=' + Date.now());
+      const annRes = await fetch('./data/annotations.' + actName + '.json', { cache: 'no-cache' });
       if (annRes.ok) ANNOTATIONS = await annRes.json();
     } catch (e) { /* 静默: 无标注文件时使用空默认值 */ }
 
     // 加载语音映射 + R2 地址 (失败时静默降级, 不显示播放键)
     try {
-      const [cfgRes, vmRes] = await Promise.all([
-        fetch('./data/r2-config.json'),
-        fetch('./data/voice-map.json')
-      ]);
+      // 优先加载按周目拆分的语音映射（体积小）；fork 用户的仓库没有拆分文件时回退全量映射
+      let vmRes = await fetch('./data/voice-map.' + actName + '.json');
+      if (!vmRes.ok) vmRes = await fetch('./data/voice-map.json');
+      const cfgRes = await fetch('./data/r2-config.json');
       if (cfgRes.ok) {
         const cfg = await cfgRes.json();
         r2Base = (cfg.baseUrl || '').replace(/\/+$/, '');
@@ -264,6 +269,7 @@ async function initData() {
     // 数据加载完成后淡出开屏动画 (最少展示 2.4s 保证动画完整 + 连线渲染稳定)
     const elapsed = performance.now() - _splashStart;
     const delay = Math.max(0, 2400 - elapsed);
+    setTimeout(function() { showPerfTipOnce(); }, delay + 80);
     setTimeout(function() {
       // 等 2 帧 RAF 让 floatLoop 布局稳定 + 连线定位完成, 再隐藏 splash
       requestAnimationFrame(function() {
@@ -3295,6 +3301,23 @@ function initOnboarding() {
   try { done = localStorage.getItem('ob_done') === '1'; } catch (e) {}
   if (!done) {
     setTimeout(showOnboardingStep, 2500);
+  }
+}
+
+// 数据量较大的首次访问提示：可关闭，关闭后不再显示
+function showPerfTipOnce() {
+  var tip = document.getElementById('perf-tip');
+  if (!tip) return;
+  var done = false;
+  try { done = localStorage.getItem('ms_perf_tip') === '1'; } catch (e) {}
+  if (done) return;
+  tip.classList.add('show');
+  var btn = tip.querySelector('.perf-tip-close');
+  if (btn) {
+    btn.addEventListener('click', function() {
+      tip.classList.remove('show');
+      try { localStorage.setItem('ms_perf_tip', '1'); } catch (e) {}
+    });
   }
 }
 
