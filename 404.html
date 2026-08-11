@@ -3,10 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="页面不存在：大魔女图书馆 404 页面。">
+<meta name="description" content="页面未找到（404）—— 大魔女图书馆">
 <meta name="robots" content="noindex">
 <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
 <title>404 — 大魔女图书馆</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500;1,700&family=Noto+Serif+SC:wght@700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/shared.css">
 <script>
   (function () {
@@ -17,49 +20,136 @@
   })();
 </script>
 <style>
+  /* ═══ 404 — 查无此卷 ═══
+     哥特风 + 审判梗文案 + staggered 入场 (复用 shared.css enter-up/enter-divider) */
+
   .nf-wrap {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 18px;
+    gap: 16px;
     padding: 48px 24px;
     text-align: center;
     position: relative;
     z-index: 1;
   }
   .nf-logo {
-    width: 84px;
-    height: 84px;
-    border-radius: 18px;
+    width: 60px;
+    height: 60px;
+    border-radius: 14px;
     border: 1px solid var(--border);
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: translateY(14px);
+    animation: enter-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.12s forwards;
+  }
+  .nf-eyebrow {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--fg2);
+    margin: 0;
+    opacity: 0;
+    transform: translateY(12px);
+    animation: enter-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.25s forwards;
   }
   .nf-code {
     font-family: "Cormorant Garamond", serif;
     font-style: italic;
-    font-size: clamp(64px, 14vw, 120px);
+    font-weight: 700;
+    font-size: clamp(84px, 18vw, 170px);
     line-height: 1;
+    letter-spacing: 0.04em;
     color: var(--fg);
-    margin: 10px 0 0;
-    letter-spacing: 0.06em;
+    margin: 8px 0 0;
+    text-shadow:
+      0 0 40px hsla(340, 60%, 55%, 0.25),
+      0 0 90px hsla(0, 65%, 55%, 0.14),
+      0 18px 50px rgba(0, 0, 0, 0.55);
+    opacity: 0;
+    transform: translateY(16px);
+    animation: enter-up 0.95s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
   }
+  [data-theme="light"] .nf-code {
+    text-shadow:
+      0 0 40px hsla(340, 60%, 55%, 0.10),
+      0 0 90px hsla(0, 65%, 55%, 0.06),
+      0 18px 50px rgba(0, 0, 0, 0.18);
+  }
+  .nf-title {
+    font-family: "Noto Serif SC", serif;
+    font-weight: 900;
+    font-size: clamp(20px, 4vw, 30px);
+    letter-spacing: 0.24em;
+    color: var(--fg);
+    margin: 6px 0 0;
+    position: relative;
+    padding-left: 22px;
+    opacity: 0;
+    transform: translateY(14px);
+    animation: enter-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.55s forwards;
+  }
+  /* 血线: 复刻 content.css 的 .c-section-title::before */
+  .nf-title::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 26px;
+    background: hsl(340, 55%, 50%);
+    box-shadow: 0 0 12px hsla(340, 60%, 55%, 0.45);
+  }
+  [data-theme="dark"] .nf-title::before { background: hsl(340, 50%, 58%); }
   .nf-sub {
     font-size: 15px;
-    letter-spacing: 0.2em;
+    line-height: 1.9;
+    letter-spacing: 0.06em;
     color: var(--fg2);
     margin: 0;
+    max-width: 560px;
+    opacity: 0;
+    transform: translateY(12px);
+    animation: enter-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.7s forwards;
+  }
+  .nf-en {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--fg3);
+    margin: 0;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: enter-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.8s forwards;
+  }
+  .nf-divider {
+    width: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--fg3), transparent);
+    margin: 6px 0 2px;
+    animation: enter-divider 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.85s forwards;
   }
   .nf-actions {
     display: flex;
     gap: 12px;
-    margin-top: 14px;
+    margin-top: 10px;
     flex-wrap: wrap;
     justify-content: center;
+    opacity: 0;
+    transform: translateY(12px);
+    animation: enter-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.95s forwards;
   }
   .nf-btn {
-    padding: 10px 22px;
+    padding: 11px 26px;
     border: 1px solid var(--border);
     border-radius: 999px;
     background: var(--btn-bg);
@@ -75,14 +165,59 @@
     color: var(--accent);
     background: var(--panel-bg);
   }
+  .nf-btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  @media (max-width: 720px) {
+    .nf-wrap { padding: 40px 16px; gap: 13px; }
+    .nf-logo { width: 52px; height: 52px; }
+    .nf-actions { gap: 10px; }
+    .nf-divider { width: 200px !important; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01s !important;
+      animation-delay: 0s !important;
+      transition-duration: 0.12s !important;
+    }
+    .nf-logo, .nf-eyebrow, .nf-code, .nf-title, .nf-sub, .nf-en, .nf-actions {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+    .nf-divider { width: 260px !important; }
+  }
 </style>
 </head>
 <body>
+
+<!-- ═══ 背景装饰层 (由 shared.js injectBgLayer 注入) ═══ -->
 <div id="bg-host"></div>
+
+<!-- ═══ 主题切换 (右上角) ═══ -->
+<button id="theme-toggle" class="theme-toggle" aria-label="切换主题">
+  <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+  </svg>
+  <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="4"/>
+    <line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/>
+    <line x1="4.93" y1="4.93" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.07" y2="19.07"/>
+    <line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/>
+    <line x1="4.93" y1="19.07" x2="6.34" y2="17.66"/><line x1="17.66" y1="6.34" x2="19.07" y2="4.93"/>
+  </svg>
+</button>
+
 <main class="nf-wrap">
   <img class="nf-logo" src="nnk_box.webp" alt="大魔女图书馆">
-  <h1 class="nf-code">404</h1>
-  <p class="nf-sub">这一页不在这座图书馆里</p>
+  <p class="nf-eyebrow">Manosaba Library · Records &amp; Rules</p>
+  <h1 class="nf-code" aria-label="页面未找到 · 404"><span aria-hidden="true">404</span></h1>
+  <h2 class="nf-title">查无此卷</h2>
+  <p class="nf-sub">这份卷宗不在图书馆的目录之中——也许它从未被写下，也许它已被审判归档。返回书架，或向意见箱报告这条缺失的记录。</p>
+  <p class="nf-en">No such archive.</p>
+  <div class="nf-divider"></div>
   <div class="nf-actions">
     <a class="nf-btn" href="index.html">← 返回首页</a>
     <button class="nf-btn" type="button" onclick="window.open('https://github.com/QwQSakuya/Manosaba-Library/issues/new','_blank','noopener,noreferrer')">意见箱</button>

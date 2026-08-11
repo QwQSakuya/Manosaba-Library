@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-Hans" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OG Card Mockup (1200×630)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500;1,700&family=Noto+Serif+SC:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  /* ═══════════════════════════════════════════════
+     OG 分享卡片设计稿 — 大魔女图书馆
+     1200×630 静态画布 (无动画, 用于浏览器截图)
+     深色令牌值原样取自 shared.css :root[data-theme=dark]
+     ═══════════════════════════════════════════════ */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    width: 1200px;
+    height: 630px;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+    font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+  }
+
+  .card {
+    position: relative;
+    width: 1200px;
+    height: 630px;
+    background: #141414;
+    overflow: hidden;
+  }
+
+  /* ── 三层氛围渐变 (左上粉 / 右下红 / 底部紫) ── */
+  .bg-grads {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 620px 420px at 12% 0%, hsla(340, 65%, 22%, 0.22) 0%, transparent 70%),
+      radial-gradient(ellipse 700px 460px at 100% 100%, hsla(0, 70%, 20%, 0.20) 0%, transparent 70%),
+      radial-gradient(ellipse 640px 380px at 50% 120%, hsla(280, 50%, 16%, 0.18) 0%, transparent 70%);
+  }
+
+  /* ── 胶片颗粒 (低频, 控制 PNG 体积) ── */
+  .bg-noise {
+    position: absolute;
+    inset: 0;
+    opacity: 0.014;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.25' numOctaves='1' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+
+  /* ── 主魔法阵印章 (右侧偏置) ── */
+  .magic-circle {
+    position: absolute;
+    right: -70px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 660px;
+    height: 660px;
+    color: #e0e0e0;
+    opacity: 0.07;
+  }
+
+  /* ── 蝴蝶 (角色色签章) ── */
+  .fly { position: absolute; }
+  .fly-ema  { right: 190px; top: 46px; width: 70px; color: hsl(340, 60%, 55%); opacity: 0.4; }
+  .fly-hiro { left: 128px; bottom: 88px; width: 46px; color: hsl(0, 65%, 55%); opacity: 0.3; }
+
+  /* ── 左侧内容区 ── */
+  .content {
+    position: absolute;
+    left: 96px;
+    top: 50%;
+    transform: translateY(-64%);
+    z-index: 2;
+  }
+  .eyebrow {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #999;
+  }
+  .title {
+    position: relative;
+    font-family: "Noto Serif SC", serif;
+    font-weight: 900;
+    font-size: 96px;
+    letter-spacing: 0.14em;
+    color: #e0e0e0;
+    line-height: 1.1;
+    margin-top: 16px;
+    padding-left: 34px;
+    white-space: nowrap;
+  }
+  /* 粉红血线 (唯一全饱和高亮) */
+  .title::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 60px;
+    background: hsl(340, 60%, 55%);
+    box-shadow: 0 0 18px hsla(340, 60%, 55%, 0.55);
+  }
+  .sub {
+    font-family: "Noto Serif SC", serif;
+    font-weight: 700;
+    font-size: 24px;
+    letter-spacing: 0.1em;
+    color: #bbb;
+    margin-top: 20px;
+  }
+  .tagline {
+    font-size: 15px;
+    letter-spacing: 0.2em;
+    color: #888;
+    margin-top: 26px;
+    padding: 13px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    white-space: nowrap;
+  }
+
+  /* ── 左下: 书线稿 + 落款 ── */
+  .footer-left {
+    position: absolute;
+    left: 96px;
+    bottom: 42px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    z-index: 2;
+  }
+  .book { width: 56px; height: 40px; opacity: 0.9; }
+  .credit {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    color: #666;
+  }
+
+  /* ── 右下: logo + 落款 ── */
+  .footer-right {
+    position: absolute;
+    right: 72px;
+    bottom: 42px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    z-index: 2;
+  }
+  .logo {
+    width: 64px;
+    height: 64px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.5);
+    object-fit: cover;
+  }
+  .logo-caption {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #777;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="bg-grads"></div>
+  <div class="bg-noise"></div>
+
+  <!-- 大魔法阵: 同心圆 + 12 放射线 + 六芒星 + 五边形 -->
+  <svg class="magic-circle" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+    <g fill="none" stroke="currentColor" stroke-linecap="round">
+      <circle cx="300" cy="300" r="292" stroke-width="0.8"/>
+      <circle cx="300" cy="300" r="278" stroke-width="0.4"/>
+      <circle cx="300" cy="300" r="250" stroke-width="0.6"/>
+      <circle cx="300" cy="300" r="200" stroke-width="0.5"/>
+      <circle cx="300" cy="300" r="150" stroke-width="0.6"/>
+      <circle cx="300" cy="300" r="100" stroke-width="0.5"/>
+      <circle cx="300" cy="300" r="52"  stroke-width="0.8"/>
+      <g stroke-width="0.35">
+        <line x1="300" y1="8"   x2="300" y2="592"/>
+        <line x1="8"   y1="300" x2="592" y2="300"/>
+        <line x1="92"  y1="92"  x2="508" y2="508"/>
+        <line x1="508" y1="92"  x2="92"  y2="508"/>
+        <line x1="160" y1="35"  x2="440" y2="565"/>
+        <line x1="440" y1="35"  x2="160" y2="565"/>
+        <line x1="35"  y1="160" x2="565" y2="440"/>
+        <line x1="565" y1="160" x2="35"  y2="440"/>
+      </g>
+      <polygon points="300,75 480,393 120,393" stroke-width="0.7"/>
+      <polygon points="300,525 120,207 480,207" stroke-width="0.7"/>
+      <polygon points="300,140 433,237 382,395 218,395 167,237" stroke-width="0.5"/>
+      <circle cx="300" cy="8"   r="2.5" fill="currentColor"/>
+      <circle cx="300" cy="592" r="2.5" fill="currentColor"/>
+      <circle cx="8"   cy="300" r="2.5" fill="currentColor"/>
+      <circle cx="592" cy="300" r="2.5" fill="currentColor"/>
+    </g>
+  </svg>
+
+  <!-- 蝴蝶: 右上 Ema 粉 / 左下 Hiro 红 -->
+  <svg class="fly fly-ema" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><path d="M60,50 C42,22 12,16 6,32 C0,48 16,58 32,56 C46,54 56,52 60,50 Z"/><path d="M60,50 C78,22 108,16 114,32 C120,48 104,58 88,56 C74,54 64,52 60,50 Z"/><path d="M60,50 C50,56 32,66 28,82 C25,92 38,90 48,80 C56,72 58,60 60,50 Z"/><path d="M60,50 C70,56 88,66 92,82 C95,92 82,90 72,80 C64,72 62,60 60,50 Z"/><ellipse cx="60" cy="50" rx="1.4" ry="18"/></g></svg>
+  <svg class="fly fly-hiro" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><path d="M60,50 C42,22 12,16 6,32 C0,48 16,58 32,56 C46,54 56,52 60,50 Z"/><path d="M60,50 C78,22 108,16 114,32 C120,48 104,58 88,56 C74,54 64,52 60,50 Z"/><path d="M60,50 C50,56 32,66 28,82 C25,92 38,90 48,80 C56,72 58,60 60,50 Z"/><path d="M60,50 C70,56 88,66 92,82 C95,92 82,90 72,80 C64,72 62,60 60,50 Z"/><ellipse cx="60" cy="50" rx="1.4" ry="18"/></g></svg>
+
+  <!-- 左侧内容区 -->
+  <div class="content">
+    <p class="eyebrow">Manosaba Library</p>
+    <h1 class="title">大魔女图书馆</h1>
+    <p class="sub">《魔法少女的魔女审判》粉丝资料站</p>
+    <p class="tagline">剧情节点图谱 · 证物 · CG 画廊 · 语音音乐 · 世界观记录</p>
+  </div>
+
+  <!-- 左下: 翻开的书 + 落款 -->
+  <div class="footer-left">
+    <svg class="book" viewBox="0 0 56 40" fill="none" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+      <path d="M28 34 C20 30 10 30 4 32 L4 10 C10 8 20 8 28 12"/>
+      <path d="M28 34 C36 30 46 30 52 32 L52 10 C46 8 36 8 28 12"/>
+      <path d="M28 34 L28 12"/>
+    </svg>
+    <span class="credit">github.com/QwQSakuya/Manosaba-Library</span>
+  </div>
+
+  <!-- 右下: 站点 logo -->
+  <div class="footer-right">
+    <img class="logo" src="../nnk_box.webp" alt="大魔女图书馆">
+    <span class="logo-caption">Witch Trial Archive</span>
+  </div>
+</div>
+</body>
+</html>
