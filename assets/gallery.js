@@ -35,7 +35,8 @@
     searchQuery: '',
     lightboxIndex: -1,
     r2Base: '',          // R2 原图基础地址 (data/r2-config.json)
-    webBase: ''          // R2 网页压缩素材基础地址 (data/r2-config.json)
+    webBase: '',         // R2 网页压缩素材基础地址 (data/r2-config.json)
+    downloadFmt: 'png'   // 原图下载格式: 'png' | 'tga'
   };
 
   /* ── DOM 缓存 ── */
@@ -58,6 +59,8 @@
     els.lbPrev   = MS.$('.lb-prev', els.lightbox);
     els.lbNext   = MS.$('.lb-next', els.lightbox);
     els.lbDownload = d.getElementById('lb-download');
+    els.lbDownloadRow = d.getElementById('lb-download-row');
+    els.lbFmtBtns = els.lbDownloadRow ? MS.$$('.lb-fmt-btn', els.lbDownloadRow) : [];
 
     // 提前解析 URL 参数: wakeup=1 时跳过光圈加载动画, 改用闭眼黑幕
     // (在 fetchData 之前执行, 确保加载动画完全不会出现)
@@ -101,6 +104,17 @@
     if (els.lbClose) els.lbClose.addEventListener('click', closeLightbox);
     if (els.lbPrev)  els.lbPrev.addEventListener('click', function () { navLightbox(-1); });
     if (els.lbNext)  els.lbNext.addEventListener('click', function () { navLightbox(1); });
+    if (els.lbFmtBtns.length) {
+      els.lbFmtBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          state.downloadFmt = btn.getAttribute('data-fmt');
+          var idx = state.lightboxIndex;
+          if (idx >= 0 && idx < state.filtered.length) {
+            updateDownloadHref(state.filtered[idx]);
+          }
+        });
+      });
+    }
     if (els.lightbox) {
       els.lightbox.addEventListener('click', function (e) {
         if (e.target === els.lightbox) closeLightbox();
@@ -354,16 +368,13 @@
     els.lbCaption.textContent = title;
     els.lbCounter.textContent = (idx + 1) + ' / ' + list.length;
 
-    // 原图下载按钮 (R2 已配置且该条目有原图时显示)
-    var dl = els.lbDownload;
-    if (dl) {
+    // 原图下载 (R2 已配置且该条目有原图时显示; 支持 PNG / TGA 切换)
+    if (els.lbDownloadRow) {
       if (state.r2Base && it.original) {
-        var rel = it.original.split('/').map(encodeURIComponent).join('/');
-        dl.href = state.r2Base + '/' + rel;
-        dl.style.display = '';
+        els.lbDownloadRow.style.display = '';
+        updateDownloadHref(it);
       } else {
-        dl.href = '#';
-        dl.style.display = 'none';
+        els.lbDownloadRow.style.display = 'none';
       }
     }
 
@@ -377,6 +388,28 @@
     if (idx < 0 || idx >= list.length) return;
     var img = new Image();
     img.src = webUrl('assets/cg/' + list[idx].file);
+  }
+
+  /* 原图下载地址: PNG 模式把 .tga 换成 .png, TGA 模式原样 */
+  function updateDownloadHref(it) {
+    var isTga = /\.tga$/i.test(it.original);
+    var fmt = state.downloadFmt;
+    if (fmt === 'tga' && !isTga) {
+      fmt = 'png';
+      state.downloadFmt = 'png';
+    }
+    els.lbFmtBtns.forEach(function (b) {
+      var active = b.getAttribute('data-fmt') === fmt;
+      b.classList.toggle('active', active);
+      var dis = b.getAttribute('data-fmt') === 'tga' && !isTga;
+      b.disabled = dis;
+      b.classList.toggle('disabled', dis);
+    });
+    var rel = it.original.split('/').map(encodeURIComponent).join('/');
+    if (fmt === 'png' && isTga) {
+      rel = rel.replace(/\.tga$/i, '.png');
+    }
+    els.lbDownload.href = state.r2Base + '/' + rel;
   }
 
   function navLightbox(dir) {
@@ -396,10 +429,8 @@
     els.lbImg.alt = '';
     els.lbCaption.textContent = '';
     els.lbCounter.textContent = '';
-    if (els.lbDownload) {
-      els.lbDownload.href = '#';
-      els.lbDownload.style.display = 'none';
-    }
+    if (els.lbDownloadRow) els.lbDownloadRow.style.display = 'none';
+    if (els.lbDownload) els.lbDownload.href = '#';
   }
 
   /* ── 错误状态 ── */

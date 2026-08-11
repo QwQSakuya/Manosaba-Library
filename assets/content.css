@@ -304,7 +304,7 @@
 .lightbox .lb-prev:hover { transform: translateY(-50%) translateX(-4px); }
 .lightbox .lb-next:hover { transform: translateY(-50%) translateX(4px); }
 .lightbox .lb-caption {
-  position: absolute; bottom: 28px; left: 50%;
+  position: absolute; bottom: 76px; left: 50%;
   transform: translateX(-50%);
   font-family: "Cormorant Garamond", serif;
   font-style: italic;

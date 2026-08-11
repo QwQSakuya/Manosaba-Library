@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500;1,700&family=Noto+Serif+SC:wght@700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/shared.css">
-<link rel="stylesheet" href="assets/content.css">
+<link rel="stylesheet" href="assets/content.css?v=20260811">
 <script>
   // 主题恢复 (提前执行, 避免 FOUC 闪白)
   (function(){var s=localStorage.getItem('theme');if(s==='dark'||s==='light')document.documentElement.setAttribute('data-theme',s);})();
@@ -181,10 +181,8 @@
   pointer-events: none;
 }
 .lightbox .lb-download {
-  position: absolute;
-  bottom: 18px;
-  left: 50%;
-  transform: translateX(-50%);
+  position: static;
+  transform: none;
   padding: 8px 18px;
   border: 1px solid rgba(255,255,255,0.35);
   border-radius: 999px;
@@ -194,12 +192,48 @@
   letter-spacing: 0.08em;
   text-decoration: none;
   backdrop-filter: blur(4px);
-  z-index: 3;
   transition: background 0.25s ease, color 0.25s ease;
 }
 .lightbox .lb-download:hover {
   background: rgba(255,255,255,0.9);
   color: #15121e;
+}
+.lightbox .lb-download-row {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 3;
+}
+.lightbox .lb-fmt {
+  display: flex;
+  border: 1px solid rgba(255,255,255,0.35);
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(4px);
+}
+.lightbox .lb-fmt-btn {
+  border: none;
+  background: transparent;
+  color: rgba(255,255,255,0.6);
+  font-family: "Cormorant Garamond", serif;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+.lightbox .lb-fmt-btn.active {
+  background: rgba(255,255,255,0.9);
+  color: #15121e;
+}
+.lightbox .lb-fmt-btn.disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
 }
 /* 灯箱图片淡入 (叠加在 content.css 的 scale 过渡上) */
 .lightbox img {
@@ -291,11 +325,17 @@
   <button class="lb-nav lb-next" aria-label="下一张">›</button>
   <div class="lb-counter" id="lb-counter"></div>
   <div class="lb-caption" id="lb-caption"></div>
-  <a id="lb-download" class="lb-download" href="#" download target="_blank" rel="noopener" style="display:none">下载原图</a>
+  <div class="lb-download-row" id="lb-download-row" style="display:none">
+    <a id="lb-download" class="lb-download" href="#" download target="_blank" rel="noopener">下载原图</a>
+    <div class="lb-fmt" role="group" aria-label="原图格式">
+      <button type="button" class="lb-fmt-btn active" data-fmt="png">PNG</button>
+      <button type="button" class="lb-fmt-btn" data-fmt="tga">TGA</button>
+    </div>
+  </div>
 </div>
 
 <script src="assets/shared.js"></script>
-<script src="assets/gallery.js?v=20260805d"></script>
+<script src="assets/gallery.js?v=20260811"></script>
 <script src="assets/player-launcher.js" defer></script>
 </body>
 </html>
