@@ -33,6 +33,20 @@
   var fallbackAudio = null;
   var fallbackList = [];
   var fallbackIndex = -1;
+  var webBase = '';
+
+  /* ═══ R2 网页素材地址 (配置加载失败时回退本地相对路径) ═══ */
+  function loadR2Config() {
+    fetch('data/r2-config.json').then(function (r) { return r.json(); }).then(function (cfg) {
+      webBase = ((cfg && cfg.webBaseUrl) || '').replace(/\/+$/, '');
+    }).catch(function () {});
+  }
+  function webUrl(rel) {
+    if (webBase) {
+      return webBase + '/' + rel.split('/').map(function (s) { return encodeURIComponent(s); }).join('/');
+    }
+    return rel;
+  }
 
   /* ═══ 自注入 CSS ═══ */
   function injectCSS() {
@@ -215,7 +229,7 @@
     var it = fallbackList[i];
     if (!it.file) return;
     fallbackIndex = i;
-    fallbackAudio.src = 'assets/audio/' + it.file;
+    fallbackAudio.src = webUrl('assets/audio/' + it.file);
     var t = $('msfb-title'); if (t) t.textContent = it.label || it.id;
     var m = $('msfb-meta'); if (m) m.textContent = '音乐 · ' + (it.category || 'BGM');
     var f = $('msfb-fill'); if (f) f.style.width = '0%';
@@ -305,6 +319,7 @@
 
   /* ═══ 启动 ═══ */
   function start() {
+    loadR2Config();
     injectCSS();
     injectFab();
     handshake();

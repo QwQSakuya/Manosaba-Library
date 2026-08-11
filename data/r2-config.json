@@ -1,3 +1,4 @@
 ﻿{
-    "baseUrl":  "https://pub-a8b6ccbb754d403c8383b8ea0caf6c6e.r2.dev"
+    "baseUrl":  "https://pub-a8b6ccbb754d403c8383b8ea0caf6c6e.r2.dev",
+    "webBaseUrl": "https://pub-a8b6ccbb754d403c8383b8ea0caf6c6e.r2.dev/web"
 }

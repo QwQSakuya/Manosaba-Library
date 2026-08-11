@@ -34,7 +34,8 @@
     activeCategory: 'all',
     searchQuery: '',
     lightboxIndex: -1,
-    r2Base: ''           // R2 原图基础地址 (data/r2-config.json)
+    r2Base: '',          // R2 原图基础地址 (data/r2-config.json)
+    webBase: ''          // R2 网页压缩素材基础地址 (data/r2-config.json)
   };
 
   /* ── DOM 缓存 ── */
@@ -120,6 +121,7 @@
     MS.fetchJSON('data/r2-config.json', 8000)
       .then(function (cfg) {
         state.r2Base = ((cfg && cfg.baseUrl) || '').replace(/\/+$/, '');
+        state.webBase = ((cfg && cfg.webBaseUrl) || '').replace(/\/+$/, '');
         return MS.fetchJSON('data/gallery-manifest.json', 15000);
       })
       .then(function (data) {
@@ -240,6 +242,14 @@
       '<span class="chip-count">' + count + '</span></button>';
   }
 
+  /* 网页压缩素材地址: R2 优先, 本地相对路径兜底 */
+  function webUrl(rel) {
+    if (state.webBase) {
+      return state.webBase + '/' + rel.split('/').map(encodeURIComponent).join('/');
+    }
+    return rel;
+  }
+
   /* ── 过滤 ── */
   function applyFilter() {
     var cat = state.activeCategory;
@@ -299,7 +309,7 @@
   }
 
   function cardHTML(it, idx) {
-    var thumb = 'assets/cg/' + it.thumb;
+    var thumb = webUrl('assets/cg/' + it.thumb);
     var title = it.title || it.id || '';
     return '<div class="frame-card" data-idx="' + idx + '" tabindex="0" role="button" aria-label="查看 ' +
       MS.escapeHtml(title) + '">' +
@@ -323,7 +333,7 @@
     var list = state.filtered;
     if (idx < 0 || idx >= list.length) return;
     var it = list[idx];
-    var src = 'assets/cg/' + it.file;
+    var src = webUrl('assets/cg/' + it.file);
     var title = it.title || it.id || '';
 
     // 淡出旧图
@@ -366,7 +376,7 @@
     var list = state.filtered;
     if (idx < 0 || idx >= list.length) return;
     var img = new Image();
-    img.src = 'assets/cg/' + list[idx].file;
+    img.src = webUrl('assets/cg/' + list[idx].file);
   }
 
   function navLightbox(dir) {

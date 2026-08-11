@@ -75,7 +75,7 @@
 
   function resolveSrc(item) {
     if (!item || !item.file) return '';
-    return 'assets/audio/' + item.file;
+    return (MS && MS.webUrl) ? MS.webUrl('assets/audio/' + item.file) : 'assets/audio/' + item.file;
   }
 
   /* ═══ BroadcastChannel 广播 + localStorage 降级 ═══ */
@@ -527,9 +527,12 @@
     setupMediaSession();
     setMode('order');
 
-    fetchJSON('data/audio-manifest.json', 12000)
-      .then(function (data) {
-        state.manifest = data || {};
+    Promise.all([
+      fetchJSON('data/audio-manifest.json', 12000),
+      (MS && MS.loadR2Config) ? MS.loadR2Config(8000) : Promise.resolve({})
+    ])
+      .then(function (results) {
+        state.manifest = results[0] || {};
         state.list = state.manifest.bgm || [];
         renderList();
         /* URL 查询直达: ?id=xxx */

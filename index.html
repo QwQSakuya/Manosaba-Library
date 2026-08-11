@@ -941,6 +941,8 @@ body.collapsing {
 (function () {
   // 主题切换
   MS.initTheme();
+  // 预读 R2 网页素材配置 (logo 彩蛋音效等立即可用)
+  MS.loadR2Config();
 
   // 周目卡片跳转: 点击或 Enter/Space
   document.querySelectorAll('[data-go]').forEach(function (el) {
@@ -961,46 +963,21 @@ body.collapsing {
   var logo = document.querySelector('.logo');
   if (logo) {
     var logoClickCount = 0;
-    var audioCtx = null;
-    var audioCache = {};
+    var audioElCache = {};
     var landing = document.querySelector('.landing');
 
-    function getAudio(name) {
-      if (!audioCtx) {
-        try {
-          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        } catch (e) { return null; }
-      }
-      return audioCtx;
-    }
-
     function playSfx(file) {
-      var ctx = getAudio();
-      if (!ctx) return;
-      // 恢复被浏览器挂起的 AudioContext
-      if (ctx.state === 'suspended') ctx.resume();
-      // 缓存已解码的 AudioBuffer
-      if (audioCache[file]) {
-        playBuffer(ctx, audioCache[file]);
-        return;
+      // 素材地址: R2 优先 (配置读取失败时回退本地相对路径)
+      // 同步创建并播放, 保证在用户手势内触发, 不被自动播放策略拦截
+      var url = MS.webBase ? MS.webUrl('assets/audio/' + file) : 'assets/audio/' + file;
+      if (!audioElCache[file]) {
+        audioElCache[file] = new Audio(url);
+        audioElCache[file].preload = 'auto';
       }
-      var url = 'assets/audio/' + file;
-      fetch(url)
-        .then(function (r) { return r.arrayBuffer(); })
-        .then(function (buf) { return ctx.decodeAudioData(buf); })
-        .then(function (decoded) {
-          audioCache[file] = decoded;
-          playBuffer(ctx, decoded);
-        })
-        .catch(function () {});
-    }
-
-    function playBuffer(ctx, buffer) {
-      var src = ctx.createBufferSource();
-      src.buffer = buffer;
-      src.connect(ctx.destination);
-      src.start(0);
-      return src;
+      var a = audioElCache[file];
+      try { a.currentTime = 0; } catch (e) {}
+      var p = a.play();
+      if (p && p.catch) p.catch(function () {});
     }
 
     // 触发 logo 震动动画 (移除再添加 class 以重启动画)
@@ -1068,7 +1045,7 @@ body.collapsing {
   // ═══ 蝴蝶彩蛋: 点击变亮 + 播放语音 + 屏保弹跳图片 (仅本次会话, 刷新即重置) ═══
   var eggFly = document.querySelector('.egg-fly');
   if (eggFly) {
-    var EGG_VOICE_URL = 'https://pub-a8b6ccbb754d403c8383b8ea0caf6c6e.r2.dev/Assets/%23WitchTrials/Audio/Voice/Act02_Chapter01/Act02_Chapter01_Trial08/0201Trial08_Ema022.ogg';
+    var EGG_VOICE_URL = 'https://pub-a8b6ccbb754d403c8383b8ea0caf6c6e.r2.dev/web/assets/audio/voice/Act02_Chapter01/Act02_Chapter01_Trial08/0201Trial08_Ema022.ogg';
     var eggAudio = null;
     var eggBouncer = null;
 

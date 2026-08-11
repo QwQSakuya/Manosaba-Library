@@ -206,6 +206,35 @@
     };
   };
 
+  /* ── R2 配置 + 网页素材地址 ──
+     webBaseUrl: 网页压缩素材 (assets/ 镜像) 所在的 R2 基础地址
+     webUrl(rel): 把相对路径拼成 R2 地址; 配置不可用时回退为本地相对路径 */
+  var _r2ConfigPromise = null;
+  MS.webBase = '';
+  MS.loadR2Config = function (timeoutMs) {
+    if (!_r2ConfigPromise) {
+      _r2ConfigPromise = MS.fetchJSON('data/r2-config.json', timeoutMs || 8000)
+        .then(function (cfg) {
+          cfg = cfg || {};
+          MS.webBase = String(cfg.webBaseUrl || '').replace(/\/+$/, '');
+          return cfg;
+        })
+        .catch(function () {
+          MS.webBase = '';
+          return {};
+        });
+    }
+    return _r2ConfigPromise;
+  };
+  MS.webUrl = function (rel) {
+    if (!rel) return '';
+    var r = String(rel);
+    if (MS.webBase) {
+      return MS.webBase + '/' + r.split('/').map(function (s) { return encodeURIComponent(s); }).join('/');
+    }
+    return r;
+  };
+
   /* ── escapeHtml ── */
   var _escEl = d.createElement('div');
   MS.escapeHtml = function (str) {

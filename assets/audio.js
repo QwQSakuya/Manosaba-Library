@@ -70,7 +70,7 @@
       return base + item.externalUrl;
     }
     if (item.file) {
-      return 'assets/audio/' + item.file;
+      return MS.webUrl('assets/audio/' + item.file);
     }
     return '';
   }
@@ -131,7 +131,7 @@
           ? ' aria-disabled="true"'
           : ' tabindex="0" role="button" aria-label="播放 ' + name + '"';
         var dlBtn = it.file
-          ? '<a class="bgm-dl" href="assets/audio/' + it.file + '" download title="下载" aria-label="下载">' + ICON_DOWNLOAD + '</a>'
+          ? '<a class="bgm-dl" href="' + MS.webUrl('assets/audio/' + it.file) + '" download title="下载" aria-label="下载">' + ICON_DOWNLOAD + '</a>'
           : '';
         html +=
           '<div class="' + cls + '" data-bgm-id="' + id + '"' + attr + '>' +
@@ -485,7 +485,7 @@
         if (sfx[i].id === id) { item = sfx[i]; break; }
       }
       if (!item) return;
-      var src = 'assets/audio/' + item.file;
+      var src = MS.webUrl('assets/audio/' + item.file);
       loadAndPlay(src, item.label || item.id, '音效 · Sound Effect', item, 'sfx', id);
     });
 
@@ -634,9 +634,12 @@
     bindEvents();
     setupPlayerChannel();
 
-    MS.fetchJSON('data/audio-manifest.json', 12000)
-      .then(function (data) {
-        state.manifest = data || {};
+    Promise.all([
+      MS.fetchJSON('data/audio-manifest.json', 12000),
+      MS.loadR2Config(8000)
+    ])
+      .then(function (results) {
+        state.manifest = results[0] || {};
         if (!state.manifest.sfx) state.manifest.sfx = [];
         if (!state.manifest.bgm) state.manifest.bgm = [];
         if (!state.manifest.voice) state.manifest.voice = [];

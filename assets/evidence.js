@@ -206,7 +206,7 @@
     var name = e.nameZh || e.name || e.id;
     return '<article class="item-card ev-card" data-id="' + esc(e.id) + '" tabindex="0" role="button" aria-label="' + esc(name) + '">' +
       '<div class="item-img-wrap">' +
-        '<img data-src="assets/cg/evidence/' + encodeURIComponent(e.sprite) + '" alt="' + esc(name) + '">' +
+        '<img data-src="' + MS.webUrl('assets/cg/evidence/' + e.sprite) + '" alt="' + esc(name) + '">' +
         sealSvg('card-seal') +
       '</div>' +
       '<div class="item-num"><span class="num-code">' + esc(catalogCode(e)) + '</span></div>' +
@@ -277,7 +277,7 @@
 
     return '<div class="ev-drawer-hero">' +
         '<span class="hero-num">' + esc(catalogCode(e)) + '</span>' +
-        '<img src="assets/cg/evidence/' + encodeURIComponent(e.sprite) + '" alt="' + esc(nameZh) + '">' +
+        '<img src="' + MS.webUrl('assets/cg/evidence/' + e.sprite) + '" alt="' + esc(nameZh) + '">' +
         sealSvg('hero-seal') +
       '</div>' +
       '<div class="ev-drawer-content">' +
@@ -349,9 +349,12 @@
     bindFilters();
     bindSearch();
 
-    MS.fetchJSON('data/evidence.json', 15000)
-      .then(function (data) {
-        allEvidence = (data && data.evidence) || [];
+    Promise.all([
+      MS.fetchJSON('data/evidence.json', 15000),
+      MS.loadR2Config(8000)
+    ])
+      .then(function (results) {
+        allEvidence = (results[0] && results[0].evidence) || [];
         buildFilters();
         renderGrid();
         MS.hideSplash(1200);
