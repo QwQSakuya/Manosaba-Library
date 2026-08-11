@@ -16,7 +16,7 @@
 - `/gallery.html` → CG 画廊（角度像 / 证物 / 事件插画 / 场景背景等分类浏览）
 - `/audio.html` → 语音和音乐（按场景 / 角色筛选语音，试听 BGM）
 - `/player.html` → 弹窗音乐播放器（由各页面通过 `player-launcher.js` 唤起）
-- `/archive.html` → 全素材库索引（仅供学习交流，请勿批量下载或用于商业传播）
+- `/archive.html` → 全素材库索引
 - `/credits.html` → 制作名单与免责声明
 - `/404.html` → 自定义 404 页
 
@@ -90,6 +90,7 @@ python -m http.server 8000
 │   ├── voice-map.act02.json    # 二周目语音映射（页面优先加载）
 │   └── r2-config.json          # R2 素材桶公网地址
 ├── tools/
+│   ├── import_story.py         # 剧本导入：日常剧情 + Bad End → actXX.json
 │   └── minify-data.mjs         # 发布前压缩剧情数据 + 拆分语音映射
 ├── .github/
 │   ├── workflows/validate.yml  # 数据校验 CI（push / PR 自动运行）
@@ -154,17 +155,33 @@ Trial 审判场景中存在多个异议选项，其中部分是**错误选项**�
 1. **fork 本仓库**。
 2. **用 [Manosaba Trial Tagger](https://github.com/QwQSakuya/Manosaba-Trial-Tagger) 标注审判节点**：标注选项正确性（正确 / 错误 / 中立）、结果范围、证物 / 证人分支与嵌套子分支，并分配 Objection ID。
 3. **导出标注**：在标注器中「导出 textfinder-merged」，得到 `annotations.actXX.json`。
-4. **转换剧情数据**：参照 `.trae/tools/build_story.py`，把你的故事脚本转换为 `data/actXX.json`，然后运行 `node tools/minify-data.mjs` 压缩发布数据。
-5. **放入数据与页面**：把剧情 JSON 与标注 JSON 放进 `data/`，参照 `act01.html` 复制一个故事页（`document.body.dataset.act` 指向你的数据文件），并在 `index.html` 加入你的入口卡片。
+4. **导入剧情数据**：用 `tools/import_story.py` 把剧本转换为 `data/actXX.json`（日常剧情 + Bad End；Trial 审判节点走标注器）：
+
+   ```bash
+   python tools/import_story.py <你的剧本目录> data/actXX.json
+   node tools/minify-data.mjs
+   ```
+
+5. **放入数据与页面**：把标注 JSON 放进 `data/`，参照 `act01.html` 复制一个故事页（`document.body.dataset.act` 指向你的数据文件），并在 `index.html` 加入你的入口卡片。
 6. **部署分享**：开启你 fork 仓库的 GitHub Pages，把属于你的故事分享给其他共犯者。
 
-### 规划中的工具
+### 工具现状
 
-- **日常剧情（日常 act）节点自动化制作工具**：规划中，后续制作。
-- **Bad End 分支自动化制作工具**：规划中，后续制作。
-- 目前已经开放的是 **Trial 审判节点标注工具**（见上方 Manosaba Trial Tagger）。
+- **日常剧情与 Bad End 通用导入工具**：已提供（`tools/import_story.py`）。
+- **Trial 审判节点标注工具**：已提供（Manosaba Trial Tagger）。
+- 更多自动化工具（如审判节点的自动标注）规划中。
 
 > 提示：官方章节的解包素材（CG、音频、原始脚本）版权归原作方所有，请勿在自建页面中直接复用；你自己的 MOD 故事内容与标注由你自行负责。
+
+### 剧本导入工具（日常剧情 + Bad End）
+
+`tools/import_story.py` 把 Naninovel 剧本转换为节点数据，覆盖章节、日常剧情（Adv）、选择点与 Bad End（Bad）节点：
+
+- 支持官方 `.bytes` 本地化剧本（`ActAA_ChapterCC_AdvNN.bytes` / `..._BadNN.bytes`），也支持带标注标记的 `.txt`。
+- 文件名决定节点 id：`Act01_Chapter02_Adv03.bytes` → `0102Adv03`，`..._Bad01.bytes` → `0102Bad01`。
+- `@choice` 按钮为 `ChoiceButtons/Adv/Bad` 时按章节顺序映射到 BadNN；`.txt` 里用 `<choice NN> <badend BadXX>` 可手动指定。
+- Trial 文件会自动跳过并在终端提示，审判节点请用 Manosaba Trial Tagger 标注后把 `annotations.actXX.json` 放入 `data/`。
+- 导入后记得运行 `node tools/minify-data.mjs` 压缩数据。
 
 ## 许可与版权
 
