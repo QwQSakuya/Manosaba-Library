@@ -33,6 +33,10 @@
 .ws-field label { display: block; font-size: .85rem; margin-bottom: 6px; opacity: .85; }
 .ws-field select { width: 100%; padding: 8px; background: var(--bg2); color: inherit; border: 1px solid var(--border); border-radius: 3px; }
 .ws-check { display: flex; align-items: center; gap: 8px; font-size: .9rem; cursor: pointer; }
+.ws-group { border-top: 1px dashed var(--border); padding-top: 10px; }
+.ws-group h3 { font-size: .8rem; margin: 0 0 8px; opacity: .7; letter-spacing: 1px; }
+.ws-part { display: flex; align-items: center; gap: 8px; font-size: .85rem; padding: 3px 0; cursor: pointer; }
+.ws-part input { flex: none; }
 .ws-download { margin-top: 6px; padding: 10px 0; text-align: center; border: 1px solid var(--accent); border-radius: 3px; cursor: pointer; background: var(--accent); color: #fff; font: inherit; font-weight: 700; }
 .ws-download:disabled { opacity: .5; cursor: wait; }
 .ws-note { font-size: .8rem; opacity: .65; line-height: 1.5; }
@@ -64,13 +68,13 @@
         隐藏遮罩层（推荐）
       </label>
       <button class="ws-download" id="ws-download" disabled>下载 PNG</button>
-      <p class="ws-note">遮罩是游戏内用于裁剪的透明层；默认隐藏以还原脸部效果。角色动作立绘（Yuki / Warden 等）请到 <a href="gallery.html">CG 画廊</a> →「角色动作」查看。</p>
+      <p class="ws-note">遮罩是游戏内用于裁剪的透明层，默认隐藏以还原脸部效果。所有部件（身体、手、特效等）都可以勾选显示或隐藏。角色动作立绘（Yuki / Warden 等）请到 <a href="gallery.html">CG 画廊</a> →「角色动作」查看。</p>
     </aside>
   </div>
 
   <a class="ws-back" href="index.html">← 返回主页</a>
 </main>
 <script src="assets/shared.js"></script>
-<script src="assets/workshop.js?v=20260812"></script>
+<script src="assets/workshop.js?v=20260812b"></script>
 </body>
 </html>

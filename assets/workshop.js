@@ -62,6 +62,7 @@
     MS.fetchJSON('chara/' + name + '/manifest.json', 20000).then(function (m) {
       state.manifest = m;
       initPicks(m);
+      initVisibility(m);
       renderControls(m);
       compose();
     }).catch(function () {
@@ -94,6 +95,13 @@
     });
   }
 
+  function initVisibility(m) {
+    state.visible = {};
+    (m.parts || []).forEach(function (p) {
+      state.visible[p.file] = !(p.category === 'mask');
+    });
+  }
+
   function renderControls(m) {
     var g = groupParts(m);
     var html = '';
@@ -108,16 +116,52 @@
       });
       html += '</select></div>';
     });
-    els.controls.innerHTML = html || '<p class="ws-note">该角色没有可切换的表情部件。</p>';
+
+    var sections = [
+      ['body', '身体'],
+      ['limb', '手 · 脚'],
+      ['effect', '特效'],
+      ['facial', '脸饰'],
+      ['option', '配饰'],
+      ['other', '其他']
+    ];
+    sections.forEach(function (sec) {
+      var cat = sec[0], label = sec[1];
+      var list = g[cat] || [];
+      if (!list.length) return;
+      html += '<div class="ws-group"><h3>' + label + '</h3>';
+      list.forEach(function (p) {
+        var checked = state.visible[p.file] !== false ? ' checked' : '';
+        html += '<label class="ws-part"><input type="checkbox" data-file="' + MS.escapeHtml(p.file) + '"' + checked + '><span>' + MS.escapeHtml(fmtName(p.name)) + '</span></label>';
+      });
+      html += '</div>';
+    });
+
+    if (!state.maskHidden && (g.mask || []).length) {
+      html += '<div class="ws-group"><h3>遮罩</h3>';
+      (g.mask || []).forEach(function (p) {
+        var checked = state.visible[p.file] !== false ? ' checked' : '';
+        html += '<label class="ws-part"><input type="checkbox" data-file="' + MS.escapeHtml(p.file) + '"' + checked + '><span>' + MS.escapeHtml(fmtName(p.name)) + '</span></label>';
+      });
+      html += '</div>';
+    }
+
+    els.controls.innerHTML = html || '<p class="ws-note">该角色没有可设置的部件。</p>';
     Array.prototype.forEach.call(els.controls.querySelectorAll('select'), function (sel) {
       sel.addEventListener('change', function () {
         state.picks[sel.dataset.cat] = sel.value;
         compose();
       });
     });
+    Array.prototype.forEach.call(els.controls.querySelectorAll('input[type=checkbox][data-file]'), function (cb) {
+      cb.addEventListener('change', function () {
+        state.visible[cb.dataset.file] = cb.checked;
+        compose();
+      });
+    });
     els.maskToggle.addEventListener('change', function () {
       state.maskHidden = els.maskToggle.checked;
-      compose();
+      renderControls(state.manifest);
     });
   }
 
@@ -127,6 +171,7 @@
     (m.parts || []).forEach(function (p) {
       var cat = p.category || 'other';
       if (cat === 'mask' && state.maskHidden) return;
+      if (state.visible[p.file] === false) return;
       if (cat === 'eyes' || cat === 'mouth' || cat === 'cheeks') {
         if (p.name !== state.picks[cat]) return;
       }
