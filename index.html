@@ -483,10 +483,127 @@ body { display: block; }
 }
 
 /* ── 页脚 ── */
+/* ═══ 站点切换 + Ping ═══ */
+.site-switcher {
+  width: 100%;
+  max-width: 460px;
+}
+.ss-panel {
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: var(--panel-bg);
+  overflow: hidden;
+}
+.ss-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg2);
+}
+.ss-title {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 12px;
+  letter-spacing: 0.24em;
+  color: var(--fg3);
+  text-transform: uppercase;
+}
+.ss-ping-btn {
+  padding: 4px 14px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--fg2);
+  font: inherit;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: border-color 0.25s, color 0.25s;
+}
+.ss-ping-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.ss-ping-btn:disabled {
+  opacity: 0.35;
+  cursor: wait;
+}
+.ss-sites {
+  display: flex;
+}
+.ss-site {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 16px;
+  border: none;
+  border-right: 1px solid var(--border);
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.25s;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+}
+.ss-site:last-child { border-right: none; }
+.ss-site:hover { background: var(--bg2); }
+.ss-site.current {
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+}
+.ss-site-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.ss-site-name {
+  font-family: "Noto Serif SC", serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--fg);
+  letter-spacing: 0.06em;
+}
+.ss-site-url {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 11px;
+  color: var(--fg3);
+  letter-spacing: 0.02em;
+}
+.ss-site-ping {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 700;
+  font-size: 15px;
+  min-width: 56px;
+  text-align: right;
+  color: var(--fg3);
+  transition: color 0.3s;
+}
+.ss-site-ping.good { color: hsl(140, 42%, 42%); }
+[data-theme="dark"] .ss-site-ping.good { color: hsl(140, 45%, 55%); }
+.ss-site-ping.ok { color: hsl(40, 60%, 45%); }
+[data-theme="dark"] .ss-site-ping.ok { color: hsl(40, 65%, 60%); }
+.ss-site-ping.bad { color: hsl(0, 55%, 48%); }
+[data-theme="dark"] .ss-site-ping.bad { color: hsl(0, 60%, 62%); }
+.ss-site-ping.testing {
+  color: var(--fg3);
+  animation: ss-pulse 1s ease-in-out infinite;
+}
+@keyframes ss-pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+}
+
+/* ── 页脚 ── */
 .landing-footer {
   position: relative;
   z-index: 1;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
   padding: 28px 24px;
   opacity: 0;
   animation: enter-up 0.85s cubic-bezier(0.22, 1, 0.36, 1) 1.55s forwards;
@@ -515,6 +632,9 @@ body { display: block; }
   .logo { width: 64px; height: 64px; }
   .card-num { font-size: 44px; }
   .card-title { font-size: 26px; }
+  .ss-sites { flex-direction: column; }
+  .ss-site { border-right: none; border-bottom: 1px solid var(--border); }
+  .ss-site:last-child { border-bottom: none; }
 }
 
 /* ── 减少动效偏好 ── */
@@ -524,7 +644,7 @@ body { display: block; }
     animation-delay: 0s !important;
     transition-duration: 0.12s !important;
   }
-  .logo, .landing-title, .landing-subtitle, .card, .future-section, .landing-footer { opacity: 1 !important; transform: none !important; }
+  .logo, .landing-title, .landing-subtitle, .card, .future-section, .site-switcher, .landing-footer { opacity: 1 !important; transform: none !important; }
   .landing-divider, .future-divider { width: 260px !important; }
 }
 
@@ -939,8 +1059,32 @@ body.collapsing {
   </section>
 </main>
 
-<!-- ═══ 页脚: GitHub 仓库链接 ═══ -->
+<!-- ═══ 页脚: 站点切换 + GitHub 仓库链接 ═══ -->
 <footer class="landing-footer">
+  <div class="site-switcher">
+    <div class="ss-panel">
+      <div class="ss-header">
+        <span class="ss-title">Site Mirror</span>
+        <button class="ss-ping-btn" id="ss-ping-all" type="button">测速</button>
+      </div>
+      <div class="ss-sites">
+        <button class="ss-site" data-url="https://Library-Manosaba.com" data-host="Library-Manosaba.com" type="button">
+          <span class="ss-site-info">
+            <span class="ss-site-name">主站</span>
+            <span class="ss-site-url">Library-Manosaba.com</span>
+          </span>
+          <span class="ss-site-ping" data-target="Library-Manosaba.com">—</span>
+        </button>
+        <button class="ss-site" data-url="https://github.Library-Manosaba.com" data-host="github.Library-Manosaba.com" type="button">
+          <span class="ss-site-info">
+            <span class="ss-site-name">副站</span>
+            <span class="ss-site-url">github.Library-Manosaba.com</span>
+          </span>
+          <span class="ss-site-ping" data-target="github.Library-Manosaba.com">—</span>
+        </button>
+      </div>
+    </div>
+  </div>
   <a href="https://github.com/QwQSakuya/Manosaba-Library" target="_blank" rel="noopener noreferrer">GitHub Repository</a>
 </footer>
 
@@ -1182,6 +1326,103 @@ body.collapsing {
       }
     });
   })();
+
+  // ═══ 站点切换 + Ping ═══
+  (function () {
+    var SITES = [
+      { name: 'Library-Manosaba.com',         url: 'https://Library-Manosaba.com' },
+      { name: 'github.Library-Manosaba.com',  url: 'https://github.Library-Manosaba.com' }
+    ];
+
+    // 检测当前站点并标记
+    var host = location.hostname.toLowerCase();
+    SITES.forEach(function (site) {
+      if (host === site.name.toLowerCase()) {
+        var btn = document.querySelector('.ss-site[data-host="' + site.name + '"]');
+        if (btn) btn.classList.add('current');
+      }
+    });
+
+    // 站点点击跳转
+    document.querySelectorAll('.ss-site').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var url = btn.dataset.url;
+        if (url) window.open(url, '_blank');
+      });
+    });
+
+    // Ping: Image 加载法 (跨域友好, onerror 也能测往返延迟)
+    function pingSite(url, callback) {
+      var img = new Image();
+      var start = performance.now();
+      var done = false;
+      var timeout = setTimeout(function () {
+        if (!done) { done = true; callback(-1); }
+      }, 8000);
+      img.onload = function () {
+        if (!done) {
+          done = true;
+          clearTimeout(timeout);
+          callback(Math.round(performance.now() - start));
+        }
+      };
+      img.onerror = function () {
+        if (!done) {
+          done = true;
+          clearTimeout(timeout);
+          callback(Math.round(performance.now() - start));
+        }
+      };
+      img.src = url + '/favicon.ico?' + Date.now();
+    }
+
+    function updatePingEl(el, ms) {
+      el.classList.remove('testing', 'good', 'ok', 'bad');
+      if (ms < 0) {
+        el.textContent = '超时';
+        el.classList.add('bad');
+      } else if (ms < 200) {
+        el.textContent = ms + 'ms';
+        el.classList.add('good');
+      } else if (ms < 600) {
+        el.textContent = ms + 'ms';
+        el.classList.add('ok');
+      } else {
+        el.textContent = ms + 'ms';
+        el.classList.add('bad');
+      }
+    }
+
+    var pingBtn = document.getElementById('ss-ping-all');
+    if (pingBtn) {
+      function runPing() {
+        if (pingBtn.disabled) return;
+        pingBtn.disabled = true;
+        pingBtn.textContent = '测速中';
+        var remaining = SITES.length;
+        SITES.forEach(function (site) {
+          var el = document.querySelector('.ss-site-ping[data-target="' + site.name + '"]');
+          if (el) {
+            el.classList.remove('good', 'ok', 'bad');
+            el.classList.add('testing');
+            el.textContent = '...';
+          }
+          pingSite(site.url, function (ms) {
+            if (el) updatePingEl(el, ms);
+            remaining--;
+            if (remaining <= 0) {
+              pingBtn.disabled = false;
+              pingBtn.textContent = '测速';
+            }
+          });
+        });
+      }
+      pingBtn.addEventListener('click', runPing);
+      // 页面加载后 2.5s 自动测速 (等入场动画结束)
+      setTimeout(runPing, 2500);
+    }
+  })();
+
 })();
 </script>
 <script src="assets/player-launcher.js" defer></script>
