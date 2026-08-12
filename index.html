@@ -492,7 +492,7 @@ body { display: block; }
   border: 1px solid var(--border);
   border-radius: 3px;
   background: var(--panel-bg);
-  overflow: hidden;
+  overflow: visible;
 }
 .ss-header {
   display: flex;
@@ -501,6 +501,7 @@ body { display: block; }
   padding: 10px 16px;
   border-bottom: 1px solid var(--border);
   background: var(--bg2);
+  border-radius: 3px 3px 0 0;
 }
 .ss-title {
   font-family: "Cormorant Garamond", serif;
@@ -548,7 +549,7 @@ body { display: block; }
   font: inherit;
   color: inherit;
 }
-.ss-site:last-child { border-right: none; }
+.ss-site:last-child { border-right: none; border-radius: 0 0 3px 3px; }
 .ss-site:hover { background: var(--bg2); }
 /* 副站悬浮提示 */
 .ss-site[data-tip] { position: relative; }
