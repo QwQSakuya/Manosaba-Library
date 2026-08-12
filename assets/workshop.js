@@ -14,6 +14,13 @@
     mouth: ['Mouth_Normal_Open', 'Mouth_Normal_Closed'],
     cheeks: ['Cheeks_Normal', 'Cheeks_Flushed']
   };
+  /* 多版本槽位：同一槽位只显示一个变体（默认选 01） */
+  var SLOTS = [
+    ['HeadBase', '头部基底'],
+    ['FacialLineDrawing', '头发线稿'],
+    ['HairB', '头发B'],
+    ['OptionB_Head', '头部配饰']
+  ];
 
   var els = {};
   var ctx = null;
@@ -146,25 +153,58 @@
     return list[0] ? list[0].name : null;
   }
 
-  /* ── 默认脸庞：eyes Normal Open01 / mouth Normal Open / cheeks Normal ── */
-  function initPicks(m) {
-    var g = groupParts(m);
-    state.picks = {
-      eyes: pickDefault(g.eyes || [], PREFER.eyes),
-      mouth: pickDefault(g.mouth || [], PREFER.mouth),
-      cheeks: pickDefault(g.cheeks || [], PREFER.cheeks)
-    };
+  function slotName(name, slot) {
+    var re = new RegExp('^' + slot + '(\\d*)$');
+    return re.test(name);
   }
 
-  /* ── 默认仅 Body + ArmL01 + ArmR01 可见，其余全部隐藏 ── */
+  function countHeadBaseVariants(m) {
+    var n = 0;
+    (m.parts || []).forEach(function (p) { if (slotName(p.name, 'HeadBase')) n++; });
+    return n;
+  }
+
+  function initSlots(m) {
+    state.picks.slots = {};
+    SLOTS.forEach(function (s) {
+      var key = s[0];
+      var list = (m.parts || []).filter(function (p) { return slotName(p.name, key); });
+      if (list.length < 2) return;
+      var pick = null;
+      list.forEach(function (p) { if (!pick && /01$/.test(p.name)) pick = p.name; });
+      if (!pick) pick = list[0].name;
+      state.picks.slots[key] = pick;
+    });
+  }
+
+  /* ── 默认脸庞：头部基底有多版本时眼睛/嘴巴/脸颊选 02 风格，否则 01 ── */
+  function initPicks(m) {
+    var g = groupParts(m);
+    var headMulti = countHeadBaseVariants(m) >= 2;
+    var prefer = headMulti ? {
+      eyes: ['Eyes_Normal_Open02', 'Eyes_Normal_Open01'],
+      mouth: ['Mouth_Normal_Open02', 'Mouth_Normal_Open01', 'Mouth_Normal_Open'],
+      cheeks: ['Cheeks_Flushed02', 'Cheeks_Normal02', 'Cheeks_Flushed', 'Cheeks_Normal']
+    } : PREFER;
+    state.picks = {
+      eyes: pickDefault(g.eyes || [], prefer.eyes),
+      mouth: pickDefault(g.mouth || [], prefer.mouth),
+      cheeks: pickDefault(g.cheeks || [], prefer.cheeks)
+    };
+    initSlots(m);
+  }
+
+  /* ── 默认全部可见（遮罩除外）；多版本槽位只显示选中的变体 ── */
   function initVisibility(m) {
     state.visible = {};
     (m.parts || []).forEach(function (p) {
-      if (p.name === 'Body' || p.name === 'ArmL01' || p.name === 'ArmR01') {
-        state.visible[p.file] = true;
-      } else {
-        state.visible[p.file] = false;
-      }
+      state.visible[p.file] = !(p.category === 'mask');
+    });
+    Object.keys(state.picks.slots || {}).forEach(function (key) {
+      var pick = state.picks.slots[key];
+      (m.parts || []).forEach(function (p) {
+        if (slotName(p.name, key)) state.visible[p.file] = (p.name === pick);
+      });
     });
   }
 
@@ -203,6 +243,21 @@
       html += '</select></div>';
     });
 
+    /* 多版本槽位（头部基底 / 头发等）单选 */
+    Object.keys(state.picks.slots || {}).forEach(function (key) {
+      var label = key;
+      SLOTS.forEach(function (s) { if (s[0] === key) label = s[1]; });
+      var list = (m.parts || []).filter(function (p) { return slotName(p.name, key); });
+      if (list.length < 2) return;
+      html += '<div class="ws-field"><label>' + label + '</label><select data-slot="' + key + '">';
+      html += '<option value="">无</option>';
+      list.forEach(function (p) {
+        var sel = p.name === state.picks.slots[key] ? ' selected' : '';
+        html += '<option value="' + MS.escapeHtml(p.name) + '"' + sel + '>' + MS.escapeHtml(fmtName(p.name)) + '</option>';
+      });
+      html += '</select></div>';
+    });
+
     var sections = [
       ['body', '身体'],
       ['limb', '手 · 脚'],
@@ -236,6 +291,16 @@
     Array.prototype.forEach.call(els.controls.querySelectorAll('select'), function (sel) {
       sel.addEventListener('change', function () {
         state.picks[sel.dataset.cat] = sel.value || null;
+        compose();
+      });
+    });
+    Array.prototype.forEach.call(els.controls.querySelectorAll('select[data-slot]'), function (sel) {
+      sel.addEventListener('change', function () {
+        var key = sel.getAttribute('data-slot');
+        state.picks.slots[key] = sel.value || null;
+        (state.manifest.parts || []).forEach(function (p) {
+          if (slotName(p.name, key)) state.visible[p.file] = (p.name === state.picks.slots[key]);
+        });
         compose();
       });
     });
@@ -303,17 +368,18 @@
         minY = Math.min(minY, top); maxY = Math.max(maxY, top + h);
       });
       if (!isFinite(minX)) return;
-      var cw = Math.max(800, Math.ceil(maxX - minX) + 200);
-      var ch = Math.max(1600, Math.ceil(maxY - minY) + 200);
+      var PAD = 250;
+      var cw = Math.max(800, Math.ceil(maxX - minX) + PAD * 2);
+      var ch = Math.max(1600, Math.ceil(maxY - minY) + PAD * 2);
       els.canvas.width = cw;
       els.canvas.height = ch;
       ctx.clearRect(0, 0, cw, ch);
-      var cx = cw / 2, cy = ch / 2;
+      var ox = PAD - minX, oy = PAD - minY;
       parts.forEach(function (p) {
         var img = state.images[p.file];
         if (!img) return;
         var w = img.width, h = img.height;
-        var px = p.pos.x * SCALE + cx, py = -p.pos.y * SCALE + cy;
+        var px = p.pos.x * SCALE + ox, py = -p.pos.y * SCALE + oy;
         var pivotX = (p.pivot && p.pivot[0] != null) ? p.pivot[0] : 0.5;
         var pivotY = (p.pivot && p.pivot[1] != null) ? p.pivot[1] : 0.5;
         var alpha = (p.color && p.color[3] != null) ? p.color[3] : 1;
