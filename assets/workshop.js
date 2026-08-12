@@ -194,11 +194,11 @@
     initSlots(m);
   }
 
-  /* ── 默认：全部可见（遮罩、脸饰除外）；手臂只显示 ArmR01/ArmL01；多版本槽位只显示选中变体 ── */
+  /* ── 默认：全部可见（遮罩、脸饰、特效除外）；手臂只显示 ArmR01/ArmL01；多版本槽位只显示选中变体 ── */
   function initVisibility(m) {
     state.visible = {};
     (m.parts || []).forEach(function (p) {
-      state.visible[p.file] = !(p.category === 'mask' || p.category === 'facial');
+      state.visible[p.file] = !(p.category === 'mask' || p.category === 'facial' || p.category === 'effect');
     });
     (m.parts || []).forEach(function (p) {
       if (p.category === 'limb') {
