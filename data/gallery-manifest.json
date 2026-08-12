@@ -3981,7 +3981,7 @@
       "file": "cutin/Hiro_CutIn_001.webp",
       "thumb": "cutin/thumbs/Hiro_CutIn_001.webp",
       "category": "cutin",
-      "title": "001",
+      "title": "Hiro CutIn 001",
       "w": 1556,
       "h": 2048,
       "original": "Assets/Texture2D/Hiro_CutIn_001.tga"
@@ -4241,7 +4241,7 @@
       "file": "character/JailerA 001.webp",
       "thumb": "character/thumbs/JailerA 001.webp",
       "category": "character",
-      "title": "A 001",
+      "title": "JailerA 001",
       "w": 2992,
       "h": 4148,
       "original": "Assets/Texture2D/JailerA 001.tga"
@@ -4251,7 +4251,7 @@
       "file": "character/JailerB 001.webp",
       "thumb": "character/thumbs/JailerB 001.webp",
       "category": "character",
-      "title": "B 001",
+      "title": "JailerB 001",
       "w": 1768,
       "h": 2176,
       "original": "Assets/Texture2D/JailerB 001.tga"
@@ -4261,7 +4261,7 @@
       "file": "character/JailerC 001.webp",
       "thumb": "character/thumbs/JailerC 001.webp",
       "category": "character",
-      "title": "C 001",
+      "title": "JailerC 001",
       "w": 1700,
       "h": 2652,
       "original": "Assets/Texture2D/JailerC 001.tga"
@@ -4271,7 +4271,7 @@
       "file": "character/Warden 001.webp",
       "thumb": "character/thumbs/Warden 001.webp",
       "category": "character",
-      "title": "001",
+      "title": "Warden 001",
       "w": 1768,
       "h": 3536,
       "original": "Assets/Texture2D/Warden 001.tga"
@@ -4281,7 +4281,7 @@
       "file": "character/Yuki 001.webp",
       "thumb": "character/thumbs/Yuki 001.webp",
       "category": "character",
-      "title": "001",
+      "title": "Yuki 001",
       "w": 2516,
       "h": 5780,
       "original": "Assets/Texture2D/Yuki 001.tga"
