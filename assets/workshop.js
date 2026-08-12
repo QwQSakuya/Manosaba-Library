@@ -20,6 +20,8 @@
   var ctx = els.canvas.getContext('2d');
 
   var state = {
+    base: '',
+    cross: false,
     chars: [],
     manifest: null,
     images: {},
@@ -31,13 +33,28 @@
     return name.replace(/_/g, ' ').replace(/ClippingMask/g, 'Mask').trim();
   }
 
-  MS.fetchJSON('chara/index.json', 15000).then(function (chars) {
+  boot();
+
+  function boot() {
+    MS.fetchJSON('chara/index.json', 8000).then(function (chars) {
+      state.base = '';
+      state.cross = false;
+      done(chars);
+    }).catch(function () {
+      // GitHub 备份站没有本地 chara 数据，回退到 R2 优选线路读取
+      state.base = 'https://fast.manosaba-library.com/web';
+      state.cross = true;
+      MS.fetchJSON(state.base + '/chara/index.json', 15000).then(done).catch(function () {
+        els.chars.innerHTML = '<p class="ws-note">角色数据加载失败，请稍后重试。</p>';
+      });
+    });
+  }
+
+  function done(chars) {
     state.chars = chars || [];
     renderChars();
     if (state.chars.length) selectChar(state.chars[0].name);
-  }).catch(function () {
-    els.chars.innerHTML = '<p class="ws-note">角色数据加载失败，请稍后重试。</p>';
-  });
+  }
 
   function renderChars() {
     els.chars.innerHTML = '';
@@ -60,7 +77,7 @@
     state.frame = null;
     els.controls.innerHTML = '<p class="ws-note">加载中…</p>';
     els.download.disabled = true;
-    MS.fetchJSON('chara/' + name + '/manifest.json', 20000).then(function (m) {
+    MS.fetchJSON(state.base + '/chara/' + name + '/manifest.json', 20000).then(function (m) {
       state.manifest = m;
       if (m.mode === 'frames' && m.frames && m.frames.length) {
         state.frame = m.frames[0].file;
@@ -210,7 +227,8 @@
         var img = new Image();
         img.onload = function () { state.images[p.file] = img; resolve(); };
         img.onerror = function () { state.images[p.file] = null; resolve(); };
-        img.src = 'chara/' + state.manifest.character + '/' + p.file;
+        if (state.cross) img.crossOrigin = 'anonymous';
+        img.src = state.base + '/chara/' + state.manifest.character + '/' + p.file;
       });
     }));
   }
@@ -269,7 +287,8 @@
       drawFrame(img);
     };
     img.onerror = function () { state.images['frame:' + f.file] = null; };
-    img.src = 'chara/' + state.manifest.character + '/' + f.file;
+    if (state.cross) img.crossOrigin = 'anonymous';
+    img.src = state.base + '/chara/' + state.manifest.character + '/' + f.file;
   }
 
   function drawFrame(img) {
