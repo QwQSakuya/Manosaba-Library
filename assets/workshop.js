@@ -257,9 +257,11 @@
     (m.parts || []).forEach(function (p) {
       var cat = p.category || 'other';
       if (cat === 'mask' && state.maskHidden) return;
-      if (state.visible[p.file] === false) return;
       if (cat === 'eyes' || cat === 'mouth' || cat === 'cheeks') {
+        // 表情三件套由下拉决定，不受可见性勾选影响
         if (!state.picks[cat] || p.name !== state.picks[cat]) return;
+      } else if (state.visible[p.file] === false) {
+        return;
       }
       out.push(p);
     });
