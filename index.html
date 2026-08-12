@@ -550,6 +550,53 @@ body { display: block; }
 }
 .ss-site:last-child { border-right: none; }
 .ss-site:hover { background: var(--bg2); }
+/* 副站悬浮提示 */
+.ss-site[data-tip] { position: relative; }
+.ss-site[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%) translateY(6px);
+  width: max-content;
+  max-width: 250px;
+  background: var(--panel-bg);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 9px 14px;
+  font-family: "Noto Serif SC", serif;
+  font-size: 12px;
+  line-height: 1.7;
+  letter-spacing: 0.03em;
+  color: var(--fg2);
+  text-align: center;
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.14);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s ease, transform 0.28s ease;
+  z-index: 30;
+  white-space: normal;
+}
+.ss-site[data-tip]::before {
+  content: '';
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--border);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s ease;
+  z-index: 30;
+}
+.ss-site[data-tip]:hover::after,
+.ss-site[data-tip]:hover::before {
+  opacity: 1;
+}
+.ss-site[data-tip]:hover::after {
+  transform: translateX(-50%) translateY(0);
+}
 .ss-site.current {
   background: color-mix(in srgb, var(--accent) 6%, transparent);
 }
@@ -1075,7 +1122,7 @@ body.collapsing {
           </span>
           <span class="ss-site-ping" data-target="manosaba-library.com">—</span>
         </button>
-        <button class="ss-site" data-url="https://github.manosaba-library.com" data-host="github.manosaba-library.com" type="button">
+        <button class="ss-site" data-url="https://github.manosaba-library.com" data-host="github.manosaba-library.com" data-tip="如果主副站都卡顿，可以挂载 GitHub 加速器并进入副站" type="button">
           <span class="ss-site-info">
             <span class="ss-site-name">副站</span>
             <span class="ss-site-url">github.manosaba-library.com</span>
