@@ -159,7 +159,14 @@
       if (n.indexOf('normal') !== -1) s += 30;
       if (n.indexOf('neutral') !== -1) s += 25;
       if (n.indexOf('open') !== -1) s += 10;
-      if (s > bestScore) { bestScore = s; best = p.name; }
+      var tn = (p.name.match(/(\d+)$/) || [0, 0])[1];
+      tn = parseInt(tn, 10) || 0;
+      var bestTn = best ? ((best.match(/(\d+)$/) || [0, 0])[1]) : 0;
+      bestTn = parseInt(bestTn, 10) || 0;
+      if (s > bestScore || (s === bestScore && tn < bestTn)) {
+        bestScore = s;
+        best = p.name;
+      }
     });
     return best || (list[0] ? list[0].name : null);
   }
