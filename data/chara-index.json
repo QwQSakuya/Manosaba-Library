@@ -11,5 +11,10 @@
   { "name": "miria", "label": "米莉亚", "labelEn": "Miria" },
   { "name": "nanoka", "label": "南香", "labelEn": "Nanoka" },
   { "name": "noah", "label": "诺亚", "labelEn": "Noah" },
-  { "name": "sherry", "label": "雪莉", "labelEn": "Sherry" }
+  { "name": "sherry", "label": "雪莉", "labelEn": "Sherry" },
+  { "name": "yuki", "label": "Yuki", "labelEn": "Yuki", "mode": "frames" },
+  { "name": "warden", "label": "Warden", "labelEn": "Warden", "mode": "frames" },
+  { "name": "jailer", "label": "狱卒A", "labelEn": "JailerA", "mode": "frames" },
+  { "name": "jailerb", "label": "狱卒B", "labelEn": "JailerB", "mode": "frames" },
+  { "name": "jailerc", "label": "狱卒C", "labelEn": "JailerC", "mode": "frames" }
 ]

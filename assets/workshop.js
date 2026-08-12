@@ -57,10 +57,14 @@
     });
     state.images = {};
     state.picks = {};
+    state.frame = null;
     els.controls.innerHTML = '<p class="ws-note">加载中…</p>';
     els.download.disabled = true;
     MS.fetchJSON('chara/' + name + '/manifest.json', 20000).then(function (m) {
       state.manifest = m;
+      if (m.mode === 'frames' && m.frames && m.frames.length) {
+        state.frame = m.frames[0].file;
+      }
       initPicks(m);
       initVisibility(m);
       renderControls(m);
@@ -103,6 +107,25 @@
   }
 
   function renderControls(m) {
+    if (m.mode === 'frames') {
+      els.maskToggle.parentElement.style.display = 'none';
+      var html = '<div class="ws-field"><label>动作</label><select id="ws-frame">';
+      (m.frames || []).forEach(function (f) {
+        var sel = f.file === state.frame ? ' selected' : '';
+        html += '<option value="' + MS.escapeHtml(f.file) + '"' + sel + '>' + MS.escapeHtml(f.name) + '</option>';
+      });
+      html += '</select></div>';
+      els.controls.innerHTML = html;
+      var selEl = document.getElementById('ws-frame');
+      if (selEl) {
+        selEl.addEventListener('change', function () {
+          state.frame = selEl.value;
+          compose();
+        });
+      }
+      return;
+    }
+    els.maskToggle.parentElement.style.display = '';
     var g = groupParts(m);
     var html = '';
     var labels = { eyes: '眼睛', mouth: '嘴巴', cheeks: '脸颊' };
@@ -194,6 +217,7 @@
 
   function compose() {
     if (!state.manifest) return;
+    if (state.manifest.mode === 'frames') return composeFrame();
     var parts = activeParts(state.manifest);
     loadImages(parts).then(function () {
       var minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
@@ -229,6 +253,32 @@
       ctx.globalAlpha = 1;
       els.download.disabled = false;
     });
+  }
+
+  function composeFrame() {
+    var f = (state.manifest.frames || []).filter(function (x) { return x.file === state.frame; })[0];
+    if (!f) return;
+    var img = state.images['frame:' + f.file];
+    if (img) {
+      drawFrame(img);
+      return;
+    }
+    img = new Image();
+    img.onload = function () {
+      state.images['frame:' + f.file] = img;
+      drawFrame(img);
+    };
+    img.onerror = function () { state.images['frame:' + f.file] = null; };
+    img.src = 'chara/' + state.manifest.character + '/' + f.file;
+  }
+
+  function drawFrame(img) {
+    if (!img) return;
+    els.canvas.width = img.width;
+    els.canvas.height = img.height;
+    ctx.clearRect(0, 0, img.width, img.height);
+    ctx.drawImage(img, 0, 0);
+    els.download.disabled = false;
   }
 
   els.download.addEventListener('click', function () {
