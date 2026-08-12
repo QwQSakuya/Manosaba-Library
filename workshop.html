@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-Hans" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="立绘工坊：自由组合角色部件，拼出属于你的立绘并下载 PNG。">
+<link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+<title>立绘工坊 — 大魔女图书馆</title>
+<link rel="stylesheet" href="assets/fonts.css">
+<link rel="stylesheet" href="assets/shared.css">
+<link rel="stylesheet" href="assets/content.css?v=20260812">
+<script>
+  (function(){var s=localStorage.getItem('theme');if(s==='dark'||s==='light')document.documentElement.setAttribute('data-theme',s);})();
+</script>
+<style>
+/* ═══════════ 立绘工坊 ═══════════ */
+.ws-wrap { max-width: 1280px; margin: 0 auto; padding: 32px 20px 80px; }
+.ws-title { font-family: "Cormorant Garamond", serif; font-size: 2.2rem; text-align: center; margin: 8px 0 4px; }
+.ws-sub { text-align: center; opacity: .7; margin-bottom: 28px; }
+.ws-layout { display: grid; grid-template-columns: 220px 1fr 260px; gap: 20px; align-items: start; }
+@media (max-width: 960px) { .ws-layout { grid-template-columns: 1fr; } }
+.ws-panel { background: var(--panel-bg); border: 1px solid var(--border); border-radius: 4px; padding: 16px; }
+.ws-panel h2 { font-size: 1rem; margin: 0 0 12px; font-weight: 700; }
+.ws-chars { display: flex; flex-direction: column; gap: 8px; }
+.ws-char { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; border: 1px solid var(--border); border-radius: 3px; cursor: pointer; background: transparent; color: inherit; font: inherit; text-align: left; transition: .25s; }
+.ws-char:hover { border-color: var(--accent); }
+.ws-char.active { border-color: var(--accent); background: var(--accent-soft, rgba(0,0,0,.04)); }
+.ws-char small { opacity: .6; }
+.ws-stage { display: flex; flex-direction: column; align-items: center; }
+.ws-canvas-box { width: 100%; max-width: 560px; border: 1px solid var(--border); border-radius: 4px; background: var(--bg2); display: flex; align-items: center; justify-content: center; min-height: 420px; overflow: hidden; }
+.ws-canvas-box canvas { width: 100%; height: auto; display: block; }
+.ws-controls { display: flex; flex-direction: column; gap: 14px; }
+.ws-field label { display: block; font-size: .85rem; margin-bottom: 6px; opacity: .85; }
+.ws-field select { width: 100%; padding: 8px; background: var(--bg2); color: inherit; border: 1px solid var(--border); border-radius: 3px; }
+.ws-check { display: flex; align-items: center; gap: 8px; font-size: .9rem; cursor: pointer; }
+.ws-download { margin-top: 6px; padding: 10px 0; text-align: center; border: 1px solid var(--accent); border-radius: 3px; cursor: pointer; background: var(--accent); color: #fff; font: inherit; font-weight: 700; }
+.ws-download:disabled { opacity: .5; cursor: wait; }
+.ws-note { font-size: .8rem; opacity: .65; line-height: 1.5; }
+.ws-back { display: inline-block; margin-top: 24px; opacity: .75; }
+</style>
+</head>
+<body>
+<main class="ws-wrap">
+  <h1 class="ws-title">立绘工坊</h1>
+  <p class="ws-sub">Portrait Studio · 选择角色，自由搭配表情，下载你的立绘</p>
+
+  <div class="ws-layout">
+    <aside class="ws-panel">
+      <h2>角色</h2>
+      <div class="ws-chars" id="ws-chars"></div>
+    </aside>
+
+    <section class="ws-panel ws-stage">
+      <div class="ws-canvas-box" id="ws-canvas-box">
+        <canvas id="ws-canvas" width="2000" height="4000"></canvas>
+      </div>
+    </section>
+
+    <aside class="ws-panel">
+      <h2>部件</h2>
+      <div class="ws-controls" id="ws-controls"></div>
+      <label class="ws-check" style="margin-top:12px">
+        <input type="checkbox" id="ws-mask-toggle" checked>
+        隐藏遮罩层（推荐）
+      </label>
+      <button class="ws-download" id="ws-download" disabled>下载 PNG</button>
+      <p class="ws-note">遮罩是游戏内用于裁剪的透明层；默认隐藏以还原脸部效果。角色动作立绘（Yuki / Warden 等）请到 <a href="gallery.html">CG 画廊</a> →「角色动作」查看。</p>
+    </aside>
+  </div>
+
+  <a class="ws-back" href="index.html">← 返回主页</a>
+</main>
+<script src="assets/shared.js"></script>
+<script src="assets/workshop.js"></script>
+</body>
+</html>

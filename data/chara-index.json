@@ -1,0 +1,15 @@
+[
+  { "name": "alisa", "label": "艾丽莎", "labelEn": "Alisa" },
+  { "name": "anan", "label": "安安", "labelEn": "AnAn" },
+  { "name": "coco", "label": "可可", "labelEn": "Coco" },
+  { "name": "ema", "label": "艾玛", "labelEn": "Ema" },
+  { "name": "hanna", "label": "汉娜", "labelEn": "Hanna" },
+  { "name": "hiro", "label": "希罗", "labelEn": "Hiro" },
+  { "name": "leia", "label": "蕾娅", "labelEn": "Leia" },
+  { "name": "margo", "label": "玛尔戈", "labelEn": "Margo" },
+  { "name": "meruru", "label": "梅露露", "labelEn": "Meruru" },
+  { "name": "miria", "label": "米莉亚", "labelEn": "Miria" },
+  { "name": "nanoka", "label": "南香", "labelEn": "Nanoka" },
+  { "name": "noah", "label": "诺亚", "labelEn": "Noah" },
+  { "name": "sherry", "label": "雪莉", "labelEn": "Sherry" }
+]

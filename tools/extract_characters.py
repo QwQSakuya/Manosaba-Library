@@ -104,6 +104,12 @@ def extract_character(bundle: Path, out_dir: Path):
         sp = sprites.get(r["sprite"])
         if sp is None or sp.image is None:
             continue
+        rect = getattr(sp, "m_Rect", None)
+        rw = getattr(rect, "width", 1) if rect else 1
+        rh = getattr(rect, "height", 1) if rect else 1
+        if rw <= 0 or rh <= 0:
+            # 零尺寸占位精灵（宽高为 0），对合成无贡献
+            continue
         pos = go_pos.get(r["go"], {"x": 0.0, "y": 0.0})
         name = gos.get(r["go"], f"GO_{r['go']}")
         safe = _clean(name)
@@ -113,7 +119,11 @@ def extract_character(bundle: Path, out_dir: Path):
             n += 1
         used_names.add(safe)
         png = parts_dir / f"{safe}.png"
-        sp.image.save(str(png))
+        try:
+            sp.image.save(str(png))
+        except Exception:
+            # 部分精灵矩形超出纹理边界，PIL 保存会报 tile 越界，复制后转 RGBA 可规避
+            sp.image.copy().convert("RGBA").save(str(png), "PNG")
         pivot = getattr(sp, "m_Pivot", None)
         parts.append(
             {
