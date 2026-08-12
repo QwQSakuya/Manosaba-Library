@@ -77,7 +77,7 @@
       // GitHub 备份站没有本地 chara 数据，回退到 R2 优选线路读取
       state.base = 'https://fast.manosaba-library.com/web';
       state.cross = true;
-      MS.fetchJSON(state.base + '/chara/index.json?v=1', 15000).then(done).catch(function () {
+      MS.fetchJSON(state.base + '/chara/index.json?v=2', 15000).then(done).catch(function () {
         els.chars.innerHTML = '<p class="ws-note">角色数据加载失败，请稍后重试。</p>';
       });
     });
@@ -115,7 +115,7 @@
     state.frame = null;
     els.controls.innerHTML = '<p class="ws-note">加载中…</p>';
     els.download.disabled = true;
-    MS.fetchJSON(state.base + '/chara/' + name + '/manifest.json?v=1', 20000).then(function (m) {
+    MS.fetchJSON(state.base + '/chara/' + name + '/manifest.json?v=2', 20000).then(function (m) {
       state.manifest = m;
       if (m.mode === 'frames' && m.frames && m.frames.length) {
         state.frame = m.frames[0].file;
@@ -275,7 +275,7 @@
         img.onerror = function () { state.images[p.file] = null; resolve(); };
         if (state.cross) {
           img.crossOrigin = 'anonymous';
-          img.src = state.base + '/chara/' + state.manifest.character + '/' + p.file + '?v=1';
+          img.src = state.base + '/chara/' + state.manifest.character + '/' + p.file + '?v=2';
         } else {
           img.src = state.base + '/chara/' + state.manifest.character + '/' + p.file;
         }
@@ -339,7 +339,7 @@
     img.onerror = function () { state.images['frame:' + f.file] = null; };
     if (state.cross) {
       img.crossOrigin = 'anonymous';
-      img.src = state.base + '/chara/' + state.manifest.character + '/' + f.file + '?v=1';
+      img.src = state.base + '/chara/' + state.manifest.character + '/' + f.file + '?v=2';
     } else {
       img.src = state.base + '/chara/' + state.manifest.character + '/' + f.file;
     }
