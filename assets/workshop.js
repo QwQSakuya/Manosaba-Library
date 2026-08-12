@@ -19,7 +19,8 @@
     ['HeadBase', '头部基底'],
     ['FacialLineDrawing', '头发线稿'],
     ['HairB', '头发B'],
-    ['OptionB_Head', '头部配饰']
+    ['OptionB_Head', '头部配饰'],
+    ['Blending', '混合层']
   ];
 
   var els = {};
@@ -146,11 +147,21 @@
   }
 
   function pickDefault(list, prefer) {
-    for (var i = 0; i < prefer.length; i++) {
-      var hit = list.filter(function (p) { return p.name.indexOf(prefer[i]) === 0 || p.name === prefer[i]; });
-      if (hit.length) return hit[0].name;
-    }
-    return list[0] ? list[0].name : null;
+    // 智能默认：优先 01 头部系列 + Normal/Neutral + 睁眼
+    if (!list || !list.length) return null;
+    var best = null, bestScore = -1;
+    list.forEach(function (p) {
+      var n = p.name.toLowerCase();
+      var m = p.name.match(/^(eyes|mouth|cheeks)(\d+)/i);
+      var s = 0;
+      if (m && m[2] === '01') s += 100;
+      else if (m) s += 40;
+      if (n.indexOf('normal') !== -1) s += 30;
+      if (n.indexOf('neutral') !== -1) s += 25;
+      if (n.indexOf('open') !== -1) s += 10;
+      if (s > bestScore) { bestScore = s; best = p.name; }
+    });
+    return best || (list[0] ? list[0].name : null);
   }
 
   function slotName(name, slot) {
@@ -177,19 +188,13 @@
     });
   }
 
-  /* ── 默认脸庞：头部基底有多版本时眼睛/嘴巴/脸颊选 02 风格，否则 01 ── */
+  /* ── 默认脸庞：优先 01 头部系列的 Normal/Neutral ── */
   function initPicks(m) {
     var g = groupParts(m);
-    var headMulti = countHeadBaseVariants(m) >= 2;
-    var prefer = headMulti ? {
-      eyes: ['Eyes_Normal_Open02', 'Eyes_Normal_Open01'],
-      mouth: ['Mouth_Normal_Open02', 'Mouth_Normal_Open01', 'Mouth_Normal_Open'],
-      cheeks: ['Cheeks_Flushed02', 'Cheeks_Normal02', 'Cheeks_Flushed', 'Cheeks_Normal']
-    } : PREFER;
     state.picks = {
-      eyes: pickDefault(g.eyes || [], prefer.eyes),
-      mouth: pickDefault(g.mouth || [], prefer.mouth),
-      cheeks: pickDefault(g.cheeks || [], prefer.cheeks)
+      eyes: pickDefault(g.eyes || [], 'eyes'),
+      mouth: pickDefault(g.mouth || [], 'mouth'),
+      cheeks: pickDefault(g.cheeks || [], 'cheeks')
     };
     initSlots(m);
   }
