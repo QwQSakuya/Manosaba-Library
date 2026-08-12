@@ -63,6 +63,10 @@
     {
       "id": "ui",
       "label": "????"
+    },
+    {
+      "id": "actions",
+      "label": "????"
     }
   ],
   "items": [
@@ -9135,7 +9139,407 @@
       "w": 1024,
       "h": 1024,
       "original": "Assets/#WitchTrials/Fonts/SpecialThanks/SpecialThanks_ZhHans Atlas.tga"
+    },
+    {
+      "id": "JailerA_Action_01",
+      "file": "character/actions/jailer-01.webp",
+      "thumb": "character/thumbs/actions/jailer-01.webp",
+      "category": "actions",
+      "title": "JailerA ?? 01",
+      "w": 3136,
+      "h": 3520,
+      "original": "Assets/Characters/JailerA/01.png"
+    },
+    {
+      "id": "JailerA_Action_02",
+      "file": "character/actions/jailer-02.webp",
+      "thumb": "character/thumbs/actions/jailer-02.webp",
+      "category": "actions",
+      "title": "JailerA ?? 02",
+      "w": 3136,
+      "h": 3456,
+      "original": "Assets/Characters/JailerA/02.png"
+    },
+    {
+      "id": "JailerA_Action_03",
+      "file": "character/actions/jailer-03.webp",
+      "thumb": "character/thumbs/actions/jailer-03.webp",
+      "category": "actions",
+      "title": "JailerA ?? 03",
+      "w": 3328,
+      "h": 3456,
+      "original": "Assets/Characters/JailerA/03.png"
+    },
+    {
+      "id": "JailerA_Action_04",
+      "file": "character/actions/jailer-04.webp",
+      "thumb": "character/thumbs/actions/jailer-04.webp",
+      "category": "actions",
+      "title": "JailerA ?? 04",
+      "w": 3136,
+      "h": 3520,
+      "original": "Assets/Characters/JailerA/04.png"
+    },
+    {
+      "id": "JailerA_Action_05",
+      "file": "character/actions/jailer-05.webp",
+      "thumb": "character/thumbs/actions/jailer-05.webp",
+      "category": "actions",
+      "title": "JailerA ?? 05",
+      "w": 3264,
+      "h": 3520,
+      "original": "Assets/Characters/JailerA/05.png"
+    },
+    {
+      "id": "JailerB_Action_01",
+      "file": "character/actions/jailerb-01.webp",
+      "thumb": "character/thumbs/actions/jailerb-01.webp",
+      "category": "actions",
+      "title": "JailerB ?? 01",
+      "w": 2368,
+      "h": 3385,
+      "original": "Assets/Characters/JailerB/01.png"
+    },
+    {
+      "id": "JailerC_Action_01",
+      "file": "character/actions/jailerc-01.webp",
+      "thumb": "character/thumbs/actions/jailerc-01.webp",
+      "category": "actions",
+      "title": "JailerC ?? 01",
+      "w": 2031,
+      "h": 3307,
+      "original": "Assets/Characters/JailerC/01.png"
+    },
+    {
+      "id": "Warden_Action_01",
+      "file": "character/actions/warden-01.webp",
+      "thumb": "character/thumbs/actions/warden-01.webp",
+      "category": "actions",
+      "title": "Warden ?? 01",
+      "w": 1536,
+      "h": 1984,
+      "original": "Assets/Characters/Warden/01.png"
+    },
+    {
+      "id": "Warden_Action_02",
+      "file": "character/actions/warden-02.webp",
+      "thumb": "character/thumbs/actions/warden-02.webp",
+      "category": "actions",
+      "title": "Warden ?? 02",
+      "w": 1536,
+      "h": 1984,
+      "original": "Assets/Characters/Warden/02.png"
+    },
+    {
+      "id": "Warden_Action_03",
+      "file": "character/actions/warden-03.webp",
+      "thumb": "character/thumbs/actions/warden-03.webp",
+      "category": "actions",
+      "title": "Warden ?? 03",
+      "w": 2048,
+      "h": 1984,
+      "original": "Assets/Characters/Warden/03.png"
+    },
+    {
+      "id": "Warden_Action_04",
+      "file": "character/actions/warden-04.webp",
+      "thumb": "character/thumbs/actions/warden-04.webp",
+      "category": "actions",
+      "title": "Warden ?? 04",
+      "w": 2432,
+      "h": 1984,
+      "original": "Assets/Characters/Warden/04.png"
+    },
+    {
+      "id": "Warden_Action_05",
+      "file": "character/actions/warden-05.webp",
+      "thumb": "character/thumbs/actions/warden-05.webp",
+      "category": "actions",
+      "title": "Warden ?? 05",
+      "w": 1536,
+      "h": 1984,
+      "original": "Assets/Characters/Warden/05.png"
+    },
+    {
+      "id": "Warden_Action_06",
+      "file": "character/actions/warden-06.webp",
+      "thumb": "character/thumbs/actions/warden-06.webp",
+      "category": "actions",
+      "title": "Warden ?? 06",
+      "w": 1984,
+      "h": 1984,
+      "original": "Assets/Characters/Warden/06.png"
+    },
+    {
+      "id": "Warden_Action_07",
+      "file": "character/actions/warden-07.webp",
+      "thumb": "character/thumbs/actions/warden-07.webp",
+      "category": "actions",
+      "title": "Warden ?? 07",
+      "w": 2240,
+      "h": 1984,
+      "original": "Assets/Characters/Warden/07.png"
+    },
+    {
+      "id": "Warden_Action_08",
+      "file": "character/actions/warden-08.webp",
+      "thumb": "character/thumbs/actions/warden-08.webp",
+      "category": "actions",
+      "title": "Warden ?? 08",
+      "w": 1984,
+      "h": 1984,
+      "original": "Assets/Characters/Warden/08.png"
+    },
+    {
+      "id": "Warden_Action_09",
+      "file": "character/actions/warden-09.webp",
+      "thumb": "character/thumbs/actions/warden-09.webp",
+      "category": "actions",
+      "title": "Warden ?? 09",
+      "w": 1984,
+      "h": 1984,
+      "original": "Assets/Characters/Warden/09.png"
+    },
+    {
+      "id": "Warden_Action_10",
+      "file": "character/actions/warden-10.webp",
+      "thumb": "character/thumbs/actions/warden-10.webp",
+      "category": "actions",
+      "title": "Warden ?? 10",
+      "w": 2240,
+      "h": 1984,
+      "original": "Assets/Characters/Warden/10.png"
+    },
+    {
+      "id": "Warden_Action_11",
+      "file": "character/actions/warden-11.webp",
+      "thumb": "character/thumbs/actions/warden-11.webp",
+      "category": "actions",
+      "title": "Warden ?? 11",
+      "w": 1984,
+      "h": 1984,
+      "original": "Assets/Characters/Warden/11.png"
+    },
+    {
+      "id": "Warden_Action_12",
+      "file": "character/actions/warden-12.webp",
+      "thumb": "character/thumbs/actions/warden-12.webp",
+      "category": "actions",
+      "title": "Warden ?? 12",
+      "w": 2432,
+      "h": 1984,
+      "original": "Assets/Characters/Warden/12.png"
+    },
+    {
+      "id": "Warden_Action_13",
+      "file": "character/actions/warden-13.webp",
+      "thumb": "character/thumbs/actions/warden-13.webp",
+      "category": "actions",
+      "title": "Warden ?? 13",
+      "w": 1536,
+      "h": 1984,
+      "original": "Assets/Characters/Warden/13.png"
+    },
+    {
+      "id": "Yuki_Action_01",
+      "file": "character/actions/yuki-01.webp",
+      "thumb": "character/thumbs/actions/yuki-01.webp",
+      "category": "actions",
+      "title": "Yuki ?? 01",
+      "w": 2368,
+      "h": 3776,
+      "original": "Assets/Characters/Yuki/01.png"
+    },
+    {
+      "id": "Yuki_Action_02",
+      "file": "character/actions/yuki-02.webp",
+      "thumb": "character/thumbs/actions/yuki-02.webp",
+      "category": "actions",
+      "title": "Yuki ?? 02",
+      "w": 2368,
+      "h": 3776,
+      "original": "Assets/Characters/Yuki/02.png"
+    },
+    {
+      "id": "Yuki_Action_03",
+      "file": "character/actions/yuki-03.webp",
+      "thumb": "character/thumbs/actions/yuki-03.webp",
+      "category": "actions",
+      "title": "Yuki ?? 03",
+      "w": 2368,
+      "h": 3776,
+      "original": "Assets/Characters/Yuki/03.png"
+    },
+    {
+      "id": "Yuki_Action_04",
+      "file": "character/actions/yuki-04.webp",
+      "thumb": "character/thumbs/actions/yuki-04.webp",
+      "category": "actions",
+      "title": "Yuki ?? 04",
+      "w": 2368,
+      "h": 4096,
+      "original": "Assets/Characters/Yuki/04.png"
+    },
+    {
+      "id": "Yuki_Action_05",
+      "file": "character/actions/yuki-05.webp",
+      "thumb": "character/thumbs/actions/yuki-05.webp",
+      "category": "actions",
+      "title": "Yuki ?? 05",
+      "w": 2368,
+      "h": 3776,
+      "original": "Assets/Characters/Yuki/05.png"
+    },
+    {
+      "id": "Yuki_Action_06",
+      "file": "character/actions/yuki-06.webp",
+      "thumb": "character/thumbs/actions/yuki-06.webp",
+      "category": "actions",
+      "title": "Yuki ?? 06",
+      "w": 2368,
+      "h": 3776,
+      "original": "Assets/Characters/Yuki/06.png"
+    },
+    {
+      "id": "Yuki_Action_07",
+      "file": "character/actions/yuki-07.webp",
+      "thumb": "character/thumbs/actions/yuki-07.webp",
+      "category": "actions",
+      "title": "Yuki ?? 07",
+      "w": 2368,
+      "h": 3776,
+      "original": "Assets/Characters/Yuki/07.png"
+    },
+    {
+      "id": "Yuki_Action_08",
+      "file": "character/actions/yuki-08.webp",
+      "thumb": "character/thumbs/actions/yuki-08.webp",
+      "category": "actions",
+      "title": "Yuki ?? 08",
+      "w": 2368,
+      "h": 3776,
+      "original": "Assets/Characters/Yuki/08.png"
+    },
+    {
+      "id": "Yuki_Action_09",
+      "file": "character/actions/yuki-09.webp",
+      "thumb": "character/thumbs/actions/yuki-09.webp",
+      "category": "actions",
+      "title": "Yuki ?? 09",
+      "w": 2368,
+      "h": 3776,
+      "original": "Assets/Characters/Yuki/09.png"
+    },
+    {
+      "id": "Yuki_Action_10",
+      "file": "character/actions/yuki-10.webp",
+      "thumb": "character/thumbs/actions/yuki-10.webp",
+      "category": "actions",
+      "title": "Yuki ?? 10",
+      "w": 2368,
+      "h": 3776,
+      "original": "Assets/Characters/Yuki/10.png"
+    },
+    {
+      "id": "Yuki_Action_11",
+      "file": "character/actions/yuki-11.webp",
+      "thumb": "character/thumbs/actions/yuki-11.webp",
+      "category": "actions",
+      "title": "Yuki ?? 11",
+      "w": 2368,
+      "h": 3776,
+      "original": "Assets/Characters/Yuki/11.png"
+    },
+    {
+      "id": "Yuki_Action_12",
+      "file": "character/actions/yuki-12.webp",
+      "thumb": "character/thumbs/actions/yuki-12.webp",
+      "category": "actions",
+      "title": "Yuki ?? 12",
+      "w": 2368,
+      "h": 3776,
+      "original": "Assets/Characters/Yuki/12.png"
+    },
+    {
+      "id": "Yuki_Action_13",
+      "file": "character/actions/yuki-13.webp",
+      "thumb": "character/thumbs/actions/yuki-13.webp",
+      "category": "actions",
+      "title": "Yuki ?? 13",
+      "w": 2368,
+      "h": 3776,
+      "original": "Assets/Characters/Yuki/13.png"
+    },
+    {
+      "id": "Yuki_Action_14",
+      "file": "character/actions/yuki-14.webp",
+      "thumb": "character/thumbs/actions/yuki-14.webp",
+      "category": "actions",
+      "title": "Yuki ?? 14",
+      "w": 2368,
+      "h": 3776,
+      "original": "Assets/Characters/Yuki/14.png"
+    },
+    {
+      "id": "Yuki_Action_15",
+      "file": "character/actions/yuki-15.webp",
+      "thumb": "character/thumbs/actions/yuki-15.webp",
+      "category": "actions",
+      "title": "Yuki ?? 15",
+      "w": 2368,
+      "h": 3776,
+      "original": "Assets/Characters/Yuki/15.png"
+    },
+    {
+      "id": "Yuki_Action_16",
+      "file": "character/actions/yuki-16.webp",
+      "thumb": "character/thumbs/actions/yuki-16.webp",
+      "category": "actions",
+      "title": "Yuki ?? 16",
+      "w": 2368,
+      "h": 3776,
+      "original": "Assets/Characters/Yuki/16.png"
+    },
+    {
+      "id": "Yuki_Action_17",
+      "file": "character/actions/yuki-17.webp",
+      "thumb": "character/thumbs/actions/yuki-17.webp",
+      "category": "actions",
+      "title": "Yuki ?? 17",
+      "w": 2368,
+      "h": 3776,
+      "original": "Assets/Characters/Yuki/17.png"
+    },
+    {
+      "id": "Yuki_Action_18",
+      "file": "character/actions/yuki-18.webp",
+      "thumb": "character/thumbs/actions/yuki-18.webp",
+      "category": "actions",
+      "title": "Yuki ?? 18",
+      "w": 2368,
+      "h": 3776,
+      "original": "Assets/Characters/Yuki/18.png"
+    },
+    {
+      "id": "Yuki_Action_19",
+      "file": "character/actions/yuki-19.webp",
+      "thumb": "character/thumbs/actions/yuki-19.webp",
+      "category": "actions",
+      "title": "Yuki ?? 19",
+      "w": 2368,
+      "h": 3776,
+      "original": "Assets/Characters/Yuki/19.png"
+    },
+    {
+      "id": "Yuki_Action_20",
+      "file": "character/actions/yuki-20.webp",
+      "thumb": "character/thumbs/actions/yuki-20.webp",
+      "category": "actions",
+      "title": "Yuki ?? 20",
+      "w": 2368,
+      "h": 3776,
+      "original": "Assets/Characters/Yuki/20.png"
     }
   ],
-  "total": 907
+  "total": 947
 }
