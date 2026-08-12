@@ -41,6 +41,7 @@
 
   /* ── DOM 缓存 ── */
   var els = {};
+  var workshopLoaded = false;
 
   /* ── 初始化 ── */
   function init() {
@@ -61,6 +62,12 @@
     els.lbDownload = d.getElementById('lb-download');
     els.lbDownloadRow = d.getElementById('lb-download-row');
     els.lbFmtBtns = els.lbDownloadRow ? MS.$$('.lb-fmt-btn', els.lbDownloadRow) : [];
+
+    /* Tab 元素缓存 */
+    els.tabs       = MS.$$('.gallery-tabs .tab');
+    els.panelG     = d.getElementById('panel-gallery');
+    els.panelW     = d.getElementById('panel-workshop');
+    els.searchWrap = d.getElementById('gallery-search-wrap');
 
     // 提前解析 URL 参数: wakeup=1 时跳过光圈加载动画, 改用闭眼黑幕
     // (在 fetchData 之前执行, 确保加载动画完全不会出现)
@@ -86,7 +93,41 @@
     }
 
     bindEvents();
+
+    /* Tab 初始化: URL hash #workshop → 立绘工坊, 否则默认 CG画廊 */
+    var initialTab = (w.location.hash === '#workshop') ? 'workshop' : 'gallery';
+    switchTab(initialTab);
+
     fetchData();
+  }
+
+  /* ── Tab 切换 ── */
+  function switchTab(name) {
+    els.tabs.forEach(function (tab) {
+      tab.classList.toggle('active', tab.getAttribute('data-tab') === name);
+    });
+    if (els.panelG) els.panelG.classList.toggle('active', name === 'gallery');
+    if (els.panelW) els.panelW.classList.toggle('active', name === 'workshop');
+
+    /* 搜索栏仅在 CG画廊 Tab 显示 */
+    if (els.searchWrap) {
+      els.searchWrap.style.display = (name === 'gallery') ? '' : 'none';
+    }
+
+    /* 立绘工坊懒加载: 首次激活时调用 MSWorkshop.init() */
+    if (name === 'workshop' && !workshopLoaded) {
+      workshopLoaded = true;
+      if (w.MSWorkshop && typeof w.MSWorkshop.init === 'function') {
+        w.MSWorkshop.init();
+      }
+    }
+
+    /* 更新 URL hash (不触发滚动) */
+    if (name === 'workshop' && w.location.hash !== '#workshop') {
+      w.history.replaceState(null, '', '#workshop');
+    } else if (name === 'gallery' && w.location.hash === '#workshop') {
+      w.history.replaceState(null, '', w.location.pathname + w.location.search);
+    }
   }
 
   /* ── 事件绑定 ── */
@@ -127,6 +168,21 @@
       if (e.key === 'Escape') { e.preventDefault(); closeLightbox(); }
       else if (e.key === 'ArrowLeft')  { e.preventDefault(); navLightbox(-1); }
       else if (e.key === 'ArrowRight') { e.preventDefault(); navLightbox(1); }
+    });
+
+    // Tab 切换
+    if (els.tabs.length) {
+      els.tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+          switchTab(tab.getAttribute('data-tab'));
+        });
+      });
+    }
+
+    // URL hash 变化时同步 Tab (如浏览器前进/后退)
+    w.addEventListener('hashchange', function () {
+      var tab = (w.location.hash === '#workshop') ? 'workshop' : 'gallery';
+      switchTab(tab);
     });
   }
 

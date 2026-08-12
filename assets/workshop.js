@@ -1,7 +1,12 @@
-(function () {
+/* ═══════════════════════════════════════════════════
+   workshop.js — 立绘工坊逻辑 (懒加载模式)
+   依赖: shared.js (window.MS)
+   由 gallery.js 在 Tab 激活时调用 MSWorkshop.init()
+   ES5 兼容 (var / function, 无箭头函数/const/let)
+   ═══════════════════════════════════════════════════ */
+(function (w, d) {
   'use strict';
-  if (!window.MS) return;
-  MS.initTheme();
+  if (!w.MS) return;
 
   var SCALE = 100; // Unity 单位 → 像素 (pixelsToUnits)
   var PREFER = {
@@ -10,14 +15,8 @@
     cheeks: ['Cheeks_Normal', 'Cheeks_Flushed']
   };
 
-  var els = {
-    chars: document.getElementById('ws-chars'),
-    canvas: document.getElementById('ws-canvas'),
-    controls: document.getElementById('ws-controls'),
-    maskToggle: document.getElementById('ws-mask-toggle'),
-    download: document.getElementById('ws-download')
-  };
-  var ctx = els.canvas.getContext('2d');
+  var els = {};
+  var ctx = null;
 
   var state = {
     base: '',
@@ -33,7 +32,41 @@
     return name.replace(/_/g, ' ').replace(/ClippingMask/g, 'Mask').trim();
   }
 
-  boot();
+  /* ── 暴露 init 供 gallery.js 调用 ── */
+  w.MSWorkshop = {
+    init: function () {
+      els.chars = d.getElementById('ws-chars');
+      els.canvas = d.getElementById('ws-canvas');
+      els.controls = d.getElementById('ws-controls');
+      els.maskToggle = d.getElementById('ws-mask-toggle');
+      els.download = d.getElementById('ws-download');
+      els.charName = d.getElementById('ws-char-name');
+      if (!els.canvas || !els.chars) return;
+      ctx = els.canvas.getContext('2d');
+
+      /* 下载按钮 */
+      els.download.addEventListener('click', function () {
+        if (!state.manifest) return;
+        var name = state.manifest.character || 'chara';
+        els.download.disabled = true;
+        els.canvas.toBlob(function (blob) {
+          if (!blob) { els.download.disabled = false; return; }
+          var a = d.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = name + '-portrait.png';
+          d.body.appendChild(a);
+          a.click();
+          setTimeout(function () {
+            URL.revokeObjectURL(a.href);
+            a.remove();
+            els.download.disabled = false;
+          }, 300);
+        }, 'image/png');
+      });
+
+      boot();
+    }
+  };
 
   function boot() {
     MS.fetchJSON('chara/index.json', 8000).then(function (chars) {
@@ -59,7 +92,7 @@
   function renderChars() {
     els.chars.innerHTML = '';
     state.chars.forEach(function (c) {
-      var b = document.createElement('button');
+      var b = d.createElement('button');
       b.type = 'button';
       b.className = 'ws-char';
       b.innerHTML = '<span>' + MS.escapeHtml(c.label || c.labelEn || c.name) + '</span><small>' + MS.escapeHtml(c.labelEn || '') + '</small>';
@@ -72,6 +105,11 @@
     Array.prototype.forEach.call(els.chars.children, function (b) {
       b.classList.toggle('active', b.textContent.indexOf(name) !== -1);
     });
+    /* 更新角色名显示 */
+    var charData = state.chars.filter(function (c) { return c.name === name; })[0];
+    if (els.charName && charData) {
+      els.charName.textContent = charData.label || charData.labelEn || charData.name;
+    }
     state.images = {};
     state.picks = {};
     state.frame = null;
@@ -108,18 +146,25 @@
     return list[0] ? list[0].name : null;
   }
 
+  /* ── 默认脸庞：eyes Normal Open01 / mouth Normal Open / cheeks Normal ── */
   function initPicks(m) {
     var g = groupParts(m);
-    ['eyes', 'mouth', 'cheeks'].forEach(function (cat) {
-      var list = g[cat] || [];
-      state.picks[cat] = pickDefault(list, PREFER[cat] || []);
-    });
+    state.picks = {
+      eyes: pickDefault(g.eyes || [], PREFER.eyes),
+      mouth: pickDefault(g.mouth || [], PREFER.mouth),
+      cheeks: pickDefault(g.cheeks || [], PREFER.cheeks)
+    };
   }
 
+  /* ── 默认仅 Body + ArmL01 + ArmR01 可见，其余全部隐藏 ── */
   function initVisibility(m) {
     state.visible = {};
     (m.parts || []).forEach(function (p) {
-      state.visible[p.file] = !(p.category === 'mask');
+      if (p.name === 'Body' || p.name === 'ArmL01' || p.name === 'ArmR01') {
+        state.visible[p.file] = true;
+      } else {
+        state.visible[p.file] = false;
+      }
     });
   }
 
@@ -133,7 +178,7 @@
       });
       html += '</select></div>';
       els.controls.innerHTML = html;
-      var selEl = document.getElementById('ws-frame');
+      var selEl = d.getElementById('ws-frame');
       if (selEl) {
         selEl.addEventListener('change', function () {
           state.frame = selEl.value;
@@ -150,6 +195,7 @@
       var list = g[cat] || [];
       if (!list.length) return;
       html += '<div class="ws-field"><label>' + labels[cat] + '</label><select data-cat="' + cat + '">';
+      html += '<option value="">无</option>';
       list.forEach(function (p) {
         var sel = p.name === state.picks[cat] ? ' selected' : '';
         html += '<option value="' + MS.escapeHtml(p.name) + '"' + sel + '>' + MS.escapeHtml(fmtName(p.name)) + '</option>';
@@ -189,7 +235,7 @@
     els.controls.innerHTML = html || '<p class="ws-note">该角色没有可设置的部件。</p>';
     Array.prototype.forEach.call(els.controls.querySelectorAll('select'), function (sel) {
       sel.addEventListener('change', function () {
-        state.picks[sel.dataset.cat] = sel.value;
+        state.picks[sel.dataset.cat] = sel.value || null;
         compose();
       });
     });
@@ -213,7 +259,7 @@
       if (cat === 'mask' && state.maskHidden) return;
       if (state.visible[p.file] === false) return;
       if (cat === 'eyes' || cat === 'mouth' || cat === 'cheeks') {
-        if (p.name !== state.picks[cat]) return;
+        if (!state.picks[cat] || p.name !== state.picks[cat]) return;
       }
       out.push(p);
     });
@@ -308,22 +354,4 @@
     els.download.disabled = false;
   }
 
-  els.download.addEventListener('click', function () {
-    if (!state.manifest) return;
-    var name = state.manifest.character || 'chara';
-    els.download.disabled = true;
-    els.canvas.toBlob(function (blob) {
-      if (!blob) { els.download.disabled = false; return; }
-      var a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = name + '-portrait.png';
-      document.body.appendChild(a);
-      a.click();
-      setTimeout(function () {
-        URL.revokeObjectURL(a.href);
-        a.remove();
-        els.download.disabled = false;
-      }, 300);
-    }, 'image/png');
-  });
-})();
+})(window, document);

@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="CG 画廊：角度像、证物、事件插画、场景背景等分类浏览。">
+<meta name="description" content="绘像展厅：CG画廊与立绘工坊，浏览CG插画、自由组合角色部件拼出立绘。">
 <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
-<title>CG画廊 — 大魔女图书馆</title>
+<title>绘像展厅 — 大魔女图书馆</title>
 <link rel="stylesheet" href="assets/fonts.css">
 <link rel="stylesheet" href="assets/shared.css">
-<link rel="stylesheet" href="assets/content.css?v=20260811">
+<link rel="stylesheet" href="assets/content.css?v=20260812">
 <script>
   // 主题恢复 (提前执行, 避免 FOUC 闪白)
   (function(){var s=localStorage.getItem('theme');if(s==='dark'||s==='light')document.documentElement.setAttribute('data-theme',s);})();
@@ -259,6 +259,203 @@
     transition-duration: 0.01s !important;
   }
 }
+
+/* ═══════════════════════════════════════════════════
+   立绘工坊 — 重设计布局
+   ═══════════════════════════════════════════════════ */
+
+/* Tab Panel 显示/隐藏 */
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* 工坊三列网格 */
+.ws-workshop {
+  display: grid;
+  grid-template-columns: 200px 1fr 290px;
+  gap: 20px;
+  align-items: start;
+}
+@media (max-width: 960px) {
+  .ws-workshop { grid-template-columns: 1fr; }
+}
+
+/* 侧栏面板 */
+.ws-sidebar {
+  background: var(--panel-bg);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 16px;
+  position: relative;
+}
+.ws-sidebar-title {
+  font-family: "Noto Serif SC", serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  margin: 0 0 12px;
+  color: var(--fg);
+}
+
+/* 角色列表 */
+.ws-char-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 560px;
+  overflow-y: auto;
+}
+.ws-char {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  cursor: pointer;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  transition: border-color 0.25s, background 0.25s;
+}
+.ws-char:hover { border-color: var(--accent); }
+.ws-char.active {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+}
+.ws-char small { opacity: 0.55; font-size: 11px; }
+
+/* 画布舞台 */
+.ws-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.ws-canvas-frame {
+  width: 100%;
+  max-width: 560px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: var(--bg2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 420px;
+  overflow: hidden;
+  position: relative;
+}
+.ws-canvas-frame::before,
+.ws-canvas-frame::after {
+  content: '';
+  position: absolute;
+  width: 14px; height: 14px;
+  border: 1px solid var(--fg3);
+  opacity: 0.3;
+  pointer-events: none;
+  z-index: 2;
+}
+.ws-canvas-frame::before { top: 6px; left: 6px; border-right: none; border-bottom: none; }
+.ws-canvas-frame::after { bottom: 6px; right: 6px; border-left: none; border-top: none; }
+.ws-canvas-frame canvas { width: 100%; height: auto; display: block; }
+
+.ws-stage-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 560px;
+  gap: 12px;
+}
+.ws-char-name {
+  font-family: "Noto Serif SC", serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  color: var(--fg2);
+}
+.ws-download {
+  padding: 9px 24px;
+  border: 1px solid var(--accent);
+  border-radius: 2px;
+  cursor: pointer;
+  background: var(--accent);
+  color: #fff;
+  font: inherit;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  transition: opacity 0.25s;
+  white-space: nowrap;
+}
+.ws-download:disabled { opacity: 0.4; cursor: wait; }
+
+/* 控制面板 */
+.ws-controls { display: flex; flex-direction: column; gap: 12px; }
+.ws-field label {
+  display: block;
+  font-size: 12px;
+  margin-bottom: 5px;
+  opacity: 0.8;
+  letter-spacing: 0.04em;
+}
+.ws-field select {
+  width: 100%;
+  padding: 7px 8px;
+  background: var(--bg2);
+  color: inherit;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  font-size: 13px;
+}
+.ws-group {
+  border-top: 1px dashed var(--border);
+  padding-top: 10px;
+}
+.ws-group h3 {
+  font-size: 11px;
+  margin: 0 0 6px;
+  opacity: 0.6;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.ws-part {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12.5px;
+  padding: 2px 0;
+  cursor: pointer;
+}
+.ws-part input { flex: none; }
+.ws-mask-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  cursor: pointer;
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--border);
+}
+.ws-note {
+  font-size: 11px;
+  opacity: 0.55;
+  line-height: 1.55;
+  margin-top: 10px;
+}
+
+@media (max-width: 960px) {
+  .ws-char-list { max-height: 200px; }
+  .ws-stage-bar { flex-direction: column; gap: 8px; }
+}
+
+/* 工坊减少动效 */
+@media (prefers-reduced-motion: reduce) {
+  .ws-char, .ws-download, .ws-canvas-frame::before, .ws-canvas-frame::after {
+    transition-duration: 0.01s !important;
+  }
+}
 </style>
 </head>
 <body>
@@ -278,8 +475,8 @@
       <path class="aperture-blade" style="transform-origin:15.36px 30px" d="M15.36,30 C21.75,42.93 35.61,50.93 50,50 C43.61,37.07 29.75,29.07 15.36,30 Z"/>
     </svg>
   </div>
-  <h1 id="splash-title">CG画廊</h1>
-  <p id="splash-sub">CG Gallery</p>
+  <h1 id="splash-title">绘像展厅</h1>
+  <p id="splash-sub">Gallery &amp; Atelier</p>
   <div id="splash-bar"></div>
 </div>
 
@@ -303,16 +500,58 @@
 <!-- ═══ 内容页头部 ═══ -->
 <header class="c-header">
   <a href="index.html" class="nav-link">← 返回</a>
-  <span class="c-title">CG画廊</span>
-  <span class="c-subtitle">CG Gallery</span>
+  <span class="c-title">绘像展厅</span>
+  <span class="c-subtitle">Gallery &amp; Atelier</span>
   <div class="c-spacer"></div>
-  <div class="c-search"><input type="search" id="gallery-search" placeholder="搜索CG标题..."></div>
+  <div class="c-search" id="gallery-search-wrap" style="display:none"><input type="search" id="gallery-search" placeholder="搜索CG标题..."></div>
 </header>
+
+<!-- ═══ Tab 栏: CG画廊 / 立绘工坊 ═══ -->
+<div class="tabbar gallery-tabs">
+  <button class="tab active" data-tab="gallery" type="button">CG画廊</button>
+  <button class="tab" data-tab="workshop" type="button">立绘工坊</button>
+</div>
 
 <!-- ═══ 主体 ═══ -->
 <main class="c-main">
-  <div class="filterbar" id="gallery-filters"></div>
-  <div class="card-grid gallery-grid" id="gallery-grid"></div>
+  <!-- Tab 1: CG画廊 -->
+  <div class="tab-panel active" id="panel-gallery">
+    <div class="filterbar" id="gallery-filters"></div>
+    <div class="card-grid gallery-grid" id="gallery-grid"></div>
+  </div>
+
+  <!-- Tab 2: 立绘工坊 -->
+  <div class="tab-panel" id="panel-workshop">
+    <div class="ws-workshop">
+      <!-- 左栏：角色选择 -->
+      <aside class="ws-sidebar ws-sidebar-left">
+        <h2 class="ws-sidebar-title">角色</h2>
+        <div class="ws-char-list" id="ws-chars"></div>
+      </aside>
+
+      <!-- 中栏：画布舞台 -->
+      <section class="ws-stage">
+        <div class="ws-canvas-frame" id="ws-canvas-box">
+          <canvas id="ws-canvas" width="2000" height="4000"></canvas>
+        </div>
+        <div class="ws-stage-bar">
+          <span class="ws-char-name" id="ws-char-name">—</span>
+          <button class="ws-download" id="ws-download" disabled>下载 PNG</button>
+        </div>
+      </section>
+
+      <!-- 右栏：部件控制 -->
+      <aside class="ws-sidebar ws-sidebar-right">
+        <h2 class="ws-sidebar-title">部件</h2>
+        <div class="ws-controls" id="ws-controls"></div>
+        <label class="ws-mask-toggle">
+          <input type="checkbox" id="ws-mask-toggle" checked>
+          <span>隐藏遮罩层</span>
+        </label>
+        <p class="ws-note">遮罩是游戏内用于裁剪的透明层，默认隐藏。每次加载角色默认显示身体、双手(ArmL01/ArmR01)及默认脸庞(Eyes Normal Open01 / Mouth Normal Open / Cheeks Normal)，可勾选其他部件。</p>
+      </aside>
+    </div>
+  </div>
 </main>
 
 <!-- ═══ 灯箱 ═══ -->
@@ -333,7 +572,8 @@
 </div>
 
 <script src="assets/shared.js"></script>
-<script src="assets/gallery.js?v=20260811"></script>
+<script src="assets/workshop.js?v=20260813a"></script>
+<script src="assets/gallery.js?v=20260813a"></script>
 <script src="assets/player-launcher.js" defer></script>
 </body>
 </html>
