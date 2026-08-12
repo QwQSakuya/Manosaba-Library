@@ -261,198 +261,469 @@
 }
 
 /* ═══════════════════════════════════════════════════
-   立绘工坊 — 重设计布局
+   立绘工坊 — 重设计布局 (Gothic / Flat Design)
    ═══════════════════════════════════════════════════ */
 
 /* Tab Panel 显示/隐藏 */
 .tab-panel { display: none; }
 .tab-panel.active { display: block; }
 
+/* ── 工坊专属变量 ── */
+.ws-workshop {
+  --ws-radius: 2px;
+  --ws-side-w: 210px;
+  --ws-ctrl-w: 300px;
+  --ws-ink: var(--fg);
+  --ws-ink-sub: var(--fg2);
+  --ws-ink-faint: var(--fg3);
+  --ws-line: var(--border);
+  --ws-surface: var(--panel-bg);
+  --ws-surface-2: var(--bg2);
+  --ws-accent: var(--accent);
+  --ws-accent-soft: color-mix(in srgb, var(--accent) 12%, transparent);
+  --ws-accent-mid: color-mix(in srgb, var(--accent) 22%, transparent);
+  --ws-gothic-angle: 1px;
+  --ws-transition: 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 /* 工坊三列网格 */
 .ws-workshop {
   display: grid;
-  grid-template-columns: 200px 1fr 290px;
-  gap: 20px;
+  grid-template-columns: var(--ws-side-w) 1fr var(--ws-ctrl-w);
+  gap: 22px;
   align-items: start;
 }
 @media (max-width: 960px) {
-  .ws-workshop { grid-template-columns: 1fr; }
+  .ws-workshop { grid-template-columns: 1fr; gap: 16px; }
 }
 
-/* 侧栏面板 */
+/* ── 侧栏面板 (通用) ── */
 .ws-sidebar {
-  background: var(--panel-bg);
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  padding: 16px;
+  background: var(--ws-surface);
+  border: 1px solid var(--ws-line);
+  border-radius: var(--ws-radius);
+  padding: 0;
   position: relative;
+  overflow: hidden;
 }
+/* 侧栏标题条 */
 .ws-sidebar-title {
   font-family: "Noto Serif SC", serif;
-  font-weight: 700;
-  font-size: 14px;
-  letter-spacing: 0.1em;
-  margin: 0 0 12px;
-  color: var(--fg);
+  font-weight: 900;
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  margin: 0;
+  padding: 14px 16px 11px;
+  color: var(--ws-ink);
+  border-bottom: 1px solid var(--ws-line);
+  position: relative;
+  background: var(--ws-surface-2);
+  text-align: center;
+}
+/* 标题下方的哥特装饰线 */
+.ws-sidebar-title::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 50%;
+  transform: translateX(-50%);
+  width: 36px; height: 1px;
+  background: var(--ws-accent);
+  opacity: 0.5;
 }
 
-/* 角色列表 */
+/* ═══ 角色列表 (左栏) ═══ */
 .ws-char-list {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  max-height: 560px;
+  gap: 0;
+  max-height: 580px;
   overflow-y: auto;
+  padding: 8px;
 }
+
+/* 角色按钮 — 扁平化设计 */
 .ws-char {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 7px 10px;
-  border: 1px solid var(--border);
-  border-radius: 2px;
+  padding: 9px 12px;
+  border: none;
+  border-left: 2px solid transparent;
+  border-radius: 0;
   cursor: pointer;
   background: transparent;
-  color: inherit;
+  color: var(--ws-ink-sub);
   font: inherit;
+  font-size: 13px;
   text-align: left;
-  transition: border-color 0.25s, background 0.25s;
+  position: relative;
+  transition: color var(--ws-transition),
+              background var(--ws-transition),
+              border-color var(--ws-transition);
 }
-.ws-char:hover { border-color: var(--accent); }
+.ws-char > span {
+  font-family: "Noto Serif SC", serif;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+.ws-char small {
+  opacity: 0.4;
+  font-size: 10px;
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  letter-spacing: 0.06em;
+  transition: opacity var(--ws-transition);
+}
+.ws-char:hover {
+  background: var(--ws-surface-2);
+  color: var(--ws-ink);
+  border-left-color: var(--ws-ink-faint);
+}
+.ws-char:hover small { opacity: 0.7; }
 .ws-char.active {
-  border-color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  background: var(--ws-accent-soft);
+  color: var(--ws-ink);
+  border-left-color: var(--ws-accent);
+  font-weight: 700;
 }
-.ws-char small { opacity: 0.55; font-size: 11px; }
+.ws-char.active small { opacity: 0.6; }
+.ws-char.active::after {
+  content: '◆';
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%) scale(0.5);
+  font-size: 8px;
+  color: var(--ws-accent);
+  opacity: 0.6;
+}
+.ws-char.active small { display: none; }
 
-/* 画布舞台 */
+/* ═══ 画布舞台 (中栏) ═══ */
 .ws-stage {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
 }
 .ws-canvas-frame {
   width: 100%;
   max-width: 560px;
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  background: var(--bg2);
+  border: 1px solid var(--ws-line);
+  border-radius: var(--ws-radius);
+  background: var(--ws-surface-2);
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 420px;
   overflow: hidden;
   position: relative;
+  box-shadow: 0 2px 18px rgba(0,0,0,0.06);
 }
+/* 哥特角线装饰 — 加粗加深 */
 .ws-canvas-frame::before,
 .ws-canvas-frame::after {
   content: '';
   position: absolute;
-  width: 14px; height: 14px;
-  border: 1px solid var(--fg3);
-  opacity: 0.3;
+  width: 16px; height: 16px;
+  border: 1px solid var(--ws-ink-faint);
+  opacity: 0.35;
   pointer-events: none;
   z-index: 2;
+  transition: opacity 0.3s ease, border-color 0.3s ease;
 }
-.ws-canvas-frame::before { top: 6px; left: 6px; border-right: none; border-bottom: none; }
-.ws-canvas-frame::after { bottom: 6px; right: 6px; border-left: none; border-top: none; }
+.ws-canvas-frame::before { top: 7px; left: 7px; border-right: none; border-bottom: none; }
+.ws-canvas-frame::after { bottom: 7px; right: 7px; border-left: none; border-top: none; }
+.ws-canvas-frame:hover::before,
+.ws-canvas-frame:hover::after {
+  opacity: 0.6;
+  border-color: var(--ws-accent);
+}
 .ws-canvas-frame canvas { width: 100%; height: auto; display: block; }
 
+/* 舞台底部操作栏 */
 .ws-stage-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
   max-width: 560px;
-  gap: 12px;
+  gap: 14px;
+  padding: 0 2px;
 }
 .ws-char-name {
   font-family: "Noto Serif SC", serif;
   font-weight: 700;
-  font-size: 14px;
-  letter-spacing: 0.08em;
-  color: var(--fg2);
+  font-size: 15px;
+  letter-spacing: 0.1em;
+  color: var(--ws-ink);
+  position: relative;
+  padding-left: 14px;
 }
+.ws-char-name::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 50%;
+  transform: translateY(-50%);
+  width: 4px; height: 4px;
+  background: var(--ws-accent);
+  border-radius: 50%;
+  opacity: 0.7;
+}
+
+/* 下载按钮 — 扁平化设计 */
 .ws-download {
-  padding: 9px 24px;
-  border: 1px solid var(--accent);
-  border-radius: 2px;
+  padding: 11px 28px;
+  border: 1px solid var(--ws-accent);
+  border-radius: var(--ws-radius);
   cursor: pointer;
-  background: var(--accent);
-  color: #fff;
+  background: var(--ws-accent);
+  color: var(--bg);
   font: inherit;
+  font-family: "Noto Serif SC", serif;
   font-weight: 700;
   font-size: 13px;
-  letter-spacing: 0.1em;
-  transition: opacity 0.25s;
+  letter-spacing: 0.2em;
   white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+  transition: opacity var(--ws-transition),
+              transform var(--ws-transition),
+              box-shadow var(--ws-transition);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--ws-accent) 30%, transparent);
 }
-.ws-download:disabled { opacity: 0.4; cursor: wait; }
+.ws-download:hover:not(:disabled) {
+  opacity: 0.88;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--ws-accent) 40%, transparent);
+}
+.ws-download:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 1px 4px color-mix(in srgb, var(--ws-accent) 25%, transparent);
+}
+.ws-download:disabled {
+  opacity: 0.35;
+  cursor: wait;
+  box-shadow: none;
+}
+/* 按钮内哥特装饰前缀 */
+.ws-download::before {
+  content: '↓';
+  display: inline-block;
+  margin-right: 6px;
+  font-size: 14px;
+  font-family: sans-serif;
+  vertical-align: -1px;
+}
 
-/* 控制面板 */
-.ws-controls { display: flex; flex-direction: column; gap: 12px; }
+/* ═══ 部件控制面板 (右栏) ═══ */
+.ws-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 10px 14px 6px;
+  max-height: 580px;
+  overflow-y: auto;
+}
+
+/* 下拉选择器 — 扁平化 */
+.ws-field {
+  padding: 8px 0;
+}
 .ws-field label {
   display: block;
-  font-size: 12px;
-  margin-bottom: 5px;
-  opacity: 0.8;
-  letter-spacing: 0.04em;
+  font-size: 11px;
+  font-family: "Noto Serif SC", serif;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: var(--ws-ink-sub);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 .ws-field select {
   width: 100%;
-  padding: 7px 8px;
-  background: var(--bg2);
-  color: inherit;
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  font-size: 13px;
+  padding: 8px 28px 8px 10px;
+  background: var(--ws-surface-2);
+  color: var(--ws-ink);
+  border: 1px solid var(--ws-line);
+  border-radius: var(--ws-radius);
+  font-size: 12.5px;
+  font-family: inherit;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='10'%20height='6'%20viewBox='0%200%2010%206'%3E%3Cpath%20d='M1%201l4%204%204-4'%20fill='none'%20stroke='%23888'%20stroke-width='1.5'%20stroke-linecap='round'%20stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  transition: border-color var(--ws-transition), background-color var(--ws-transition);
 }
+.ws-field select:hover { border-color: var(--ws-ink-faint); }
+.ws-field select:focus {
+  outline: none;
+  border-color: var(--ws-accent);
+  box-shadow: 0 0 0 2px var(--ws-accent-soft);
+}
+
+/* 分组标题 — 扁平化分隔 */
 .ws-group {
-  border-top: 1px dashed var(--border);
-  padding-top: 10px;
+  border-top: 1px solid var(--ws-line);
+  padding: 10px 0 6px;
+  margin-top: 4px;
 }
 .ws-group h3 {
-  font-size: 11px;
-  margin: 0 0 6px;
-  opacity: 0.6;
-  letter-spacing: 0.1em;
+  font-size: 10px;
+  font-family: "Noto Serif SC", serif;
+  font-weight: 700;
+  margin: 0 0 7px;
+  color: var(--ws-ink-faint);
+  letter-spacing: 0.18em;
   text-transform: uppercase;
+  position: relative;
+  padding-left: 10px;
 }
+.ws-group h3::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 50%;
+  transform: translateY(-50%);
+  width: 3px; height: 3px;
+  background: var(--ws-accent);
+  opacity: 0.5;
+  border-radius: 50%;
+}
+
+/* 部件复选项 — 扁平化 */
 .ws-part {
   display: flex;
   align-items: center;
-  gap: 7px;
-  font-size: 12.5px;
-  padding: 2px 0;
+  gap: 8px;
+  font-size: 12px;
+  padding: 4px 4px 4px 10px;
   cursor: pointer;
+  color: var(--ws-ink-sub);
+  border-radius: var(--ws-radius);
+  position: relative;
+  transition: background var(--ws-transition), color var(--ws-transition);
 }
-.ws-part input { flex: none; }
+.ws-part:hover {
+  background: var(--ws-surface-2);
+  color: var(--ws-ink);
+}
+/* 自定义复选框 — 扁平化 */
+.ws-part input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  flex: none;
+  width: 14px; height: 14px;
+  border: 1px solid var(--ws-ink-faint);
+  border-radius: 1px;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  transition: background var(--ws-transition), border-color var(--ws-transition);
+}
+.ws-part input[type="checkbox"]:checked {
+  background: var(--ws-accent);
+  border-color: var(--ws-accent);
+}
+.ws-part input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 4px; height: 8px;
+  border: solid var(--bg);
+  border-width: 0 1.5px 1.5px 0;
+  transform: translate(-50%, -60%) rotate(45deg);
+}
+.ws-part input[type="checkbox"]:checked + span {
+  color: var(--ws-ink);
+  font-weight: 500;
+}
+.ws-part span {
+  transition: color var(--ws-transition);
+  letter-spacing: 0.02em;
+}
+
+/* 遮罩开关 — 扁平化 toggle */
 .ws-mask-toggle {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 12.5px;
+  gap: 10px;
+  font-size: 12px;
+  font-family: "Noto Serif SC", serif;
+  font-weight: 500;
   cursor: pointer;
-  margin-top: 14px;
-  padding-top: 10px;
-  border-top: 1px dashed var(--border);
+  margin: 12px 14px 0;
+  padding: 10px 0 0;
+  border-top: 1px solid var(--ws-line);
+  color: var(--ws-ink-sub);
+  transition: color var(--ws-transition);
 }
+.ws-mask-toggle:hover { color: var(--ws-ink); }
+.ws-mask-toggle input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  flex: none;
+  width: 14px; height: 14px;
+  border: 1px solid var(--ws-ink-faint);
+  border-radius: 1px;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  transition: background var(--ws-transition), border-color var(--ws-transition);
+}
+.ws-mask-toggle input[type="checkbox"]:checked {
+  background: var(--ws-accent);
+  border-color: var(--ws-accent);
+}
+.ws-mask-toggle input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 4px; height: 8px;
+  border: solid var(--bg);
+  border-width: 0 1.5px 1.5px 0;
+  transform: translate(-50%, -60%) rotate(45deg);
+}
+
+/* 说明文字 */
 .ws-note {
-  font-size: 11px;
-  opacity: 0.55;
-  line-height: 1.55;
-  margin-top: 10px;
+  font-size: 10.5px;
+  opacity: 0.45;
+  line-height: 1.65;
+  margin: 8px 14px 14px;
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  letter-spacing: 0.02em;
 }
 
+/* ═══ 响应式 ═══ */
 @media (max-width: 960px) {
-  .ws-char-list { max-height: 200px; }
-  .ws-stage-bar { flex-direction: column; gap: 8px; }
+  .ws-char-list { max-height: 220px; }
+  .ws-controls { max-height: none; }
+  .ws-stage-bar { flex-direction: column; gap: 10px; align-items: stretch; }
+  .ws-download { text-align: center; }
 }
 
-/* 工坊减少动效 */
+/* ═══ 滚动条美化 (工坊侧栏) ═══ */
+.ws-char-list::-webkit-scrollbar,
+.ws-controls::-webkit-scrollbar { width: 3px; }
+.ws-char-list::-webkit-scrollbar-thumb,
+.ws-controls::-webkit-scrollbar-thumb {
+  background: var(--ws-ink-faint);
+  border-radius: 2px;
+  opacity: 0.3;
+}
+.ws-char-list::-webkit-scrollbar-track,
+.ws-controls::-webkit-scrollbar-track { background: transparent; }
+
+/* ═══ 减少动效 ═══ */
 @media (prefers-reduced-motion: reduce) {
-  .ws-char, .ws-download, .ws-canvas-frame::before, .ws-canvas-frame::after {
+  .ws-char, .ws-download, .ws-canvas-frame::before, .ws-canvas-frame::after,
+  .ws-part, .ws-field select, .ws-part input[type="checkbox"],
+  .ws-mask-toggle input[type="checkbox"] {
     transition-duration: 0.01s !important;
   }
 }
