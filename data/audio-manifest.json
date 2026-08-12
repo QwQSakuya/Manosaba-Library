@@ -1585,7 +1585,7 @@
       "size": 16089322
     }
   ],
-  "voiceBaseUrl": "https://pub-a8b6ccbb754d403c8383b8ea0caf6c6e.r2.dev/web/assets/audio/",
+  "voiceBaseUrl": "https://cdn.manosaba-library.com/web/assets/audio/",
   "voice": [
     {
       "id": "Act01_Chapter01_Alisa",

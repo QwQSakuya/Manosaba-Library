@@ -6,7 +6,7 @@
 
 ## 在线访问 (GitHub Pages)
 
-在线访问：**<https://qwqsakuya.github.io/Manosaba-Library/>**（已上线，可直接访问）
+在线访问：**<https://manosaba-library.com/>**（已上线，可直接访问）
 
 - 根 URL（`/`）→ 落地页：展示一周目 / 二周目入口卡片 + 资料栏目入口
 - `/act01.html` → 一周目节点图谱（Act01_Chapter01-05，205 节点）
