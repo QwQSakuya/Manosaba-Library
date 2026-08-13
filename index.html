@@ -1139,7 +1139,7 @@ body.collapsing {
 <script src="assets/shared.js?v=20260813a"></script>
 <script src="assets/lib/gsap.min.js"></script>
 <script src="assets/lib/ScrollTrigger.min.js"></script>
-<script src="assets/gsap-animations.js?v=20260813a"></script>
+<script src="assets/gsap-animations.js?v=20260814b"></script>
 <script>
 // ═══════════════════════════════════════════════════
 //  落地页专属 JS (依赖 shared.js)
@@ -1227,8 +1227,8 @@ body.collapsing {
         // 重置计数, 避免重复触发
         logoClickCount = -999;
 
-        // 0.45s 后: 注入闭眼黑幕 + “她”(logo) 中弹倒地
-        // (她倒下透过收窄的眼缝短暂可见, 然后被黑幕完全覆盖; 页面保持不动)
+        // 0.45s 后: 注入闭眼黑幕 + 触发页面倾倒
+        // (倒下透过收窄的眼缝短暂可见, 然后被黑幕完全覆盖)
         setTimeout(function () {
           var lidTop = document.createElement('div');
           lidTop.className = 'eye-lid top closing';
@@ -1237,9 +1237,10 @@ body.collapsing {
           document.body.appendChild(lidTop);
           document.body.appendChild(lidBot);
           document.body.classList.add('collapsing');
-          if (useGSAP && MS.logoCollapseGSAP) {
-            // GSAP: logo(她) 中弹倒地, 页面不倾倒
-            MS.logoCollapseGSAP(logo);
+          // GSAP 页面倾倒（替代 CSS .collapsing 动画；GSAP 路径不添加 landing.collapsing，
+          // 否则 CSS animation 优先级高于内联样式会覆盖 GSAP 的 transform/filter）
+          if (useGSAP && MS.pageCollapseGSAP) {
+            MS.pageCollapseGSAP(landing);
           } else {
             // CSS 降级: 保留原页面倾倒动画
             if (landing) landing.classList.add('collapsing');

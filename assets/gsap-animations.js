@@ -386,34 +386,13 @@
     };
   }
 
-  // ═══ 彩蛋升级 — Logo 震动（GSAP timeline 重编）═══
+  // ═══ 彩蛋升级 — Logo 震动（GSAP timeline 重编，最初版本）═══
   MS.logoShakeGSAP = function (level, logoEl, landingEl) {
-    // 第 4 次: 中弹瞬间（短冲击 + 屏幕震动, 无血粒子）, 倒地由 logoCollapseGSAP 负责
-    if (level === 4) {
-      var tl4 = gsap.timeline();
-      tl4.to(logoEl, {
-        rotation: 4, y: -2, x: 3, scale: 1.1,
-        duration: 0.12, ease: 'power2.out'
-      })
-      .to(logoEl, {
-        rotation: 0, x: 0, y: 0, scale: 1,
-        duration: 0.22, ease: 'power2.out'
-      });
-      if (landingEl) {
-        tl4.to(landingEl, {
-          x: function () { return gsap.utils.random(-6, 6); },
-          y: function () { return gsap.utils.random(-6, 6); },
-          duration: 0.05, repeat: 7, ease: 'none'
-        }, 0)
-        .to(landingEl, { x: 0, y: 0, duration: 0.25, ease: EASE_SMOOTH_OUT });
-      }
-      return tl4;
-    }
-
     var configs = [
       { rot: 3, x: 2, scale: 1.0, dur: 0.4 },
       { rot: 8, x: 5, scale: 1.05, dur: 0.6 },
-      { rot: 14, x: 8, scale: 1.1, dur: 0.8 }
+      { rot: 14, x: 8, scale: 1.1, dur: 0.8 },
+      { rot: 18, x: 12, scale: 1.15, dur: 1.0 }
     ];
     var cfg = configs[level - 1] || configs[0];
 
@@ -441,110 +420,54 @@
       duration: cfg.dur * 0.25, ease: EASE_ELASTIC
     });
 
-    // Level 3+: 页面 screen shake
+    // Level 3+: 页面 screen shake（逐段随机位移 + 旋转，第4次更剧烈且更快结束）
     if (level >= 3 && landingEl) {
-      var mag = level === 3 ? 3 : 8;
-      tl.to(landingEl, {
-        x: function () { return gsap.utils.random(-mag, mag); },
-        y: function () { return gsap.utils.random(-mag, mag); },
-        duration: 0.05,
-        repeat: level === 3 ? 8 : 13,
-        ease: 'none'
-      }, 0)
-      .to(landingEl, { x: 0, y: 0, duration: 0.3, ease: EASE_SMOOTH_OUT });
+      var mag = level === 3 ? 8 : 16;
+      var shakeDur = level === 3 ? 0.05 : 0.03;
+      var shakes = level === 3 ? 12 : 14;
+      var rotMag = level === 3 ? 2 : 3;
+      var tlShake = gsap.timeline();
+      for (var i = 0; i < shakes; i++) {
+        tlShake.to(landingEl, {
+          x: gsap.utils.random(-mag, mag),
+          y: gsap.utils.random(-mag, mag),
+          rotation: gsap.utils.random(-rotMag, rotMag),
+          duration: shakeDur,
+          ease: 'none'
+        });
+      }
+      tlShake.to(landingEl, { x: 0, y: 0, rotation: 0, duration: 0.3, ease: EASE_SMOOTH_OUT });
+      tl.add(tlShake, 0);
     }
-
-    // Level 4: 喷血（她中弹）
-    if (level === 4) spawnBlood(logoEl, tl);
 
     return tl;
   };
 
-  // ═══ 喷血辅助函数（第 4 次点击: 血滴向下喷溅 + 少量碎片）═══
-  function spawnBlood(logoEl, tl) {
-    var rect = logoEl.getBoundingClientRect();
-    var cx = rect.left + rect.width / 2;
-    var cy = rect.top + rect.height / 2;
-    var container = d.createElement('div');
-    container.style.cssText = 'position:fixed;inset:0;z-index:99998;pointer-events:none';
-    d.body.appendChild(container);
-
-    // 血滴: 暗红色液滴, 向下方为主喷溅 + 重力下坠
-    var drops = 24;
-    for (var i = 0; i < drops; i++) {
-      var drop = d.createElement('div');
-      var size = gsap.utils.random(2, 5);
-      var hue = gsap.utils.random(345, 360);
-      var light = gsap.utils.random(26, 42);
-      drop.style.cssText =
-        'position:fixed;width:' + size + 'px;height:' + (size * 1.7) + 'px;' +
-        'background:hsl(' + hue + ',70%,' + light + '%);' +
-        'border-radius:50% 50% 58% 45%;' +
-        'left:' + cx + 'px;top:' + cy + 'px';
-      container.appendChild(drop);
-
-      // 以向下 (90°) 为中心 ±70° 喷溅
-      var angle = Math.PI * 0.5 + (i / drops) * Math.PI * 1.2 + gsap.utils.random(-0.3, 0.3);
-      var dist = gsap.utils.random(34, 150);
-      tl.to(drop, {
-        x: Math.cos(angle) * dist,
-        y: Math.sin(angle) * dist + 95, // 重力下坠
-        rotation: gsap.utils.random(-170, 170),
-        autoAlpha: 0,
-        duration: gsap.utils.random(0.6, 1.15),
-        ease: 'power2.out'
-      }, 0);
-    }
-
-    // 少量浅色碎片: 枪击破坏感
-    for (var j = 0; j < 6; j++) {
-      var piece = d.createElement('div');
-      var sz = gsap.utils.random(3, 7);
-      piece.style.cssText =
-        'position:fixed;width:' + sz + 'px;height:' + sz + 'px;' +
-        'background:hsl(0,0%,' + gsap.utils.random(68, 90) + '%);border-radius:1px;' +
-        'left:' + cx + 'px;top:' + cy + 'px';
-      container.appendChild(piece);
-      var ang = gsap.utils.random(0, Math.PI * 2);
-      var d2 = gsap.utils.random(60, 170);
-      tl.to(piece, {
-        x: Math.cos(ang) * d2,
-        y: Math.sin(ang) * d2 + 60,
-        rotation: gsap.utils.random(-360, 360),
-        autoAlpha: 0,
-        duration: gsap.utils.random(0.5, 0.9),
-        ease: 'power2.out'
-      }, 0);
-    }
-
-    tl.call(function () { container.remove(); }, null, '+=1.2');
-  }
-
-  // ═══ 彩蛋 — 她中弹倒地（GSAP 重写: 喷血后 logo 倒下, 页面保持不动）═══
-  // 语义: 第 4 次点击, 枪声响起, 画面中的“她”(logo 魔女形象)被击中喷血倒下
-  MS.logoCollapseGSAP = function (logoEl) {
-    return gsap.timeline({ transformOrigin: '50% 100%' })
+  // ═══ 彩蛋 — 页面倾倒（GSAP 重写 + motion blur，最初版本）═══
+  // 语义: 第 4 次点击, 枪声响起, 整个页面中弹倾倒坠落
+  MS.pageCollapseGSAP = function (landingEl) {
+    return gsap.timeline({ transformOrigin: 'bottom left' })
       // Phase 1: 中弹后仰（反作用力）
-      .to(logoEl, {
-        rotation: 5, y: -3, x: 3,
-        duration: 0.12, ease: 'power2.out'
+      .to(landingEl, {
+        rotation: 3, y: -3, x: 4, skewX: -1.5,
+        duration: 0.1, ease: 'power2.out'
       })
       // Phase 2: 开始倾倒（加速下坠）
-      .to(logoEl, {
-        rotation: -38, y: 55, x: -18, scale: 1.08,
-        filter: 'blur(1px)',
+      .to(landingEl, {
+        rotation: -19, y: 55, x: -28, skewX: 6,
+        filter: 'blur(1.4px)',
         duration: 0.4, ease: 'power2.in'
       })
       // Phase 3: 加速坠落（motion blur 增强）
-      .to(logoEl, {
-        rotation: -88, y: 130, x: -42, scale: 1.15,
-        filter: 'blur(2.5px)', autoAlpha: 0.7,
+      .to(landingEl, {
+        rotation: -36, y: 175, x: -95, skewX: 11,
+        filter: 'blur(3px)', autoAlpha: 0.62,
         duration: 0.35, ease: 'power3.in'
       })
       // Phase 4: 最终坠落离屏
-      .to(logoEl, {
-        rotation: -92, y: 250, x: -66,
-        filter: 'blur(5px)', autoAlpha: 0,
+      .to(landingEl, {
+        rotation: -61, y: 560, x: -225, skewX: 18,
+        filter: 'blur(8px)', autoAlpha: 0,
         duration: 0.45, ease: 'power3.in'
       });
   };
