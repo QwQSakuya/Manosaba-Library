@@ -82,7 +82,7 @@
       state.cross = false;
       done(chars);
     }).catch(function () {
-      // GitHub 备份站没有本地 chara 数据，回退到 R2 优选线路读取
+      // GitHub 备份站没有本地 chara 数据，回退到 R2 线路读取
       state.base = 'https://r2.manosaba-library.com/web';
       state.cross = true;
       MS.fetchJSON(state.base + '/chara/index.json?v=2', 15000).then(done).catch(function () {
