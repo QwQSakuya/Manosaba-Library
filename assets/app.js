@@ -772,7 +772,7 @@ function buildCanvas() {
       el.classList.add('char-' + node.character);
       // Noah 使用 CSS 渐变三色边框, 跳过内联样式
       if (node.character !== 'Noah') {
-        const c = `var(--char-${node.character}, var(--node-border))`;
+        const c = `var(--char-${escapeHtml(node.character)}, var(--node-border))`;
         el.style.borderColor = c;
         el.style.setProperty('--char-color', c);
         el.style.backgroundColor = `color-mix(in srgb, ${c} 14%, var(--node-bg))`;
@@ -1322,10 +1322,10 @@ function openDetail(node) {
   // 元信息
   html += '<div class="panel-meta">';
   const typeLabels = { adv:'日常剧情', ti:'审判开幕', tr:'审判辩论', bd:'Bad End', chapter:'章节' };
-  html += `<span class="panel-tag">${typeLabels[node.type] || node.type}</span>`;
+  html += `<span class="panel-tag">${escapeHtml(typeLabels[node.type] || node.type)}</span>`;
   if (node.level !== undefined) html += `<span class="panel-tag">Lv${node.level}</span>`;
-  if (node.character) html += `<span class="panel-tag">${node.character}</span>`;
-  if (node.route && node.route !== 'normal') html += `<span class="panel-tag bad">${node.route.toUpperCase()}</span>`;
+  if (node.character) html += `<span class="panel-tag">${escapeHtml(node.character)}</span>`;
+  if (node.route && node.route !== 'normal') html += `<span class="panel-tag bad">${escapeHtml(node.route.toUpperCase())}</span>`;
   html += '</div>';
 
   // 摘要
@@ -1346,7 +1346,7 @@ function openDetail(node) {
   if (dlg && dlg.length) {
     html += `<div class="panel-section"><div class="panel-section-title">场景全文本 · ${escapeHtml(dlgTitle || '')}</div>`;
     dlg.forEach(d => {
-      const color = `var(--char-${d.speaker}, var(--node-border))`;
+      const color = `var(--char-${escapeHtml(d.speaker)}, var(--node-border))`;
       html += `<div class="transcript-item" style="border-left-color:${color}">`;
       html += `<div class="ti-speaker" style="color:${color}">${escapeHtml(d.speaker)}${voiceBtnHtml(d.label)}</div>`;
       html += `<div class="ti-text">${renderDialogueText(d)}</div>`;
@@ -1364,7 +1364,7 @@ function openDetail(node) {
   if (isTrial && dlgFull && dlgFull.length) {
     html += `<div class="panel-section"><div class="panel-section-title">全文索引（供管理员填写 resultRange）</div>`;
     dlgFull.forEach(d => {
-      const color = `var(--char-${d.speaker}, var(--node-border))`;
+      const color = `var(--char-${escapeHtml(d.speaker)}, var(--node-border))`;
       const preview = d.text.replace(/<[^>]*>/g, '').replace(/\n/g, ' ').slice(0, 60);
       html += `<div class="text-index-item">`;
       html += `<span class="ti-label">${escapeHtml(d.label || '')}</span>`;
@@ -1873,9 +1873,9 @@ function openPhoneWithNode(node) {
   // 元信息 (紧凑版)
   const typeLabels = { adv:'日常剧情', ti:'审判开幕', tr:'审判辩论', bd:'Bad End', chapter:'章节' };
   html += '<div class="ps-meta">';
-  html += '<span class="panel-tag">' + (typeLabels[node.type] || node.type) + '</span>';
+  html += '<span class="panel-tag">' + escapeHtml(typeLabels[node.type] || node.type) + '</span>';
   if (node.character) html += '<span class="panel-tag">' + escapeHtml(node.character) + '</span>';
-  if (node.route && node.route !== 'normal') html += '<span class="panel-tag bad">' + node.route.toUpperCase() + '</span>';
+  if (node.route && node.route !== 'normal') html += '<span class="panel-tag bad">' + escapeHtml(node.route.toUpperCase()) + '</span>';
   html += '</div>';
 
   // 摘要
@@ -1909,7 +1909,7 @@ function openPhoneWithNode(node) {
         html += '</div>';
         return;
       }
-      var color = 'var(--char-' + d.speaker + ', var(--node-border))';
+      var color = 'var(--char-' + escapeHtml(d.speaker) + ', var(--node-border))';
       html += '<div class="transcript-item" style="border-left-color:' + color + '">';
       html += '<div class="ti-speaker" style="color:' + color + '">' + escapeHtml(d.speaker) + voiceBtnHtml(d.label) + '</div>';
       html += '<div class="ti-text">' + renderDialogueText(d) + '</div>';
@@ -3125,7 +3125,7 @@ function updateSearchResults() {
   } else {
     var html = '';
     matches.forEach(function(n) {
-      var color = n.character ? 'var(--char-' + n.character + ', var(--node-border))' : 'var(--node-border)';
+      var color = n.character ? 'var(--char-' + escapeHtml(n.character) + ', var(--node-border))' : 'var(--node-border)';
       var path = '';
       if (n.level === 0) path = '章节';
       else if (n.level === 1) {

@@ -240,7 +240,7 @@
   MS.escapeHtml = function (str) {
     if (str == null) return '';
     _escEl.textContent = String(str);
-    return _escEl.innerHTML;
+    return _escEl.innerHTML.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   };
 
   /* ── $ / $$ — querySelector 简写 ── */

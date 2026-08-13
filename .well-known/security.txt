@@ -1,0 +1,4 @@
+Contact: https://github.com/QwQSakuya/Manosaba-Library/security/advisories/new
+Expires: 2027-08-13T00:00:00Z
+Preferred-Languages: zh, en
+Canonical: https://manosaba-library.com/.well-known/security.txt
