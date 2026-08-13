@@ -145,6 +145,9 @@
       }
     }
     bgmList.innerHTML = html;
+    if (window.MS && MS.gsapReady && MS.animateCardStagger) {
+      MS.animateCardStagger(bgmList, '.bgm-card');
+    }
   }
 
   /* ═══ 渲染：筛选 chips ═══ */
@@ -261,6 +264,9 @@
         '</div>';
     }
     voiceList.innerHTML = html;
+    if (window.MS && MS.gsapReady && MS.animateCardStagger) {
+      MS.animateCardStagger(voiceList, '.voice-card');
+    }
   }
 
   /* ═══ 播放控制 ═══ */

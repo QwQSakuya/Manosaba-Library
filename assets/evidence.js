@@ -241,12 +241,16 @@
       })(cards[k]);
     }
 
-    /* 轻量错峰入场 */
-    var entered = grid.querySelectorAll('.item-card');
-    for (var m = 0; m < entered.length; m++) {
-      (function (el, n) {
-        setTimeout(function () { el.classList.add('entered'); }, Math.min(n * 18, 360));
-      })(entered[m], m);
+    /* 轻量错峰入场: GSAP 优先, 否则 CSS class 方案 */
+    if (window.MS && MS.gsapReady && MS.animateCardStagger) {
+      MS.animateCardStagger(grid, '.item-card');
+    } else {
+      var entered = grid.querySelectorAll('.item-card');
+      for (var m = 0; m < entered.length; m++) {
+        (function (el, n) {
+          setTimeout(function () { el.classList.add('entered'); }, Math.min(n * 18, 360));
+        })(entered[m], m);
+      }
     }
   }
 

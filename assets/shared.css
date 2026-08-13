@@ -98,10 +98,12 @@ body {
   position: relative;
 }
 
-/* ═══ 滚动条 ═══ */
-::-webkit-scrollbar { width: 5px; height: 5px; }
+/* ═══ 滚动条（原生滚动条隐藏，滚动由自定义进度条/滚轮接管）═══ */
+::-webkit-scrollbar { width: 0; height: 0; display: none; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: transparent; }
+html { scrollbar-width: none; -ms-overflow-style: none; }
+body { scrollbar-width: none; -ms-overflow-style: none; }
 
 /* ═══ 开屏动画 #splash（图谱页/内容页共用结构）═══ */
 #splash {
@@ -216,16 +218,29 @@ body {
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
 }
-/* 魔法阵 */
+/* 魔法阵: 旋转(spin)与呼吸(breath)分离为两个独立 CSS 动画,
+   呼吸周期 8s(scale 1↔1.05 + opacity), 通过变量区分亮/暗模式 */
+:root {
+  --magic-op: 0.05;
+  --magic-op-peak: 0.085;
+  --magic-inner-op: 0.04;
+  --magic-inner-peak: 0.07;
+}
+[data-theme="dark"] {
+  --magic-op: 0.075;
+  --magic-op-peak: 0.12;
+  --magic-inner-op: 0.06;
+  --magic-inner-peak: 0.1;
+}
 .magic-circle {
   position: absolute;
   top: 50%; left: 50%;
   width: min(920px, 125vw); height: min(920px, 125vw);
   transform: translate(-50%, -50%);
   color: var(--fg);
-  opacity: 0.05;
-  animation: spin 180s linear infinite;
-  will-change: transform;
+  opacity: var(--magic-op);
+  animation: spin 180s linear infinite, breath 8s ease-in-out infinite;
+  will-change: transform, opacity;
 }
 .magic-circle-inner {
   position: absolute;
@@ -233,14 +248,32 @@ body {
   width: min(520px, 72vw); height: min(520px, 72vw);
   transform: translate(-50%, -50%);
   color: var(--fg);
-  opacity: 0.04;
-  animation: spin-rev 130s linear infinite;
-  will-change: transform;
+  opacity: var(--magic-inner-op);
+  animation: spin-rev 130s linear infinite, breath-inner 8s ease-in-out 4s infinite;
+  will-change: transform, opacity;
 }
-[data-theme="dark"] .magic-circle { opacity: 0.075; }
-[data-theme="dark"] .magic-circle-inner { opacity: 0.06; }
-@keyframes spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
-@keyframes spin-rev { to { transform: translate(-50%, -50%) rotate(-360deg); } }
+/* 旋转与呼吸合并: 2.2%≈4s 达到最大呼吸, 4.4%≈8s 复位, 呼吸周期 8s */
+@keyframes spin {
+  0%   { transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+  2.2% { transform: translate(-50%, -50%) rotate(3.96deg) scale(1.05); }
+  4.4% { transform: translate(-50%, -50%) rotate(7.92deg) scale(1); }
+  100% { transform: translate(-50%, -50%) rotate(360deg) scale(1); }
+}
+@keyframes spin-rev {
+  0%   { transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+  2.2% { transform: translate(-50%, -50%) rotate(-3.96deg) scale(1.05); }
+  4.4% { transform: translate(-50%, -50%) rotate(-7.92deg) scale(1); }
+  100% { transform: translate(-50%, -50%) rotate(-360deg) scale(1); }
+}
+/* 呼吸只动画 opacity, 不与旋转冲突 */
+@keyframes breath {
+  0%, 100% { opacity: var(--magic-op); }
+  50%      { opacity: var(--magic-op-peak); }
+}
+@keyframes breath-inner {
+  0%, 100% { opacity: var(--magic-inner-op); }
+  50%      { opacity: var(--magic-inner-peak); }
+}
 /* 蝴蝶 */
 .butterfly {
   position: absolute;
@@ -268,6 +301,124 @@ body {
 }
 @media (prefers-reduced-motion: reduce) {
   .magic-circle, .magic-circle-inner, .butterfly { animation: none !important; }
+}
+
+/* ═══ GSAP 页面转场覆盖层（与开屏加载动画同色：背景 var(--bg)、印记 var(--fg)）═══ */
+.page-transition {
+  position: fixed; inset: 0; z-index: 99999;
+  pointer-events: none;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg);
+}
+.page-transition .pt-veil {
+  position: absolute; inset: 0;
+  background: var(--bg);
+  clip-path: inset(0 0 100% 0);
+}
+.page-transition .pt-sigil {
+  position: relative; z-index: 2;
+  width: 80px; height: 80px;
+  opacity: 0;
+  color: var(--fg);
+}
+.pt-reveal {
+  position: fixed; inset: 0; z-index: 99999;
+  background: var(--bg);
+  pointer-events: none;
+}
+
+/* ═══ GSAP 3D hover 容器 ═══ */
+.card, .frame-card, .item-card, .future-card {
+  transform-style: preserve-3d;
+  perspective: 800px;
+}
+
+/* ═══ 右侧自定义滚动进度条（上下滑动/拖动控制页面滚动）═══ */
+.scroll-progress {
+  position: fixed;
+  right: 22px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 8000;
+  width: 22px;
+  height: 36vh;
+  min-height: 130px;
+  cursor: pointer;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.scroll-progress .sp-track {
+  position: absolute;
+  left: 50%; top: 0; bottom: 0;
+  width: 3px;
+  transform: translateX(-50%);
+  background: var(--border);
+  border-radius: 2px;
+  opacity: 0.55;
+  transition: opacity 0.3s;
+}
+.scroll-progress .sp-fill {
+  position: absolute;
+  left: 50%; top: 0;
+  width: 3px;
+  transform: translateX(-50%) scaleY(0);
+  transform-origin: top;
+  background: var(--accent);
+  border-radius: 2px;
+}
+.scroll-progress .sp-thumb {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 16px; height: 16px;
+  transform: translate(-50%, -50%) rotate(45deg); /* 哥特菱形 */
+  background: var(--panel-bg);
+  border: 1.5px solid var(--accent);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.22);
+  transition: background 0.25s, border-color 0.25s;
+}
+.scroll-progress .sp-thumb::before {
+  content: '';
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 5px; height: 5px;
+  transform: translate(-50%, -50%);
+  background: var(--accent);
+}
+.scroll-progress:hover .sp-thumb,
+.scroll-progress.sp-dragging .sp-thumb {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.scroll-progress:hover .sp-thumb::before {
+  background: var(--panel-bg);
+}
+.scroll-progress .sp-pct {
+  position: absolute;
+  right: 26px;
+  top: 0;
+  transform: translateY(-50%);
+  font-family: var(--font-serif-en, "Cormorant Garamond", serif);
+  font-style: italic;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--fg3);
+  background: var(--panel-bg);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 2px 9px;
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+  transition: opacity 0.3s;
+}
+.scroll-progress:hover .sp-pct,
+.scroll-progress.sp-dragging .sp-pct {
+  opacity: 1;
+}
+@media (max-width: 720px) {
+  .scroll-progress { right: 10px; height: 30vh; }
 }
 
 /* ═══ 主题切换按钮（圆形，右上角）═══ */

@@ -550,6 +550,8 @@ window.addEventListener('mouseup', function(e) {
     const ny = parseFloat(dn.el.dataset.oy) || 0;
 
     if (!dn.moved) {
+      // GSAP 节点点击弹性反馈
+      if (window.MS && MS.gsapReady && MS.nodeClickFeedback) MS.nodeClickFeedback(dn.el);
       if (dn.node) openPhoneWithNode(dn.node);
     } else {
       // 更新锚点为拖拽终点（_resolveOverlaps 每帧基于此推开邻居, 消除重叠后自动弹回）
@@ -1516,8 +1518,12 @@ function openDetail(node) {
   const activeEl = _nodeEls.find(el => el.dataset.id === node.id);
   if (activeEl) activeEl.classList.add('highlighted');
 
-  detailPanel.classList.add('open');
-  detailOverlay.classList.add('open');
+  if (window.MS && MS.gsapReady && MS.animateDetailPanel) {
+    MS.animateDetailPanel(true);
+  } else {
+    detailPanel.classList.add('open');
+    detailOverlay.classList.add('open');
+  }
 }
 
 function closeDetail() {
@@ -1548,8 +1554,12 @@ function closeDetail() {
     }
   }
   focusedNodeId = null;
-  detailPanel.classList.remove('open');
-  detailOverlay.classList.remove('open');
+  if (window.MS && MS.gsapReady && MS.animateDetailPanel) {
+    MS.animateDetailPanel(false);
+  } else {
+    detailPanel.classList.remove('open');
+    detailOverlay.classList.remove('open');
+  }
   closeObjectionPopup(); // 关闭异议弹窗
   _nodeEls.forEach(el => el.classList.remove('highlighted')); // B6: class 切换清理
 }

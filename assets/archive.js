@@ -114,6 +114,10 @@
       }
     }
     els.body.innerHTML = html;
+    /* GSAP 表格行渐入 */
+    if (window.MS && MS.gsapReady && MS.animateCardStagger) {
+      MS.animateCardStagger(els.body, 'tr');
+    }
   }
 
   function renderPager() {

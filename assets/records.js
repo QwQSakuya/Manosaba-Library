@@ -286,6 +286,10 @@
     }
     contentEl.innerHTML = html;
     bindRelatedChips();
+    /* GSAP 内容渐入 */
+    if (window.MS && MS.gsapReady && MS.animateCardStagger) {
+      MS.animateCardStagger(contentEl, '.entry-panel');
+    }
     /* 内容区滚回顶部 */
     contentEl.scrollTop = 0;
     try { w.scrollTo({ top: 0, behavior: 'smooth' }); }

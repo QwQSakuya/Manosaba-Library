@@ -17,7 +17,7 @@
 <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
 <title>大魔女图书馆</title>
 <link rel="stylesheet" href="assets/fonts.css">
-<link rel="stylesheet" href="assets/shared.css">
+<link rel="stylesheet" href="assets/shared.css?v=20260814a">
 <script>
   // 主题恢复 (提前执行, 避免 FOUC 闪白)
   (function () {
@@ -1137,6 +1137,9 @@ body.collapsing {
 </footer>
 
 <script src="assets/shared.js?v=20260813a"></script>
+<script src="assets/lib/gsap.min.js"></script>
+<script src="assets/lib/ScrollTrigger.min.js"></script>
+<script src="assets/gsap-animations.js?v=20260813a"></script>
 <script>
 // ═══════════════════════════════════════════════════
 //  落地页专属 JS (依赖 shared.js)
@@ -1148,17 +1151,13 @@ body.collapsing {
   // 预读 R2 网页素材配置 (logo 彩蛋音效等立即可用)
   MS.loadR2Config();
 
-  // 周目卡片跳转: 点击或 Enter/Space
+  // 周目卡片跳转: click 由 gsap-animations.js 页面转场拦截
+  // keydown (Enter/Space) 触发 click → 转场引擎接管
   document.querySelectorAll('[data-go]').forEach(function (el) {
-    var go = function () {
-      var target = el.dataset.go;
-      if (target) location.href = target + '.html';
-    };
-    el.addEventListener('click', go);
     el.addEventListener('keydown', function (e) {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
-        go();
+        el.click();
       }
     });
   });
@@ -1202,31 +1201,34 @@ body.collapsing {
 
     logo.addEventListener('click', function () {
       logoClickCount++;
+      var useGSAP = MS.gsapReady && MS.logoShakeGSAP;
 
       if (logoClickCount === 1) {
         // 第1次: 轻微震动
         playSfx('sfx/Common/Sfx_Common_001 Notice1.ogg');
-        triggerShake('shake-1');
+        if (useGSAP) MS.logoShakeGSAP(1, logo, landing);
+        else triggerShake('shake-1');
       } else if (logoClickCount === 2) {
         // 第2次: 摇晃加大
         playSfx('sfx/Common/Sfx_Common_001 Notice1.ogg');
-        triggerShake('shake-2');
+        if (useGSAP) MS.logoShakeGSAP(2, logo, landing);
+        else triggerShake('shake-2');
       } else if (logoClickCount === 3) {
         // 第3次: 剧烈摇晃 + 页面震动
         playSfx('sfx/Common/Sfx_Common_001 Notice1.ogg');
-        triggerShake('shake-3');
-        triggerPageShake('page-shake-3');
+        if (useGSAP) MS.logoShakeGSAP(3, logo, landing);
+        else { triggerShake('shake-3'); triggerPageShake('page-shake-3'); }
       } else if (logoClickCount === 4) {
         // 第4次: 最剧烈震动 + 枪声 → 闭眼 → 跳转画廊(睁眼)
-        triggerShake('shake-4');
-        triggerPageShake('page-shake-4');
+        if (useGSAP) MS.logoShakeGSAP(4, logo, landing);
+        else { triggerShake('shake-4'); triggerPageShake('page-shake-4'); }
         // 播放枪声
         playSfx('sfx/Scenario/Sfx_Scenario_038 Gun fire.ogg');
         // 重置计数, 避免重复触发
         logoClickCount = -999;
 
-        // 0.45s 后: 注入闭眼黑幕 + 触发页面倾倒
-        // (倒下透过收窄的眼缝短暂可见, 然后被黑幕完全覆盖)
+        // 0.45s 后: 注入闭眼黑幕 + “她”(logo) 中弹倒地
+        // (她倒下透过收窄的眼缝短暂可见, 然后被黑幕完全覆盖; 页面保持不动)
         setTimeout(function () {
           var lidTop = document.createElement('div');
           lidTop.className = 'eye-lid top closing';
@@ -1235,7 +1237,13 @@ body.collapsing {
           document.body.appendChild(lidTop);
           document.body.appendChild(lidBot);
           document.body.classList.add('collapsing');
-          if (landing) landing.classList.add('collapsing');
+          if (useGSAP && MS.logoCollapseGSAP) {
+            // GSAP: logo(她) 中弹倒地, 页面不倾倒
+            MS.logoCollapseGSAP(logo);
+          } else {
+            // CSS 降级: 保留原页面倾倒动画
+            if (landing) landing.classList.add('collapsing');
+          }
         }, 450);
 
         // 1.4s 后: 黑幕已完全合拢(0.45s+0.45s=0.9s), 再留片刻纯黑, 跳转画廊

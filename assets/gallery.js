@@ -354,6 +354,11 @@
     }
     els.grid.innerHTML = html;
 
+    // GSAP 卡片 stagger 渐入
+    if (window.MS && MS.gsapReady && MS.animateCardStagger) {
+      MS.animateCardStagger(els.grid, '.frame-card');
+    }
+
     // 绑定断图占位 + 懒加载
     var imgs = MS.$$('.frame-matte img', els.grid);
     imgs.forEach(function (img) {
