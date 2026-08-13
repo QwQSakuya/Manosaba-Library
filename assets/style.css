@@ -339,6 +339,37 @@ main { flex: 1; position: relative; overflow: hidden; background: var(--bg2); }
   color: var(--accent);
   background: var(--node-bg);
 }
+/* 语音代号悬停提示 */
+.transcript-item .ti-voice[data-tip] { position: relative; }
+.transcript-item .ti-voice[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%) translateY(6px);
+  width: max-content;
+  max-width: 280px;
+  background: var(--panel-bg);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 6px 12px;
+  font-family: "Noto Serif SC", serif;
+  font-size: 12px;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+  color: var(--fg2);
+  text-align: center;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.14);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  z-index: 60;
+  white-space: normal;
+}
+.transcript-item .ti-voice[data-tip]:hover::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
 .transcript-item .ti-text { white-space: pre-wrap; font-size: 13px; line-height: 1.7; color: var(--fg2); }
 
 /* ── Load Error ── */
