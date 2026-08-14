@@ -1,6 +1,10 @@
 /* ═══════════════════════════════════════════════════
-   shared.css — 跨页共享样式
+   shared.css — 跨页共享样式 · 「华美的暗黑」重构版
    被图谱页 style.css(@import) 与内容页/落地页直接引用
+   ──────────────────────────────────────────────────
+   配色: P6 石板银红（暗色旗舰） × 羊皮纸玫瑰粉（亮色）
+   角色: 艾玛恒粉 / 希罗恒红（--acE / --acH）
+   所有既有变量名保留（任何页面依赖）; 新增 token 供重构使用
    ═══════════════════════════════════════════════════ */
 
 /* ── 字体（筑紫明朝，子集化后自托管）── */
@@ -12,33 +16,70 @@
   font-display: swap;
 }
 
-/* ═══ 设计令牌（CSS 变量）═══ */
-:root {
-  --bg: #fafaf9;
-  --bg2: #f2f2f0;
-  --fg: #1a1a1a;
-  --fg2: #555;
-  --fg3: #888;
-  --border: #d4d4d0;
-  --node-bg: #fff;
-  --node-border: #aaa;
-  --node-shadow: rgba(0,0,0,0.06);
-  --panel-bg: #fff;
-  --bad-bg: #e0e0e0;
-  --bad-border: #666;
-  --choice-border: #555;
-  --accent: #333;
-  --search-bg: #f2f2f0;
-  --header-bg: rgba(250,250,249,0.92);
-  --btn-bg: #e8e8e4;
-  --btn-hover: #ddd;
-  --btn-active: #333;
-  --btn-active-fg: #fff;
-  /* 字体族变量 */
+/* ═══ 设计令牌 ═══
+   亮色: 中性白 × 墨字 × 艾玛玫瑰粉（银灰点缀）
+   暗色: 石板黑 × 银字 × 希罗红 */
+:root, [data-theme="light"] {
+  --bg: #fbfbfa;
+  --bg2: #f3f3f1;
+  --fg: #232227;
+  --fg2: #6d6275;
+  --fg3: #978ca0;
+  --border: rgba(120, 120, 126, 0.22);
+  --node-bg: #ffffff;
+  --node-border: #c4c4c8;
+  --node-shadow: rgba(90, 90, 96, 0.08);
+  --panel-bg: rgba(255, 255, 255, 0.92);
+  --bad-bg: #efe4d5;
+  --bad-border: #8a6b6b;
+  --choice-border: #7a5560;
+  --accent: #c1486d;               /* 艾玛玫瑰粉 */
+  --search-bg: #f3f3f1;
+  --header-bg: rgba(251, 251, 250, 0.9);
+  --btn-bg: #efefed;
+  --btn-hover: #e5e5e3;
+  --btn-active: #c1486d;
+  --btn-active-fg: #fbfbfa;
+
+  /* 重构新增 token（亮） */
+  --bg-deep: #0c0c0e;
+  --bg-veil: #101013;
+  --gold: #6f6f76;
+  --gold-dim: #a4a4ab;
+  --gold-ghost: rgba(100, 100, 108, 0.18);
+  --blood: #b2443e;
+  --ember: #c0392f;
+  --acE: #b23d64;                  /* 艾玛 */
+  --acH: #c0392f;                  /* 希罗 */
+  --glow-blood: rgba(178, 68, 62, 0.20);
+  --glow-gold: rgba(110, 110, 118, 0.18);
+  --glow-violet: rgba(140, 90, 160, 0.16);
+  --glass-bg: rgba(255, 255, 255, 0.62);
+  --glass-border: rgba(120, 120, 126, 0.26);
+  --glass-blur: 16px;
+  --paper-grad: linear-gradient(160deg, #ffffff 0%, #f5f5f4 100%);
+  --seal-ring: rgba(178, 61, 100, 0.55);
+  --veil-grad:
+    radial-gradient(ellipse 90% 70% at 50% 0%, rgba(255, 245, 230, 0.05) 0%, transparent 60%),
+    linear-gradient(180deg, #101013 0%, #0c0c0e 100%);
+  --shadow-glass: 0 18px 48px rgba(60, 40, 30, 0.16);
+  --shadow-gold: 0 0 0 1px rgba(100, 100, 108, 0.18), 0 12px 36px rgba(60, 60, 66, 0.12);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --t-fast: 0.2s;
+  --t-mid: 0.45s;
+  --t-slow: 0.9s;
+  --display-xl: clamp(64px, 9vw, 120px);
+  --lh-tight: 1.05;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+
   --font-mincho: "Tsukushi Mincho", "Noto Serif SC", serif;
   --font-display: "Noto Serif SC", serif;
   --font-serif-en: "Cormorant Garamond", serif;
-  /* 角色颜色 (HSL, 明暗主题通用) */
+
+  /* 角色颜色 */
   --char-Ema: hsl(340, 60%, 55%);
   --char-Sherry: hsl(200, 65%, 60%);
   --char-Hanna: hsl(140, 50%, 48%);
@@ -57,33 +98,86 @@
   --char-EmaFake: hsl(340, 25%, 48%);
   --char-Unknown: hsl(0, 0%, 50%);
 }
+
 [data-theme="dark"] {
-  --bg: #141414;
-  --bg2: #1e1e1e;
-  --fg: #e0e0e0;
-  --fg2: #999;
-  --fg3: #666;
-  --border: #333;
-  --node-bg: #1e1e1e;
-  --node-border: #555;
-  --node-shadow: rgba(0,0,0,0.3);
-  --panel-bg: #1a1a1a;
-  --bad-bg: #2a2a2a;
-  --bad-border: #888;
-  --choice-border: #777;
-  --accent: #ccc;
-  --search-bg: #1e1e1e;
-  --header-bg: rgba(20,20,20,0.92);
-  --btn-bg: #2a2a2a;
-  --btn-hover: #3a3a3a;
-  --btn-active: #ccc;
+  --bg: #0c0c0e;
+  --bg2: #151518;
+  --fg: #e4e4e6;
+  --fg2: #a7a7ad;
+  --fg3: #84848c;
+  --border: rgba(210, 210, 220, 0.13);
+  --node-bg: #17171a;
+  --node-border: #3a3a40;
+  --node-shadow: rgba(0, 0, 0, 0.45);
+  --panel-bg: rgba(21, 21, 24, 0.78);
+  --bad-bg: #1c1214;
+  --bad-border: #7c3340;
+  --choice-border: #8a5d6e;
+  --accent: #d64541;               /* 希罗红 */
+  --search-bg: #17171a;
+  --header-bg: rgba(12, 12, 14, 0.82);
+  --btn-bg: #1d1d21;
+  --btn-hover: #2a2a30;
+  --btn-active: #d64541;
+  --btn-active-fg: #0c0c0e;
+
+  --bg-deep: #0c0c0e;
+  --bg-veil: #101013;
+  --gold: #c9c9cf;
+  --gold-dim: #9c9ca4;
+  --gold-ghost: rgba(201, 201, 207, 0.16);
+  --blood: #d64541;
+  --ember: #e0524c;
+  --acE: #e06a93;
+  --acH: #e0524c;
+  --glow-blood: rgba(214, 69, 65, 0.24);
+  --glow-gold: rgba(201, 201, 207, 0.18);
+  --glow-violet: rgba(150, 100, 190, 0.16);
+  --glass-bg: rgba(21, 21, 24, 0.55);
+  --glass-border: rgba(201, 201, 207, 0.16);
+  --paper-grad: linear-gradient(165deg, #151518 0%, #101013 100%);
+  --seal-ring: rgba(214, 69, 65, 0.5);
+  --veil-grad:
+    radial-gradient(ellipse 90% 70% at 50% 0%, rgba(201, 201, 207, 0.04) 0%, transparent 60%),
+    linear-gradient(180deg, #101013 0%, #0c0c0e 100%);
+  --shadow-glass: 0 18px 48px rgba(0, 0, 0, 0.5);
+  --shadow-gold: 0 0 0 1px rgba(201, 201, 207, 0.16), 0 12px 36px rgba(0, 0, 0, 0.45);
+
+  /* 暗色下角色色提亮 */
+  --char-Ema: hsl(340, 62%, 66%);
+  --char-Sherry: hsl(200, 60%, 68%);
+  --char-Hanna: hsl(140, 48%, 60%);
+  --char-Leia: hsl(32, 42%, 74%);
+  --char-Coco: hsl(30, 78%, 66%);
+  --char-Miria: hsl(50, 70%, 66%);
+  --char-Alisa: hsl(15, 72%, 66%);
+  --char-Margo: hsl(280, 52%, 70%);
+  --char-Meruru: hsl(0, 0%, 86%);
+  --char-Hiro: hsl(0, 66%, 66%);
+  --char-Noah: hsl(190, 52%, 62%);
+  --char-Nanoka: hsl(0, 0%, 52%);
+  --char-Warden: hsl(210, 14%, 62%);
+  --char-Jailer: hsl(210, 14%, 54%);
+  --char-AnAn: hsl(215, 58%, 68%);
+  --char-EmaFake: hsl(340, 28%, 60%);
+  --char-Unknown: hsl(0, 0%, 62%);
+}
+
+/* ═══ Act 配色差异（与 style.css 中 body[data-act] 配合）═══ */
+[data-theme="dark"] body[data-act="act01"] {
+  --accent: hsl(345, 38%, 58%);
+  --btn-active: hsl(345, 38%, 58%);
+  --btn-active-fg: #111;
+}
+[data-theme="dark"] body[data-act="act02"] {
+  --accent: hsl(0, 42%, 55%);
+  --btn-active: hsl(0, 42%, 55%);
   --btn-active-fg: #111;
 }
 
 /* ═══ 全局 reset ═══ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ═══ 内容页/落地页基座（图谱页 style.css 后续规则会覆盖为 overflow:hidden）═══ */
 html, body {
   height: auto;
   min-height: 100vh;
@@ -98,43 +192,65 @@ body {
   position: relative;
 }
 
-/* ═══ 滚动条（原生滚动条隐藏，滚动由自定义进度条/滚轮接管）═══ */
+/* ═══ 通用工具类 ═══ */
+.glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass { background: var(--panel-bg); }
+}
+.rule-gold {
+  height: 1px;
+  border: none;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.dossier {
+  position: relative;
+  background: var(--paper-grad);
+  border: 1px solid var(--border);
+}
+
+/* ═══ 滚动条隐藏（滚动由自定义进度条/滚轮接管）═══ */
 ::-webkit-scrollbar { width: 0; height: 0; display: none; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: transparent; }
 html { scrollbar-width: none; -ms-overflow-style: none; }
 body { scrollbar-width: none; -ms-overflow-style: none; }
 
-/* ═══ 开屏动画 #splash（图谱页/内容页共用结构）═══ */
+/* ═══ 开屏动画 #splash ═══ */
 #splash {
   position: fixed; inset: 0; z-index: 9999;
-  background: var(--bg);
+  background: var(--veil-grad);
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   gap: 28px;
-  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
-              visibility 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 0.8s var(--ease-out-expo),
+              visibility 0.8s var(--ease-out-expo);
 }
 #splash.hide { opacity: 0; visibility: hidden; pointer-events: none; }
 #splash-mark {
   width: 64px; height: 64px;
   display: flex; align-items: center; justify-content: center;
+  border-radius: 16px;
+  box-shadow: 0 0 0 1px var(--seal-ring), 0 0 44px var(--glow-blood);
   transform: scale(0.6); opacity: 0;
-  animation: splashMarkIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
+  animation: splashMarkIn 0.9s var(--ease-out-expo) 0.1s forwards;
 }
 #splash-mark img { width: 100%; height: 100%; object-fit: cover; border-radius: 16px; }
 #splash-mark svg { width: 100%; height: 100%; }
-@keyframes splashMarkIn {
-  to { transform: scale(1); opacity: 1; }
-}
+@keyframes splashMarkIn { to { transform: scale(1); opacity: 1; } }
 #splash-title {
   font-family: "Noto Serif SC", serif;
   font-weight: 300; letter-spacing: 0.18em;
   font-size: 22px;
-  color: var(--fg);
+  color: var(--gold);
   margin: 0;
+  text-shadow: 0 0 34px var(--glow-gold);
   opacity: 0; transform: translateY(8px);
-  animation: splashFadeUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.35s forwards;
+  animation: splashFadeUp 0.9s var(--ease-out-expo) 0.35s forwards;
 }
 #splash-sub {
   font-family: "Cormorant Garamond", serif;
@@ -143,27 +259,25 @@ body { scrollbar-width: none; -ms-overflow-style: none; }
   color: var(--fg3); text-transform: uppercase;
   margin: 0;
   opacity: 0; transform: translateY(6px);
-  animation: splashFadeUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.55s forwards;
+  animation: splashFadeUp 0.9s var(--ease-out-expo) 0.55s forwards;
 }
-@keyframes splashFadeUp {
-  to { opacity: 1; transform: translateY(0); }
-}
+@keyframes splashFadeUp { to { opacity: 1; transform: translateY(0); } }
 #splash-bar {
   width: 120px; height: 1.5px;
   background: var(--border); border-radius: 2px; overflow: hidden;
   margin-top: 8px;
   opacity: 0;
-  animation: splashFadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.8s forwards;
+  animation: splashFadeUp 0.6s var(--ease-out-expo) 0.8s forwards;
 }
 #splash-bar::after {
   content: ''; display: block; height: 100%; width: 0%;
-  background: var(--fg);
+  background: linear-gradient(90deg, var(--blood), var(--gold));
   animation: splashProgress 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.85s forwards;
 }
 @keyframes splashProgress {
   0% { width: 0%; }
   60% { width: 75%; }
-  100% { width: 100%; };
+  100% { width: 100%; }
 }
 @media (prefers-reduced-motion: reduce) {
   #splash-mark, #splash-title, #splash-sub, #splash-bar {
@@ -171,7 +285,7 @@ body { scrollbar-width: none; -ms-overflow-style: none; }
   }
 }
 
-/* ═══ 背景装饰层（落地页/内容页共用，shared.js injectBgLayer 注入）═══ */
+/* ═══ 背景装饰层 ═══ */
 .bg-layer {
   position: fixed;
   inset: 0;
@@ -181,35 +295,35 @@ body { scrollbar-width: none; -ms-overflow-style: none; }
 }
 .bg-gradient {
   position: absolute;
-  inset: 0;
+  inset: -12% 0; /* 过扫: 视差位移不露底 */
   background:
-    radial-gradient(ellipse 80% 60% at 18% 22%, hsla(340, 55%, 30%, 0.12), transparent 60%),
-    radial-gradient(ellipse 70% 55% at 84% 78%, hsla(0, 60%, 28%, 0.10), transparent 60%),
-    radial-gradient(ellipse 60% 80% at 50% 112%, hsla(280, 45%, 24%, 0.08), transparent 70%);
+    radial-gradient(ellipse 80% 60% at 18% 22%, hsla(340, 55%, 40%, 0.10), transparent 60%),
+    radial-gradient(ellipse 70% 55% at 84% 78%, hsla(0, 60%, 40%, 0.09), transparent 60%),
+    radial-gradient(ellipse 60% 80% at 50% 112%, hsla(280, 40%, 35%, 0.07), transparent 70%);
 }
 [data-theme="dark"] .bg-gradient {
   background:
-    radial-gradient(ellipse 80% 60% at 18% 22%, hsla(340, 65%, 22%, 0.22), transparent 60%),
-    radial-gradient(ellipse 70% 55% at 84% 78%, hsla(0, 70%, 20%, 0.20), transparent 60%),
-    radial-gradient(ellipse 60% 80% at 50% 112%, hsla(280, 50%, 16%, 0.18), transparent 70%);
+    radial-gradient(ellipse 80% 60% at 18% 22%, hsla(340, 65%, 45%, 0.12), transparent 60%),
+    radial-gradient(ellipse 70% 55% at 84% 78%, hsla(0, 70%, 40%, 0.11), transparent 60%),
+    radial-gradient(ellipse 60% 80% at 50% 112%, hsla(280, 50%, 38%, 0.08), transparent 70%);
 }
 .bg-blood {
   position: absolute;
-  inset: 0;
+  inset: -12% 0;
   background:
-    radial-gradient(circle at 12% 78%, hsla(0, 75%, 28%, 0.07) 0%, transparent 6%),
-    radial-gradient(circle at 88% 22%, hsla(340, 65%, 32%, 0.06) 0%, transparent 5%),
-    radial-gradient(circle at 65% 88%, hsla(0, 70%, 25%, 0.05) 0%, transparent 7%),
-    radial-gradient(circle at 28% 14%, hsla(340, 55%, 30%, 0.04) 0%, transparent 4%),
-    radial-gradient(circle at 92% 55%, hsla(0, 65%, 28%, 0.04) 0%, transparent 3.5%);
+    radial-gradient(circle at 12% 78%, hsla(0, 75%, 40%, 0.06) 0%, transparent 6%),
+    radial-gradient(circle at 88% 22%, hsla(340, 65%, 45%, 0.05) 0%, transparent 5%),
+    radial-gradient(circle at 65% 88%, hsla(0, 70%, 38%, 0.04) 0%, transparent 7%),
+    radial-gradient(circle at 28% 14%, hsla(340, 55%, 42%, 0.03) 0%, transparent 4%),
+    radial-gradient(circle at 92% 55%, hsla(0, 65%, 40%, 0.03) 0%, transparent 3.5%);
 }
 [data-theme="dark"] .bg-blood {
   background:
-    radial-gradient(circle at 12% 78%, hsla(0, 80%, 22%, 0.12) 0%, transparent 6%),
-    radial-gradient(circle at 88% 22%, hsla(340, 70%, 25%, 0.10) 0%, transparent 5%),
-    radial-gradient(circle at 65% 88%, hsla(0, 75%, 20%, 0.09) 0%, transparent 7%),
-    radial-gradient(circle at 28% 14%, hsla(340, 60%, 24%, 0.07) 0%, transparent 4%),
-    radial-gradient(circle at 92% 55%, hsla(0, 70%, 22%, 0.07) 0%, transparent 3.5%);
+    radial-gradient(circle at 12% 78%, hsla(0, 80%, 42%, 0.09) 0%, transparent 6%),
+    radial-gradient(circle at 88% 22%, hsla(340, 70%, 45%, 0.08) 0%, transparent 5%),
+    radial-gradient(circle at 65% 88%, hsla(0, 75%, 40%, 0.07) 0%, transparent 7%),
+    radial-gradient(circle at 28% 14%, hsla(340, 60%, 44%, 0.05) 0%, transparent 4%),
+    radial-gradient(circle at 92% 55%, hsla(0, 70%, 42%, 0.05) 0%, transparent 3.5%);
 }
 .bg-grain {
   position: absolute;
@@ -218,8 +332,8 @@ body { scrollbar-width: none; -ms-overflow-style: none; }
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
 }
-/* 魔法阵: 旋转(spin)与呼吸(breath)分离为两个独立 CSS 动画,
-   呼吸周期 8s(scale 1↔1.05 + opacity), 通过变量区分亮/暗模式 */
+
+/* 魔法阵 */
 :root {
   --magic-op: 0.05;
   --magic-op-peak: 0.085;
@@ -227,17 +341,17 @@ body { scrollbar-width: none; -ms-overflow-style: none; }
   --magic-inner-peak: 0.07;
 }
 [data-theme="dark"] {
-  --magic-op: 0.075;
-  --magic-op-peak: 0.12;
-  --magic-inner-op: 0.06;
-  --magic-inner-peak: 0.1;
+  --magic-op: 0.07;
+  --magic-op-peak: 0.11;
+  --magic-inner-op: 0.055;
+  --magic-inner-peak: 0.09;
 }
 .magic-circle {
   position: absolute;
   top: 50%; left: 50%;
   width: min(920px, 125vw); height: min(920px, 125vw);
   transform: translate(-50%, -50%);
-  color: var(--fg);
+  color: var(--gold);
   opacity: var(--magic-op);
   animation: spin 180s linear infinite, breath 8s ease-in-out infinite;
   will-change: transform, opacity;
@@ -247,12 +361,11 @@ body { scrollbar-width: none; -ms-overflow-style: none; }
   top: 50%; left: 50%;
   width: min(520px, 72vw); height: min(520px, 72vw);
   transform: translate(-50%, -50%);
-  color: var(--fg);
+  color: var(--gold);
   opacity: var(--magic-inner-op);
   animation: spin-rev 130s linear infinite, breath-inner 8s ease-in-out 4s infinite;
   will-change: transform, opacity;
 }
-/* 旋转与呼吸合并: 2.2%≈4s 达到最大呼吸, 4.4%≈8s 复位, 呼吸周期 8s */
 @keyframes spin {
   0%   { transform: translate(-50%, -50%) rotate(0deg) scale(1); }
   2.2% { transform: translate(-50%, -50%) rotate(3.96deg) scale(1.05); }
@@ -265,7 +378,6 @@ body { scrollbar-width: none; -ms-overflow-style: none; }
   4.4% { transform: translate(-50%, -50%) rotate(-7.92deg) scale(1); }
   100% { transform: translate(-50%, -50%) rotate(-360deg) scale(1); }
 }
-/* 呼吸只动画 opacity, 不与旋转冲突 */
 @keyframes breath {
   0%, 100% { opacity: var(--magic-op); }
   50%      { opacity: var(--magic-op-peak); }
@@ -274,7 +386,6 @@ body { scrollbar-width: none; -ms-overflow-style: none; }
   0%, 100% { opacity: var(--magic-inner-op); }
   50%      { opacity: var(--magic-inner-peak); }
 }
-/* 蝴蝶 */
 .butterfly {
   position: absolute;
   color: var(--fg);
@@ -303,37 +414,38 @@ body { scrollbar-width: none; -ms-overflow-style: none; }
   .magic-circle, .magic-circle-inner, .butterfly { animation: none !important; }
 }
 
-/* ═══ GSAP 页面转场覆盖层（与开屏加载动画同色：背景 var(--bg)、印记 var(--fg)）═══ */
+/* ═══ GSAP 页面转场覆盖层 ═══ */
 .page-transition {
   position: fixed; inset: 0; z-index: 99999;
   pointer-events: none;
   display: flex; align-items: center; justify-content: center;
-  background: var(--bg);
+  background: var(--veil-grad);
 }
 .page-transition .pt-veil {
   position: absolute; inset: 0;
-  background: var(--bg);
+  background: var(--veil-grad);
   clip-path: inset(0 0 100% 0);
 }
 .page-transition .pt-sigil {
   position: relative; z-index: 2;
   width: 80px; height: 80px;
   opacity: 0;
-  color: var(--fg);
+  color: var(--gold);
+  filter: drop-shadow(0 0 22px var(--glow-gold));
 }
 .pt-reveal {
   position: fixed; inset: 0; z-index: 99999;
-  background: var(--bg);
+  background: var(--veil-grad);
   pointer-events: none;
 }
 
 /* ═══ GSAP 3D hover 容器 ═══ */
 .card, .frame-card, .item-card, .future-card {
   transform-style: preserve-3d;
-  perspective: 800px;
+  perspective: 900px;
 }
 
-/* ═══ 右侧自定义滚动进度条（上下滑动/拖动控制页面滚动）═══ */
+/* ═══ 右侧滚动进度条 ═══ */
 .scroll-progress {
   position: fixed;
   right: 22px;
@@ -351,49 +463,48 @@ body { scrollbar-width: none; -ms-overflow-style: none; }
 .scroll-progress .sp-track {
   position: absolute;
   left: 50%; top: 0; bottom: 0;
-  width: 3px;
+  width: 2px;
   transform: translateX(-50%);
-  background: var(--border);
+  background: linear-gradient(180deg, var(--gold-ghost), var(--border), var(--gold-ghost));
   border-radius: 2px;
-  opacity: 0.55;
+  opacity: 0.6;
   transition: opacity 0.3s;
 }
 .scroll-progress .sp-fill {
   position: absolute;
   left: 50%; top: 0;
-  width: 3px;
+  width: 2px;
   transform: translateX(-50%) scaleY(0);
   transform-origin: top;
-  background: var(--accent);
+  background: linear-gradient(180deg, var(--gold), var(--accent));
   border-radius: 2px;
+  box-shadow: 0 0 12px var(--glow-gold);
 }
 .scroll-progress .sp-thumb {
   position: absolute;
   left: 50%;
   top: 0;
-  width: 16px; height: 16px;
-  transform: translate(-50%, -50%) rotate(45deg); /* 哥特菱形 */
+  width: 14px; height: 14px;
+  transform: translate(-50%, -50%) rotate(45deg);
   background: var(--panel-bg);
-  border: 1.5px solid var(--accent);
-  box-shadow: 0 2px 10px rgba(0,0,0,0.22);
+  border: 1.5px solid var(--gold);
+  box-shadow: 0 0 10px var(--glow-gold), 0 2px 10px rgba(0,0,0,0.35);
   transition: background 0.25s, border-color 0.25s;
 }
 .scroll-progress .sp-thumb::before {
   content: '';
   position: absolute;
   left: 50%; top: 50%;
-  width: 5px; height: 5px;
+  width: 4px; height: 4px;
   transform: translate(-50%, -50%);
   background: var(--accent);
 }
 .scroll-progress:hover .sp-thumb,
 .scroll-progress.sp-dragging .sp-thumb {
   background: var(--accent);
-  border-color: var(--accent);
+  border-color: var(--gold);
 }
-.scroll-progress:hover .sp-thumb::before {
-  background: var(--panel-bg);
-}
+.scroll-progress:hover .sp-thumb::before { background: var(--panel-bg); }
 .scroll-progress .sp-pct {
   position: absolute;
   right: 26px;
@@ -403,9 +514,11 @@ body { scrollbar-width: none; -ms-overflow-style: none; }
   font-style: italic;
   font-size: 12px;
   letter-spacing: 0.08em;
-  color: var(--fg3);
-  background: var(--panel-bg);
-  border: 1px solid var(--border);
+  color: var(--gold);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
   border-radius: 999px;
   padding: 2px 9px;
   opacity: 0;
@@ -414,14 +527,12 @@ body { scrollbar-width: none; -ms-overflow-style: none; }
   transition: opacity 0.3s;
 }
 .scroll-progress:hover .sp-pct,
-.scroll-progress.sp-dragging .sp-pct {
-  opacity: 1;
-}
+.scroll-progress.sp-dragging .sp-pct { opacity: 1; }
 @media (max-width: 720px) {
   .scroll-progress { right: 10px; height: 30vh; }
 }
 
-/* ═══ 主题切换按钮（圆形，右上角）═══ */
+/* ═══ 主题切换按钮 ═══ */
 .theme-toggle {
   position: fixed;
   top: 22px;
@@ -429,9 +540,9 @@ body { scrollbar-width: none; -ms-overflow-style: none; }
   z-index: 50;
   width: 42px;
   height: 42px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--glass-border);
   border-radius: 50%;
-  background: var(--header-bg);
+  background: var(--glass-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   color: var(--fg);
@@ -439,13 +550,14 @@ body { scrollbar-width: none; -ms-overflow-style: none; }
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-              border-color 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.35s var(--ease-out-expo),
+              border-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
 }
 .theme-toggle:hover {
-  border-color: var(--accent);
+  border-color: var(--gold);
+  color: var(--gold);
   transform: rotate(18deg);
-  box-shadow: 0 4px 18px rgba(0,0,0,0.12);
+  box-shadow: 0 0 18px var(--glow-gold), 0 4px 18px rgba(0,0,0,0.25);
 }
 .theme-toggle svg { width: 18px; height: 18px; }
 .theme-toggle .icon-moon { display: block; }
@@ -459,14 +571,14 @@ body { scrollbar-width: none; -ms-overflow-style: none; }
 /* ═══ 跨页导航链接 ═══ */
 .nav-link {
   display: inline-flex; align-items: center; gap: 4px;
-  padding: 4px 10px; border: 1px solid var(--border); border-radius: 5px;
+  padding: 4px 10px; border: 1px solid var(--border); border-radius: var(--radius-sm);
   background: var(--btn-bg); color: var(--fg2); font-size: 12px;
   text-decoration: none; cursor: pointer; white-space: nowrap;
-  transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: all 0.25s var(--ease-out-expo);
 }
-.nav-link:hover { background: var(--btn-hover); color: var(--fg); border-color: var(--accent); }
+.nav-link:hover { background: var(--btn-hover); color: var(--accent); border-color: var(--accent); }
 
-/* ═══ Toast 提示（落地页封锁 + 内容页共用）═══ */
+/* ═══ Toast ═══ */
 #toast-host {
   position: fixed;
   bottom: 38px;
@@ -474,10 +586,12 @@ body { scrollbar-width: none; -ms-overflow-style: none; }
   transform: translateX(-50%) translateY(20px);
   z-index: 10000;
   padding: 12px 28px;
-  background: var(--panel-bg);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.04);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-glass);
   font-family: "Noto Serif SC", serif;
   font-size: 14px;
   font-weight: 700;
@@ -487,8 +601,8 @@ body { scrollbar-width: none; -ms-overflow-style: none; }
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-              transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+  transition: opacity 0.4s var(--ease-out-expo),
+              transform 0.4s var(--ease-out-expo),
               visibility 0.4s;
 }
 #toast-host.show {
@@ -500,18 +614,30 @@ body { scrollbar-width: none; -ms-overflow-style: none; }
   #toast-host { bottom: 24px; font-size: 12px; padding: 10px 20px; }
 }
 
-/* ═══ 通用入场动画 ═══ */
+/* ═══ 通用入场动画（CSS 降级）═══ */
 @keyframes enter-up { to { opacity: 1; transform: translateY(0); } }
 @keyframes enter-divider { to { width: 260px; } }
 
-/* ═══ 增强 4: Act 配色差异化 (与 style.css 中 body[data-act] 配合) ═══ */
-[data-theme="dark"] body[data-act="act01"] {
-  --accent: hsl(345, 38%, 58%);
-  --btn-active: hsl(345, 38%, 58%);
-  --btn-active-fg: #111;
+/* ═══ 遮罩逐词动画结构（SplitText/自研分词共用）═══ */
+.mw {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-top: 0.08em;
+  margin-top: -0.08em;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
 }
-[data-theme="dark"] body[data-act="act02"] {
-  --accent: hsl(0, 42%, 55%);
-  --btn-active: hsl(0, 42%, 55%);
-  --btn-active-fg: #111;
+.mw-in {
+  display: inline-block;
+  will-change: transform;
+}
+
+/* ═══ 减少动效偏好 ═══ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01s !important;
+    animation-delay: 0s !important;
+    transition-duration: 0.12s !important;
+  }
 }

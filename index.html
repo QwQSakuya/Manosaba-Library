@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-Hans" data-theme="light">
+<html lang="zh-Hans" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,910 +17,18 @@
 <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
 <title>大魔女图书馆</title>
 <link rel="stylesheet" href="assets/fonts.css">
-<link rel="stylesheet" href="assets/shared.css?v=20260814a">
+<link rel="stylesheet" href="assets/shared.css?v=20260905a">
+<link rel="stylesheet" href="assets/landing.css?v=20260905a">
 <script>
-  // 主题恢复 (提前执行, 避免 FOUC 闪白)
+  // 主题恢复 (提前执行, 避免 FOUC 闪白; 默认暗色旗舰)
   (function () {
+    document.documentElement.classList.add('js');
     var saved = localStorage.getItem('theme');
     if (saved === 'dark' || saved === 'light') {
       document.documentElement.setAttribute('data-theme', saved);
     }
   })();
 </script>
-<style>
-/* ═══════════════════════════════════════════════════
-   落地页专属样式 — 暗黑哥特 / 魔法审判意象
-   变量 / reset / bg-layer / theme-toggle / splash / toast
-   已迁入 shared.css, 此处仅保留卡片与布局
-   ═══════════════════════════════════════════════════ */
-
-body { display: block; }
-
-/* ── 主体布局 ── */
-.landing {
-  position: relative;
-  z-index: 1;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 88px 24px 56px;
-  gap: 52px;
-}
-
-/* ── 标题区 ── */
-.landing-header {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-}
-.logo {
-  width: 76px;
-  height: 76px;
-  border-radius: 16px;
-  object-fit: cover;
-  border: 1px solid var(--border);
-  box-shadow: 0 6px 28px rgba(0,0,0,0.18), 0 0 0 4px var(--bg);
-  opacity: 0;
-  transform: scale(0.65);
-  animation: enter-logo 0.95s cubic-bezier(0.22, 1, 0.36, 1) 0.15s forwards;
-}
-.landing-title {
-  font-family: "Noto Serif SC", serif;
-  font-weight: 900;
-  font-size: clamp(28px, 5vw, 46px);
-  letter-spacing: 0.14em;
-  color: var(--fg);
-  margin: 0;
-  line-height: 1.2;
-  opacity: 0;
-  transform: translateY(18px);
-  animation: enter-up 0.95s cubic-bezier(0.22, 1, 0.36, 1) 0.35s forwards;
-}
-.landing-subtitle {
-  font-family: "Cormorant Garamond", serif;
-  font-style: italic;
-  font-weight: 500;
-  font-size: clamp(14px, 2vw, 19px);
-  letter-spacing: 0.28em;
-  color: var(--fg2);
-  margin: 0;
-  text-transform: uppercase;
-  opacity: 0;
-  transform: translateY(12px);
-  animation: enter-up 0.95s cubic-bezier(0.22, 1, 0.36, 1) 0.55s forwards;
-}
-.landing-divider {
-  width: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--fg3), transparent);
-  margin-top: 10px;
-  animation: enter-divider 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.78s forwards;
-}
-@keyframes enter-logo    { to { opacity: 1; transform: scale(1); } }
-
-/* ── 周目卡片容器 ── */
-.cards {
-  display: flex;
-  gap: 34px;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: stretch;
-  width: 100%;
-  max-width: 900px;
-}
-
-/* ── 周目卡片 ── */
-.card {
-  position: relative;
-  flex: 1 1 340px;
-  max-width: 420px;
-  min-height: 390px;
-  padding: 38px 34px 32px;
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  background: var(--panel-bg);
-  cursor: pointer;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  opacity: 0;
-  transform: translateY(30px);
-  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-              box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-              border-color 0.45s ease;
-  will-change: transform;
-}
-.card-act01 { animation: enter-up 0.95s cubic-bezier(0.22, 1, 0.36, 1) 0.98s forwards; }
-.card-act02 { animation: enter-up 0.95s cubic-bezier(0.22, 1, 0.36, 1) 1.18s forwards; }
-
-/* 卡片角色色系背景渐变 */
-.card-bg {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  opacity: 0.55;
-  transition: opacity 0.5s ease;
-  pointer-events: none;
-}
-.card-act01 .card-bg {
-  background:
-    linear-gradient(155deg, hsla(340, 60%, 55%, 0.07) 0%, transparent 52%),
-    linear-gradient(335deg, hsla(200, 65%, 60%, 0.06) 0%, transparent 62%);
-}
-.card-act02 .card-bg {
-  background:
-    linear-gradient(155deg, hsla(0, 65%, 55%, 0.07) 0%, transparent 52%),
-    linear-gradient(335deg, hsla(30, 80%, 55%, 0.06) 0%, transparent 62%);
-}
-[data-theme="dark"] .card-act01 .card-bg {
-  background:
-    linear-gradient(155deg, hsla(340, 60%, 48%, 0.12) 0%, transparent 52%),
-    linear-gradient(335deg, hsla(200, 65%, 50%, 0.09) 0%, transparent 62%);
-}
-[data-theme="dark"] .card-act02 .card-bg {
-  background:
-    linear-gradient(155deg, hsla(0, 65%, 48%, 0.12) 0%, transparent 52%),
-    linear-gradient(335deg, hsla(30, 80%, 50%, 0.09) 0%, transparent 62%);
-}
-
-/* 卡片内蝴蝶装饰 (hover 显现) */
-.card-butterfly {
-  position: absolute;
-  bottom: -14px;
-  right: -12px;
-  width: 96px;
-  color: var(--fg);
-  opacity: 0.04;
-  transform: rotate(-18deg);
-  transition: opacity 0.5s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-  pointer-events: none;
-}
-.card:hover .card-butterfly {
-  opacity: 0.13;
-  transform: rotate(-6deg) translateY(-10px);
-}
-.card-act01 .card-butterfly { color: hsl(340, 60%, 55%); }
-.card-act02 .card-butterfly { color: hsl(0, 65%, 55%); }
-[data-theme="dark"] .card-act01 .card-butterfly { color: hsl(340, 55%, 62%); }
-[data-theme="dark"] .card-act02 .card-butterfly { color: hsl(0, 60%, 62%); }
-
-/* 哥特角线装饰 */
-.card::before, .card::after {
-  content: '';
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  border: 1px solid var(--fg3);
-  opacity: 0.4;
-  transition: opacity 0.45s ease, border-color 0.45s ease, width 0.45s ease, height 0.45s ease;
-  pointer-events: none;
-  z-index: 2;
-}
-.card::before { top: 9px; left: 9px; border-right: none; border-bottom: none; }
-.card::after  { bottom: 9px; right: 9px; border-left: none; border-top: none; }
-.card-act01:hover::before, .card-act01:hover::after { border-color: hsl(340, 60%, 55%); }
-.card-act02:hover::before, .card-act02:hover::after { border-color: hsl(0, 65%, 55%); }
-[data-theme="dark"] .card-act01:hover::before, [data-theme="dark"] .card-act01:hover::after { border-color: hsl(340, 55%, 62%); }
-[data-theme="dark"] .card-act02:hover::before, [data-theme="dark"] .card-act02:hover::after { border-color: hsl(0, 60%, 62%); }
-.card:hover::before, .card:hover::after { opacity: 0.75; width: 26px; height: 26px; }
-
-/* 卡片内容 */
-.card-content {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  flex: 1;
-}
-.card-num {
-  font-family: "Cormorant Garamond", serif;
-  font-weight: 700;
-  font-style: italic;
-  font-size: 52px;
-  line-height: 1;
-  letter-spacing: 0.02em;
-  opacity: 0.88;
-}
-.card-act01 .card-num { color: hsl(340, 60%, 55%); }
-.card-act02 .card-num { color: hsl(0, 65%, 55%); }
-[data-theme="dark"] .card-act01 .card-num { color: hsl(340, 55%, 64%); }
-[data-theme="dark"] .card-act02 .card-num { color: hsl(0, 60%, 64%); }
-
-.card-title {
-  font-family: "Noto Serif SC", serif;
-  font-weight: 900;
-  font-size: 30px;
-  letter-spacing: 0.12em;
-  color: var(--fg);
-  margin: 0;
-}
-.card-subtitle {
-  font-family: "Cormorant Garamond", serif;
-  font-style: italic;
-  font-weight: 500;
-  font-size: 17px;
-  letter-spacing: 0.1em;
-  margin: 0;
-}
-.card-act01 .card-subtitle { color: hsl(340, 42%, 48%); }
-.card-act02 .card-subtitle { color: hsl(0, 48%, 48%); }
-[data-theme="dark"] .card-act01 .card-subtitle { color: hsl(340, 48%, 66%); }
-[data-theme="dark"] .card-act02 .card-subtitle { color: hsl(0, 52%, 66%); }
-
-.card-stats {
-  display: flex;
-  gap: 28px;
-  margin: 10px 0 6px;
-  padding: 14px 0;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-}
-.stat { display: flex; flex-direction: column; gap: 3px; }
-.stat-num {
-  font-family: "Cormorant Garamond", serif;
-  font-weight: 700;
-  font-size: 28px;
-  line-height: 1;
-  color: var(--fg);
-}
-.stat-label {
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  color: var(--fg3);
-}
-
-.card-desc {
-  font-size: 14px;
-  line-height: 1.78;
-  color: var(--fg2);
-  margin: 0;
-  flex: 1;
-}
-
-/* 进入按钮 */
-.card-enter {
-  align-self: flex-start;
-  margin-top: 14px;
-  padding: 11px 30px;
-  border: 1px solid;
-  border-radius: 2px;
-  background: transparent;
-  font-family: "Noto Serif SC", serif;
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 0.3em;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  transition: color 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-              border-color 0.35s ease;
-}
-.card-enter::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: currentColor;
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-  z-index: -1;
-  opacity: 0.14;
-}
-.card-enter:hover::before { transform: scaleX(1); }
-.card-enter:hover { color: var(--fg); }
-.card-act01 .card-enter { color: hsl(340, 60%, 55%); border-color: hsla(340, 60%, 55%, 0.42); }
-.card-act02 .card-enter { color: hsl(0, 65%, 55%); border-color: hsla(0, 65%, 55%, 0.42); }
-[data-theme="dark"] .card-act01 .card-enter { color: hsl(340, 55%, 64%); border-color: hsla(340, 55%, 64%, 0.42); }
-[data-theme="dark"] .card-act02 .card-enter { color: hsl(0, 60%, 64%); border-color: hsla(0, 60%, 64%, 0.42); }
-[data-theme="dark"] .card-act01 .card-enter:hover { color: hsl(340, 60%, 80%); }
-[data-theme="dark"] .card-act02 .card-enter:hover { color: hsl(0, 65%, 80%); }
-
-/* 卡片 hover */
-.card:hover { transform: translateY(-7px); }
-.card-act01:hover {
-  border-color: hsla(340, 60%, 55%, 0.5);
-  box-shadow: 0 14px 44px hsla(340, 60%, 38%, 0.16);
-}
-.card-act02:hover {
-  border-color: hsla(0, 65%, 55%, 0.5);
-  box-shadow: 0 14px 44px hsla(0, 65%, 38%, 0.16);
-}
-[data-theme="dark"] .card-act01:hover {
-  border-color: hsla(340, 55%, 62%, 0.48);
-  box-shadow: 0 14px 44px hsla(340, 55%, 28%, 0.28);
-}
-[data-theme="dark"] .card-act02:hover {
-  border-color: hsla(0, 60%, 62%, 0.48);
-  box-shadow: 0 14px 44px hsla(0, 60%, 28%, 0.28);
-}
-.card:hover .card-bg { opacity: 0.85; }
-
-/* ═══ 未来功能分隔线 ═══ */
-.future-divider {
-  width: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--fg3), transparent);
-  opacity: 0.4;
-  animation: enter-divider 0.85s cubic-bezier(0.22, 1, 0.36, 1) 1.35s forwards;
-}
-
-/* ═══ 未来功能区域 ═══ */
-.future-section {
-  width: 100%;
-  max-width: 900px;
-  opacity: 0;
-  animation: enter-up 0.85s cubic-bezier(0.22, 1, 0.36, 1) 1.4s forwards;
-}
-.future-heading {
-  font-family: "Cormorant Garamond", serif;
-  font-style: italic;
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.24em;
-  color: var(--fg3);
-  text-transform: uppercase;
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-/* ── 封锁卡片网格 ── */
-.future-cards {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 14px;
-}
-
-/* ── 封锁卡片 ── */
-.future-card {
-  position: relative;
-  width: 160px;
-  padding: 24px 14px 18px;
-  border: 1.5px dashed var(--fg3);
-  border-radius: 3px;
-  background: var(--panel-bg);
-  cursor: pointer;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  text-align: center;
-  opacity: 0.55;
-  transition: opacity 0.4s ease,
-              transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-              border-color 0.4s ease;
-}
-.future-card:hover, .future-card:focus-visible {
-  opacity: 0.82;
-  transform: translateY(-3px);
-  border-color: var(--accent);
-  outline: none;
-}
-.future-card .fc-lock {
-  position: absolute;
-  top: 9px; right: 9px;
-  width: 15px; height: 15px;
-  color: var(--fg3);
-  opacity: 0.5;
-  flex-shrink: 0;
-}
-.future-card .fc-num {
-  font-family: "Cormorant Garamond", serif;
-  font-style: italic;
-  font-weight: 700;
-  font-size: 30px;
-  line-height: 1;
-  color: var(--fg3);
-  letter-spacing: 0.02em;
-}
-.future-card .fc-title {
-  font-family: "Noto Serif SC", serif;
-  font-weight: 700;
-  font-size: 14px;
-  letter-spacing: 0.1em;
-  color: var(--fg2);
-}
-.future-card .fc-sub {
-  font-family: "Cormorant Garamond", serif;
-  font-style: italic;
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  color: var(--fg3);
-  text-transform: uppercase;
-}
-.future-card .fc-tag {
-  margin-top: 6px;
-  padding: 3px 12px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  color: var(--fg3);
-  background: var(--bg2);
-}
-.future-card .fc-butterfly {
-  position: absolute;
-  bottom: -10px;
-  right: -8px;
-  width: 52px;
-  color: var(--fg);
-  opacity: 0.03;
-  transform: rotate(-18deg);
-  transition: opacity 0.5s ease;
-  pointer-events: none;
-}
-.future-card:hover .fc-butterfly { opacity: 0.08; }
-
-/* ── 解锁卡片 ── */
-.future-card.unlocked {
-  border: 1px solid var(--border);
-  opacity: 1;
-  cursor: pointer;
-}
-.future-card.unlocked .fc-num { color: var(--accent); }
-.future-card.unlocked .fc-tag { display: none; }
-.future-card.unlocked .fc-go {
-  display: inline-block;
-  color: var(--accent);
-  border-color: var(--accent);
-  letter-spacing: 0.08em;
-}
-.future-card.unlocked:hover {
-  border-color: var(--accent);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.10);
-  opacity: 1;
-}
-.future-card.unlocked:hover .fc-butterfly { opacity: 0.12; }
-
-@media (max-width: 720px) {
-  .future-cards { gap: 12px; }
-  .future-card { width: calc(50% - 6px); }
-}
-
-/* ── 页脚 ── */
-/* ═══ 站点切换 + Ping ═══ */
-.site-switcher {
-  width: 100%;
-  max-width: 460px;
-}
-.ss-panel {
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  background: var(--panel-bg);
-  overflow: visible;
-}
-.ss-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 16px;
-  border-bottom: 1px solid var(--border);
-  background: var(--bg2);
-  border-radius: 3px 3px 0 0;
-}
-.ss-title {
-  font-family: "Cormorant Garamond", serif;
-  font-style: italic;
-  font-size: 12px;
-  letter-spacing: 0.24em;
-  color: var(--fg3);
-  text-transform: uppercase;
-}
-.ss-ping-btn {
-  padding: 4px 14px;
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  background: transparent;
-  color: var(--fg2);
-  font: inherit;
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  cursor: pointer;
-  transition: border-color 0.25s, color 0.25s;
-}
-.ss-ping-btn:hover:not(:disabled) {
-  border-color: var(--accent);
-  color: var(--accent);
-}
-.ss-ping-btn:disabled {
-  opacity: 0.35;
-  cursor: wait;
-}
-.ss-sites {
-  display: flex;
-}
-.ss-site {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 11px 16px;
-  border: none;
-  border-right: 1px solid var(--border);
-  background: transparent;
-  cursor: pointer;
-  transition: background 0.25s;
-  text-align: left;
-  font: inherit;
-  color: inherit;
-}
-.ss-site:last-child { border-right: none; border-radius: 0 0 3px 3px; }
-.ss-site:hover { background: var(--bg2); }
-/* 副站悬浮提示 */
-.ss-site[data-tip] { position: relative; }
-.ss-site[data-tip]::after {
-  content: attr(data-tip);
-  position: absolute;
-  bottom: calc(100% + 12px);
-  left: 50%;
-  transform: translateX(-50%) translateY(6px);
-  width: max-content;
-  max-width: 250px;
-  background: var(--panel-bg);
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  padding: 9px 14px;
-  font-family: "Noto Serif SC", serif;
-  font-size: 12px;
-  line-height: 1.7;
-  letter-spacing: 0.03em;
-  color: var(--fg2);
-  text-align: center;
-  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.14);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.28s ease, transform 0.28s ease;
-  z-index: 30;
-  white-space: normal;
-}
-.ss-site[data-tip]::before {
-  content: '';
-  position: absolute;
-  bottom: calc(100% + 6px);
-  left: 50%;
-  transform: translateX(-50%);
-  border: 5px solid transparent;
-  border-top-color: var(--border);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.28s ease;
-  z-index: 30;
-}
-.ss-site[data-tip]:hover::after,
-.ss-site[data-tip]:hover::before {
-  opacity: 1;
-}
-.ss-site[data-tip]:hover::after {
-  transform: translateX(-50%) translateY(0);
-}
-.ss-site.current {
-  background: color-mix(in srgb, var(--accent) 6%, transparent);
-}
-.ss-site-info {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-.ss-site-name {
-  font-family: "Noto Serif SC", serif;
-  font-weight: 700;
-  font-size: 13px;
-  color: var(--fg);
-  letter-spacing: 0.06em;
-}
-.ss-site-url {
-  font-family: "Cormorant Garamond", serif;
-  font-style: italic;
-  font-size: 11px;
-  color: var(--fg3);
-  letter-spacing: 0.02em;
-}
-.ss-site-ping {
-  font-family: "Cormorant Garamond", serif;
-  font-weight: 700;
-  font-size: 15px;
-  min-width: 56px;
-  text-align: right;
-  color: var(--fg3);
-  transition: color 0.3s;
-}
-.ss-site-ping.good { color: hsl(140, 42%, 42%); }
-[data-theme="dark"] .ss-site-ping.good { color: hsl(140, 45%, 55%); }
-.ss-site-ping.ok { color: hsl(40, 60%, 45%); }
-[data-theme="dark"] .ss-site-ping.ok { color: hsl(40, 65%, 60%); }
-.ss-site-ping.bad { color: hsl(0, 55%, 48%); }
-[data-theme="dark"] .ss-site-ping.bad { color: hsl(0, 60%, 62%); }
-.ss-site-ping.testing {
-  color: var(--fg3);
-  animation: ss-pulse 1s ease-in-out infinite;
-}
-@keyframes ss-pulse {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 0.8; }
-}
-
-/* ── 页脚 ── */
-.landing-footer {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  padding: 28px 24px;
-  opacity: 0;
-  animation: enter-up 0.85s cubic-bezier(0.22, 1, 0.36, 1) 1.55s forwards;
-}
-.landing-footer a {
-  font-family: "Cormorant Garamond", serif;
-  font-style: italic;
-  font-size: 15px;
-  letter-spacing: 0.16em;
-  color: var(--fg3);
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
-  transition: color 0.25s ease, border-bottom-color 0.25s ease;
-  padding-bottom: 3px;
-}
-.landing-footer a:hover {
-  color: var(--fg);
-  border-bottom-color: var(--fg3);
-}
-
-/* ── 响应式 ── */
-@media (max-width: 720px) {
-  .landing { padding: 70px 16px 40px; gap: 40px; }
-  .cards { flex-direction: column; max-width: 380px; gap: 24px; }
-  .card { max-width: none; min-height: 0; }
-  .logo { width: 64px; height: 64px; }
-  .card-num { font-size: 44px; }
-  .card-title { font-size: 26px; }
-  .ss-sites { flex-direction: column; }
-  .ss-site { border-right: none; border-bottom: 1px solid var(--border); }
-  .ss-site:last-child { border-bottom: none; }
-}
-
-/* ── 减少动效偏好 ── */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01s !important;
-    animation-delay: 0s !important;
-    transition-duration: 0.12s !important;
-  }
-  .logo, .landing-title, .landing-subtitle, .card, .future-section, .site-switcher, .landing-footer { opacity: 1 !important; transform: none !important; }
-  .landing-divider, .future-divider { width: 260px !important; }
-}
-
-/* ═══ Logo 彩蛋震动动画 ═══ */
-/* 第1次: 轻微震动 */
-@keyframes logo-shake-1 {
-  0% { transform: scale(1) rotate(0deg); }
-  20% { transform: scale(1) rotate(-3deg) translateX(-2px); }
-  40% { transform: scale(1) rotate(3deg) translateX(2px); }
-  60% { transform: scale(1) rotate(-2deg) translateX(-1px); }
-  80% { transform: scale(1) rotate(1deg) translateX(1px); }
-  100% { transform: scale(1) rotate(0deg) translateX(0); }
-}
-.logo.shake-1 { animation: logo-shake-1 0.4s ease-in-out; opacity: 1; transform: scale(1); }
-
-/* 第2次: 摇晃加大 */
-@keyframes logo-shake-2 {
-  0% { transform: scale(1) rotate(0deg); }
-  15% { transform: scale(1.05) rotate(-8deg) translateX(-5px); }
-  30% { transform: scale(1.05) rotate(7deg) translateX(5px); }
-  45% { transform: scale(1.05) rotate(-6deg) translateX(-4px); }
-  60% { transform: scale(1.05) rotate(5deg) translateX(3px); }
-  75% { transform: scale(1.05) rotate(-3deg) translateX(-2px); }
-  90% { transform: scale(1.02) rotate(1deg) translateX(1px); }
-  100% { transform: scale(1) rotate(0deg) translateX(0); }
-}
-.logo.shake-2 { animation: logo-shake-2 0.6s ease-in-out; opacity: 1; transform: scale(1); }
-
-/* 第3次: 剧烈摇晃 + 页面震动 */
-@keyframes logo-shake-3 {
-  0% { transform: scale(1) rotate(0deg); }
-  10% { transform: scale(1.1) rotate(-14deg) translateX(-8px) translateY(-3px); }
-  25% { transform: scale(1.1) rotate(12deg) translateX(8px) translateY(2px); }
-  40% { transform: scale(1.1) rotate(-10deg) translateX(-7px) translateY(-2px); }
-  55% { transform: scale(1.1) rotate(8deg) translateX(6px) translateY(3px); }
-  70% { transform: scale(1.08) rotate(-5deg) translateX(-3px) translateY(-1px); }
-  85% { transform: scale(1.03) rotate(2deg) translateX(1px); }
-  100% { transform: scale(1) rotate(0deg) translateX(0); }
-}
-.logo.shake-3 { animation: logo-shake-3 0.8s ease-in-out; opacity: 1; transform: scale(1); }
-
-@keyframes page-shake-3 {
-  0%, 100% { transform: translate(0, 0); }
-  10% { transform: translate(-3px, 1px); }
-  20% { transform: translate(3px, -1px); }
-  30% { transform: translate(-3px, 2px); }
-  40% { transform: translate(3px, -2px); }
-  50% { transform: translate(-2px, 1px); }
-  60% { transform: translate(2px, -1px); }
-  70% { transform: translate(-1px, 1px); }
-  80% { transform: translate(1px, 0); }
-  90% { transform: translate(-1px, 0); }
-}
-.landing.page-shake-3 { animation: page-shake-3 0.8s ease-in-out; }
-
-/* 第4次: 最剧烈震动 */
-@keyframes logo-shake-4 {
-  0% { transform: scale(1) rotate(0deg); }
-  8% { transform: scale(1.15) rotate(-18deg) translateX(-12px) translateY(-5px); }
-  20% { transform: scale(1.15) rotate(16deg) translateX(12px) translateY(4px); }
-  35% { transform: scale(1.15) rotate(-14deg) translateX(-10px) translateY(-3px); }
-  50% { transform: scale(1.12) rotate(10deg) translateX(8px) translateY(5px); }
-  65% { transform: scale(1.08) rotate(-6deg) translateX(-5px); }
-  80% { transform: scale(1.03) rotate(2deg) translateX(2px); }
-  100% { transform: scale(1) rotate(0deg) translateX(0); }
-}
-.logo.shake-4 { animation: logo-shake-4 1s ease-in-out; opacity: 1; transform: scale(1); }
-
-@keyframes page-shake-4 {
-  0%, 100% { transform: translate(0, 0); }
-  5% { transform: translate(-8px, 3px); }
-  10% { transform: translate(8px, -3px); }
-  15% { transform: translate(-7px, 5px); }
-  20% { transform: translate(7px, -4px); }
-  25% { transform: translate(-6px, 3px); }
-  30% { transform: translate(6px, -2px); }
-  35% { transform: translate(-5px, 2px); }
-  40% { transform: translate(4px, -1px); }
-  45% { transform: translate(-3px, 1px); }
-  50% { transform: translate(2px, 0); }
-  55% { transform: translate(-2px, 0); }
-  60% { transform: translate(1px, 0); }
-  65% { transform: translate(0, 0); }
-}
-.landing.page-shake-4 { animation: page-shake-4 1s ease-in-out; }
-
-/* 枪声后: 中弹后仰 → 向左前方倾倒坠落, 加入 skew 透视与运动模糊 */
-@keyframes page-collapse {
-  0% {
-    transform: rotate(0deg) translateY(0) skewX(0deg);
-    opacity: 1;
-    filter: blur(0);
-  }
-  6% {
-    /* 中弹后仰: 反作用力向右后方轻微一弹 */
-    transform: rotate(3deg) translateY(-3px) translateX(4px) skewX(-1.5deg);
-    opacity: 1;
-    filter: blur(0);
-  }
-  18% {
-    transform: rotate(-5deg) translateY(6px) skewX(2deg);
-    opacity: 1;
-    filter: blur(0.4px);
-  }
-  38% {
-    transform: rotate(-19deg) translateY(55px) translateX(-28px) skewX(6deg);
-    opacity: 0.93;
-    filter: blur(1.4px);
-  }
-  62% {
-    transform: rotate(-36deg) translateY(175px) translateX(-95px) skewX(11deg);
-    opacity: 0.62;
-    filter: blur(3px);
-  }
-  84% {
-    transform: rotate(-51deg) translateY(355px) translateX(-165px) skewX(15deg);
-    opacity: 0.28;
-    filter: blur(5px);
-  }
-  100% {
-    transform: rotate(-61deg) translateY(560px) translateX(-225px) skewX(18deg);
-    opacity: 0;
-    filter: blur(8px);
-  }
-}
-.landing.collapsing {
-  animation: page-collapse 1.6s cubic-bezier(0.4, 0, 0.7, 0.6) forwards;
-  transform-origin: bottom left;
-}
-
-/* 倾倒时背景也跟随 */
-body.collapsing {
-  overflow: hidden;
-}
-
-/* ═══ 闭眼黑幕 (彩蛋: 枪击后眼睑合拢) ═══ */
-.eye-lid {
-  position: fixed;
-  left: 0; right: 0;
-  z-index: 99999;
-  background: #000;
-  pointer-events: none;
-  height: 0;
-}
-.eye-lid.top    { top: 0; }
-.eye-lid.bottom { bottom: 0; }
-.eye-lid.closing { animation: lid-close 0.45s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
-@keyframes lid-close {
-  0%   { height: 0; }
-  100% { height: 50vh; }
-}
-
-/* ═══ 蝴蝶彩蛋: 左上角可交互蝴蝶 ═══ */
-.egg-fly {
-  position: fixed;
-  top: 11%;
-  left: 7%;
-  width: 58px;
-  color: var(--fg);
-  opacity: 0.10;
-  z-index: 40;
-  cursor: pointer;
-  pointer-events: auto;
-  transition: opacity 0.35s ease, filter 0.35s ease;
-  animation: flutter-a 9s ease-in-out infinite alternate;
-  will-change: transform;
-}
-[data-theme="dark"] .egg-fly { opacity: 0.14; }
-.egg-fly:hover {
-  opacity: 0.55;
-  filter: brightness(1.8) drop-shadow(0 0 8px hsla(340, 70%, 60%, 0.65));
-}
-.egg-fly.egg-lit {
-  opacity: 0.8;
-  filter: brightness(2.1) drop-shadow(0 0 12px hsla(340, 85%, 65%, 0.9));
-}
-@media (prefers-reduced-motion: reduce) {
-  .egg-fly { animation: none !important; }
-}
-
-/* ═══ 蝴蝶彩蛋: 屏保弹跳图片 (正常图片, 无特效, 碰边界反弹) ═══ */
-.egg-bounce {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 80px;
-  height: auto;
-  z-index: 100000;
-  border-radius: 12px;
-  cursor: pointer;
-  user-select: none;
-  -webkit-user-drag: none;
-  will-change: transform;
-}
-@media (max-width: 720px) {
-  .egg-bounce { width: 100px; }
-}
-/* 右下角彩蛋消息 */
-.egg-toast {
-  position: fixed;
-  right: 22px;
-  bottom: 28px;
-  z-index: 100001;
-  padding: 10px 22px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--panel-bg);
-  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.18);
-  font-family: "Noto Serif SC", serif;
-  font-weight: 700;
-  font-size: 14px;
-  letter-spacing: 0.22em;
-  color: var(--accent);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(14px);
-  transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.35s;
-  pointer-events: none;
-}
-.egg-toast.show {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
-@media (max-width: 720px) {
-  .egg-toast { right: 14px; bottom: 76px; font-size: 12px; padding: 8px 16px; }
-}
-</style>
 </head>
 <body>
 
@@ -930,7 +38,7 @@ body.collapsing {
   <div class="bg-blood"></div>
   <div class="bg-grain"></div>
 
-  <!-- 大魔法阵: 同心圆 + 12 放射线 + 六芒星 + 五边形 -->
+  <!-- 大魔法阵 -->
   <svg class="magic-circle" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
     <g fill="none" stroke="currentColor" stroke-linecap="round">
       <circle cx="300" cy="300" r="292" stroke-width="0.8"/>
@@ -971,13 +79,13 @@ body.collapsing {
     </g>
   </svg>
 
-  <!-- 蝴蝶 ×3 (左上角 butterfly-1 已移出本层用于彩蛋交互) -->
+  <!-- 蝴蝶 ×3 -->
   <svg class="butterfly butterfly-2" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><path d="M60,50 C42,22 12,16 6,32 C0,48 16,58 32,56 C46,54 56,52 60,50 Z"/><path d="M60,50 C78,22 108,16 114,32 C120,48 104,58 88,56 C74,54 64,52 60,50 Z"/><path d="M60,50 C50,56 32,66 28,82 C25,92 38,90 48,80 C56,72 58,60 60,50 Z"/><path d="M60,50 C70,56 88,66 92,82 C95,92 82,90 72,80 C64,72 62,60 60,50 Z"/><ellipse cx="60" cy="50" rx="1.4" ry="18"/><path d="M59,33 Q54,24 49,21" fill="none" stroke="currentColor" stroke-width="0.8"/><path d="M61,33 Q66,24 71,21" fill="none" stroke="currentColor" stroke-width="0.8"/></g></svg>
   <svg class="butterfly butterfly-3" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><path d="M60,50 C42,22 12,16 6,32 C0,48 16,58 32,56 C46,54 56,52 60,50 Z"/><path d="M60,50 C78,22 108,16 114,32 C120,48 104,58 88,56 C74,54 64,52 60,50 Z"/><path d="M60,50 C50,56 32,66 28,82 C25,92 38,90 48,80 C56,72 58,60 60,50 Z"/><path d="M60,50 C70,56 88,66 92,82 C95,92 82,90 72,80 C64,72 62,60 60,50 Z"/><ellipse cx="60" cy="50" rx="1.4" ry="18"/><path d="M59,33 Q54,24 49,21" fill="none" stroke="currentColor" stroke-width="0.8"/><path d="M61,33 Q66,24 71,21" fill="none" stroke="currentColor" stroke-width="0.8"/></g></svg>
   <svg class="butterfly butterfly-4" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><path d="M60,50 C42,22 12,16 6,32 C0,48 16,58 32,56 C46,54 56,52 60,50 Z"/><path d="M60,50 C78,22 108,16 114,32 C120,48 104,58 88,56 C74,54 64,52 60,50 Z"/><path d="M60,50 C50,56 32,66 28,82 C25,92 38,90 48,80 C56,72 58,60 60,50 Z"/><path d="M60,50 C70,56 88,66 92,82 C95,92 82,90 72,80 C64,72 62,60 60,50 Z"/><ellipse cx="60" cy="50" rx="1.4" ry="18"/><path d="M59,33 Q54,24 49,21" fill="none" stroke="currentColor" stroke-width="0.8"/><path d="M61,33 Q66,24 71,21" fill="none" stroke="currentColor" stroke-width="0.8"/></g></svg>
 </div>
 
-<!-- ═══ 蝴蝶彩蛋: 左上角交互蝴蝶 (独立于 bg-layer, 提升层级可点击) ═══ -->
+<!-- ═══ 蝴蝶彩蛋: 左上角交互蝴蝶 ═══ -->
 <svg class="butterfly egg-fly" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="currentColor"><path d="M60,50 C42,22 12,16 6,32 C0,48 16,58 32,56 C46,54 56,52 60,50 Z"/><path d="M60,50 C78,22 108,16 114,32 C120,48 104,58 88,56 C74,54 64,52 60,50 Z"/><path d="M60,50 C50,56 32,66 28,82 C25,92 38,90 48,80 C56,72 58,60 60,50 Z"/><path d="M60,50 C70,56 88,66 92,82 C95,92 82,90 72,80 C64,72 62,60 60,50 Z"/><ellipse cx="60" cy="50" rx="1.4" ry="18"/><path d="M59,33 Q54,24 49,21" fill="none" stroke="currentColor" stroke-width="0.8"/><path d="M61,33 Q66,24 71,21" fill="none" stroke="currentColor" stroke-width="0.8"/></g></svg>
 
 <!-- ═══ 主题切换 (右上角) ═══ -->
@@ -994,502 +102,194 @@ body.collapsing {
   </svg>
 </button>
 
-<!-- ═══ 主体: 标题区 + 周目卡片 + 未来功能封锁区 ═══ -->
-<main class="landing">
-  <header class="landing-header">
-    <img src="nnk_box.webp" class="logo" alt="">
-    <h1 class="landing-title">大魔女图书馆</h1>
-    <p class="landing-subtitle">Manosaba Library</p>
-    <div class="landing-divider"></div>
-  </header>
+<!-- ═══ 开幕预加载器（L10 字母序列 + L9 细线, 无计数）═══ -->
+<div class="preloader" aria-hidden="true">
+  <img class="pl-mark" src="nnk_box.webp" alt="">
+  <span class="pl-name">大魔女图书馆</span>
+  <span class="pl-letters" id="pl-letters">Manosaba Library</span>
+  <div class="pl-bar"><div class="pl-fill"></div></div>
+</div>
 
-  <div class="cards">
-    <!-- 一周目 (Act01 · 艾玛篇, 冷色调) -->
-    <article class="card card-act01" data-go="act01" tabindex="0" role="button" aria-label="进入一周目 艾玛篇">
-      <div class="card-bg"></div>
-      <svg class="card-butterfly" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <g fill="currentColor"><path d="M60,50 C42,22 12,16 6,32 C0,48 16,58 32,56 C46,54 56,52 60,50 Z"/><path d="M60,50 C78,22 108,16 114,32 C120,48 104,58 88,56 C74,54 64,52 60,50 Z"/><path d="M60,50 C50,56 32,66 28,82 C25,92 38,90 48,80 C56,72 58,60 60,50 Z"/><path d="M60,50 C70,56 88,66 92,82 C95,92 82,90 72,80 C64,72 62,60 60,50 Z"/><ellipse cx="60" cy="50" rx="1.4" ry="18"/></g>
-      </svg>
-      <div class="card-content">
-        <span class="card-num">I</span>
-        <h2 class="card-title">一周目</h2>
-        <p class="card-subtitle">Act01 · 艾玛篇</p>
-        <div class="card-stats">
-          <div class="stat"><span class="stat-num">5</span><span class="stat-label">章节</span></div>
-          <div class="stat"><span class="stat-num">206</span><span class="stat-label">节点</span></div>
-        </div>
-        <p class="card-desc">艾玛初入魔女监牢，与同伴追寻真相的审判之旅。</p>
-        <button class="card-enter" type="button">进入</button>
+<main class="hero-stage">
+
+  <!-- ═══ 开幕 Hero · 非对称 ═══ -->
+  <section class="hero">
+    <div class="hero-copy">
+      <img src="nnk_box.webp" class="hero-logo" alt="">
+      <h1 class="hero-title">大魔女<span class="ht-line2">图书馆</span></h1>
+      <p class="hero-sub">Manosaba Library</p>
+      <div class="hero-rule"></div>
+      <div class="hero-scrollhint" aria-hidden="true"><span class="ln"></span></div>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <img class="ha-bg" src="assets/cg/stainedglass/RefuteCutIn_StainedGlass_002.webp" alt="">
+      <img class="ha-front ha-hiro" src="assets/cg/cutin/Hiro_CutIn_003.webp" alt="">
+      <img class="ha-front ha-ema" src="assets/cg/cutin/RefuteCutIn_Ema_003.webp" alt="">
+      <div class="tint"></div>
+      <div class="sigil">
+        <svg viewBox="0 0 400 400" fill="none" stroke="currentColor" stroke-linecap="round">
+          <g stroke-width="0.8"><circle cx="200" cy="200" r="192"/><circle cx="200" cy="200" r="162" stroke-width="0.4"/><circle cx="200" cy="200" r="108" stroke-width="0.5"/><polygon points="200,38 340,282 60,282" stroke-width="0.6"/><polygon points="200,362 60,118 340,118" stroke-width="0.6"/></g>
+        </svg>
       </div>
-    </article>
+    </div>
+  </section>
 
-    <!-- 二周目 (Act02 · 希罗篇, 暖色调) -->
-    <article class="card card-act02" data-go="act02" tabindex="0" role="button" aria-label="进入二周目 希罗篇">
-      <div class="card-bg"></div>
-      <svg class="card-butterfly" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <g fill="currentColor"><path d="M60,50 C42,22 12,16 6,32 C0,48 16,58 32,56 C46,54 56,52 60,50 Z"/><path d="M60,50 C78,22 108,16 114,32 C120,48 104,58 88,56 C74,54 64,52 60,50 Z"/><path d="M60,50 C50,56 32,66 28,82 C25,92 38,90 48,80 C56,72 58,60 60,50 Z"/><path d="M60,50 C70,56 88,66 92,82 C95,92 82,90 72,80 C64,72 62,60 60,50 Z"/><ellipse cx="60" cy="50" rx="1.4" ry="18"/></g>
-      </svg>
-      <div class="card-content">
-        <span class="card-num">II</span>
-        <h2 class="card-title">二周目</h2>
-        <p class="card-subtitle">Act02 · 希罗篇</p>
-        <div class="card-stats">
-          <div class="stat"><span class="stat-num">6</span><span class="stat-label">章节</span></div>
-          <div class="stat"><span class="stat-num">201</span><span class="stat-label">节点</span></div>
-        </div>
-        <p class="card-desc">希罗的视角，揭开监牢更深处的秘密。</p>
-        <button class="card-enter" type="button">进入</button>
+  <!-- ═══ 魔女书卷 · 双主角 ═══ -->
+  <section class="book-stage">
+    <div class="book">
+      <div class="book-spine" aria-hidden="true"></div>
+      <!-- 中缝向两侧蒙版（一次性揭开, 非 3D 折叠） -->
+      <div class="book-mask" aria-hidden="true">
+        <div class="bm-half left"></div>
+        <div class="bm-half right"></div>
       </div>
-    </article>
-  </div>
 
-  <!-- ═══ 未来功能封锁区 ═══ -->
-  <div class="future-divider"></div>
-  <section class="future-section">
-    <h2 class="future-heading">More Archives</h2>
-    <div class="future-cards">
-      <!-- 记录·规定 -->
-      <article class="future-card unlocked" data-go="records" tabindex="0" role="button" aria-label="进入 记录·规定">
-        <span class="fc-num">III</span>
-        <span class="fc-title">记录·规定</span>
-        <span class="fc-sub">Records &amp; Rules</span>
-        <span class="fc-tag fc-go">进入 →</span>
-        <svg class="fc-butterfly" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="currentColor"><path d="M60,50 C42,22 12,16 6,32 C0,48 16,58 32,56 C46,54 56,52 60,50 Z"/><path d="M60,50 C78,22 108,16 114,32 C120,48 104,58 88,56 C74,54 64,52 60,50 Z"/><path d="M60,50 C50,56 32,66 28,82 C25,92 38,90 48,80 C56,72 58,60 60,50 Z"/><path d="M60,50 C70,56 88,66 92,82 C95,92 82,90 72,80 C64,72 62,60 60,50 Z"/><ellipse cx="60" cy="50" rx="1.4" ry="18"/></g></svg>
+      <!-- 一周目 (Act01 · 艾玛篇, 恒粉) -->
+      <article class="bk-half ema" data-go="act01" tabindex="0" role="button" aria-label="进入一周目 艾玛篇">
+        <div class="bk-page" aria-hidden="true">
+          <div class="bk-art">
+            <img class="bk-bg" src="assets/cg/stainedglass/RefuteCutIn_StainedGlass_002.webp" alt="">
+            <img class="bk-front" src="assets/cg/cutin/RefuteCutIn_Ema_003.webp" alt="">
+            <div class="bk-tint"></div>
+          </div>
+          <div class="bk-shade"></div>
+          <span class="bk-stamp"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"><circle cx="24" cy="24" r="21"/><circle cx="24" cy="24" r="16" stroke-dasharray="2 3.2" opacity="0.6"/><circle cx="24" cy="24" r="7"/><polygon points="24,5 40.5,33.5 7.5,33.5"/><polygon points="24,43 7.5,14.5 40.5,14.5"/><path d="M24 1.5v2.4M24 44.1v2.4M1.5 24h2.4M44.1 24h2.4"/></svg></span>
+        </div>
+        <div class="bk-side">
+          <span class="bk-num" aria-hidden="true">I</span>
+          <h2 class="bk-title">一周目</h2>
+          <p class="bk-sub">Act01 · 艾玛篇</p>
+          <div class="bk-stats">
+            <div class="bk-stat"><span class="bk-stat-num">5</span> <span class="bk-stat-label">章节</span></div>
+            <div class="bk-stat"><span class="bk-stat-num">206</span> <span class="bk-stat-label">节点</span></div>
+          </div>
+          <p class="bk-desc">艾玛初入魔女监牢，与同伴追寻真相的审判之旅。</p>
+          <button class="bk-enter" type="button">进入</button>
+        </div>
       </article>
 
-      <!-- 证物 -->
-      <article class="future-card unlocked" data-go="evidence" tabindex="0" role="button" aria-label="进入 证物">
-        <span class="fc-num">IV</span>
-        <span class="fc-title">证物</span>
-        <span class="fc-sub">Evidence</span>
-        <span class="fc-tag fc-go">进入 →</span>
-        <svg class="fc-butterfly" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="currentColor"><path d="M60,50 C42,22 12,16 6,32 C0,48 16,58 32,56 C46,54 56,52 60,50 Z"/><path d="M60,50 C78,22 108,16 114,32 C120,48 104,58 88,56 C74,54 64,52 60,50 Z"/><path d="M60,50 C50,56 32,66 28,82 C25,92 38,90 48,80 C56,72 58,60 60,50 Z"/><path d="M60,50 C70,56 88,66 92,82 C95,92 82,90 72,80 C64,72 62,60 60,50 Z"/><ellipse cx="60" cy="50" rx="1.4" ry="18"/></g></svg>
+      <!-- 二周目 (Act02 · 希罗篇, 恒红, 背景镜像) -->
+      <article class="bk-half hiro" data-go="act02" tabindex="0" role="button" aria-label="进入二周目 希罗篇">
+        <div class="bk-page" aria-hidden="true">
+          <div class="bk-art">
+            <img class="bk-bg" src="assets/cg/stainedglass/Hiro_CutIn_StainedGlass_002.webp" alt="">
+            <img class="bk-front" src="assets/cg/cutin/Hiro_CutIn_003.webp" alt="">
+            <div class="bk-tint"></div>
+          </div>
+          <div class="bk-shade"></div>
+          <span class="bk-stamp"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"><circle cx="24" cy="24" r="21"/><circle cx="24" cy="24" r="16" stroke-dasharray="2 3.2" opacity="0.6"/><circle cx="24" cy="24" r="7"/><polygon points="24,5 40.5,33.5 7.5,33.5"/><polygon points="24,43 7.5,14.5 40.5,14.5"/><path d="M24 1.5v2.4M24 44.1v2.4M1.5 24h2.4M44.1 24h2.4"/></svg></span>
+        </div>
+        <div class="bk-side">
+          <span class="bk-num" aria-hidden="true">II</span>
+          <h2 class="bk-title">二周目</h2>
+          <p class="bk-sub">Act02 · 希罗篇</p>
+          <div class="bk-stats">
+            <div class="bk-stat"><span class="bk-stat-num">6</span> <span class="bk-stat-label">章节</span></div>
+            <div class="bk-stat"><span class="bk-stat-num">201</span> <span class="bk-stat-label">节点</span></div>
+          </div>
+          <p class="bk-desc">希罗的视角，揭开监牢更深处的秘密。</p>
+          <button class="bk-enter" type="button">进入</button>
+        </div>
       </article>
+    </div>
+  </section>
 
-      <!-- 绘像展厅 (CG画廊 + 立绘工坊) -->
-      <article class="future-card unlocked" data-go="gallery" tabindex="0" role="button" aria-label="进入 绘像展厅">
-        <span class="fc-num">V</span>
-        <span class="fc-title">绘像展厅</span>
-        <span class="fc-sub">Gallery &amp; Atelier</span>
-        <span class="fc-tag fc-go">进入 →</span>
-        <svg class="fc-butterfly" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="currentColor"><path d="M60,50 C42,22 12,16 6,32 C0,48 16,58 32,56 C46,54 56,52 60,50 Z"/><path d="M60,50 C78,22 108,16 114,32 C120,48 104,58 88,56 C74,54 64,52 60,50 Z"/><path d="M60,50 C50,56 32,66 28,82 C25,92 38,90 48,80 C56,72 58,60 60,50 Z"/><path d="M60,50 C70,56 88,66 92,82 C95,92 82,90 72,80 C64,72 62,60 60,50 Z"/><ellipse cx="60" cy="50" rx="1.4" ry="18"/></g></svg>
-      </article>
+  <!-- ═══ 档案区 · 编辑式档案索引 ═══ -->
+  <section class="archive-stage">
+    <div class="arc-head">
+      <h2>More Archives</h2>
+      <span class="arc-ghost" aria-hidden="true">LIBRARY</span>
+      <div class="arc-rule"></div>
+    </div>
+    <div class="arc-grid">
+      <div class="arc-cell feat" data-go="gallery" tabindex="0" role="button" aria-label="进入 绘像展厅">
+        <span class="arc-num" aria-hidden="true">V</span>
+        <svg class="arc-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        <span class="arc-title">绘像展厅</span>
+        <span class="arc-sub">Gallery &amp; Atelier</span>
+        <span class="arc-line"></span><span class="arc-go">进入 →</span>
+      </div>
+      <div class="arc-cell" data-go="records" tabindex="0" role="button" aria-label="进入 记录·规定">
+        <span class="arc-num" aria-hidden="true">III</span>
+        <svg class="arc-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        <span class="arc-title">记录·规定</span>
+        <span class="arc-sub">Records &amp; Rules</span>
+        <span class="arc-line"></span><span class="arc-go">进入 →</span>
+      </div>
+      <div class="arc-cell" data-go="evidence" tabindex="0" role="button" aria-label="进入 证物">
+        <span class="arc-num" aria-hidden="true">IV</span>
+        <svg class="arc-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5v8l9 5 9-5V8z"/><path d="M3.3 8.3L12 13l8.7-4.7"/><path d="M12 13v9"/></svg>
+        <span class="arc-title">证物</span>
+        <span class="arc-sub">Evidence</span>
+        <span class="arc-line"></span><span class="arc-go">进入 →</span>
+      </div>
+      <div class="arc-cell" data-go="audio" tabindex="0" role="button" aria-label="进入 语音和音乐">
+        <span class="arc-num" aria-hidden="true">VI</span>
+        <svg class="arc-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        <span class="arc-title">语音和音乐</span>
+        <span class="arc-sub">Voice &amp; Music</span>
+        <span class="arc-line"></span><span class="arc-go">进入 →</span>
+      </div>
+      <div class="arc-cell" data-go="archive" tabindex="0" role="button" aria-label="进入 全素材库">
+        <span class="arc-num" aria-hidden="true">VII</span>
+        <svg class="arc-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="5"/><rect x="3" y="10" width="18" height="10"/><path d="M10 13h4"/></svg>
+        <span class="arc-title">全素材库</span>
+        <span class="arc-sub">Full Archive</span>
+        <span class="arc-line"></span><span class="arc-go">进入 →</span>
+      </div>
+      <div class="arc-cell" data-go="credits" tabindex="0" role="button" aria-label="进入 制作名单">
+        <span class="arc-num" aria-hidden="true">VIII</span>
+        <svg class="arc-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h10M4 18h7"/><circle cx="17.5" cy="17.5" r="3"/></svg>
+        <span class="arc-title">制作名单</span>
+        <span class="arc-sub">Credits</span>
+        <span class="arc-line"></span><span class="arc-go">进入 →</span>
+      </div>
+    </div>
+    <div class="arc-marquee" aria-hidden="true"><div class="mq-track">
+      <span>Records &amp; Rules</span><span><b>✦</b></span><span>Evidence</span><span><b>✦</b></span><span>Gallery &amp; Atelier</span><span><b>✦</b></span><span>Voice &amp; Music</span><span><b>✦</b></span><span>Full Archive</span><span><b>✦</b></span><span>Credits</span><span><b>✦</b></span><span>Records &amp; Rules</span><span><b>✦</b></span><span>Evidence</span><span><b>✦</b></span><span>Gallery &amp; Atelier</span><span><b>✦</b></span><span>Voice &amp; Music</span><span><b>✦</b></span><span>Full Archive</span><span><b>✦</b></span><span>Credits</span><span><b>✦</b></span>
+    </div></div>
+  </section>
 
-      <!-- 语音和音乐 -->
-      <article class="future-card unlocked" data-go="audio" tabindex="0" role="button" aria-label="进入 语音和音乐">
-        <span class="fc-num">VI</span>
-        <span class="fc-title">语音和音乐</span>
-        <span class="fc-sub">Voice &amp; Music</span>
-        <span class="fc-tag fc-go">进入 →</span>
-        <svg class="fc-butterfly" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="currentColor"><path d="M60,50 C42,22 12,16 6,32 C0,48 16,58 32,56 C46,54 56,52 60,50 Z"/><path d="M60,50 C78,22 108,16 114,32 C120,48 104,58 88,56 C74,54 64,52 60,50 Z"/><path d="M60,50 C50,56 32,66 28,82 C25,92 38,90 48,80 C56,72 58,60 60,50 Z"/><path d="M60,50 C70,56 88,66 92,82 C95,92 82,90 72,80 C64,72 62,60 60,50 Z"/><ellipse cx="60" cy="50" rx="1.4" ry="18"/></g></svg>
-      </article>
-
-      <!-- 全素材库 -->
-      <article class="future-card unlocked" data-go="archive" tabindex="0" role="button" aria-label="进入 全素材库">
-        <span class="fc-num">VII</span>
-        <span class="fc-title">全素材库</span>
-        <span class="fc-sub">Full Archive</span>
-        <span class="fc-tag fc-go">进入 →</span>
-        <svg class="fc-butterfly" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="currentColor"><path d="M60,50 C42,22 12,16 6,32 C0,48 16,58 32,56 C46,54 56,52 60,50 Z"/><path d="M60,50 C78,22 108,16 114,32 C120,48 104,58 88,56 C74,54 64,52 60,50 Z"/><path d="M60,50 C50,56 32,66 28,82 C25,92 38,90 48,80 C56,72 58,60 60,50 Z"/><path d="M60,50 C70,56 88,66 92,82 C95,92 82,90 72,80 C64,72 62,60 60,50 Z"/><ellipse cx="60" cy="50" rx="1.4" ry="18"/></g></svg>
-      </article>
-
-      <!-- 制作名单 -->
-      <article class="future-card unlocked" data-go="credits" tabindex="0" role="button" aria-label="进入 制作名单">
-        <span class="fc-num">VIII</span>
-        <span class="fc-title">制作名单</span>
-        <span class="fc-sub">Credits</span>
-        <span class="fc-tag fc-go">进入 →</span>
-        <svg class="fc-butterfly" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="currentColor"><path d="M60,50 C42,22 12,16 6,32 C0,48 16,58 32,56 C46,54 56,52 60,50 Z"/><path d="M60,50 C78,22 108,16 114,32 C120,48 104,58 88,56 C74,54 64,52 60,50 Z"/><path d="M60,50 C50,56 32,66 28,82 C25,92 38,90 48,80 C56,72 58,60 60,50 Z"/><path d="M60,50 C70,56 88,66 92,82 C95,92 82,90 72,80 C64,72 62,60 60,50 Z"/><ellipse cx="60" cy="50" rx="1.4" ry="18"/></g></svg>
-      </article>
-
-
+  <!-- ═══ 镜像站牌 + GitHub ═══ -->
+  <section class="mirror-stage">
+    <div class="mirror-head">
+      <span class="mirror-cap">Site Mirror</span>
+      <button class="mirror-btn" id="mirror-ping" type="button">测速</button>
+    </div>
+    <div class="mirror-list">
+      <div class="mirror-row" data-url="https://manosaba-library.com" data-host="manosaba-library.com" tabindex="0" role="button">
+        <span class="mr-name">主站</span>
+        <span class="mr-url">manosaba-library.com</span>
+        <span class="mr-ping" data-target="manosaba-library.com">—</span>
+        <span class="mr-arrow">→</span>
+      </div>
+      <div class="mirror-row" data-url="https://cn.manosaba-library.com" data-host="cn.manosaba-library.com" data-tip="国内节点入口" tabindex="0" role="button">
+        <span class="mr-name">CN 副站</span>
+        <span class="mr-url">cn.manosaba-library.com</span>
+        <span class="mr-ping" data-target="cn.manosaba-library.com">—</span>
+        <span class="mr-arrow">→</span>
+      </div>
+      <div class="mirror-row" data-url="https://qwqsakuya.github.io/Manosaba-Library/" data-host="qwqsakuya.github.io" data-tip="主站或加速入口异常时使用（GitHub Pages 原生直连）" tabindex="0" role="button">
+        <span class="mr-name">GitHub 备用</span>
+        <span class="mr-url">qwqsakuya.github.io</span>
+        <span class="mr-ping" data-target="qwqsakuya.github.io">—</span>
+        <span class="mr-arrow">→</span>
+      </div>
+    </div>
+    <div class="footer-note">
+      <a href="https://github.com/QwQSakuya/Manosaba-Library" target="_blank" rel="noopener noreferrer">GitHub Repository</a>
     </div>
   </section>
 </main>
 
-<!-- ═══ 页脚: 站点切换 + GitHub 仓库链接 ═══ -->
-<footer class="landing-footer">
-  <div class="site-switcher">
-    <div class="ss-panel">
-      <div class="ss-header">
-        <span class="ss-title">Site Mirror</span>
-        <button class="ss-ping-btn" id="ss-ping-all" type="button">测速</button>
-      </div>
-      <div class="ss-sites">
-        <button class="ss-site" data-url="https://manosaba-library.com" data-host="manosaba-library.com" type="button">
-          <span class="ss-site-info">
-            <span class="ss-site-name">主站</span>
-            <span class="ss-site-url">manosaba-library.com</span>
-          </span>
-          <span class="ss-site-ping" data-target="manosaba-library.com">—</span>
-        </button>
-        <button class="ss-site" data-url="https://cn.manosaba-library.com" data-host="cn.manosaba-library.com" data-tip="国内节点入口" type="button">
-          <span class="ss-site-info">
-            <span class="ss-site-name">CN 副站</span>
-            <span class="ss-site-url">cn.manosaba-library.com</span>
-          </span>
-          <span class="ss-site-ping" data-target="cn.manosaba-library.com">—</span>
-        </button>
-        <button class="ss-site" data-url="https://qwqsakuya.github.io/Manosaba-Library/" data-host="qwqsakuya.github.io" data-tip="主站或加速入口异常时使用（GitHub Pages 原生直连）" type="button">
-          <span class="ss-site-info">
-            <span class="ss-site-name">GitHub 备用</span>
-            <span class="ss-site-url">qwqsakuya.github.io</span>
-          </span>
-          <span class="ss-site-ping" data-target="qwqsakuya.github.io">—</span>
-        </button>
-      </div>
-    </div>
-  </div>
-  <a href="https://github.com/QwQSakuya/Manosaba-Library" target="_blank" rel="noopener noreferrer">GitHub Repository</a>
-</footer>
-
 <script src="assets/shared.js?v=20260813a"></script>
-<script src="assets/lib/gsap.min.js"></script>
-<script src="assets/lib/ScrollTrigger.min.js"></script>
-<script src="assets/gsap-animations.js?v=20260814b"></script>
-<script>
-// ═══════════════════════════════════════════════════
-//  落地页专属 JS (依赖 shared.js)
-//  主题恢复 IIFE 已在 <head> 提前执行 (防闪白)
-// ═══════════════════════════════════════════════════
-(function () {
-  // 主题切换
-  MS.initTheme();
-  // 预读 R2 网页素材配置 (logo 彩蛋音效等立即可用)
-  MS.loadR2Config();
-
-  // 周目卡片跳转: click 由 gsap-animations.js 页面转场拦截
-  // keydown (Enter/Space) 触发 click → 转场引擎接管
-  document.querySelectorAll('[data-go]').forEach(function (el) {
-    el.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        el.click();
-      }
-    });
-  });
-
-  // ═══ Logo 彩蛋: 点击播放音效 + 渐进震动, 第4次枪声后页面倾倒跳转 ═══
-  var logo = document.querySelector('.logo');
-  if (logo) {
-    var logoClickCount = 0;
-    var audioElCache = {};
-    var landing = document.querySelector('.landing');
-
-    function playSfx(file) {
-      // 素材地址: R2 优先 (配置读取失败时回退本地相对路径)
-      // 同步创建并播放, 保证在用户手势内触发, 不被自动播放策略拦截
-      var url = MS.webBase ? MS.webUrl('assets/audio/' + file) : 'assets/audio/' + file;
-      if (!audioElCache[file]) {
-        audioElCache[file] = new Audio(url);
-        audioElCache[file].preload = 'auto';
-      }
-      var a = audioElCache[file];
-      try { a.currentTime = 0; } catch (e) {}
-      var p = a.play();
-      if (p && p.catch) p.catch(function () {});
-    }
-
-    // 触发 logo 震动动画 (移除再添加 class 以重启动画)
-    function triggerShake(className) {
-      logo.classList.remove('shake-1', 'shake-2', 'shake-3', 'shake-4');
-      // 强制 reflow 重置动画
-      void logo.offsetWidth;
-      logo.classList.add(className);
-    }
-
-    // 触发页面震动
-    function triggerPageShake(className) {
-      if (!landing) return;
-      landing.classList.remove('page-shake-3', 'page-shake-4');
-      void landing.offsetWidth;
-      landing.classList.add(className);
-    }
-
-    logo.addEventListener('click', function () {
-      logoClickCount++;
-      var useGSAP = MS.gsapReady && MS.logoShakeGSAP;
-
-      if (logoClickCount === 1) {
-        // 第1次: 轻微震动
-        playSfx('sfx/Common/Sfx_Common_001 Notice1.ogg');
-        if (useGSAP) MS.logoShakeGSAP(1, logo, landing);
-        else triggerShake('shake-1');
-      } else if (logoClickCount === 2) {
-        // 第2次: 摇晃加大
-        playSfx('sfx/Common/Sfx_Common_001 Notice1.ogg');
-        if (useGSAP) MS.logoShakeGSAP(2, logo, landing);
-        else triggerShake('shake-2');
-      } else if (logoClickCount === 3) {
-        // 第3次: 剧烈摇晃 + 页面震动
-        playSfx('sfx/Common/Sfx_Common_001 Notice1.ogg');
-        if (useGSAP) MS.logoShakeGSAP(3, logo, landing);
-        else { triggerShake('shake-3'); triggerPageShake('page-shake-3'); }
-      } else if (logoClickCount === 4) {
-        // 第4次: 最剧烈震动 + 枪声 → 闭眼 → 跳转画廊(睁眼)
-        if (useGSAP) MS.logoShakeGSAP(4, logo, landing);
-        else { triggerShake('shake-4'); triggerPageShake('page-shake-4'); }
-        // 播放枪声
-        playSfx('sfx/Scenario/Sfx_Scenario_038 Gun fire.ogg');
-        // 重置计数, 避免重复触发
-        logoClickCount = -999;
-
-        // 0.45s 后: 注入闭眼黑幕 + 触发页面倾倒
-        // (倒下透过收窄的眼缝短暂可见, 然后被黑幕完全覆盖)
-        setTimeout(function () {
-          var lidTop = document.createElement('div');
-          lidTop.className = 'eye-lid top closing';
-          var lidBot = document.createElement('div');
-          lidBot.className = 'eye-lid bottom closing';
-          document.body.appendChild(lidTop);
-          document.body.appendChild(lidBot);
-          document.body.classList.add('collapsing');
-          // GSAP 页面倾倒（替代 CSS .collapsing 动画；GSAP 路径不添加 landing.collapsing，
-          // 否则 CSS animation 优先级高于内联样式会覆盖 GSAP 的 transform/filter）
-          if (useGSAP && MS.pageCollapseGSAP) {
-            MS.pageCollapseGSAP(landing);
-          } else {
-            // CSS 降级: 保留原页面倾倒动画
-            if (landing) landing.classList.add('collapsing');
-          }
-        }, 450);
-
-        // 1.4s 后: 黑幕已完全合拢(0.45s+0.45s=0.9s), 再留片刻纯黑, 跳转画廊
-        setTimeout(function () {
-          location.href = 'gallery.html?open=Still_330_001&wakeup=1';
-        }, 1400);
-      }
-    });
-  }
-
-  // ═══ 蝴蝶彩蛋: 点击变亮 + 播放语音 + 屏保弹跳图片 (仅本次会话, 刷新即重置) ═══
-  var eggFly = document.querySelector('.egg-fly');
-  if (eggFly) {
-    var EGG_VOICE_URL = 'https://r2.manosaba-library.com/Assets/%23WitchTrials/Audio/Voice/Act02_Chapter01/Act02_Chapter01_Trial08/0201Trial08_Ema022.ogg';
-    var eggAudio = null;
-    var eggBouncer = null;
-
-    function playEggVoice() {
-      try {
-        if (!eggAudio) {
-          eggAudio = new Audio(EGG_VOICE_URL);
-          eggAudio.preload = 'auto';
-        }
-        eggAudio.currentTime = 0;
-        var p = eggAudio.play();
-        if (p && p.catch) p.catch(function () {});
-      } catch (e) {}
-    }
-
-    // 屏保弹跳: 正常图片在屏幕中移动, 碰到浏览器边界镜面反弹 (入射角 = 出射角)
-    function buildBouncer() {
-      var img = document.createElement('img');
-      img.className = 'egg-bounce';
-      img.src = 'assets/egg-fubuki.jpg';
-      img.alt = '';
-      img.draggable = false;
-      document.body.appendChild(img);
-
-      var W = window.innerWidth;
-      var H = window.innerHeight;
-      var iw = img.offsetWidth;
-      var ih = img.offsetHeight;
-      var x = Math.max(0, (W - iw) / 2);
-      var y = Math.max(0, (H - ih) / 2);
-
-      // 随机斜向速度 (避免过于水平/垂直, 保证视觉上明显斜线移动)
-      var speed = 2.6;                       // px / 帧 (约 60fps)
-      var angle = (Math.random() * 90 - 45) * Math.PI / 180;
-      if (Math.random() < 0.5) angle += Math.PI / 2;
-      var vx = Math.cos(angle) * speed;
-      var vy = Math.sin(angle) * speed;
-      if (Math.abs(vx) < speed * 0.3) vx = vx < 0 ? -speed * 0.3 : speed * 0.3;
-      if (Math.abs(vy) < speed * 0.3) vy = vy < 0 ? -speed * 0.3 : speed * 0.3;
-
-      function tick() {
-        x += vx;
-        y += vy;
-        // 碰边界反弹: 速度分量取反 → 镜面反射 (入射角 = 出射角)
-        if (x <= 0) { x = 0; vx = Math.abs(vx); }
-        else if (x + iw >= W) { x = W - iw; vx = -Math.abs(vx); }
-        if (y <= 0) { y = 0; vy = Math.abs(vy); }
-        else if (y + ih >= H) { y = H - ih; vy = -Math.abs(vy); }
-        img.style.transform = 'translate(' + x + 'px,' + y + 'px)';
-        requestAnimationFrame(tick);
-      }
-
-      // 窗口尺寸变化时更新边界
-      window.addEventListener('resize', function () {
-        W = window.innerWidth;
-        H = window.innerHeight;
-        if (x + iw > W) x = W - iw;
-        if (y + ih > H) y = H - ih;
-        if (x < 0) x = 0;
-        if (y < 0) y = 0;
-      });
-
-      // 点击图片 → 再次发声
-      img.addEventListener('click', function () {
-        playEggVoice();
-      });
-
-      requestAnimationFrame(tick);
-      return img;
-    }
-
-    // 右下角弹出 "kiang" 消息 (自动消失)
-    function showEggToast() {
-      var t = document.querySelector('.egg-toast');
-      if (!t) {
-        t = document.createElement('div');
-        t.className = 'egg-toast';
-        t.textContent = 'kiang';
-        document.body.appendChild(t);
-      }
-      t.classList.add('show');
-      clearTimeout(showEggToast._timer);
-      showEggToast._timer = setTimeout(function () {
-        t.classList.remove('show');
-      }, 2400);
-    }
-
-    eggFly.addEventListener('click', function () {
-      eggFly.classList.add('egg-lit');          // 维持变亮
-      playEggVoice();                            // 播放 0201Trial08_Ema022
-      showEggToast();                            // 右下角弹出 kiang
-      if (!eggBouncer) eggBouncer = buildBouncer();
-      else eggBouncer.style.display = 'block';
-    });
-  }
-
-  // ═══ 键盘彩蛋: 按 ← → ← → ← → 跳转 Bilibili (仅主页, 刷新即重置) ═══
-  (function () {
-    var SEQ = ['ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight'];
-    var pos = 0;
-    var EGG_URL = 'https://www.bilibili.com/video/BV1rP3164Emu/';
-    var lastKeyTime = 0;
-
-    document.addEventListener('keydown', function (e) {
-      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') {
-        pos = 0;                 // 按了其他键则中断序列
-        return;
-      }
-      var now = Date.now();
-      // 键间隔超过 2s 视为重新开始
-      if (now - lastKeyTime > 2000) pos = 0;
-      lastKeyTime = now;
-
-      if (e.key === SEQ[pos]) {
-        pos++;
-        if (pos >= SEQ.length) {
-          pos = 0;               // 重置, 避免连续触发
-          location.href = EGG_URL;
-        }
-      } else {
-        pos = e.key === SEQ[0] ? 1 : 0;
-      }
-    });
-  })();
-
-  // ═══ 站点切换 + Ping ═══
-  (function () {
-    var SITES = [
-      { name: 'manosaba-library.com',         url: 'https://manosaba-library.com' },
-      { name: 'cn.manosaba-library.com',      url: 'https://cn.manosaba-library.com' },
-      { name: 'qwqsakuya.github.io',          url: 'https://qwqsakuya.github.io/Manosaba-Library/' }
-    ];
-
-    // 检测当前站点并标记
-    var host = location.hostname.toLowerCase();
-    SITES.forEach(function (site) {
-      if (host === site.name.toLowerCase()) {
-        var btn = document.querySelector('.ss-site[data-host="' + site.name + '"]');
-        if (btn) btn.classList.add('current');
-      }
-    });
-
-    // 站点点击跳转
-    document.querySelectorAll('.ss-site').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var url = btn.dataset.url;
-        if (url) window.open(url, '_blank', 'noopener');
-      });
-    });
-
-    // Ping: Image 加载法 (跨域友好, onerror 也能测往返延迟)
-    function pingSite(url, callback) {
-      var img = new Image();
-      var start = performance.now();
-      var done = false;
-      var timeout = setTimeout(function () {
-        if (!done) { done = true; callback(-1); }
-      }, 8000);
-      img.onload = function () {
-        if (!done) {
-          done = true;
-          clearTimeout(timeout);
-          callback(Math.round(performance.now() - start));
-        }
-      };
-      img.onerror = function () {
-        if (!done) {
-          done = true;
-          clearTimeout(timeout);
-          callback(Math.round(performance.now() - start));
-        }
-      };
-      img.src = url + '/favicon.ico?' + Date.now();
-    }
-
-    function updatePingEl(el, ms) {
-      el.classList.remove('testing', 'good', 'ok', 'bad');
-      if (ms < 0) {
-        el.textContent = '超时';
-        el.classList.add('bad');
-      } else if (ms < 200) {
-        el.textContent = ms + 'ms';
-        el.classList.add('good');
-      } else if (ms < 600) {
-        el.textContent = ms + 'ms';
-        el.classList.add('ok');
-      } else {
-        el.textContent = ms + 'ms';
-        el.classList.add('bad');
-      }
-    }
-
-    var pingBtn = document.getElementById('ss-ping-all');
-    if (pingBtn) {
-      function runPing() {
-        if (pingBtn.disabled) return;
-        pingBtn.disabled = true;
-        pingBtn.textContent = '测速中';
-        var remaining = SITES.length;
-        SITES.forEach(function (site) {
-          var el = document.querySelector('.ss-site-ping[data-target="' + site.name + '"]');
-          if (el) {
-            el.classList.remove('good', 'ok', 'bad');
-            el.classList.add('testing');
-            el.textContent = '...';
-          }
-          pingSite(site.url, function (ms) {
-            if (el) updatePingEl(el, ms);
-            remaining--;
-            if (remaining <= 0) {
-              pingBtn.disabled = false;
-              pingBtn.textContent = '测速';
-            }
-          });
-        });
-      }
-      pingBtn.addEventListener('click', runPing);
-      // 页面加载后 2.5s 自动测速 (等入场动画结束)
-      setTimeout(runPing, 2500);
-    }
-  })();
-
-})();
-</script>
+<script src="assets/lib/gsap.min.js?v=20260905a"></script>
+<script src="assets/lib/ScrollTrigger.min.js?v=20260905a"></script>
+<script src="assets/lib/CustomEase.min.js?v=20260905a"></script>
+<script src="assets/lib/SplitText.min.js?v=20260905a"></script>
+<script src="assets/lib/DrawSVGPlugin.min.js?v=20260905a"></script>
+<script src="assets/gsap-animations.js?v=20260905a"></script>
+<script src="assets/landing.js?v=20260905a"></script>
 <script src="assets/player-launcher.js?v=20260814a" defer></script>
 </body>
 </html>
