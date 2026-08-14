@@ -69,37 +69,35 @@
   .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
 }
 
-/* ── 相框卡片 (frame card) ── */
+/* ── 画作卡片（无框, 图像直接浮于页面）── */
 .frame-card {
   position: relative;
-  background: var(--panel-bg);
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  padding: 6px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
   cursor: pointer;
-  overflow: hidden;
+  overflow: visible;
   display: flex;
   flex-direction: column;
   transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-              border-color 0.35s ease,
               box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .frame-card:hover {
   transform: translateY(-4px);
-  border-color: var(--accent);
-  box-shadow: 0 8px 28px rgba(0,0,0,0.10);
+  box-shadow: 0 14px 38px var(--glow-blood);
 }
-/* 内层 matte (白边效果) */
+/* 图像区（无 matte） */
 .frame-matte {
   position: relative;
   width: 100%;
   aspect-ratio: 3 / 4;
-  background: var(--bg2);
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  border-radius: 1px;
+  border-radius: 0;
 }
 .frame-matte img {
   max-width: 100%;
@@ -109,23 +107,7 @@
   transition: opacity 0.4s ease;
 }
 .frame-matte img.loaded { opacity: 1; }
-/* 哥特角线装饰 (hover 显现) */
-.frame-matte::before,
-.frame-matte::after {
-  content: '';
-  position: absolute;
-  width: 12px;
-  height: 12px;
-  border: 1px solid var(--accent);
-  opacity: 0;
-  pointer-events: none;
-  z-index: 2;
-  transition: opacity 0.35s ease;
-}
-.frame-matte::before { top: 3px; left: 3px; border-right: none; border-bottom: none; }
-.frame-matte::after  { bottom: 3px; right: 3px; border-left: none; border-top: none; }
-.frame-card:hover .frame-matte::before,
-.frame-card:hover .frame-matte::after { opacity: 0.5; }
+
 /* 卡片标题 */
 .frame-title {
   font-family: "Cormorant Garamond", serif;

@@ -69,26 +69,10 @@
       .filterbar .filter-group { width: 100%; }
     }
 
-    /* ── 证物袋卡片质感 ── */
+    /* ── 证物卡片（无框, 物证直接浮于页面）── */
     .item-card.ev-card {
-      padding: 14px;
+      padding: 8px;
       gap: 8px;
-    }
-    /* 袋内虚线边 (证物袋封口意象) */
-    .item-card.ev-card::before {
-      content: '';
-      position: absolute;
-      inset: 7px;
-      border: 1px dashed var(--fg3);
-      opacity: 0.3;
-      border-radius: 2px;
-      pointer-events: none;
-      transition: opacity 0.35s ease, border-color 0.35s ease;
-      z-index: 1;
-    }
-    .item-card.ev-card:hover::before {
-      opacity: 0.5;
-      border-color: var(--accent);
     }
     /* 右上角血色蜡封 */
     .item-card .card-seal {
@@ -107,8 +91,7 @@
     .item-card .item-img-wrap {
       position: relative;
       z-index: 0;
-      background:
-        repeating-linear-gradient(45deg, var(--bg2) 0 6px, transparent 6px 12px);
+      background: transparent;
     }
     .item-card .item-img-wrap img {
       transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
