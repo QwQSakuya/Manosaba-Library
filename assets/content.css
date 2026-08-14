@@ -89,7 +89,7 @@
   content: '';
   position: absolute;
   width: 18px; height: 18px;
-  border: 1px solid var(--fg3);
+  border: 1px solid var(--accent);
   opacity: 0.35;
   pointer-events: none;
   transition: opacity 0.4s ease, border-color 0.4s ease;
@@ -115,12 +115,10 @@
 .c-section-title::before {
   content: '';
   width: 3px; height: 22px;
-  background: hsl(340, 55%, 50%);
+  background: var(--accent);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 55%, transparent);
   border-radius: 2px;
   flex-shrink: 0;
-}
-[data-theme="dark"] .c-section-title::before {
-  background: hsl(340, 50%, 58%);
 }
 
 /* ═══ 筛选栏 — chips/pills ═══ */
@@ -197,7 +195,7 @@
   width: min(480px, 100vw);
   height: 100vh;
   background: var(--panel-bg);
-  border-left: 1px solid var(--border);
+  border-left: 1px solid var(--accent);
   box-shadow: -8px 0 40px rgba(0,0,0,0.12);
   z-index: 200;
   transform: translateX(100%);
@@ -250,13 +248,15 @@
 }
 .detail-drawer-backdrop.show { opacity: 1; visibility: visible; }
 
-/* ═══ 灯箱 — 全屏图片查看 ═══ */
+/* ═══ 灯箱 — 简约版: 深色模糊遮罩 + 图片 1.08→1 ═══ */
 .lightbox {
   position: fixed; inset: 0; z-index: 300;
-  background: rgba(0,0,0,0.92);
+  background: rgba(8, 4, 12, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   display: flex; align-items: center; justify-content: center;
   opacity: 0; visibility: hidden;
-  transition: opacity 0.4s ease, visibility 0.4s;
+  transition: opacity 0.25s ease, visibility 0.25s;
 }
 .lightbox.open { opacity: 1; visibility: visible; }
 .lightbox img {
@@ -264,10 +264,12 @@
   object-fit: contain;
   border-radius: 2px;
   box-shadow: 0 0 60px rgba(0,0,0,0.6);
-  transform: scale(0.94);
-  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: scale(1.08);
+  opacity: 0;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.lightbox.open img { transform: scale(1); }
+.lightbox.open img { transform: scale(1); opacity: 1; }
 .lightbox .lb-close {
   position: absolute; top: 20px; right: 28px;
   width: 40px; height: 40px;
@@ -305,7 +307,7 @@
 .lightbox .lb-next:hover { transform: translateY(-50%) translateX(4px); }
 .lightbox .lb-caption {
   position: absolute; bottom: 76px; left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) translateY(10px);
   font-family: "Cormorant Garamond", serif;
   font-style: italic;
   font-size: 15px;
@@ -313,7 +315,11 @@
   color: rgba(255,255,255,0.6);
   text-align: center;
   max-width: 80vw;
+  opacity: 0;
+  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.08s,
+              transform 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.08s;
 }
+.lightbox.open .lb-caption { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 /* ═══ 音频播放器 — 固定底部 mini-player ═══ */
 .mini-player {
@@ -366,7 +372,7 @@
 }
 .mini-player .mp-progress-fill {
   height: 100%; width: 0%;
-  background: var(--accent);
+  background: linear-gradient(90deg, var(--accent), var(--gold));
   border-radius: 2px;
   transition: width 0.15s linear;
 }
@@ -428,7 +434,7 @@
 .item-card:hover {
   transform: translateY(-4px);
   border-color: var(--accent);
-  box-shadow: 0 8px 28px rgba(0,0,0,0.10);
+  box-shadow: 0 14px 38px var(--glow-blood);
 }
 .item-card .item-img-wrap {
   width: 100%;
@@ -524,9 +530,8 @@
   font-family: "Cormorant Garamond", serif;
   font-style: italic;
   font-weight: 700;
-  color: hsl(340, 50%, 50%);
+  color: var(--accent);
 }
-[data-theme="dark"] .roman-num { color: hsl(340, 45%, 60%); }
 
 /* ═══ 减少动效 ═══ */
 @media (prefers-reduced-motion: reduce) {
