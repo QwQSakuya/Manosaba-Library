@@ -234,12 +234,10 @@ body { scrollbar-width: none; -ms-overflow-style: none; }
 #splash-mark {
   width: 64px; height: 64px;
   display: flex; align-items: center; justify-content: center;
-  border-radius: 16px;
-  box-shadow: 0 0 0 1px var(--seal-ring), 0 0 44px var(--glow-blood);
   transform: scale(0.6); opacity: 0;
   animation: splashMarkIn 0.9s var(--ease-out-expo) 0.1s forwards;
 }
-#splash-mark img { width: 100%; height: 100%; object-fit: cover; border-radius: 16px; }
+#splash-mark img { width: 100%; height: 100%; object-fit: cover; }
 #splash-mark svg { width: 100%; height: 100%; }
 @keyframes splashMarkIn { to { transform: scale(1); opacity: 1; } }
 #splash-title {
