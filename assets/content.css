@@ -76,16 +76,30 @@
   .c-main { padding: 24px 14px 60px; }
 }
 
-/* ═══ 内容区块容器 — 无框, 内容直接浮于页面 ═══ */
+/* ═══ 哥特框 — 装饰性内容区块 ═══ */
 .gothic-frame {
   position: relative;
-  background: transparent;
-  border: none;
-  border-radius: 0;
-  padding: 32px 0;
+  background: var(--panel-bg);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 32px;
 }
+.gothic-frame::before,
+.gothic-frame::after {
+  content: '';
+  position: absolute;
+  width: 18px; height: 18px;
+  border: 1px solid var(--accent);
+  opacity: 0.35;
+  pointer-events: none;
+  transition: opacity 0.4s ease, border-color 0.4s ease;
+}
+.gothic-frame::before { top: 8px; left: 8px; border-right: none; border-bottom: none; }
+.gothic-frame::after  { bottom: 8px; right: 8px; border-left: none; border-top: none; }
+.gothic-frame:hover::before,
+.gothic-frame:hover::after { opacity: 0.6; border-color: var(--accent); }
 @media (max-width: 720px) {
-  .gothic-frame { padding: 20px 0; }
+  .gothic-frame { padding: 20px 16px; }
 }
 
 /* ═══ 章节标题 — 带血色短竖线 ═══ */
@@ -406,26 +420,28 @@
 /* ═══ 通用卡片 — 证物袋/相框基底 ═══ */
 .item-card {
   position: relative;
-  background: transparent;
-  border: none;
-  border-radius: 0;
-  padding: 8px;
+  background: var(--panel-bg);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 16px;
   cursor: pointer;
-  overflow: visible;
+  overflow: hidden;
   display: flex; flex-direction: column; gap: 10px;
   transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-              box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+              box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.35s ease;
 }
 .item-card:hover {
   transform: translateY(-4px);
+  border-color: var(--accent);
   box-shadow: 0 14px 38px var(--glow-blood);
 }
 .item-card .item-img-wrap {
   width: 100%;
   aspect-ratio: 1;
   display: flex; align-items: center; justify-content: center;
-  background: transparent;
-  border-radius: 0;
+  background: var(--bg2);
+  border-radius: 2px;
   overflow: hidden;
 }
 .item-card .item-img-wrap img {
