@@ -60,8 +60,8 @@
   --paper-grad: linear-gradient(160deg, #ffffff 0%, #f5f5f4 100%);
   --seal-ring: rgba(178, 61, 100, 0.55);
   --veil-grad:
-    radial-gradient(ellipse 90% 70% at 50% 0%, rgba(255, 245, 230, 0.05) 0%, transparent 60%),
-    linear-gradient(180deg, #101013 0%, #0c0c0e 100%);
+    radial-gradient(ellipse 90% 70% at 50% 0%, rgba(193, 72, 109, 0.05) 0%, transparent 60%),
+    linear-gradient(180deg, #fbfbfa 0%, #f3f3f1 100%);
   --shadow-glass: 0 18px 48px rgba(60, 40, 30, 0.16);
   --shadow-gold: 0 0 0 1px rgba(100, 100, 108, 0.18), 0 12px 36px rgba(60, 60, 66, 0.12);
 
@@ -631,6 +631,144 @@ body { scrollbar-width: none; -ms-overflow-style: none; }
   will-change: transform;
 }
 
+/* ═══ 诺亚水蓝风格 (彩蛋: 画廊注水触发, 点击亮暗色图标退出) ═══ */
+[data-style="noah"] {
+  --accent: #3d8ac2;
+  --btn-active: #3d8ac2;
+  --btn-active-fg: #fbfbfa;
+  --blood: #3d8ac2;
+  --ember: #57a3d3;
+  --seal-ring: rgba(61, 138, 194, 0.55);
+  --glow-blood: rgba(61, 138, 194, 0.22);
+  --glow-gold: rgba(87, 163, 211, 0.2);
+  --glow-violet: rgba(70, 145, 205, 0.16);
+  --gold: #5b8db3;
+  --gold-dim: #7fa9c8;
+  --gold-ghost: rgba(91, 141, 179, 0.2);
+  --char-Noah: hsl(206, 78%, 52%);
+  /* 背景: 亮色水蓝 (浅水色纸面) */
+  --bg: #e9f3fa;
+  --bg2: #dceaf4;
+  --panel-bg: rgba(255, 255, 255, 0.92);
+  --node-bg: #ffffff;
+  --node-border: #b9cfdd;
+  --header-bg: rgba(233, 243, 250, 0.9);
+  --search-bg: #dceaf4;
+  --btn-bg: #e2eef6;
+  --btn-hover: #d3e6f2;
+  --glass-bg: rgba(255, 255, 255, 0.62);
+  --glass-border: rgba(110, 150, 180, 0.28);
+  --paper-grad: linear-gradient(160deg, #f2f9fd 0%, #dfeef7 100%);
+  --veil-grad:
+    radial-gradient(ellipse 90% 70% at 50% 0%, rgba(61, 138, 194, 0.06) 0%, transparent 60%),
+    linear-gradient(180deg, #e9f3fa 0%, #dceaf4 100%);
+}
+[data-style="noah"][data-theme="dark"] {
+  --accent: #4f9fd4;
+  --btn-active: #4f9fd4;
+  --btn-active-fg: #0c0c0e;
+  --blood: #4f9fd4;
+  --ember: #63b3e2;
+  --seal-ring: rgba(79, 159, 212, 0.5);
+  --glow-blood: rgba(79, 159, 212, 0.24);
+  --glow-gold: rgba(140, 190, 224, 0.18);
+  --gold: #9cc4dd;
+  --gold-dim: #7fa9c4;
+  --gold-ghost: rgba(156, 196, 221, 0.18);
+  --char-Noah: hsl(206, 72%, 62%);
+  /* 背景: 暗色水蓝 (深海水下) */
+  --bg: #08141f;
+  --bg2: #0d1e2e;
+  --bg-deep: #08141f;
+  --bg-veil: #0d1e2e;
+  --panel-bg: rgba(13, 30, 46, 0.82);
+  --node-bg: #102438;
+  --node-border: #2a4763;
+  --node-shadow: rgba(0, 0, 0, 0.45);
+  --header-bg: rgba(8, 20, 31, 0.85);
+  --search-bg: #0d1e2e;
+  --btn-bg: #12283c;
+  --btn-hover: #1b3550;
+  --glass-bg: rgba(13, 30, 46, 0.6);
+  --glass-border: rgba(120, 170, 210, 0.18);
+  --paper-grad: linear-gradient(165deg, #0d1e2e 0%, #08141f 100%);
+  --veil-grad:
+    radial-gradient(ellipse 90% 70% at 50% 0%, rgba(90, 165, 215, 0.05) 0%, transparent 60%),
+    linear-gradient(180deg, #0d1e2e 0%, #08141f 100%);
+}
+/* 诺亚风格: 背景装饰层全部换成水蓝, 避免原红紫色渐变残留 */
+html[data-style="noah"] body { background-color: var(--bg); }
+[data-style="noah"] .bg-gradient {
+  background:
+    radial-gradient(ellipse 85% 65% at 16% 20%, hsla(202, 80%, 58%, 0.14), transparent 60%),
+    radial-gradient(ellipse 70% 55% at 86% 74%, hsla(210, 74%, 52%, 0.12), transparent 62%),
+    radial-gradient(ellipse 60% 80% at 50% 112%, hsla(220, 66%, 46%, 0.10), transparent 70%);
+}
+[data-style="noah"] .bg-blood {
+  background:
+    radial-gradient(circle at 12% 78%, hsla(205, 82%, 58%, 0.10) 0%, transparent 6%),
+    radial-gradient(circle at 88% 22%, hsla(200, 72%, 52%, 0.09) 0%, transparent 5%),
+    radial-gradient(circle at 65% 88%, hsla(212, 74%, 48%, 0.08) 0%, transparent 7%),
+    radial-gradient(circle at 28% 14%, hsla(198, 70%, 54%, 0.06) 0%, transparent 4%),
+    radial-gradient(circle at 92% 55%, hsla(206, 76%, 50%, 0.06) 0%, transparent 3.5%);
+}
+[data-style="noah"] .magic-circle,
+[data-style="noah"] .magic-circle-inner { color: #6db4e6; }
+[data-style="noah"] .butterfly { color: #6db9e8; opacity: 0.12; }
+[data-style="noah"] .bg-grain { mix-blend-mode: soft-light; opacity: 0.035; }
+
+/* 诺亚风格: 滚动条菱形 → 蝴蝶 (已抠图透明底, 无光晕方框) */
+[data-style="noah"] .scroll-progress .sp-thumb {
+  width: 20px; height: 28px;
+  transform: translate(-50%, -50%);
+  background: transparent url('butterfly.png') center / contain no-repeat;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  filter: none;
+  opacity: 1;
+}
+[data-style="noah"] .scroll-progress .sp-thumb::before { display: none; }
+[data-style="noah"] .scroll-progress:hover .sp-thumb,
+[data-style="noah"] .scroll-progress.sp-dragging .sp-thumb {
+  background: transparent url('butterfly.png') center / contain no-repeat;
+  border: none;
+  box-shadow: none;
+  filter: none;
+  opacity: 1;
+}
+[data-style="noah"] .scroll-progress .sp-fill {
+  box-shadow: 0 0 10px var(--glow-gold);
+}
+/* 诺亚风格: 扁平化水蓝徽标 (亮暗色图标左侧, 无光晕) */
+.noah-style-badge {
+  position: fixed;
+  top: 22px;
+  right: 78px;
+  z-index: 60;
+  width: 40px; height: 40px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: rgba(79, 159, 212, 0.12);
+  border: 1px solid rgba(79, 159, 212, 0.55);
+  cursor: default;
+}
+.noah-style-badge svg { width: 22px; height: 22px; display: block; }
+html[data-theme="dark"] .noah-style-badge {
+  background: rgba(79, 159, 212, 0.16);
+  border-color: rgba(140, 190, 224, 0.45);
+}
+html[data-style="noah"] .noah-style-badge { display: flex; }
+html[data-style="noah"] .theme-toggle {
+  color: #4f9fd4;
+  border-color: rgba(79, 159, 212, 0.55);
+  background: rgba(79, 159, 212, 0.10);
+}
+@media (max-width: 720px) {
+  .noah-style-badge { top: 14px; right: 62px; width: 36px; height: 36px; border-radius: 9px; }
+}
 /* ═══ 减少动效偏好 ═══ */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

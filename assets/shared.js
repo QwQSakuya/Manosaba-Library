@@ -24,6 +24,15 @@
   /* ── 主题切换按钮绑定 ── */
   MS.initTheme = function (toggleId) {
     var toggle = d.getElementById(toggleId || 'theme-toggle');
+
+    /* 诺亚水蓝风格: 跨页恢复 (sessionStorage, 点击亮暗色图标退出) */
+    try {
+      if (sessionStorage.getItem('noah-style') === '1') {
+        d.documentElement.setAttribute('data-style', 'noah');
+        MS.ensureNoahBadge();
+      }
+    } catch (e) {}
+
     if (!toggle) return;
     toggle.addEventListener('click', function () {
       var html = d.documentElement;
@@ -31,7 +40,41 @@
       var next = current === 'dark' ? 'light' : 'dark';
       html.setAttribute('data-theme', next);
       try { localStorage.setItem('theme', next); } catch (e) {}
+      /* 点击亮暗色图标 → 退出诺亚水蓝风格 (彩蛋约定) */
+      MS.setNoahStyle(false);
     });
+  };
+
+  /* ── 诺亚水蓝风格 (彩蛋) 开关 ── */
+  MS.setNoahStyle = function (on) {
+    var html = d.documentElement;
+    if (on) {
+      html.setAttribute('data-style', 'noah');
+      try { sessionStorage.setItem('noah-style', '1'); } catch (e) {}
+      MS.ensureNoahBadge();
+    } else {
+      html.removeAttribute('data-style');
+      try { sessionStorage.removeItem('noah-style'); } catch (e) {}
+      var badge = d.getElementById('noah-style-badge');
+      if (badge && badge.parentNode) badge.parentNode.removeChild(badge);
+    }
+  };
+
+  /* ── 诺亚风格扁平化徽标 (主题切换按钮左侧) ── */
+  MS.ensureNoahBadge = function () {
+    if (d.getElementById('noah-style-badge')) return;
+    var badge = d.createElement('span');
+    badge.id = 'noah-style-badge';
+    badge.className = 'noah-style-badge';
+    badge.title = '诺亚水蓝风格 · 点击亮暗色图标退出';
+    badge.setAttribute('role', 'img');
+    badge.setAttribute('aria-label', '诺亚水蓝风格已激活');
+    badge.innerHTML =
+      '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
+        '<path d="M12 2.6 20 7.2v9.6L12 21.4 4 16.8V7.2Z" fill="none" stroke="#4f9fd4" stroke-width="1.3" stroke-linejoin="round"/>' +
+        '<path d="M12 4.4 18 7.8v8.4l-6 3.4-6-3.4V7.8Z" fill="none" stroke="#4f9fd4" stroke-width=".7" opacity=".5"/><path d="M12 8.2c1.6 1.9 2.7 3.5 2.7 4.8a2.7 2.7 0 0 1-5.4 0c0-1.3 1.1-2.9 2.7-4.8Z" fill="#4f9fd4"/>' +
+      '</svg>';
+    d.body.appendChild(badge);
   };
 
   /* ── 隐藏开屏动画 ──

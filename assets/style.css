@@ -1,4 +1,4 @@
-@import url('shared.css');
+@import url('shared.css?v=20260815e');
 
 /* ═══ 图谱页专属: 覆盖 shared.css 的内容页滚动布局 ═══ */
 html, body { height: 100%; overflow: hidden; }
@@ -335,6 +335,37 @@ main { flex: 1; position: relative; overflow: hidden; background: var(--bg2); }
   display: block;
 }
 .transcript-item .ti-voice:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--node-bg);
+}
+
+.transcript-item .ti-download {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--panel-bg);
+  color: var(--fg2);
+  cursor: pointer;
+  font-size: 10px;
+  line-height: 1;
+  padding: 0;
+  text-decoration: none;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+.transcript-item .ti-download svg {
+  width: 11px;
+  height: 11px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  display: block;
+}
+.transcript-item .ti-download:hover {
   border-color: var(--accent);
   color: var(--accent);
   background: var(--node-bg);

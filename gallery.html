@@ -7,7 +7,7 @@
 <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
 <title>绘像展厅 — 大魔女图书馆</title>
 <link rel="stylesheet" href="assets/fonts.css">
-<link rel="stylesheet" href="assets/shared.css?v=20260905a">
+<link rel="stylesheet" href="assets/shared.css?v=20260816a">
 <link rel="stylesheet" href="assets/content.css?v=20260812">
 <script>
   // 主题恢复 (提前执行, 避免 FOUC 闪白)
@@ -44,12 +44,12 @@
   to   { transform: rotate(70deg); }
 }
 
-/* ── 睁眼黑幕 (彩蛋跳转: 眼睑从中央向上下拉开) ── */
+/* ── 睁眼黑幕 (彩蛋跳转: 眼睑从中央向上下拉开; 跟随主题色) ── */
 .eye-lid {
   position: fixed;
   left: 0; right: 0;
   z-index: 99999;
-  background: #000;
+  background: var(--veil-grad);
   pointer-events: none;
 }
 .eye-lid.top    { top: 0; }
@@ -58,6 +58,158 @@
 @keyframes lid-open {
   0%   { height: 50vh; }
   100% { height: 0; }
+}
+
+/* ── 诺亚注水彩蛋 (灯箱内 · 全 GSAP 驱动 · 按住空格注水) ── */
+.lightbox .lb-img-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.lightbox .lb-img-wrap > img {
+  flex: none;
+  position: relative;
+  z-index: 1;
+}
+/* D5 水下副本: 先褪色再透明的单一图层, 只裁切到水面以下 */
+.lightbox .nw-bleed {
+  position: absolute; inset: 0;
+  z-index: 2;
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  will-change: clip-path, opacity, filter;
+}
+.lightbox .nw-pigment {
+  position: absolute; inset: 0;
+  z-index: 3;
+  overflow: hidden;
+  pointer-events: none;
+}
+.lightbox .nw-pigment-dot {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(150, 205, 245, 0.5);
+  filter: blur(4px);
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+.lightbox .noah-water {
+  position: absolute; inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  overflow: hidden;
+}
+/* 水体: 清澈浅蓝, 上亮下深; 水面高光 + 池底压暗 */
+.lightbox .noah-water .nw-body {
+  position: absolute; left: -1%; right: -1%; bottom: 0;
+  height: 0%;
+  transform-origin: 50% 100%;
+  overflow: hidden;
+  background: linear-gradient(180deg,
+    rgba(176, 221, 243, 0.30) 0%,
+    rgba(94, 164, 214, 0.46) 42%,
+    rgba(31, 96, 158, 0.70) 100%);
+  box-shadow:
+    inset 0 16px 30px -18px rgba(206, 236, 252, 0.55),
+    inset 0 -26px 54px -18px rgba(7, 39, 78, 0.40);
+  will-change: height;
+}
+.lightbox .noah-water .nw-body::before {
+  content: '';
+  position: absolute; left: 0; right: 0; top: 0;
+  height: 120px;
+  background: linear-gradient(180deg, rgba(236, 250, 255, 0.34), transparent 78%);
+  opacity: 0.55;
+}
+/* 水下光纹: 缓慢漂移的焦散 (GSAP loop) */
+.lightbox .noah-water .nw-caustics {
+  position: absolute;
+  inset: -18% -35%;
+  background:
+    radial-gradient(ellipse 22% 13% at 16% 34%, rgba(255, 255, 255, 0.18) 0%, transparent 55%),
+    radial-gradient(ellipse 18% 11% at 68% 62%, rgba(255, 255, 255, 0.14) 0%, transparent 55%),
+    repeating-linear-gradient(112deg,
+      rgba(255, 255, 255, 0.055) 0 7px,
+      transparent 7px 34px);
+  mix-blend-mode: screen;
+  opacity: 0.52;
+  pointer-events: none;
+}
+/* 悬浮微粒: 水中的细小杂质, 让水体有厚度 */
+.lightbox .noah-water .nw-motes {
+  position: absolute;
+  inset: -10% -30%;
+  background-image:
+    radial-gradient(rgba(255, 255, 255, 0.17) 1px, transparent 1.6px),
+    radial-gradient(rgba(255, 255, 255, 0.10) 1px, transparent 1.5px);
+  background-size: 74px 74px, 112px 112px;
+  opacity: 0.45;
+  pointer-events: none;
+}
+/* W2 压力翻涌: 底部整片上冲光带 (无可见水柱) */
+.lightbox .noah-water .nw-surge {
+  position: absolute; left: 5%; right: 5%; bottom: -10px;
+  height: 22px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 100%, rgba(220, 244, 255, 0.55), transparent 70%);
+  filter: blur(3px);
+  opacity: 0.7;
+  transform-origin: 50% 100%;
+  pointer-events: none;
+}
+/* 水面: 三层不同相位波浪带, 底部贴齐水位线, 可无缝循环 */
+.lightbox .noah-water .nw-surface-wrap {
+  position: absolute; left: -2%; right: -2%; bottom: 0;
+  height: 52px;
+  transform: translateY(50%);
+  z-index: 4;
+  pointer-events: none;
+  will-change: transform;
+}
+.lightbox .noah-water .nw-wave {
+  position: absolute; left: 0; top: 0;
+  width: 300%; height: 100%;
+  display: block;
+}
+.lightbox .noah-water .nw-wave path { stroke: none; }
+.lightbox .noah-water .nw-wave-1 path { fill: rgba(209, 238, 251, 0.86); }
+.lightbox .noah-water .nw-wave-2 path { fill: rgba(232, 246, 253, 0.52); }
+.lightbox .noah-water .nw-wave-3 path { fill: rgba(160, 211, 238, 0.38); }
+/* 无色气泡 (JS 生成, GSAP 上浮) */
+.lightbox .noah-water .nw-fizz {
+  position: absolute; inset: 0;
+  z-index: 8;
+  overflow: hidden;
+}
+.lightbox .nw-bubble {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.68);
+  box-shadow: inset 0 0 7px rgba(255, 255, 255, 0.28), 0 0 6px rgba(190, 230, 252, 0.25);
+  opacity: 0.85;
+  pointer-events: none;
+}
+.lightbox .nw-bubble::after {
+  content: '';
+  position: absolute; left: 18%; top: 12%;
+  width: 24%; height: 14%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.72);
+  transform: rotate(-24deg);
+}
+/* 诺亚风格下, 灯箱遮罩也沉入深水蓝 */
+html[data-style="noah"] .lightbox {
+  background: rgba(6, 21, 34, 0.86);
+}
+@media (prefers-reduced-motion: reduce) {
+  .lightbox .noah-water .nw-caustics,
+  .lightbox .noah-water .nw-motes,
+  .lightbox .noah-water .nw-wave {
+    animation: none !important;
+  }
 }
 
 /* ── 缩略图网格 ── */
@@ -842,13 +994,13 @@
   </div>
 </div>
 
-<script src="assets/shared.js?v=20260813a"></script>
+<script src="assets/shared.js?v=20260816b"></script>
 <script src="assets/lib/gsap.min.js?v=20260905a"></script>
 <script src="assets/lib/ScrollTrigger.min.js?v=20260905a"></script>
 <script src="assets/gsap-animations.js?v=20260905a"></script>
 <script src="assets/gsap-content.js?v=20260905a"></script>
 <script src="assets/workshop.js?v=20260813h"></script>
-<script src="assets/gallery.js?v=20260814a"></script>
+<script src="assets/gallery.js?v=20260816c"></script>
 <script src="assets/player-launcher.js?v=20260814a" defer></script>
 </body>
 </html>

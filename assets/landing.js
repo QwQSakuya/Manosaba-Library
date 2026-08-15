@@ -25,10 +25,19 @@
 
   function initThemeToggle() {
     var btn = d.getElementById('theme-toggle');
+    /* 诺亚水蓝风格: 跨页恢复 (与 shared.js 同一套 sessionStorage 约定) */
+    try {
+      if (sessionStorage.getItem('noah-style') === '1') {
+        d.documentElement.setAttribute('data-style', 'noah');
+        if (MS.ensureNoahBadge) MS.ensureNoahBadge();
+      }
+    } catch (e) {}
     if (!btn) return;
     btn.addEventListener('click', function () {
       var html = d.documentElement;
       var next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      /* 点击亮暗色图标 → 退出诺亚水蓝风格 (彩蛋约定) */
+      if (MS.setNoahStyle) MS.setNoahStyle(false);
       var veil = d.createElement('div');
       veil.className = 'theme-veil';
       d.body.appendChild(veil);

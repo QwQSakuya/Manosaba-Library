@@ -3,19 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OG Card Mockup (1200×630)</title>
+<title>OG Card — 大魔女图书馆 · Witch Trial Archive</title>
 <link rel="stylesheet" href="../assets/fonts.css">
 <style>
-  /* ═══════════════════════════════════════════════
-     OG 分享卡片设计稿 — 大魔女图书馆
-     1200×630 静态画布 (无动画, 用于浏览器截图)
-     深色令牌值原样取自 shared.css :root[data-theme=dark]
-     ═══════════════════════════════════════════════ */
+  /* ═══════════════════════════════════════════════════════════
+     OG 分享卡片 · 1200×630 · 全新档案封面结构 (非旧版修改)
+     ─────────────────────────────────────────────────────────
+     布局: 上横眉 / 左标题档案 / 右证据陈列窗 / 底部资料栏
+     动效: GSAP 一次性入场, 最终帧为分享图; ?static=1 跳过动画
+     参考: Awwwards GSAP 榜 · PX PUSH / ULTRAGRID / Oollee /
+           GSAP Vault clip-reveal 与 line-draw 生产级写法
+     ═══════════════════════════════════════════════════════════ */
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body {
     width: 1200px;
     height: 630px;
     overflow: hidden;
+    background: #09090b;
     -webkit-font-smoothing: antialiased;
     font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
   }
@@ -24,217 +28,419 @@
     position: relative;
     width: 1200px;
     height: 630px;
-    background: #141414;
+    background:
+      radial-gradient(ellipse 560px 440px at 84% 12%, rgba(205, 64, 112, 0.16), transparent 62%),
+      radial-gradient(ellipse 620px 480px at 4% 96%, rgba(88, 46, 130, 0.20), transparent 64%),
+      linear-gradient(135deg, #0c0c0f 0%, #101014 52%, #09090b 100%);
     overflow: hidden;
   }
 
-  /* ── 三层氛围渐变 (左上粉 / 右下红 / 底部紫) ── */
-  .bg-grads {
+  /* 斜向血光, 加载时从右下扫入并停稳 */
+  .beam {
     position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 620px 420px at 12% 0%, hsla(340, 65%, 22%, 0.22) 0%, transparent 70%),
-      radial-gradient(ellipse 700px 460px at 100% 100%, hsla(0, 70%, 20%, 0.20) 0%, transparent 70%),
-      radial-gradient(ellipse 640px 380px at 50% 120%, hsla(280, 50%, 16%, 0.18) 0%, transparent 70%);
+    left: -20%; right: -20%; top: 42%;
+    height: 210px;
+    transform: rotate(-14deg);
+    background: linear-gradient(90deg, transparent, rgba(210, 62, 108, 0.14) 35%, rgba(210, 62, 108, 0.03) 70%, transparent);
+    mix-blend-mode: screen;
+    filter: blur(24px);
+    will-change: transform;
   }
 
-  /* ── 胶片颗粒 (低频, 控制 PNG 体积) ── */
-  .bg-noise {
-    position: absolute;
-    inset: 0;
-    opacity: 0.014;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.25' numOctaves='1' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  .grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.030) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.030) 1px, transparent 1px);
+    background-size: 64px 64px;
+    -webkit-mask-image: radial-gradient(ellipse 80% 70% at 42% 46%, black 0%, transparent 82%);
+    mask-image: radial-gradient(ellipse 80% 70% at 42% 46%, black 0%, transparent 82%);
   }
 
-  /* ── 主魔法阵印章 (右侧偏置) ── */
-  .magic-circle {
+  /* ── 顶部档案横眉 ── */
+  .masthead {
     position: absolute;
-    right: -70px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 660px;
-    height: 660px;
-    color: #e0e0e0;
-    opacity: 0.07;
+    left: 84px; right: 64px; top: 38px;
+    height: 54px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255,255,255,0.10);
   }
-
-  /* ── 蝴蝶 (角色色签章) ── */
-  .fly { position: absolute; }
-  .fly-ema  { right: 190px; top: 46px; width: 70px; color: hsl(340, 60%, 55%); opacity: 0.4; }
-  .fly-hiro { left: 128px; bottom: 88px; width: 46px; color: hsl(0, 65%, 55%); opacity: 0.3; }
-
-  /* ── 左侧内容区 ── */
-  .content {
-    position: absolute;
-    left: 96px;
-    top: 50%;
-    transform: translateY(-64%);
-    z-index: 2;
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .brand-mark {
+    width: 9px; height: 9px;
+    transform: rotate(45deg);
+    background: #d6537e;
+    box-shadow: 0 0 16px rgba(214, 83, 126, 0.7);
   }
-  .eyebrow {
+  .brand-copy { display: flex; flex-direction: column; gap: 5px; }
+  .brand-name {
     font-family: "Cormorant Garamond", serif;
     font-style: italic;
     font-weight: 700;
     font-size: 20px;
-    letter-spacing: 0.3em;
+    letter-spacing: 0.28em;
+    color: #ededed;
+  }
+  .brand-sub {
+    font-size: 11px;
+    letter-spacing: 0.30em;
     text-transform: uppercase;
-    color: #999;
+    color: #777;
   }
-  .title {
-    position: relative;
-    font-family: "Noto Serif SC", serif;
-    font-weight: 900;
-    font-size: 96px;
-    letter-spacing: 0.14em;
-    color: #e0e0e0;
-    line-height: 1.1;
-    margin-top: 16px;
-    padding-left: 34px;
-    white-space: nowrap;
-  }
-  /* 粉红血线 (唯一全饱和高亮) */
-  .title::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 3px;
-    height: 60px;
-    background: hsl(340, 60%, 55%);
-    box-shadow: 0 0 18px hsla(340, 60%, 55%, 0.55);
-  }
-  .sub {
-    font-family: "Noto Serif SC", serif;
-    font-weight: 700;
-    font-size: 24px;
-    letter-spacing: 0.1em;
-    color: #bbb;
-    margin-top: 20px;
-  }
-  .tagline {
-    font-size: 15px;
-    letter-spacing: 0.2em;
-    color: #888;
-    margin-top: 26px;
-    padding: 13px 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    white-space: nowrap;
+  .serial {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 13px;
+    letter-spacing: 0.24em;
+    color: #5f5f67;
+    padding-top: 4px;
   }
 
-  /* ── 左下: 书线稿 + 落款 ── */
-  .footer-left {
+  /* ── 主内容: 左档案 / 右证据窗 ── */
+  .main {
     position: absolute;
-    left: 96px;
-    bottom: 42px;
+    left: 84px; right: 64px; top: 118px; bottom: 98px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 400px;
+    gap: 56px;
+  }
+
+  .dossier { position: relative; min-width: 0; padding-top: 4px; }
+  .eyebrow {
     display: flex;
     align-items: center;
     gap: 14px;
-    z-index: 2;
-  }
-  .book { width: 56px; height: 40px; opacity: 0.9; }
-  .credit {
     font-family: "Cormorant Garamond", serif;
     font-style: italic;
-    font-weight: 500;
-    font-size: 14px;
-    letter-spacing: 0.08em;
-    color: #666;
+    font-weight: 700;
+    font-size: 19px;
+    letter-spacing: 0.30em;
+    text-transform: uppercase;
+    color: #a56f89;
+  }
+  .eyebrow::before { content: ''; width: 34px; height: 1px; background: #d6537e; }
+
+  .title-wrap { position: relative; margin-top: 26px; padding-left: 40px; }
+  .title {
+    display: flex;
+    font-family: "Noto Serif SC", serif;
+    font-weight: 900;
+    font-size: 106px;
+    letter-spacing: 0.12em;
+    line-height: 1.04;
+    color: #f1f0ee;
+    white-space: nowrap;
+    text-shadow: 0 14px 44px rgba(0,0,0,0.55);
+  }
+  .ch { display: inline-block; overflow: hidden; vertical-align: bottom; perspective: 500px; }
+  .ch-in { display: inline-block; will-change: transform, opacity; transform-origin: 50% 100%; }
+  .title-accent {
+    position: absolute;
+    left: 0; top: 50%;
+    transform: translateY(-50%) scaleY(0);
+    transform-origin: 50% 100%;
+    width: 3px; height: 88px;
+    background: #d6537e;
+    box-shadow: 0 0 22px rgba(214, 83, 126, 0.65);
   }
 
-  /* ── 右下: logo + 落款 ── */
-  .footer-right {
+  .subtitle {
+    margin-top: 28px;
+    font-family: "Noto Serif SC", serif;
+    font-weight: 700;
+    font-size: 25px;
+    letter-spacing: 0.12em;
+    color: #d7d7da;
+  }
+  .description {
+    margin-top: 18px;
+    max-width: 520px;
+    font-size: 15px;
+    line-height: 1.8;
+    letter-spacing: 0.06em;
+    color: #85858d;
+  }
+
+  /* 分类目录: 底部编号栏 */
+  .index {
     position: absolute;
-    right: 72px;
-    bottom: 42px;
+    left: 0; right: 0; bottom: 2px;
+    display: flex;
+    gap: 0;
+    border-top: 1px solid rgba(255,255,255,0.10);
+    padding-top: 14px;
+  }
+  .index-item {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    z-index: 2;
+    gap: 5px;
   }
-  .logo {
-    width: 64px;
-    height: 64px;
-    border-radius: 14px;
-    border: 1px solid rgba(255, 255, 255, 0.16);
-    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.5);
-    object-fit: cover;
-  }
-  .logo-caption {
+  .index-item + .index-item { padding-left: 16px; border-left: 1px solid rgba(255,255,255,0.07); }
+  .index-num {
     font-family: "Cormorant Garamond", serif;
     font-style: italic;
-    font-weight: 500;
-    font-size: 12px;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.16em;
+    color: #d6537e;
+  }
+  .index-label {
+    font-size: 12.5px;
+    letter-spacing: 0.14em;
+    color: #a2a2aa;
+    white-space: nowrap;
+  }
+
+  /* ── 右侧证据陈列窗 ── */
+  .evidence {
+    position: relative;
+    clip-path: polygon(22px 0, 100% 0, 100% calc(100% - 22px), calc(100% - 22px) 100%, 0 100%, 0 22px);
+    background: #0e0e12;
+    border: 1px solid rgba(255,255,255,0.12);
+    overflow: hidden;
+  }
+  .evidence-frame {
+    position: absolute; inset: 0;
+    clip-path: inherit;
+  }
+  .evidence-img {
+    position: absolute; inset: -4%;
+    width: 108%; height: 108%;
+    object-fit: cover;
+    opacity: 0.52;
+    filter: saturate(0.85) contrast(1.08);
+  }
+  .evidence-tint {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(180deg, rgba(12,12,15,0.15) 0%, rgba(12,12,15,0.05) 38%, rgba(12,12,15,0.72) 100%),
+      radial-gradient(ellipse 100% 70% at 50% 0%, rgba(214, 83, 126, 0.18), transparent 70%);
+  }
+  .evidence-head {
+    position: absolute;
+    left: 24px; top: 20px; right: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 13px;
     letter-spacing: 0.22em;
+    color: #c7c7ce;
+  }
+  .evidence-head b { color: #fff; font-weight: 700; }
+  .evidence-foot {
+    position: absolute;
+    left: 24px; right: 24px; bottom: 22px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+  .evidence-title {
+    font-family: "Noto Serif SC", serif;
+    font-weight: 900;
+    font-size: 22px;
+    letter-spacing: 0.12em;
+    color: #f5f5f7;
+  }
+  .evidence-sub {
+    margin-top: 6px;
+    font-size: 10.5px;
+    letter-spacing: 0.26em;
     text-transform: uppercase;
-    color: #777;
+    color: #9b9ba4;
+  }
+  .stamp {
+    width: 54px; height: 54px;
+    border: 1px solid rgba(255,255,255,0.30);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #f5f5f7;
+    background: rgba(10,10,13,0.36);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+  .stamp svg { width: 30px; height: 30px; }
+
+  /* ── 页脚 ── */
+  .footer {
+    position: absolute;
+    left: 84px; right: 64px; bottom: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .footer-left { display: flex; align-items: center; gap: 12px; }
+  .footer-dot { width: 6px; height: 6px; transform: rotate(45deg); background: #d6537e; }
+  .footer-text {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 14px;
+    letter-spacing: 0.14em;
+    color: #6c6c74;
+  }
+  .footer-right {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    color: #5f5f67;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .title-accent { transform: translateY(-50%) scaleY(1); }
   }
 </style>
 </head>
 <body>
 <div class="card">
-  <div class="bg-grads"></div>
-  <div class="bg-noise"></div>
+  <div class="grid"></div>
+  <div class="beam" id="beam"></div>
 
-  <!-- 大魔法阵: 同心圆 + 12 放射线 + 六芒星 + 五边形 -->
-  <svg class="magic-circle" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
-    <g fill="none" stroke="currentColor" stroke-linecap="round">
-      <circle cx="300" cy="300" r="292" stroke-width="0.8"/>
-      <circle cx="300" cy="300" r="278" stroke-width="0.4"/>
-      <circle cx="300" cy="300" r="250" stroke-width="0.6"/>
-      <circle cx="300" cy="300" r="200" stroke-width="0.5"/>
-      <circle cx="300" cy="300" r="150" stroke-width="0.6"/>
-      <circle cx="300" cy="300" r="100" stroke-width="0.5"/>
-      <circle cx="300" cy="300" r="52"  stroke-width="0.8"/>
-      <g stroke-width="0.35">
-        <line x1="300" y1="8"   x2="300" y2="592"/>
-        <line x1="8"   y1="300" x2="592" y2="300"/>
-        <line x1="92"  y1="92"  x2="508" y2="508"/>
-        <line x1="508" y1="92"  x2="92"  y2="508"/>
-        <line x1="160" y1="35"  x2="440" y2="565"/>
-        <line x1="440" y1="35"  x2="160" y2="565"/>
-        <line x1="35"  y1="160" x2="565" y2="440"/>
-        <line x1="565" y1="160" x2="35"  y2="440"/>
-      </g>
-      <polygon points="300,75 480,393 120,393" stroke-width="0.7"/>
-      <polygon points="300,525 120,207 480,207" stroke-width="0.7"/>
-      <polygon points="300,140 433,237 382,395 218,395 167,237" stroke-width="0.5"/>
-      <circle cx="300" cy="8"   r="2.5" fill="currentColor"/>
-      <circle cx="300" cy="592" r="2.5" fill="currentColor"/>
-      <circle cx="8"   cy="300" r="2.5" fill="currentColor"/>
-      <circle cx="592" cy="300" r="2.5" fill="currentColor"/>
-    </g>
-  </svg>
+  <!-- 顶部档案横眉 -->
+  <header class="masthead" id="masthead">
+    <div class="brand">
+      <span class="brand-mark"></span>
+      <div class="brand-copy">
+        <span class="brand-name">Manosaba Library</span>
+        <span class="brand-sub">Witch Trial Archive · Fan Project</span>
+      </div>
+    </div>
+    <span class="serial">OG · 1200 × 630 · REC 001</span>
+  </header>
 
-  <!-- 蝴蝶: 右上 Ema 粉 / 左下 Hiro 红 -->
-  <svg class="fly fly-ema" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><path d="M60,50 C42,22 12,16 6,32 C0,48 16,58 32,56 C46,54 56,52 60,50 Z"/><path d="M60,50 C78,22 108,16 114,32 C120,48 104,58 88,56 C74,54 64,52 60,50 Z"/><path d="M60,50 C50,56 32,66 28,82 C25,92 38,90 48,80 C56,72 58,60 60,50 Z"/><path d="M60,50 C70,56 88,66 92,82 C95,92 82,90 72,80 C64,72 62,60 60,50 Z"/><ellipse cx="60" cy="50" rx="1.4" ry="18"/></g></svg>
-  <svg class="fly fly-hiro" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><path d="M60,50 C42,22 12,16 6,32 C0,48 16,58 32,56 C46,54 56,52 60,50 Z"/><path d="M60,50 C78,22 108,16 114,32 C120,48 104,58 88,56 C74,54 64,52 60,50 Z"/><path d="M60,50 C50,56 32,66 28,82 C25,92 38,90 48,80 C56,72 58,60 60,50 Z"/><path d="M60,50 C70,56 88,66 92,82 C95,92 82,90 72,80 C64,72 62,60 60,50 Z"/><ellipse cx="60" cy="50" rx="1.4" ry="18"/></g></svg>
+  <!-- 主内容 -->
+  <div class="main">
+    <!-- 左: 档案标题 -->
+    <section class="dossier">
+      <p class="eyebrow reveal" id="eyebrow">魔法少女の魔女裁判</p>
+      <div class="title-wrap">
+        <span class="title-accent" id="title-accent"></span>
+        <h1 class="title" id="title">大魔女图书馆</h1>
+      </div>
+      <p class="subtitle reveal" id="subtitle">非官方粉丝资料站</p>
+      <p class="description reveal" id="description">以剧情、证物、CG、语音与世界观记录，重建那场魔女审判的完整档案。</p>
 
-  <!-- 左侧内容区 -->
-  <div class="content">
-    <p class="eyebrow">Manosaba Library</p>
-    <h1 class="title">大魔女图书馆</h1>
-    <p class="sub">《魔法少女的魔女审判》粉丝资料站</p>
-    <p class="tagline">剧情节点图谱 · 证物 · CG 画廊 · 语音音乐 · 世界观记录</p>
+      <nav class="index" id="index" aria-label="资料分类">
+        <div class="index-item"><span class="index-num">01</span><span class="index-label">剧情节点图谱</span></div>
+        <div class="index-item"><span class="index-num">02</span><span class="index-label">证物档案</span></div>
+        <div class="index-item"><span class="index-num">03</span><span class="index-label">CG 画廊</span></div>
+        <div class="index-item"><span class="index-num">04</span><span class="index-label">语音音乐</span></div>
+        <div class="index-item"><span class="index-num">05</span><span class="index-label">世界观记录</span></div>
+      </nav>
+    </section>
+
+    <!-- 右: 证据陈列窗 -->
+    <aside class="evidence" id="evidence">
+      <div class="evidence-frame" id="evidence-frame">
+        <img class="evidence-img" src="../nnk_box.webp" alt="大魔女图书馆">
+        <div class="evidence-tint"></div>
+        <div class="evidence-head">
+          <span>ARCHIVE EXHIBIT</span>
+          <b>NO.01</b>
+        </div>
+        <div class="evidence-foot">
+          <div>
+            <div class="evidence-title">魔女审判档案</div>
+            <div class="evidence-sub">Manosaba Library Collection</div>
+          </div>
+          <div class="stamp">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10.3" stroke-width="0.9"/>
+              <circle cx="12" cy="12" r="8.4" stroke-width="0.45"/>
+              <circle cx="12" cy="12" r="5.8" stroke-width="0.65"/>
+              <path d="M12 1.7v20.6M1.7 12h20.6M4.7 4.7l14.6 14.6M19.3 4.7 4.7 19.3" stroke-width="0.35"/>
+              <path d="m12 4.3 6.3 10.5H5.7Z" stroke-width="0.75"/>
+              <path d="m12 19.7-6.3-10.5h12.6Z" stroke-width="0.75"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </aside>
   </div>
 
-  <!-- 左下: 翻开的书 + 落款 -->
-  <div class="footer-left">
-    <svg class="book" viewBox="0 0 56 40" fill="none" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-      <path d="M28 34 C20 30 10 30 4 32 L4 10 C10 8 20 8 28 12"/>
-      <path d="M28 34 C36 30 46 30 52 32 L52 10 C46 8 36 8 28 12"/>
-      <path d="M28 34 L28 12"/>
-    </svg>
-    <span class="credit">github.com/QwQSakuya/Manosaba-Library</span>
-  </div>
-
-  <!-- 右下: 站点 logo -->
-  <div class="footer-right">
-    <img class="logo" src="../nnk_box.webp" alt="大魔女图书馆">
-    <span class="logo-caption">Witch Trial Archive</span>
-  </div>
+  <!-- 页脚 -->
+  <footer class="footer">
+    <div class="footer-left reveal" id="footer-left">
+      <span class="footer-dot"></span>
+      <span class="footer-text">github.com/QwQSakuya/Manosaba-Library</span>
+    </div>
+    <span class="footer-right reveal" id="footer-right">大魔女图书馆 · 魔女审判档案</span>
+  </footer>
 </div>
+
+<script src="../assets/lib/gsap.min.js"></script>
+<script>
+(function () {
+  'use strict';
+  var params = new URLSearchParams(location.search);
+  var isStatic = params.get('static') === '1';
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* 原生逐字拆分 */
+  var title = document.getElementById('title');
+  var text = title.textContent;
+  title.textContent = '';
+  Array.from(text).forEach(function (ch) {
+    var outer = document.createElement('span');
+    outer.className = 'ch';
+    var inner = document.createElement('span');
+    inner.className = 'ch-in';
+    inner.textContent = ch;
+    outer.appendChild(inner);
+    title.appendChild(outer);
+  });
+
+  if (!window.gsap || isStatic || reduced) {
+    if (window.gsap) gsap.set('#title-accent', { scaleY: 1 });
+    return;
+  }
+
+  var tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
+
+  /* 斜向血光: 右下快速扫入, 长尾停稳 */
+  tl.fromTo('#beam',
+    { xPercent: 42, opacity: 0 },
+    { xPercent: 0, opacity: 1, duration: 2.6, ease: 'power3.out' }, 0);
+
+  /* 顶部横眉双线展开 */
+  tl.fromTo('#masthead',
+    { opacity: 0, scaleX: 0.96 },
+    { opacity: 1, scaleX: 1, duration: 0.8, ease: 'power2.out' }, 0.1);
+
+  /* 右侧证据窗从右向左 clip 揭示, 内部画面同时回稳 */
+  tl.fromTo('#evidence',
+    { clipPath: 'inset(0 0 0 100%)' },
+    { clipPath: 'polygon(22px 0, 100% 0, 100% calc(100% - 22px), calc(100% - 22px) 100%, 0 100%, 0 22px)', duration: 1.05, ease: 'power4.inOut' }, 0.18);
+  tl.fromTo('.evidence-img',
+    { scale: 1.38, xPercent: 9, yPercent: 14, opacity: 0, filter: 'blur(16px) saturate(0) brightness(0.72)' },
+    { scale: 1, xPercent: 0, yPercent: 0, opacity: 0.52, filter: 'blur(0px) saturate(0.85) contrast(1.08) brightness(1)',
+      duration: 2.4, ease: 'power3.out',
+      onComplete: function () { gsap.set('.evidence-img', { clearProps: 'filter' }); } }, 0.18);
+
+  /* 魔法阵描边生长 */
+  /* 血线与标题逐字揭示 */
+  tl.fromTo('#title-accent',
+    { scaleY: 0 },
+    { scaleY: 1, duration: 0.7, ease: 'power3.inOut' }, 0.42);
+  tl.fromTo('.ch-in',
+    { yPercent: 118, opacity: 0, rotationX: -38 },
+    { yPercent: 0, opacity: 1, rotationX: 0, duration: 0.9, stagger: 0.06, ease: 'expo.out' }, 0.52);
+
+  /* 副标题 / 描述 / 目录 / 页脚错峰 */
+  tl.fromTo('.reveal',
+    { y: 14, opacity: 0 },
+    { y: 0, opacity: 1, duration: 0.7, stagger: 0.09 }, 0.95);
+  tl.fromTo('#index .index-item',
+    { y: 10, opacity: 0 },
+    { y: 0, opacity: 1, duration: 0.55, stagger: 0.06, ease: 'power2.out' }, 1.12);
+  tl.fromTo('.stamp',
+    { scale: 0.4, opacity: 0, rotation: -30 },
+    { scale: 1, opacity: 1, rotation: 0, duration: 0.7, ease: 'back.out(1.6)' }, 1.35);
+})();
+</script>
 </body>
 </html>

@@ -7,7 +7,7 @@
 <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
 <title>制作名单 — 大魔女图书馆</title>
 <link rel="stylesheet" href="assets/fonts.css">
-<link rel="stylesheet" href="assets/shared.css?v=20260905a">
+<link rel="stylesheet" href="assets/shared.css?v=20260816a">
 <link rel="stylesheet" href="assets/content.css?v=20260814a">
 <script>
   (function () {
@@ -113,6 +113,37 @@
 .credits-list li .cl-note {
   color: var(--fg3);
   font-size: 12px;
+}
+.cl-link,
+.thanks-name .thanks-link {
+  position: relative;
+  color: var(--fg);
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  transition: color 0.3s ease, background-size 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  padding-bottom: 2px;
+}
+.cl-link::after,
+.thanks-name .thanks-link::after {
+  content: ' ↗';
+  display: inline-block;
+  opacity: 0.45;
+  transform: translate(-3px, 0);
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease;
+  font-size: 0.82em;
+}
+.cl-link:hover,
+.thanks-name .thanks-link:hover {
+  color: var(--accent);
+  background-size: 100% 1px;
+}
+.cl-link:hover::after,
+.thanks-name .thanks-link:hover::after {
+  opacity: 1;
+  transform: translate(2px, -2px);
 }
 .accomplice {
   display: inline-block;
@@ -345,8 +376,10 @@ html, body {
       <h2 class="credits-section-title"><span class="cs-num">I</span>原作与版权</h2>
       <ul class="credits-list">
         <li><span class="cl-role">作品</span><span class="cl-name">魔法少女的魔女审判</span><span class="cl-note">魔法少女ノ魔女裁判 / Magical Girl Witch Trials</span></li>
-        <li><span class="cl-role">开发</span><span class="cl-name">Acacia / Re,AER LLC</span></li>
+        <li><span class="cl-role">开发 · 发行</span><span class="cl-name">Re,AER LLC / Acacia</span><span class="cl-note">Acacia 为 Re,AER 旗下品牌</span></li>
         <li><span class="cl-role">中文版发行</span><span class="cl-name">CIRCLE LINE GAMES</span></li>
+          <li><span class="cl-role">游戏官网</span><a class="cl-link" href="https://manosaba.com/" target="_blank" rel="noopener noreferrer">manosaba.com</a></li>
+          <li><span class="cl-role">Steam</span><a class="cl-link" href="https://store.steampowered.com/app/3101040/" target="_blank" rel="noopener noreferrer">Steam 商店页</a></li>
         <li><span class="cl-role">企划</span><span class="cl-name">Acacia</span></li>
         <li><span class="cl-role">导演 · 剧本</span><span class="cl-name">喜多南、泷口流</span></li>
         <li><span class="cl-role">角色设计</span><span class="cl-name">梅まろ</span></li>
@@ -355,6 +388,9 @@ html, body {
         <li><span class="cl-role">BGM</span><span class="cl-name">近藤佑辅</span></li>
         <li><span class="cl-role">主题曲</span><span class="cl-name">SLAVE.V-V-R</span><span class="cl-note">片尾曲：daiki</span></li>
       </ul>
+        <p style="margin-top:16px;font-size:13px;">
+          
+        </p>
     </div>
   </section>
 
@@ -364,15 +400,35 @@ html, body {
         <p class="thanks-title">感谢以下</p>
         <p class="accomplice thanks-badge">共犯者</p>
         <ul class="thanks-list">
-          <li><span class="thanks-name">影月</span><span class="thanks-work">—— 资料整理 · 解包与转换 · 站点开发</span></li>
+          <li><span class="thanks-name"><a class="thanks-link" href="https://space.bilibili.com/1909440963" target="_blank" rel="noopener noreferrer">影月</a></span><span class="thanks-work">—— 资料整理 · 解包与转换 · 站点开发</span></li>
           <li><span class="thanks-name">Cli-CuvrP</span><span class="thanks-work">—— 资料整理</span></li>
-          <li><span class="thanks-name">樱雨艾玛</span><span class="thanks-work">—— 视频录制与剪辑</span></li>
+          <li><span class="thanks-name"><a class="thanks-link" href="https://space.bilibili.com/" target="_blank" rel="noopener noreferrer">樱雨艾玛</a></span><span class="thanks-work">—— 视频录制与剪辑</span></li>
           <li><span class="thanks-name">〇〇</span><span class="thanks-work">—— 编辑</span></li>
-          <li><span class="thanks-name">〇〇</span><span class="thanks-work">—— 校对</span></li>
+          <li><span class="thanks-name"><a class="thanks-link" href="https://space.bilibili.com/688718224" target="_blank" rel="noopener noreferrer">寄居蟹</a></span><span class="thanks-work">—— 校对</span></li>
         </ul>
       </div>
     </div>
   </section>
+
+    <section class="ak-page">
+      <div class="ak-inner">
+        <div class="credits-thanks">
+          <p class="thanks-title">引用资源</p>
+          <p class="accomplice thanks-badge">References</p>
+          <img src="nnk_box.webp" alt="奈叶香盒子" style="width:72px;height:72px;object-fit:contain;border:1px solid var(--border);border-radius:6px;margin:18px auto 0;display:block;">
+          <ul class="credits-list" style="max-width:520px;margin:18px auto 0;text-align:left;">
+            <li><span class="cl-role">资源</span><span class="cl-name">奈叶香盒子（nnk_box.webp）</span></li>
+            <li><span class="cl-role">用途</span><span class="cl-name">首页 Hero 标志 · 开屏预加载器</span></li>
+            <li><span class="cl-role">作者</span><span class="cl-name">待确认</span><span class="cl-note">已在 GitHub Issue 中询问</span></li>
+          </ul>
+          <p class="credits-note" style="margin-top:18px;text-align:left;">
+            若你知道原作者，欢迎在
+            <a class="cl-link" href="https://github.com/QwQSakuya/Manosaba-Library/issues" target="_blank" rel="noopener noreferrer">GitHub Issues</a>
+            中补充，我们会第一时间补上署名。
+          </p>
+        </div>
+      </div>
+    </section>
 
   <section class="ak-page">
     <p class="ak-line">感谢游玩这款游戏的</p>
@@ -430,7 +486,7 @@ html, body {
 
 <div class="ak-pager" id="ak-pager">01 / 09</div>
 
-<script src="assets/shared.js?v=20260813a"></script>
+<script src="assets/shared.js?v=20260816b"></script>
 <script src="assets/lib/gsap.min.js?v=20260905a"></script>
 <script src="assets/lib/ScrollTrigger.min.js?v=20260905a"></script>
 <script src="assets/gsap-animations.js?v=20260905a"></script>

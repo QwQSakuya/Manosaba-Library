@@ -156,12 +156,18 @@ function voiceUrl(label) {
 
 function voiceBtnHtml(label) {
   if (!voiceMap || !voiceMap[label]) return '';
+  var url = voiceUrl(label);
+  if (!url) return '';
   return '<button class="ti-voice" type="button" data-voice="' + escapeHtml(label) +
     '" data-tip="语音代号：' + escapeHtml(label) + '" aria-label="播放语音 ' + escapeHtml(label) +
     '" title="语音代号：' + escapeHtml(label) + '">' +
     '<svg class="vi-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>' +
     '<svg class="vi-pause" viewBox="0 0 24 24" aria-hidden="true" style="display:none"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>' +
-    '</button>';
+    '</button>' +
+    '<a class="ti-download" href="' + escapeHtml(url) + '" download="' + escapeHtml(label + '.ogg') + '"' +
+    ' title="下载语音 ' + escapeHtml(label) + '" aria-label="下载语音 ' + escapeHtml(label) + '">' +
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>' +
+    '</a>';
 }
 
 function setVoiceIcon(btn, playing) {

@@ -185,9 +185,9 @@ html.js .preloader { display: flex; }
 /* 暗色(旗舰): 希罗右(主角) / 艾玛左 —— 纯 left 数值定位, 便于主题切换平滑过渡 */
 .hero-art .ha-hiro { left: 32%; width: 82%; max-height: 64%; opacity: 0.5; z-index: 2; }
 .hero-art .ha-ema { left: -18%; width: 74%; max-height: 52%; opacity: 0.3; z-index: 1; }
-/* 亮色(反转): 艾玛右(主角) / 希罗左 */
-[data-theme="light"] .hero-art .ha-ema { left: 30%; width: 88%; max-height: 66%; opacity: 0.66; z-index: 2; }
-[data-theme="light"] .hero-art .ha-hiro { left: -8%; width: 74%; max-height: 54%; opacity: 0.46; z-index: 1; }
+/* 亮色(反转): 艾玛右(主角) / 希罗左 —— 艾玛整体左移, 两位更清晰(原透明度太透) */
+[data-theme="light"] .hero-art .ha-ema { left: 20%; width: 88%; max-height: 66%; opacity: 0.92; z-index: 2; }
+[data-theme="light"] .hero-art .ha-hiro { left: -8%; width: 74%; max-height: 54%; opacity: 0.75; z-index: 1; }
 [data-theme="light"] .hero-art .ha-front { filter: grayscale(0.18) saturate(1.28) contrast(1.02); }
 .hero-art .tint {
   position: absolute; inset: 0;

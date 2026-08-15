@@ -36,14 +36,417 @@
     lightboxIndex: -1,
     r2Base: '',          // R2 原图基础地址 (data/r2-config.json)
     webBase: '',         // R2 网页压缩素材基础地址 (data/r2-config.json)
-    downloadFmt: 'png'   // 原图下载格式: 'png' | 'tga'
+    downloadFmt: 'png',  // 原图下载格式: 'png' | 'tga'
+    waterLevel: 0        // 诺亚注水彩蛋: 当前水位 0-100
   };
 
   /* ── DOM 缓存 ── */
   var els = {};
   var workshopLoaded = false;
 
-  /* ── 初始化 ── */
+
+  /* ═══════════════════════════════════════════════════
+   诺亚注水彩蛋 — 最终方案 W2 + B1 + D5 (全 GSAP 驱动)
+   1) 按住空格 → W2 压力翻涌: 无可见水柱, 底部整片 surge 上冲 + 白沫波浪
+   2) 未满松开 → 水面惯性上冲后按水压感排空
+   3) B1 细密气泡云: 每 35–90ms 持续释放一颗微气泡, 连续不断
+   4) D5 先褪色再透明: 水面一碰到照片即开始, 水下副本先 desaturate 再淡出,
+      色素像水彩一样向上扩散; 只溶解水面以下部分
+   5) 注满 → 自动跳转 Still_460_011 + 诺亚水蓝风格
+   ═══════════════════════════════════════════════════════ */
+var WATER_FILL_MS = 5000;    // W2: 压力注满耗时
+var WATER_DRAIN_MS = 3200;   // 满水位排空耗时
+var WATER_START_LEVEL = 1;   // 水位一碰到画面就开始溶解
+var NOAH_TARGET_ID = 'Still_460_011';
+var water = {
+  active: false, tween: null, final: false, dissolving: false,
+  bubbleTimer: null, pigmentTimer: null, loops: [], pigments: []
+};
+
+function currentLightboxItem() {
+  var idx = state.lightboxIndex;
+  return (idx >= 0 && idx < state.filtered.length) ? state.filtered[idx] : null;
+}
+
+/* 周期波浪路径: 每 100 单位重复一次, 配合 300 宽 viewBox 可无缝循环 */
+function wavePath(amp, base) {
+  var p = 'M0,' + base;
+  for (var x = 0; x < 300; x += 100) {
+    p += ' Q' + (x + 25) + ',' + (base - amp) + ' ' + (x + 50) + ',' + base;
+    p += ' T' + (x + 100) + ',' + base;
+  }
+  return p + ' V96 H0 Z';
+}
+
+function currentPhotoSrc() {
+  return els.lbImg.getAttribute('src') || els.lbImg.src || '';
+}
+
+function ensureWaterOverlay() {
+  if (els.water) return;
+
+  /* 1) 把 #lb-img 包进 .lb-img-wrap */
+  if (!els.lbWrap) {
+    var wrap = d.createElement('div');
+    wrap.className = 'lb-img-wrap';
+    els.lbImg.parentNode.insertBefore(wrap, els.lbImg);
+    wrap.appendChild(els.lbImg);
+    els.lbWrap = wrap;
+  }
+
+  /* 2) D5 水下副本: 先褪色再透明的单一图层, 只被裁切到水面以下 */
+  var bleed = d.createElement('div');
+  bleed.className = 'nw-bleed';
+  bleed.style.filter = 'saturate(1) brightness(1)';
+  bleed.style.backgroundImage = 'url("' + currentPhotoSrc().replace(/"/g, '%22') + '")';
+  els.lbWrap.appendChild(bleed);
+  els.waterBleed = bleed;
+
+  /* 3) 色素扩散层 (D5 的水彩感) */
+  var pigment = d.createElement('div');
+  pigment.className = 'nw-pigment';
+  pigment.setAttribute('aria-hidden', 'true');
+  els.lbWrap.appendChild(pigment);
+  els.waterPigment = pigment;
+
+  /* 4) W2 水体: 底部 surge 翻涌 + 焦散 + 微粒 + 三层白沫波浪 */
+  var wEl = d.createElement('div');
+  wEl.className = 'noah-water';
+  wEl.setAttribute('aria-hidden', 'true');
+  wEl.innerHTML =
+    '<div class="nw-body"><i class="nw-caustics"></i><i class="nw-motes"></i><i class="nw-surge"></i></div>' +
+    '<div class="nw-surface-wrap">' +
+      '<svg class="nw-wave nw-wave-1" viewBox="0 0 300 96" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="' + wavePath(10, 42) + '"/></svg>' +
+      '<svg class="nw-wave nw-wave-2" viewBox="0 0 300 96" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="' + wavePath(6, 48) + '"/></svg>' +
+      '<svg class="nw-wave nw-wave-3" viewBox="0 0 300 96" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="' + wavePath(4, 50) + '"/></svg>' +
+    '</div>' +
+    '<div class="nw-fizz"></div>';
+  els.lightbox.appendChild(wEl);
+  els.water = wEl;
+  els.waterBody = wEl.querySelector('.nw-body');
+  els.waterCaustics = wEl.querySelector('.nw-caustics');
+  els.waterMotes = wEl.querySelector('.nw-motes');
+  els.waterSurge = wEl.querySelector('.nw-surge');
+  els.waterSurface = wEl.querySelector('.nw-surface-wrap');
+  els.waterFizz = wEl.querySelector('.nw-fizz');
+
+  /* 5) 无限循环动效 (全部 GSAP) */
+  var reduce = false;
+  try { reduce = !!(w.matchMedia && w.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) {}
+  if (!reduce) {
+    var w1 = wEl.querySelector('.nw-wave-1');
+    var w2 = wEl.querySelector('.nw-wave-2');
+    var w3 = wEl.querySelector('.nw-wave-3');
+    gsap.set([w1, w2, w3], { xPercent: 0 });
+    water.loops.push(gsap.to(w1, { xPercent: -33.3334, duration: 4.2, ease: 'none', repeat: -1 }));
+    water.loops.push(gsap.to(w2, { xPercent: -33.3334, duration: 6.8, ease: 'none', repeat: -1 }));
+    water.loops.push(gsap.to(w3, { xPercent: -33.3334, duration: 9.4, ease: 'none', repeat: -1 }));
+    water.loops.push(gsap.to(els.waterCaustics, {
+      xPercent: 7, yPercent: -6, duration: 6.4, ease: 'sine.inOut', yoyo: true, repeat: -1
+    }));
+    water.loops.push(gsap.to(els.waterMotes, {
+      xPercent: -10, yPercent: 8, duration: 9.2, ease: 'sine.inOut', yoyo: true, repeat: -1
+    }));
+    water.loops.push(gsap.to(els.waterSurface, {
+      skewX: 3.2, duration: 2.6, ease: 'sine.inOut', yoyo: true, repeat: -1
+    }));
+    water.loops.push(gsap.to(els.waterSurge, {
+      scaleY: 1.45, opacity: 0.32, duration: 0.7, ease: 'sine.inOut', yoyo: true, repeat: -1
+    }));
+  }
+}
+
+function killWaterLoops() {
+  water.loops.forEach(function (t) { t.kill(); });
+  water.loops = [];
+}
+
+function clearPigments() {
+  water.pigments.forEach(function (dot) {
+    if (dot.parentNode) dot.parentNode.removeChild(dot);
+  });
+  water.pigments = [];
+}
+
+function removeWaterOverlay() {
+  killWaterLoops();
+  clearPigments();
+  if (els.waterBleed && els.waterBleed.parentNode) {
+    els.waterBleed.parentNode.removeChild(els.waterBleed);
+  }
+  els.waterBleed = null;
+  if (els.waterPigment && els.waterPigment.parentNode) {
+    els.waterPigment.parentNode.removeChild(els.waterPigment);
+  }
+  els.waterPigment = null;
+  if (els.water && els.water.parentNode) {
+    els.water.parentNode.removeChild(els.water);
+  }
+  els.water = null;
+  els.waterBody = null;
+  els.waterCaustics = null;
+  els.waterMotes = null;
+  els.waterSurge = null;
+  els.waterSurface = null;
+  els.waterFizz = null;
+}
+
+/* B1 细密气泡云: 每 35–90ms 持续释放一颗, 连续不断 */
+function spawnBubble() {
+  if (!els.waterFizz || !els.lbWrap) return;
+  var wrapH = els.lightbox.clientHeight || w.innerHeight || 800;
+  var b = d.createElement('span');
+  b.className = 'nw-bubble';
+  var size = 3.5 + Math.random() * 5;
+  b.style.width = size.toFixed(1) + 'px';
+  b.style.height = size.toFixed(1) + 'px';
+  b.style.left = (2 + Math.random() * 96).toFixed(1) + '%';
+  var lv = Math.max(0, Math.min(100, state.waterLevel));
+  var surfaceFromBottom = lv / 100 * wrapH;
+  var startBottom = Math.min(Math.max(2, surfaceFromBottom - 4 - Math.random() * 18), wrapH - 6);
+  b.style.bottom = startBottom.toFixed(1) + 'px';
+  els.waterFizz.appendChild(b);
+  gsap.to(b, {
+    y: -(28 + Math.random() * 54),
+    x: (Math.random() - 0.5) * 40,
+    opacity: 0,
+    duration: 0.8 + Math.random() * 0.9,
+    ease: 'power1.out',
+    onComplete: function () { if (b.parentNode) b.parentNode.removeChild(b); }
+  });
+}
+
+function bubbleTick() {
+  if (water.final || !water.active || !els.water) { water.bubbleTimer = null; return; }
+  spawnBubble();
+  water.bubbleTimer = gsap.delayedCall(0.035 + Math.random() * 0.055, bubbleTick);
+}
+
+/* D5 色素: 从水下照片区域向上扩散, 像水彩被洗出来 */
+function spawnPigment() {
+  if (!els.waterPigment) return;
+  var dot = d.createElement('i');
+  dot.className = 'nw-pigment-dot';
+  var size = 10 + Math.random() * 14;
+  dot.style.width = size + 'px';
+  dot.style.height = size + 'px';
+  dot.style.left = (10 + Math.random() * 76).toFixed(1) + '%';
+  var lv = Math.max(1, Math.min(100, state.waterLevel));
+  dot.style.bottom = Math.max(2, lv * 0.22 + Math.random() * lv * 0.3).toFixed(1) + '%';
+  els.waterPigment.appendChild(dot);
+  water.pigments.push(dot);
+  gsap.fromTo(dot, {
+    y: 0, x: 0, opacity: 0
+  }, {
+    y: -(40 + Math.random() * 80),
+    x: (Math.random() - 0.5) * 50,
+    opacity: 0.5,
+    duration: 1.4 + Math.random() * 1.1,
+    ease: 'power1.out',
+    onComplete: function () { if (dot.parentNode) dot.parentNode.removeChild(dot); }
+  });
+}
+
+function pigmentTick() {
+  if (water.final || !water.active || !water.dissolving || !els.water) {
+    water.pigmentTimer = null; return;
+  }
+  spawnPigment();
+  water.pigmentTimer = gsap.delayedCall(0.10 + Math.random() * 0.16, pigmentTick);
+}
+
+/* D5 溶解: 水位一到就开始, 先褪色再透明; 只发生在水面以下 */
+function startDissolve() {
+  if (water.dissolving) return;
+  water.dissolving = true;
+  if (els.waterSurface) {
+    gsap.fromTo(els.waterSurface, { scaleY: 1.12 }, { scaleY: 1, duration: 0.8, ease: 'elastic.out(1, 0.35)', overwrite: true });
+  }
+  if (els.waterBleed) {
+    if (els.waterBleed._tween) { els.waterBleed._tween.kill(); }
+    var tl = gsap.timeline();
+    els.waterBleed._tween = tl;
+    tl.to(els.waterBleed, { filter: 'saturate(0) brightness(1.06)' , duration: 0.9, ease: 'power1.in' })
+      .to(els.waterBleed, { filter: 'saturate(0) brightness(1.06)' , opacity: 0, duration: 1.7, ease: 'power2.inOut' });
+  }
+  pigmentTick();
+}
+
+function undissolve() {
+  if (!water.dissolving) return;
+  water.dissolving = false;
+  if (els.waterBleed) {
+    if (els.waterBleed._tween) { els.waterBleed._tween.kill(); els.waterBleed._tween = null; }
+    gsap.to(els.waterBleed, { filter: 'saturate(1) brightness(1)', opacity: 1, duration: 3.2, ease: 'power1.inOut' });
+  }
+  if (water.pigmentTimer) { water.pigmentTimer.kill(); water.pigmentTimer = null; }
+  clearPigments();
+}
+
+/* 每帧水位同步: 干区裁切 + 湿区裁切 (D5 透明溶解) */
+function renderWater() {
+  if (!els.waterBody) return;
+  var lv = Math.max(0, Math.min(100, state.waterLevel));
+  var waterLine = 100 - lv;
+  els.waterBody.style.height = lv + '%';
+  if (els.waterSurface) els.waterSurface.style.bottom = lv + '%';
+
+  var pageH = els.lightbox.clientHeight || w.innerHeight || 800;
+  var waterY = pageH * (100 - lv) / 100;
+  var photoRect = els.lbImg ? els.lbImg.getBoundingClientRect() : null;
+
+  if (els.lbImg && photoRect && photoRect.height > 0) {
+    if (lv <= 0.4 || waterY >= photoRect.bottom) {
+      gsap.set(els.lbImg, { clearProps: 'clipPath' });
+    } else if (waterY <= photoRect.top) {
+      gsap.set(els.lbImg, { clipPath: 'inset(0px 0px 100% 0px)' });
+    } else {
+      var dryCut = Math.max(0, photoRect.bottom - waterY);
+      gsap.set(els.lbImg, { clipPath: 'inset(0px 0px ' + dryCut + 'px 0px)' });
+    }
+  }
+  if (els.waterBleed && photoRect && photoRect.height > 0) {
+    if (lv <= 0.4 || waterY >= photoRect.bottom) {
+      gsap.set(els.waterBleed, { clipPath: 'inset(100% 0 0 0)' });
+    } else if (waterY <= photoRect.top) {
+      gsap.set(els.waterBleed, { clearProps: 'clipPath' });
+    } else {
+      var wetTop = Math.max(0, waterY - photoRect.top);
+      gsap.set(els.waterBleed, { clipPath: 'inset(' + wetTop + 'px 0 0 0)' });
+    }
+  }
+}
+
+function fillWater() {
+  if (water.tween) water.tween.kill();
+  var remain = Math.max(0.12, (100 - state.waterLevel) / 100);
+  water.tween = gsap.to(state, {
+    waterLevel: 100,
+    duration: remain * (WATER_FILL_MS / 1000),
+    ease: 'power2.in',
+    onUpdate: function () {
+      renderWater();
+      if (state.waterLevel >= WATER_START_LEVEL) startDissolve();
+    },
+    onComplete: waterFull
+  });
+}
+
+function waterKeyDown() {
+  if (!w.gsap) return;   // gsap 缺失时禁用彩蛋
+  if (water.final) return;
+  if (!water.active) {
+    water.active = true;
+    ensureWaterOverlay();
+    renderWater();
+    bubbleTick();
+  }
+  fillWater();
+}
+
+function waterKeyUp() {
+  if (!water.active || water.final) return;
+  if (state.waterLevel >= 99.5) return;   // 已注满, 交给 waterFull
+  if (water.tween) water.tween.kill();
+  if (water.dissolving) undissolve();
+  /* 惯性上冲一小段 → 按水压感缓慢排空 */
+  var tl = gsap.timeline({ onUpdate: renderWater });
+  water.tween = tl;
+  tl.to(state, {
+    waterLevel: Math.min(100, state.waterLevel + 2.2),
+    duration: 0.32, ease: 'power2.out'
+  })
+  .add(function () {
+    if (state.waterLevel >= 99.5) waterFull();
+  })
+  .to(state, {
+    waterLevel: 0,
+    duration: function () { return Math.max(0.8, (state.waterLevel / 100) * (WATER_DRAIN_MS / 1000)); },
+    ease: 'power2.out',
+    onUpdate: renderWater,
+    onComplete: function () {
+      cleanupWater();
+      removeWaterOverlay();
+    }
+  });
+}
+
+/* 注满: 满水保持 0.9s → 跳转 Still_460_011 + 切换诺亚水蓝风格 */
+function waterFull() {
+  if (water.final) return;
+  if (water.tween) { water.tween.kill(); water.tween = null; }
+  water.final = true;
+  state.waterLevel = 100;
+  renderWater();
+  if (els.waterBody) {
+    gsap.fromTo(els.waterBody, { scaleY: 1.022 }, { scaleY: 1, duration: 0.55, ease: 'power2.out', overwrite: true });
+  }
+  setTimeout(function () {
+    /* 跳转前解除旧照片裁切, 让目标 CG 在满水后正常呈现 */
+    if (els.lbImg) gsap.set(els.lbImg, { clearProps: 'clipPath' });
+    if (els.waterBleed) gsap.set(els.waterBleed, { clearProps: 'clipPath', opacity: 0 });
+
+    var targetIdx = -1;
+    for (var i = 0; i < state.items.length; i++) {
+      if (state.items[i].id === NOAH_TARGET_ID) { targetIdx = i; break; }
+    }
+    if (targetIdx >= 0) {
+      state.activeCategory = 'all';
+      state.searchQuery = '';
+      if (els.search) els.search.value = '';
+      applyFilter();
+      for (var j = 0; j < state.filtered.length; j++) {
+        if (state.filtered[j].id === NOAH_TARGET_ID) { targetIdx = j; break; }
+      }
+      openLightbox(targetIdx);
+    }
+    /* 同步 URL, 刷新后仍停在这张 CG */
+    try {
+      w.history.replaceState(null, '', w.location.pathname + '?open=' + encodeURIComponent(NOAH_TARGET_ID));
+    } catch (e2) {}
+    /* 水层淡出 → 清理 (保持满水画面直到淡出结束) */
+    if (els.water) {
+      gsap.to(els.water, {
+        opacity: 0, duration: 0.9, ease: 'power2.out',
+        onComplete: function () {
+          cleanupWater();
+          removeWaterOverlay();
+        }
+      });
+    } else {
+      cleanupWater();
+    }
+    /* 启用诺亚水蓝风格 (点击亮暗色图标退出) */
+    if (MS && MS.setNoahStyle) {
+      MS.setNoahStyle(true);
+      MS.showToast('已进入诺亚水蓝风格 — 点击右上角亮暗色图标退出');
+    }
+  }, 900);
+}
+
+function cleanupWater() {
+  if (water.tween) { water.tween.kill(); water.tween = null; }
+  if (water.bubbleTimer) { water.bubbleTimer.kill(); water.bubbleTimer = null; }
+  if (water.pigmentTimer) { water.pigmentTimer.kill(); water.pigmentTimer = null; }
+  if (els.waterBleed && els.waterBleed._tween) {
+    els.waterBleed._tween.kill();
+    els.waterBleed._tween = null;
+  }
+  clearPigments();
+  water.active = false;
+  water.dissolving = false;
+  water.final = false;
+  state.waterLevel = 0;
+  if (els.lbImg) {
+    gsap.set(els.lbImg, { clearProps: 'clipPath,filter,transform,opacity' });
+  }
+  if (els.waterBleed) {
+    gsap.set(els.waterBleed, { clearProps: 'clipPath', filter: 'saturate(1) brightness(1)', opacity: 1 });
+  }
+  renderWater();
+}
+
+/* ── 初始化 ── */
   function init() {
     MS.restoreTheme();
     MS.injectBgLayer('bg-host');
@@ -162,12 +565,23 @@
       });
     }
 
-    // 键盘: ← → Esc
+    // 键盘: ← → Esc + 空格(诺亚注水彩蛋)
     d.addEventListener('keydown', function (e) {
       if (!els.lightbox || !els.lightbox.classList.contains('open')) return;
       if (e.key === 'Escape') { e.preventDefault(); closeLightbox(); }
       else if (e.key === 'ArrowLeft')  { e.preventDefault(); navLightbox(-1); }
       else if (e.key === 'ArrowRight') { e.preventDefault(); navLightbox(1); }
+      else if (e.code === 'Space') {
+        var it = currentLightboxItem();
+        if (it && it.id === 'Profile_Noah') {
+          e.preventDefault();
+          if (e.repeat) return;   // 按住重复触发只认第一次
+          waterKeyDown();
+        }
+      }
+    });
+    d.addEventListener('keyup', function (e) {
+      if (e.code === 'Space') waterKeyUp();
     });
 
     // Tab 切换
@@ -192,7 +606,7 @@
       .then(function (cfg) {
         state.r2Base = ((cfg && cfg.baseUrl) || '').replace(/\/+$/, '');
         state.webBase = ((cfg && cfg.webBaseUrl) || '').replace(/\/+$/, '');
-        return MS.fetchJSON('data/gallery-manifest.json', 15000);
+        return MS.fetchJSON('data/gallery-manifest.json?v=20260815a', 15000);
       })
       .then(function (data) {
         state.categories = (data.categories || []).slice();
@@ -426,6 +840,11 @@
     els.lbImg.src = src;
     els.lbImg.alt = title;
 
+    /* 水下溶解副本同步 (诺亚注水彩蛋用) */
+    if (els.waterBleed) {
+      els.waterBleed.style.backgroundImage = 'url("' + src.replace(/"/g, '%22') + '")';
+    }
+
     els.lbCaption.textContent = title;
     els.lbCounter.textContent = (idx + 1) + ' / ' + list.length;
 
@@ -476,11 +895,13 @@
   function navLightbox(dir) {
     var list = state.filtered;
     if (!list.length) return;
+    if (water.active) return;   // 注水进行中禁止切换
     state.lightboxIndex = (state.lightboxIndex + dir + list.length) % list.length;
     showLightboxImage(state.lightboxIndex);
   }
 
   function closeLightbox() {
+    if (water.active) { cleanupWater(); removeWaterOverlay(); }
     els.lightbox.classList.remove('open');
     els.lightbox.setAttribute('aria-hidden', 'true');
     d.body.style.overflow = '';

@@ -17,7 +17,7 @@
 - `/audio.html` → 语音和音乐（按场景 / 角色筛选语音，试听 BGM）
 - `/player.html` → 弹窗音乐播放器（由各页面通过 `player-launcher.js` 唤起）
 - `/archive.html` → 全素材库索引
-- `/credits.html` → 制作名单与免责声明
+- `/credits.html` → 制作名单与免责声明（含引用资源）
 - `/404.html` → 自定义 404 页
 
 仓库已启用 GitHub Pages（分支 `main`、目录 `/`）。如需自定义域名，可在 **Settings → Pages** 中配置。
@@ -45,7 +45,7 @@ python -m http.server 8000
 ├── audio.html              # 语音和音乐页
 ├── player.html             # 弹窗音乐播放器
 ├── archive.html            # 全素材库索引页
-├── credits.html            # 制作名单与免责声明
+├── credits.html            # 制作名单与免责声明（含引用资源）
 ├── 404.html                # 自定义 404 页
 ├── robots.txt              # 搜索引擎抓取规则
 ├── LICENSE                 # CC BY-NC-SA 4.0（游戏素材除外）
@@ -63,7 +63,7 @@ python -m http.server 8000
 │   ├── player.js           # 弹窗播放器逻辑
 │   ├── player-launcher.js  # 弹窗播放器启动器（各页面通过它唤起 player.html）
 │   ├── favicon.ico         # 网站图标（由主页小盒子图生成）
-│   ├── og-card.png         # 社交分享卡片（1200×630）
+│   ├── og-card.jpg         # 社交分享卡片（1200×630）
 │   ├── audio/              # 音频资源（BGM / SFX / 语音，.ogg）
 │   └── cg/                 # CG 图片资源（.webp，按分类子目录）
 │       ├── angle/          # 角度像
@@ -186,7 +186,7 @@ Trial 审判场景中存在多个异议选项，其中部分是**错误选项**�
 ## 许可与版权
 
 - 本仓库**自研的页面代码、脚本与社区标注**采用 [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)（署名—非商业性使用—相同方式共享）许可。
-- 《魔法少女的魔女审判》相关的**剧情数据、CG、音频等素材版权归 Acacia / Re,AER 及中文发行方所有，不在上述许可范围内**。本站为粉丝整理的非官方资料站，完整免责声明见 [credits.html](credits.html)。
+- 《魔法少女的魔女审判》相关的**剧情数据、CG、音频等素材版权归 Re,AER LLC / Acacia 及中文发行方所有，不在上述许可范围内**。本站为粉丝整理的非官方资料站，完整免责声明与引用资源见 [credits.html](credits.html)。
 
 ## 意见箱反馈
 
