@@ -38,3 +38,12 @@ witches_trial_viewer.html
 Thumbs.db
 __pycache__/
 *.pyc
+
+# 仅本机维护（不入库）
+.github/
+.well-known/
+tools/
+deploy.bat
+promo-standalone/
+CAMERA_PLAN_V3.md
+SAAS_ANIMATION_PLAN.md
