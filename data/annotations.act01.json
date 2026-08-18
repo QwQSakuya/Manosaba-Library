@@ -1,6 +1,6 @@
 {
-  "_exportedAt": "2026-08-18T07:29:29.409Z",
-  "_sourceFileCount": 151,
+  "_exportedAt": "2026-08-18T08:21:02.678Z",
+  "_sourceFileCount": 152,
   "_sourceFiles": [
     "Act01_Chapter01_Trial01",
     "Act02_Chapter03_Trial03",
@@ -11,15 +11,17 @@
     "Act02_Chapter06_Trial00",
     "Act01_Chapter04_Trial09",
     "Act01_Chapter03_Trial07",
+    "Act01_Chapter01_Trial03",
     "Act01_Chapter01_Trial07",
     "Act02_Chapter05_Trial01",
+    "Act01_Chapter01_Trial10",
     "Act01_Chapter01_Trial06",
     "Act01_Chapter01_Trial04",
     "Act02_Chapter03_Trial12",
     "Act02_Chapter05_Trial02",
     "Act02_Chapter02_Trial03",
     "Act01_Chapter02_Trial04",
-    "Act01_Chapter01_Trial10",
+    "Act02_Chapter01_Trial09",
     "Act01_Chapter05_Trial02",
     "Act02_Chapter01_Trial08",
     "Act01_Chapter02_Trial05",
@@ -45,7 +47,6 @@
     "Act02_Chapter06_Trial07",
     "Act01_Chapter05_Trial07",
     "Act01_Chapter04_Trial04",
-    "Act02_Chapter05_Trial28",
     "Act02_Chapter06_Trial06",
     "Act02_Chapter05_Trial11",
     "Act02_Chapter05_Trial16",
@@ -91,7 +92,6 @@
     "Act01_Chapter01_Trial05",
     "Act01_Chapter01_Trial08",
     "Act01_Chapter04_Trial07",
-    "Act02_Chapter05_Trial15",
     "Act02_Chapter02_Trial09",
     "Act02_Chapter04_Trial10",
     "Act01_Chapter01_Bad07",
@@ -114,9 +114,10 @@
     "Act02_Chapter01_Trial10",
     "Act02_Chapter04_Trial02",
     "Act02_Chapter05_Trial19",
-    "Act01_Chapter01_Trial03",
+    "Act02_Chapter05_Trial15",
     "Act02_Chapter03_Trial11",
     "Act01_Chapter03_Trial06",
+    "Act01_Chapter01_Adv03",
     "Act02_Chapter02_Trial11",
     "Act01_Chapter01_Trial15",
     "Act02_Chapter06_Trial03",
@@ -136,7 +137,7 @@
     "Act01_Chapter04_Trial11",
     "Act02_Chapter05_Trial24",
     "Act02_Chapter05_Trial17",
-    "Act02_Chapter01_Trial09",
+    "Act02_Chapter05_Trial28",
     "Act02_Chapter03_Trial01",
     "Act01_Chapter03_Trial05",
     "Act02_Chapter04_Trial04",
@@ -745,6 +746,119 @@
         "0103Trial07_Choice010"
       ]
     },
+    "0101Trial03_Choice001": {
+      "isCorrect": false,
+      "resultRange": [
+        "0101Trial03_Ema004",
+        "0101Trial03_Ema007"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_01_03_01",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0101Trial03_Choice002": {
+      "isCorrect": true,
+      "resultRange": [
+        "0101Trial03_Ema018",
+        "0101Trial03_Ema019"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_01_03_02",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [
+        {
+          "evidence": "地板的划痕",
+          "isCorrect": true,
+          "isSpecial": false,
+          "resultRange": [
+            "0101Trial03_Margo014",
+            "0101Trial03_Ema022"
+          ],
+          "childBranches": []
+        }
+      ],
+      "siblingChoiceIds": []
+    },
+    "0101Trial03_Choice003": {
+      "isCorrect": false,
+      "resultRange": [
+        "0101Trial03_Ema008",
+        "0101Trial03_Ema012"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_01_03_03",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0101Trial03_Choice004": {
+      "isCorrect": false,
+      "resultRange": [
+        "0101Trial03_Ema013",
+        "0101Trial03_Ema017"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_01_03_04",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0101Trial03_Choice005": {
+      "isCorrect": true,
+      "resultRange": [
+        "0101Trial03_Ema027",
+        "0101Trial03_Margo035"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": null,
+      "parentChoice": "0101Trial03_Choice002__ev_0",
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0101Trial03_Choice006": {
+      "isCorrect": false,
+      "resultRange": [
+        "0101Trial03_Ema023",
+        "0101Trial03_Ema026"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": null,
+      "parentChoice": "0101Trial03_Choice002__ev_0",
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
     "0101Trial07_Choice001": {
       "isCorrect": false,
       "resultRange": [
@@ -785,7 +899,19 @@
             "0101Trial07_Coco027",
             "0101Trial07_Ema043"
           ],
-          "childBranches": []
+          "childBranches": [
+            {
+              "kind": "evidence",
+              "evidence": "喷漆罐",
+              "isCorrect": true,
+              "isSpecial": false,
+              "resultRange": [
+                "0101Trial07_Ema044",
+                "0101Trial07_Ema049"
+              ],
+              "childBranches": []
+            }
+          ]
         },
         {
           "evidence": "城崎诺亚尸体照片",
@@ -793,27 +919,7 @@
           "isSpecial": false,
           "resultRange": [
             "0101Trial07_Coco024",
-            "0101Trial07_Ema034"
-          ],
-          "childBranches": []
-        },
-        {
-          "evidence": "城崎诺亚尸体照片",
-          "isCorrect": false,
-          "isSpecial": false,
-          "resultRange": [
-            "0101Trial07_Coco026",
-            "0101Trial07_Ema036"
-          ],
-          "childBranches": []
-        },
-        {
-          "evidence": "喷漆罐",
-          "isCorrect": true,
-          "isSpecial": false,
-          "resultRange": [
-            "0101Trial07_Ema044",
-            "0101Trial07_Ema049"
+            "0101Trial07_Coco028"
           ],
           "childBranches": []
         }
@@ -920,7 +1026,7 @@
       "isBadEnd": false,
       "badEndId": null,
       "optionId": null,
-      "parentChoice": "0101Trial07_Choice002",
+      "parentChoice": "0101Trial07_Choice002__ev_0__ev_0",
       "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
@@ -937,7 +1043,7 @@
       "isBadEnd": false,
       "badEndId": null,
       "optionId": null,
-      "parentChoice": "0101Trial07_Choice002",
+      "parentChoice": "0101Trial07_Choice002__ev_0__ev_0",
       "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
@@ -954,7 +1060,7 @@
       "isBadEnd": false,
       "badEndId": null,
       "optionId": null,
-      "parentChoice": "0101Trial07_Choice002",
+      "parentChoice": "0101Trial07_Choice002__ev_0__ev_0",
       "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
@@ -1006,6 +1112,202 @@
       "badEndId": null,
       "optionId": null,
       "parentChoice": "0101Trial07_Choice009",
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0101Trial10_Choice001": {
+      "isCorrect": false,
+      "resultRange": [
+        "0101Trial10_Ema004",
+        "0101Trial10_Ema007"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_01_10_01",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0101Trial10_Choice002": {
+      "isCorrect": false,
+      "resultRange": [
+        "0101Trial10_Ema008",
+        "0101Trial10_Ema011"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_01_10_02",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0101Trial10_Choice003": {
+      "isCorrect": false,
+      "resultRange": [
+        "0101Trial10_Ema012",
+        "0101Trial10_Ema015"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_01_10_03",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0101Trial10_Choice004": {
+      "isCorrect": false,
+      "resultRange": [
+        "0101Trial10_Ema016",
+        "0101Trial10_Ema017"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_01_10_04",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [
+        {
+          "evidence": "无",
+          "isCorrect": false,
+          "isSpecial": false,
+          "resultRange": [
+            "0101Trial10_Leia018",
+            "0101Trial10_Ema020"
+          ],
+          "childBranches": []
+        }
+      ],
+      "siblingChoiceIds": []
+    },
+    "0101Trial10_Choice005": {
+      "isCorrect": false,
+      "resultRange": [
+        "0101Trial10_Ema021",
+        "0101Trial10_Ema022"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_01_10_05",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [
+        {
+          "evidence": "无",
+          "isCorrect": false,
+          "isSpecial": false,
+          "resultRange": [
+            "0101Trial10_Leia020",
+            "0101Trial10_Ema024"
+          ],
+          "childBranches": []
+        }
+      ],
+      "siblingChoiceIds": []
+    },
+    "0101Trial10_Choice006": {
+      "isCorrect": true,
+      "resultRange": [
+        "0101Trial10_Ema025",
+        "0101Trial10_Ema026"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_01_01_10_06",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [
+        {
+          "evidence": "沾血的发带",
+          "isCorrect": false,
+          "isSpecial": false,
+          "resultRange": [
+            "0101Trial10_Leia022",
+            "0101Trial10_Ema028"
+          ],
+          "childBranches": []
+        },
+        {
+          "evidence": "沾血的发带",
+          "isCorrect": true,
+          "isSpecial": false,
+          "resultRange": [
+            "0101Trial10_Nanoka001",
+            "0101Trial10_Ema034"
+          ],
+          "childBranches": []
+        }
+      ],
+      "siblingChoiceIds": []
+    },
+    "0101Trial10_Choice007": {
+      "isCorrect": false,
+      "resultRange": [
+        "0101Trial10_Ema035",
+        "0101Trial10_Ema039"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": null,
+      "parentChoice": "0101Trial10_Choice006__ev_1",
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0101Trial10_Choice008": {
+      "isCorrect": false,
+      "resultRange": [
+        "0101Trial10_Ema040",
+        "0101Trial10_Ema044"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": null,
+      "parentChoice": "0101Trial10_Choice006__ev_1",
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0101Trial10_Choice009": {
+      "isCorrect": true,
+      "resultRange": [
+        "0101Trial10_Ema045",
+        "0101Trial10_Leia038"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": null,
+      "parentChoice": "0101Trial10_Choice006__ev_1",
       "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
@@ -1266,202 +1568,6 @@
           "childBranches": []
         }
       ],
-      "siblingChoiceIds": []
-    },
-    "0101Trial10_Choice001": {
-      "isCorrect": false,
-      "resultRange": [
-        "0101Trial10_Ema004",
-        "0101Trial10_Ema007"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_01_10_01",
-      "parentChoice": null,
-      "requiresChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0101Trial10_Choice002": {
-      "isCorrect": false,
-      "resultRange": [
-        "0101Trial10_Ema008",
-        "0101Trial10_Ema011"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_01_10_02",
-      "parentChoice": null,
-      "requiresChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0101Trial10_Choice003": {
-      "isCorrect": false,
-      "resultRange": [
-        "0101Trial10_Ema012",
-        "0101Trial10_Ema015"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_01_10_03",
-      "parentChoice": null,
-      "requiresChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0101Trial10_Choice004": {
-      "isCorrect": false,
-      "resultRange": [
-        "0101Trial10_Ema016",
-        "0101Trial10_Ema017"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_01_10_04",
-      "parentChoice": null,
-      "requiresChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [
-        {
-          "evidence": "无",
-          "isCorrect": false,
-          "isSpecial": false,
-          "resultRange": [
-            "0101Trial10_Leia018",
-            "0101Trial10_Ema020"
-          ],
-          "childBranches": []
-        }
-      ],
-      "siblingChoiceIds": []
-    },
-    "0101Trial10_Choice005": {
-      "isCorrect": false,
-      "resultRange": [
-        "0101Trial10_Ema021",
-        "0101Trial10_Ema022"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_01_10_05",
-      "parentChoice": null,
-      "requiresChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [
-        {
-          "evidence": "无",
-          "isCorrect": false,
-          "isSpecial": false,
-          "resultRange": [
-            "0101Trial10_Leia020",
-            "0101Trial10_Ema024"
-          ],
-          "childBranches": []
-        }
-      ],
-      "siblingChoiceIds": []
-    },
-    "0101Trial10_Choice006": {
-      "isCorrect": true,
-      "resultRange": [
-        "0101Trial10_Ema025",
-        "0101Trial10_Ema026"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_01_10_06",
-      "parentChoice": null,
-      "requiresChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [
-        {
-          "evidence": "沾血的发带",
-          "isCorrect": false,
-          "isSpecial": false,
-          "resultRange": [
-            "0101Trial10_Leia022",
-            "0101Trial10_Ema028"
-          ],
-          "childBranches": []
-        },
-        {
-          "evidence": "沾血的发带",
-          "isCorrect": true,
-          "isSpecial": false,
-          "resultRange": [
-            "0101Trial10_Nanoka001",
-            "0101Trial10_Ema034"
-          ],
-          "childBranches": []
-        }
-      ],
-      "siblingChoiceIds": []
-    },
-    "0101Trial10_Choice007": {
-      "isCorrect": false,
-      "resultRange": [
-        "0101Trial10_Ema035",
-        "0101Trial10_Ema039"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": null,
-      "parentChoice": "0101Trial10_Choice006",
-      "requiresChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0101Trial10_Choice008": {
-      "isCorrect": false,
-      "resultRange": [
-        "0101Trial10_Ema040",
-        "0101Trial10_Ema044"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": null,
-      "parentChoice": "0101Trial10_Choice006",
-      "requiresChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0101Trial10_Choice009": {
-      "isCorrect": true,
-      "resultRange": [
-        "0101Trial10_Ema045",
-        "0101Trial10_Leia038"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": null,
-      "parentChoice": "0101Trial10_Choice006",
-      "requiresChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
       "siblingChoiceIds": []
     },
     "0105Trial02_Choice001": {
@@ -4425,7 +4531,7 @@
       "isBadEnd": false,
       "badEndId": null,
       "optionId": null,
-      "parentChoice": "0101Trial14_Choice001",
+      "parentChoice": "0101Trial14_Choice001__ev_2",
       "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
@@ -4463,7 +4569,7 @@
       "isBadEnd": false,
       "badEndId": null,
       "optionId": null,
-      "parentChoice": "0101Trial14_Choice001",
+      "parentChoice": "0101Trial14_Choice001__ev_2",
       "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
@@ -4480,7 +4586,7 @@
       "isBadEnd": false,
       "badEndId": null,
       "optionId": null,
-      "parentChoice": "0101Trial14_Choice001",
+      "parentChoice": "0101Trial14_Choice001__ev_2",
       "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
@@ -4664,21 +4770,22 @@
             "0101Trial14_Ema073",
             "0101Trial14_Ema078"
           ],
-          "childBranches": []
+          "childBranches": [
+            {
+              "kind": "evidence",
+              "evidence": "水果的照片",
+              "isCorrect": true,
+              "isSpecial": false,
+              "resultRange": [
+                "0101Trial14_Miria006",
+                "0101Trial14_AnAn005"
+              ],
+              "childBranches": []
+            }
+          ]
         }
       ],
-      "evidenceBranches": [
-        {
-          "evidence": "水果的照片",
-          "isCorrect": true,
-          "isSpecial": false,
-          "resultRange": [
-            "0101Trial14_Miria006",
-            "0101Trial14_AnAn005"
-          ],
-          "childBranches": []
-        }
-      ],
+      "evidenceBranches": [],
       "siblingChoiceIds": []
     },
     "0103Trial11_Choice001": {
@@ -6428,119 +6535,6 @@
       "badEndId": null,
       "optionId": null,
       "parentChoice": "0101Trial11_Choice003",
-      "requiresChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0101Trial03_Choice001": {
-      "isCorrect": false,
-      "resultRange": [
-        "0101Trial03_Ema004",
-        "0101Trial03_Ema007"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_01_03_01",
-      "parentChoice": null,
-      "requiresChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0101Trial03_Choice002": {
-      "isCorrect": true,
-      "resultRange": [
-        "0101Trial03_Ema018",
-        "0101Trial03_Ema019"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_01_03_02",
-      "parentChoice": null,
-      "requiresChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [
-        {
-          "evidence": "地板的划痕",
-          "isCorrect": true,
-          "isSpecial": false,
-          "resultRange": [
-            "0101Trial03_Margo014",
-            "0101Trial03_Ema022"
-          ],
-          "childBranches": []
-        }
-      ],
-      "siblingChoiceIds": []
-    },
-    "0101Trial03_Choice003": {
-      "isCorrect": false,
-      "resultRange": [
-        "0101Trial03_Ema008",
-        "0101Trial03_Ema012"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_01_03_03",
-      "parentChoice": null,
-      "requiresChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0101Trial03_Choice004": {
-      "isCorrect": false,
-      "resultRange": [
-        "0101Trial03_Ema013",
-        "0101Trial03_Ema017"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_01_01_03_04",
-      "parentChoice": null,
-      "requiresChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0101Trial03_Choice005": {
-      "isCorrect": true,
-      "resultRange": [
-        "0101Trial03_Ema027",
-        "0101Trial03_Margo035"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": null,
-      "parentChoice": "0101Trial03_Choice002",
-      "requiresChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0101Trial03_Choice006": {
-      "isCorrect": false,
-      "resultRange": [
-        "0101Trial03_Ema023",
-        "0101Trial03_Ema026"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": null,
-      "parentChoice": "0101Trial03_Choice005",
       "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
@@ -8630,7 +8624,7 @@
       "isBadEnd": false,
       "badEndId": null,
       "optionId": null,
-      "parentChoice": "0101Trial09_Choice008",
+      "parentChoice": "0101Trial09_Choice008__ev_0",
       "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
@@ -8647,7 +8641,7 @@
       "isBadEnd": false,
       "badEndId": null,
       "optionId": null,
-      "parentChoice": "0101Trial09_Choice008",
+      "parentChoice": "0101Trial09_Choice008__ev_0",
       "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],
@@ -8664,7 +8658,7 @@
       "isBadEnd": false,
       "badEndId": null,
       "optionId": null,
-      "parentChoice": "0101Trial09_Choice008",
+      "parentChoice": "0101Trial09_Choice008__ev_0",
       "requiresChoice": null,
       "witness": "",
       "witnessBranches": [],

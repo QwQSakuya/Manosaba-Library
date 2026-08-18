@@ -1,6 +1,6 @@
 {
-  "_exportedAt": "2026-08-18T07:29:29.409Z",
-  "_sourceFileCount": 151,
+  "_exportedAt": "2026-08-18T08:21:02.678Z",
+  "_sourceFileCount": 152,
   "_sourceFiles": [
     "Act01_Chapter01_Trial01",
     "Act02_Chapter03_Trial03",
@@ -11,15 +11,17 @@
     "Act02_Chapter06_Trial00",
     "Act01_Chapter04_Trial09",
     "Act01_Chapter03_Trial07",
+    "Act01_Chapter01_Trial03",
     "Act01_Chapter01_Trial07",
     "Act02_Chapter05_Trial01",
+    "Act01_Chapter01_Trial10",
     "Act01_Chapter01_Trial06",
     "Act01_Chapter01_Trial04",
     "Act02_Chapter03_Trial12",
     "Act02_Chapter05_Trial02",
     "Act02_Chapter02_Trial03",
     "Act01_Chapter02_Trial04",
-    "Act01_Chapter01_Trial10",
+    "Act02_Chapter01_Trial09",
     "Act01_Chapter05_Trial02",
     "Act02_Chapter01_Trial08",
     "Act01_Chapter02_Trial05",
@@ -45,7 +47,6 @@
     "Act02_Chapter06_Trial07",
     "Act01_Chapter05_Trial07",
     "Act01_Chapter04_Trial04",
-    "Act02_Chapter05_Trial28",
     "Act02_Chapter06_Trial06",
     "Act02_Chapter05_Trial11",
     "Act02_Chapter05_Trial16",
@@ -91,7 +92,6 @@
     "Act01_Chapter01_Trial05",
     "Act01_Chapter01_Trial08",
     "Act01_Chapter04_Trial07",
-    "Act02_Chapter05_Trial15",
     "Act02_Chapter02_Trial09",
     "Act02_Chapter04_Trial10",
     "Act01_Chapter01_Bad07",
@@ -114,9 +114,10 @@
     "Act02_Chapter01_Trial10",
     "Act02_Chapter04_Trial02",
     "Act02_Chapter05_Trial19",
-    "Act01_Chapter01_Trial03",
+    "Act02_Chapter05_Trial15",
     "Act02_Chapter03_Trial11",
     "Act01_Chapter03_Trial06",
+    "Act01_Chapter01_Adv03",
     "Act02_Chapter02_Trial11",
     "Act01_Chapter01_Trial15",
     "Act02_Chapter06_Trial03",
@@ -136,7 +137,7 @@
     "Act01_Chapter04_Trial11",
     "Act02_Chapter05_Trial24",
     "Act02_Chapter05_Trial17",
-    "Act02_Chapter01_Trial09",
+    "Act02_Chapter05_Trial28",
     "Act02_Chapter03_Trial01",
     "Act01_Chapter03_Trial05",
     "Act02_Chapter04_Trial04",
@@ -734,6 +735,102 @@
       "witness": "",
       "witnessBranches": [],
       "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0201Trial09_Choice001": {
+      "isCorrect": false,
+      "resultRange": [
+        "0201Trial09_Hiro006",
+        "0201Trial09_Hiro012"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_02_01_09_01",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": [
+        "0201Trial09_Choice002"
+      ]
+    },
+    "0201Trial09_Choice002": {
+      "isCorrect": false,
+      "resultRange": [
+        "0201Trial09_Hiro013",
+        "0201Trial09_Hiro017"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_02_01_09_01",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": [
+        "0201Trial09_Choice001"
+      ]
+    },
+    "0201Trial09_Choice003": {
+      "isCorrect": true,
+      "resultRange": [
+        "0201Trial09_Hiro018",
+        "0201Trial09_Hiro024"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_02_01_09_02",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "昏倒的希罗",
+      "witnessBranches": [],
+      "evidenceBranches": [
+        {
+          "evidence": "梅露露的尸体",
+          "isCorrect": false,
+          "isSpecial": true,
+          "resultRange": [
+            "0201Trial09_Hiro025",
+            "0201Trial09_Hiro028"
+          ],
+          "childBranches": []
+        },
+        {
+          "evidence": "安眠药",
+          "isCorrect": false,
+          "isSpecial": true,
+          "resultRange": [
+            "0201Trial09_Hiro029",
+            "0201Trial09_Hiro032"
+          ],
+          "childBranches": []
+        },
+        {
+          "evidence": "昏倒的希罗",
+          "isCorrect": true,
+          "isSpecial": false,
+          "resultRange": [
+            "0201Trial09_Ema001",
+            "0201Trial09_Margo025"
+          ],
+          "childBranches": []
+        },
+        {
+          "evidence": "昏倒的希罗",
+          "isCorrect": false,
+          "isSpecial": false,
+          "resultRange": [
+            "0201Trial09_Leia007",
+            "0201Trial09_Hiro035"
+          ],
+          "childBranches": []
+        }
+      ],
       "siblingChoiceIds": []
     },
     "0201Trial08_Choice001": {
@@ -2307,101 +2404,6 @@
       "isBadEnd": false,
       "badEndId": null,
       "optionId": "Objection_02_06_07_06",
-      "parentChoice": null,
-      "requiresChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0205Trial28_Choice001": {
-      "isCorrect": true,
-      "resultRange": [
-        "0205Trial28_Hiro016",
-        "0205Trial28_Hiro018"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_02_05_28_01",
-      "parentChoice": null,
-      "requiresChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [
-        {
-          "evidence": "原罪：受厌恶之人",
-          "isCorrect": false,
-          "isSpecial": false,
-          "resultRange": [
-            "0205Trial28_Hiro019",
-            "0205Trial28_Hiro020"
-          ],
-          "childBranches": []
-        },
-        {
-          "evidence": "原罪：受厌恶之人",
-          "isCorrect": true,
-          "isSpecial": false,
-          "resultRange": [
-            "0205Trial28_Hiro021",
-            "0205Trial28_Hiro033"
-          ],
-          "childBranches": [
-            {
-              "kind": "evidence",
-              "evidence": "钢笔",
-              "isCorrect": false,
-              "isSpecial": false,
-              "resultRange": [
-                "0205Trial28_Hiro034",
-                "0205Trial28_Hiro036"
-              ],
-              "childBranches": []
-            },
-            {
-              "kind": "evidence",
-              "evidence": "钢笔",
-              "isCorrect": true,
-              "isSpecial": false,
-              "resultRange": [
-                "0205Trial28_Hiro037",
-                "0205Trial28_Hiro041"
-              ],
-              "childBranches": []
-            }
-          ]
-        }
-      ],
-      "siblingChoiceIds": []
-    },
-    "0205Trial28_Choice002": {
-      "isCorrect": false,
-      "resultRange": [
-        "0205Trial28_Hiro009",
-        "0205Trial28_Hiro012"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_02_05_28_02",
-      "parentChoice": null,
-      "requiresChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0205Trial28_Choice003": {
-      "isCorrect": false,
-      "resultRange": [
-        "0205Trial28_Hiro013",
-        "0205Trial28_Hiro015"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_02_05_28_03",
       "parentChoice": null,
       "requiresChoice": null,
       "witness": "",
@@ -5043,115 +5045,6 @@
       "evidenceBranches": [],
       "siblingChoiceIds": []
     },
-    "0205Trial15_Choice001": {
-      "isCorrect": false,
-      "resultRange": [
-        "0205Trial15_Hiro005",
-        "0205Trial15_Hiro012"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_02_05_15_01",
-      "parentChoice": null,
-      "requiresChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0205Trial15_Choice002": {
-      "isCorrect": false,
-      "resultRange": [
-        "0205Trial15_Hiro013",
-        "0205Trial15_Hiro018"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_02_05_15_02",
-      "parentChoice": null,
-      "requiresChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0205Trial15_Choice003": {
-      "isCorrect": true,
-      "resultRange": [
-        "0205Trial15_Hiro025",
-        "0205Trial15_Hiro030"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_02_05_15_03",
-      "parentChoice": null,
-      "requiresChoice": null,
-      "witness": "泽渡可可",
-      "witnessBranches": [
-        {
-          "witness": "冰上梅露露",
-          "isCorrect": false,
-          "isSpecial": true,
-          "resultRange": [
-            "0205Trial15_Hiro031",
-            "0205Trial15_Hiro034"
-          ],
-          "childBranches": []
-        },
-        {
-          "witness": "樱羽艾玛",
-          "isCorrect": false,
-          "isSpecial": true,
-          "resultRange": [
-            "0205Trial15_Hiro035",
-            "0205Trial15_Hiro037"
-          ],
-          "childBranches": []
-        },
-        {
-          "witness": "泽渡可可",
-          "isCorrect": false,
-          "isSpecial": false,
-          "resultRange": [
-            "0205Trial15_AnAn023",
-            "0205Trial15_Hiro039"
-          ],
-          "childBranches": []
-        },
-        {
-          "witness": "泽渡可可",
-          "isCorrect": true,
-          "isSpecial": false,
-          "resultRange": [
-            "0205Trial15_Hiro040",
-            "0205Trial15_AnAn036"
-          ],
-          "childBranches": []
-        }
-      ],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
-    "0205Trial15_Choice004": {
-      "isCorrect": false,
-      "resultRange": [
-        "0205Trial15_Hiro019",
-        "0205Trial15_Hiro024"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_02_05_15_04",
-      "parentChoice": null,
-      "requiresChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": []
-    },
     "0202Trial09_Choice001": {
       "isCorrect": "neutral",
       "resultRange": [
@@ -6768,6 +6661,115 @@
       "evidenceBranches": [],
       "siblingChoiceIds": []
     },
+    "0205Trial15_Choice001": {
+      "isCorrect": false,
+      "resultRange": [
+        "0205Trial15_Hiro005",
+        "0205Trial15_Hiro012"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_02_05_15_01",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0205Trial15_Choice002": {
+      "isCorrect": false,
+      "resultRange": [
+        "0205Trial15_Hiro013",
+        "0205Trial15_Hiro018"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_02_05_15_02",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0205Trial15_Choice003": {
+      "isCorrect": true,
+      "resultRange": [
+        "0205Trial15_Hiro025",
+        "0205Trial15_Hiro030"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_02_05_15_03",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "泽渡可可",
+      "witnessBranches": [
+        {
+          "witness": "冰上梅露露",
+          "isCorrect": false,
+          "isSpecial": true,
+          "resultRange": [
+            "0205Trial15_Hiro031",
+            "0205Trial15_Hiro034"
+          ],
+          "childBranches": []
+        },
+        {
+          "witness": "樱羽艾玛",
+          "isCorrect": false,
+          "isSpecial": true,
+          "resultRange": [
+            "0205Trial15_Hiro035",
+            "0205Trial15_Hiro037"
+          ],
+          "childBranches": []
+        },
+        {
+          "witness": "泽渡可可",
+          "isCorrect": false,
+          "isSpecial": false,
+          "resultRange": [
+            "0205Trial15_AnAn023",
+            "0205Trial15_Hiro039"
+          ],
+          "childBranches": []
+        },
+        {
+          "witness": "泽渡可可",
+          "isCorrect": true,
+          "isSpecial": false,
+          "resultRange": [
+            "0205Trial15_Hiro040",
+            "0205Trial15_AnAn036"
+          ],
+          "childBranches": []
+        }
+      ],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0205Trial15_Choice004": {
+      "isCorrect": false,
+      "resultRange": [
+        "0205Trial15_Hiro019",
+        "0205Trial15_Hiro024"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_02_05_15_04",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
     "0203Trial11_Choice001": {
       "isCorrect": false,
       "resultRange": [
@@ -7818,100 +7820,99 @@
       "evidenceBranches": [],
       "siblingChoiceIds": []
     },
-    "0201Trial09_Choice001": {
-      "isCorrect": false,
-      "resultRange": [
-        "0201Trial09_Hiro006",
-        "0201Trial09_Hiro012"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_02_01_09_01",
-      "parentChoice": null,
-      "requiresChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": [
-        "0201Trial09_Choice002"
-      ]
-    },
-    "0201Trial09_Choice002": {
-      "isCorrect": false,
-      "resultRange": [
-        "0201Trial09_Hiro013",
-        "0201Trial09_Hiro017"
-      ],
-      "note": "",
-      "isBadEnd": false,
-      "badEndId": null,
-      "optionId": "Objection_02_01_09_01",
-      "parentChoice": null,
-      "requiresChoice": null,
-      "witness": "",
-      "witnessBranches": [],
-      "evidenceBranches": [],
-      "siblingChoiceIds": [
-        "0201Trial09_Choice001"
-      ]
-    },
-    "0201Trial09_Choice003": {
+    "0205Trial28_Choice001": {
       "isCorrect": true,
       "resultRange": [
-        "0201Trial09_Hiro018",
-        "0201Trial09_Hiro024"
+        "0205Trial28_Hiro016",
+        "0205Trial28_Hiro018"
       ],
       "note": "",
       "isBadEnd": false,
       "badEndId": null,
-      "optionId": "Objection_02_01_09_02",
+      "optionId": "Objection_02_05_28_01",
       "parentChoice": null,
       "requiresChoice": null,
-      "witness": "昏倒的希罗",
+      "witness": "",
       "witnessBranches": [],
       "evidenceBranches": [
         {
-          "evidence": "梅露露的尸体",
+          "evidence": "原罪：受厌恶之人",
           "isCorrect": false,
-          "isSpecial": true,
+          "isSpecial": false,
           "resultRange": [
-            "0201Trial09_Hiro025",
-            "0201Trial09_Hiro028"
+            "0205Trial28_Hiro019",
+            "0205Trial28_Hiro020"
           ],
           "childBranches": []
         },
         {
-          "evidence": "安眠药",
-          "isCorrect": false,
-          "isSpecial": true,
-          "resultRange": [
-            "0201Trial09_Hiro029",
-            "0201Trial09_Hiro032"
-          ],
-          "childBranches": []
-        },
-        {
-          "evidence": "昏倒的希罗",
+          "evidence": "原罪：受厌恶之人",
           "isCorrect": true,
           "isSpecial": false,
           "resultRange": [
-            "0201Trial09_Ema001",
-            "0201Trial09_Margo025"
+            "0205Trial28_Hiro021",
+            "0205Trial28_Hiro033"
           ],
-          "childBranches": []
-        },
-        {
-          "evidence": "昏倒的希罗",
-          "isCorrect": false,
-          "isSpecial": false,
-          "resultRange": [
-            "0201Trial09_Leia007",
-            "0201Trial09_Hiro035"
-          ],
-          "childBranches": []
+          "childBranches": [
+            {
+              "kind": "evidence",
+              "evidence": "钢笔",
+              "isCorrect": false,
+              "isSpecial": false,
+              "resultRange": [
+                "0205Trial28_Hiro034",
+                "0205Trial28_Hiro036"
+              ],
+              "childBranches": []
+            },
+            {
+              "kind": "evidence",
+              "evidence": "钢笔",
+              "isCorrect": true,
+              "isSpecial": false,
+              "resultRange": [
+                "0205Trial28_Hiro037",
+                "0205Trial28_Hiro041"
+              ],
+              "childBranches": []
+            }
+          ]
         }
       ],
+      "siblingChoiceIds": []
+    },
+    "0205Trial28_Choice002": {
+      "isCorrect": false,
+      "resultRange": [
+        "0205Trial28_Hiro009",
+        "0205Trial28_Hiro012"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_02_05_28_02",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
+      "siblingChoiceIds": []
+    },
+    "0205Trial28_Choice003": {
+      "isCorrect": false,
+      "resultRange": [
+        "0205Trial28_Hiro013",
+        "0205Trial28_Hiro015"
+      ],
+      "note": "",
+      "isBadEnd": false,
+      "badEndId": null,
+      "optionId": "Objection_02_05_28_03",
+      "parentChoice": null,
+      "requiresChoice": null,
+      "witness": "",
+      "witnessBranches": [],
+      "evidenceBranches": [],
       "siblingChoiceIds": []
     },
     "0203Trial01_Choice001": {
