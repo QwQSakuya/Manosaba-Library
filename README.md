@@ -22,6 +22,16 @@
 
 仓库已启用 GitHub Pages（分支 `main`、目录 `/`）。如需自定义域名，可在 **Settings → Pages** 中配置。
 
+## 一键推送部署
+
+本地改完内容后，双击根目录的 `deploy.bat`（或在仓库根目录执行 `.\tools\deploy.ps1 "更新说明"`），脚本会自动完成：
+
+1. 提交本地改动（没写说明时自动生成时间戳）
+2. 拉取并合并协作者的远程改动，再推送到 GitHub
+3. 把网页 / 素材 / 数据同步到 Cloudflare R2 主站
+
+R2 凭证存放在仓库外的 `E:\project\.r2tool\r2-credentials.ps1`，不会随仓库公开。协作者只需按正常方式提交 PR / push 即可，不需要运行本脚本。
+
 ## 本地预览
 
 由于数据通过 `fetch` 加载，**不能直接双击 `index.html` 打开**（浏览器禁止 `file://` 下的 fetch）。需启动本地服务器：
@@ -91,7 +101,9 @@ python -m http.server 8000
 │   └── r2-config.json          # R2 素材桶公网地址
 ├── tools/
 │   ├── import_story.py         # 剧本导入：日常剧情 + Bad End → actXX.json
-│   └── minify-data.mjs         # 发布前压缩剧情数据 + 拆分语音映射
+│   ├── minify-data.mjs         # 发布前压缩剧情数据 + 拆分语音映射
+│   ├── sync_r2.py              # 同步网页 / 素材 / 数据到 Cloudflare R2
+│   └── deploy.ps1              # 一键推送脚本（提交 + push + R2 同步）
 ├── .github/
 │   ├── workflows/validate.yml  # 数据校验 CI（push / PR 自动运行）
 │   └── scripts/validate-data.mjs
