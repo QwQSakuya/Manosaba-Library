@@ -332,7 +332,7 @@ function buildRouteFilters() {
 const container = document.getElementById('canvas-container');
 const canvas = document.getElementById('canvas');
 
-let viewX = 500, viewY = 460;   // 摄像机在画布坐标系中的聚焦点 (初始居中于第一章场景)
+let viewX = 2300, viewY = 460;  // 摄像机聚焦点 (初始居中于第一案场景, 跳过 CommonBad 线)
 let zoom = 1.0;                  // 连续缩放值 [0.4, 2.8]
 const ZOOM_MIN = 0.4, ZOOM_MAX = 2.8;
 let _connectors = [];             // 连接线引用表 [{el, _fEl, _tEl, fromId, toId}]
