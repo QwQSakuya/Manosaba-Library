@@ -1,0 +1,305 @@
+{
+  "total": 136,
+  "named": 130,
+  "evidence": [
+    {
+      "id": "Clue_010_001",
+      "nameZh": "希罗的钢笔",
+      "sprite": "Clue_010_001.webp",
+      "category": "证物",
+      "chapter": 0,
+      "scene": 1,
+      "description": "二阶堂希罗原本持有的钢笔。",
+      "relatedNodes": []
+    },
+    {
+      "id": "Clue_001_001",
+      "nameZh": "被拆解的零件",
+      "sprite": "Clue_001_001.webp",
+      "category": "证物",
+      "chapter": 1,
+      "scene": 1,
+      "description": "装在走廊的桶里的弩枪的零件。\n被拆解得十分零碎，难以修复。\n\n艾玛和梅露露确认其昨天",
+      "relatedNodes": [
+        "A1C1PreTrial",
+        "A1C1Trial"
+      ]
+    },
+    {
+      "id": "Clue_001_002",
+      "nameZh": "安安的素描本",
+      "sprite": "Clue_001_002.webp",
+      "category": "证物",
+      "chapter": 1,
+      "scene": 2,
+      "description": "夏目安安展示过的素描本。\n上面画有蝴蝶的绘画。\n画的作者是诺亚，而蝴蝶似乎是留给安安",
+      "relatedNodes": [
+        "A1C1PreTrial",
+        "A1C1Trial"
+      ]
+    },
+    {
+      "id": "Clue_001_003",
+      "nameZh": "沾血的发带",
+      "sprite": "Clue_001_003.webp",
+      "category": "证物",
+      "chapter": 1,
+      "scene": 3,
+      "description": "亚里沙在湖边找到的发带。\n沾有血迹和状似颜料的痕迹。",
+      "relatedNodes": [
+        "A1C1PreTrial",
+        "A1C1Trial"
+      ]
+    },
+    {
+      "id": "Clue_001_004",
+      "nameZh": "扫帚",
+      "sprite": "Clue_001_004.webp",
+      "category": "证物",
+      "chapter": 1,
+      "scene": 4,
+      "description": "在靠近楼梯的清扫工具柜中找到的木制扫帚。\n组成部件可以拆卸。找到的时候握柄和刷毛的部",
+      "relatedNodes": [
+        "A1C1PreTrial",
+        "A1C1Trial"
+      ]
+    },
+    {
+      "id": "Clue_001_005",
+      "nameZh": "喷漆罐",
+      "sprite": "Clue_001_005.webp",
+      "category": "证物",
+      "chapter": 1,
+      "scene": 5,
+      "description": "发现城崎诺亚的尸体时，掉在旁边的喷漆罐。\n内部装有散发刺鼻异臭的白色颜料，需要较长时",
+      "relatedNodes": [
+        "A1C1PreTrial",
+        "A1C1Trial"
+      ]
+    },
+    {
+      "id": "Clue_001_006",
+      "nameZh": "水果的照片",
+      "sprite": "Clue_001_006.webp",
+      "category": "证物",
+      "chapter": 1,
+      "scene": 6,
+      "description": "雪莉在试用手机的摄像功能时拍下的照片。\n照片里是摆好的水果盘。\n位于下方的苹果好像已",
+      "relatedNodes": [
+        "A1C1PreTrial",
+        "A1C1Trial"
+      ]
+    },
+    {
+      "id": "Clue_001_007",
+      "nameZh": "直播回放",
+      "sprite": "Clue_001_007.webp",
+      "category": "证物",
+      "chapter": 1,
+      "scene": 7,
+      "description": "泽渡可可发起的直播的影片记录。\n佐伯米莉亚和莲见蕾雅有在直播中出场。",
+      "relatedNodes": [
+        "A1C1PreTrial",
+        "A1C1Trial"
+      ]
+    },
+    {
+      "id": "Clue_001_008",
+      "nameZh": "城崎诺亚的尸体照片",
+      "sprite": "Clue_001_008.webp",
+      "category": "证物",
+      "chapter": 1,
+      "scene": 8,
+      "description": "城崎诺亚尸体的照片。\n在自己所属的房间内以仰躺姿倒地，流血身亡。\n\n胸口有细长物体造",
+      "relatedNodes": [
+        "A1C1PreTrial",
+        "A1C1Trial"
+      ]
+    },
+    {
+      "id": "Clue_001_009",
+      "nameZh": "地板的划痕",
+      "sprite": "Clue_001_009.webp",
+      "category": "证物",
+      "chapter": 1,
+      "scene": 9,
+      "description": "在尸体近处的地板上留下的，被某物刮出的划痕。\n这道划痕令白色颜料产生脱落的情况。",
+      "relatedNodes": [
+        "A1C1PreTrial",
+        "A1C1Trial"
+      ]
+    },
+    {
+      "id": "Clue_001_010",
+      "nameZh": "弩枪的箭矢",
+      "sprite": "Clue_001_010.webp",
+      "category": "证物",
+      "chapter": 1,
+      "scene": 10,
+      "description": "在发现城崎诺亚尸体时，掉落在近处地板上的箭矢。\n尖头形状与尸体伤口吻合，并沾有血迹。",
+      "relatedNodes": [
+        "A1C1PreTrial",
+        "A1C1Trial"
+      ]
+    },
+    {
+      "id": "Clue_001_011",
+      "nameZh": "画在地板上的蝴蝶",
+      "sprite": "Clue_001_011.webp",
+      "category": "证物",
+      "chapter": 1,
+      "scene": 11,
+      "description": "在发现城崎诺亚尸体时，画在地板上的状似蝴蝶的图案。\n是用大量的血液画成的。",
+      "relatedNodes": [
+        "A1C1PreTrial",
+        "A1C1Trial"
+      ]
+    },
+    {
+      "id": "Clue_001_013",
+      "nameZh": "苹果",
+      "sprite": "Clue_001_013.webp",
+      "category": "证物",
+      "chapter": 1,
+      "scene": 13,
+      "description": "无",
+      "relatedNodes": [
+        "A1C1PreTrial",
+        "A1C1Trial"
+      ]
+    },
+    {
+      "id": "Clue_001_014",
+      "nameZh": "苹果（沾了颜料的那一侧）",
+      "sprite": "Clue_001_014.webp",
+      "category": "证物",
+      "chapter": 1,
+      "scene": 14,
+      "description": "无",
+      "relatedNodes": [
+        "A1C1PreTrial",
+        "A1C1Trial"
+      ]
+    },
+    {
+      "id": "Clue_002_001",
+      "nameZh": "拷问秀的邀请文",
+      "sprite": "Clue_002_001.webp",
+      "category": "证物",
+      "chapter": 2,
+      "scene": 1,
+      "description": "一张写着【20时在惩罚室举行拷问秀】的便条纸。\n此前张贴在会客厅里。\n\n典狱长否认自",
+      "relatedNodes": [
+        "A1C2Trial"
+      ]
+    },
+    {
+      "id": "Clue_002_002",
+      "nameZh": "坏掉的门锁",
+      "sprite": "Clue_002_002.webp",
+      "category": "证物",
+      "chapter": 2,
+      "scene": 2,
+      "description": "挂在惩罚室的门上的锁。\n用于在门外上锁。\n锁身颜色是黯淡的金色。\n由于橘雪莉在进房的",
+      "relatedNodes": [
+        "A1C2Trial"
+      ]
+    },
+    {
+      "id": "Clue_002_003",
+      "nameZh": "小钥匙",
+      "sprite": "Clue_002_003.webp",
+      "category": "证物",
+      "chapter": 2,
+      "scene": 3,
+      "description": "从佐伯米莉亚嘴里取出的钥匙。\n表面颜色是黯淡的金色。\n\n是监牢内某处收纳柜的钥匙，\n",
+      "relatedNodes": [
+        "A1C2Trial"
+      ]
+    },
+    {
+      "id": "Clue_002_004",
+      "nameZh": "惩罚室的钥匙",
+      "sprite": "Clue_002_004.webp",
+      "category": "证物",
+      "chapter": 2,
+      "scene": 4,
+      "description": "一把钥匙。奈叶香将其作为证据提出。\n似乎是用于打开惩罚室的钥匙。\n它掉在惩罚室的地上",
+      "relatedNodes": [
+        "A1C2Trial"
+      ]
+    },
+    {
+      "id": "Clue_002_005",
+      "nameZh": "刀刃破损的小刀",
+      "sprite": "Clue_002_005.webp",
+      "category": "证物",
+      "chapter": 2,
+      "scene": 5,
+      "description": "一把锈迹斑斑、破旧不堪，但仍有切割力的小刀。\n刃口锋利，并沾有血迹。",
+      "relatedNodes": [
+        "A1C2Trial"
+      ]
+    },
+    {
+      "id": "Clue_002_006",
+      "nameZh": "汉娜的录音数据",
+      "sprite": "Clue_002_006.webp",
+      "category": "证物",
+      "chapter": 2,
+      "scene": 6,
+      "description": "录制有对话的声音。\n\n「录音机……？不对……」\n「呀啊啊啊—！！」\n「噫！？」\n「是",
+      "relatedNodes": [
+        "A1C2Trial"
+      ]
+    },
+    {
+      "id": "Clue_002_007",
+      "nameZh": "樱羽艾玛的手机",
+      "sprite": "Clue_002_007.webp",
+      "category": "证物",
+      "chapter": 2,
+      "scene": 7,
+      "description": "分发给艾玛的智能手机。\n安装有以艾玛为原型设计的手机套。\n\n留有与佐伯米莉亚手机的通",
+      "relatedNodes": [
+        "A1C2Trial"
+      ]
+    },
+    {
+      "id": "Clue_002_008",
+      "nameZh": "佐伯米莉亚的手机",
+      "sprite": "Clue_002_008.webp",
+      "category": "证物",
+      "chapter": 2,
+      "scene": 8,
+      "description": "安安在凶杀现场找到的智能手机。\n安装有以米莉亚为原型设计的手机套。\n\n数据已被全部清",
+      "relatedNodes": [
+        "A1C2Trial"
+      ]
+    },
+    {
+      "id": "Clue_002_009",
+      "nameZh": "佐伯米莉亚的尸体照片",
+      "sprite": "Clue_002_009.webp",
+      "category": "证物",
+      "chapter": 2,
+      "scene": 9,
+      "description": "佐伯米莉亚尸体的照片。\n\n发现尸体时，佐伯米莉亚的尸体受到拘束，腹部遭到乱刀捅刺。\n",
+      "relatedNodes": [
+        "A1C2Trial"
+      ]
+    },
+    {
+      "id": "Clue_003_001",
+      "nameZh": "起火物",
+      "sprite": "Clue_003_001.webp",
+      "category": "证物",
+      "chapter": 3,
+      "scene": 1,
+      "description": "存放在仓库里的能纵火的物品。\n有蜡烛、火柴、鞭炮等。",
+      "relatedNodes": [
+        "A1C3Trial"
+      ]
+    }
+  ]
+}
