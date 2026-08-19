@@ -879,6 +879,102 @@ html[data-style="noah"] .lightbox {
     transition-duration: 0.01s !important;
   }
 }
+
+/* ═══ 额外工具推荐 — 更强的工具 ═══ */
+.ws-tool-reco {
+  margin-top: 28px;
+  padding: 22px 24px;
+  border: 1px solid var(--ws-line);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--ws-radius);
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--accent) 7%, transparent), transparent 60%),
+    var(--ws-surface);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ws-tool-reco::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ws-tool-reco:hover {
+  border-color: var(--accent);
+  box-shadow: 0 12px 36px color-mix(in srgb, var(--accent) 14%, transparent);
+  transform: translateY(-2px);
+}
+.ws-tool-reco:hover::after { width: 100%; }
+.ws-tool-reco .ws-tool-info { min-width: 240px; flex: 1; }
+.ws-tool-reco .ws-tool-kicker {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg3);
+  margin: 0 0 6px;
+}
+.ws-tool-reco .ws-tool-title {
+  font-family: "Noto Serif SC", serif;
+  font-weight: 900;
+  font-size: 18px;
+  letter-spacing: 0.06em;
+  color: var(--fg);
+  margin: 0 0 6px;
+}
+.ws-tool-reco .ws-tool-desc {
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--fg2);
+  margin: 0;
+}
+.ws-tool-reco .ws-tool-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--btn-bg);
+  color: var(--fg);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: border-color 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+              background 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+              color 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ws-tool-reco .ws-tool-link:hover {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+  transform: translateX(3px);
+}
+.ws-tool-reco .ws-tool-link svg {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ws-tool-reco .ws-tool-link:hover svg { transform: translate(2px, -2px); }
+@media (max-width: 640px) {
+  .ws-tool-reco { flex-direction: column; align-items: flex-start; }
+  .ws-tool-reco .ws-tool-link { width: 100%; justify-content: center; }
+}
 </style>
 </head>
 <body>
@@ -974,6 +1070,19 @@ html[data-style="noah"] .lightbox {
         <p class="ws-note">遮罩是游戏内用于裁剪的透明层，默认隐藏。每次加载角色默认显示身体、双手(ArmL01/ArmR01)及默认脸庞(Eyes Normal Open01 / Mouth Normal Open / Cheeks Normal)，可勾选其他部件。</p>
       </aside>
     </div>
+
+      <!-- ═══ 额外工具推荐 ═══ -->
+      <div class="ws-tool-reco">
+        <div class="ws-tool-info">
+          <p class="ws-tool-kicker">Extra Tools</p>
+          <h3 class="ws-tool-title">更强的工具 · 角色立绘合成器</h3>
+          <p class="ws-tool-desc">需要从游戏 bundle 中提取并合成完整角色立绘？试试 Manosaba Character Extracter，一个更强大的角色立绘合成工具。</p>
+        </div>
+        <a class="ws-tool-link" href="https://github.com/paliku520/Manosaba-character-extracter" target="_blank" rel="noopener noreferrer">
+          前往工具
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg>
+        </a>
+      </div>
   </div>
 </main>
 

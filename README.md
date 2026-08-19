@@ -8,6 +8,9 @@
 
 > 剧情数据、CG、音频等素材版权归原作方所有；本站自研页面代码、脚本与标注以 CC BY-NC-SA 4.0 发布。完整免责声明见 [credits.html](credits.html)。
 
+> 推荐工具：[Manosaba Character Extracter](https://github.com/paliku520/Manosaba-character-extracter) —— 魔法少女的魔女审判角色立绘合成器。
+
+
 ## 在线访问
 
 | 站点 | 地址 | 说明 |
